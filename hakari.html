@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>HAKARI v3 — Tejaswanth Surisetty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@200;300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --sky-deep:    #0d3a6e;
+  --sky:         #1a5fa8;
+  --sky-mid:     #2875d9;
+  --sky-light:   #6fc8f5;
+  --sky-pale:    #a8dcf5;
+  --sky-mist:    #deeef9;
+  --cloud:       #ffffff;
+  --cloud-soft:  rgba(255,255,255,.88);
+  --cloud-dim:   rgba(255,255,255,.55);
+  --cloud-ghost: rgba(255,255,255,.22);
+  --cloud-ultra: rgba(255,255,255,.08);
+  --ink:         #1a4a78;
+  --ink2:        rgba(26,74,120,.72);
+  --ink3:        rgba(26,74,120,.50);
+  --ink4:        rgba(26,74,120,.32);
+  --border:      rgba(255,255,255,.18);
+  --border-hi:   rgba(255,255,255,.38);
+  --f-display:   'Cormorant Garamond', Georgia, serif;
+  --f-head:      'Montserrat', system-ui, sans-serif;
+  --f-mono:      'IBM Plex Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: linear-gradient(135deg, #061f3d 0%, #0d3a6e 25%, #1a5fa8 60%, #2875d9 100%);
+  color: var(--ink);
+  font-family: var(--f-head);
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* CURSOR */
+#cur-ring {
+  position: fixed; width: 44px; height: 44px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.7);
+  pointer-events: none; z-index: 99999;
+  transform: translate(-50%,-50%);
+  transition: width .3s, height .3s, border-color .3s, background .3s;
+  backdrop-filter: invert(5%);
+}
+#cur-dot {
+  position: fixed; width: 6px; height: 6px; border-radius: 50%;
+  background: white; pointer-events: none; z-index: 100000;
+  transform: translate(-50%,-50%);
+  box-shadow: 0 0 10px rgba(255,255,255,.8);
+}
+body.hov #cur-ring { width: 56px; height: 56px; border-color: white; background: rgba(255,255,255,.06); }
+
+/* GLOBAL SKY BG */
+.sky-section {
+  position: relative;
+  background: linear-gradient(180deg, #0d3a6e 0%, #1a5fa8 40%, #2875d9 70%, #6fc8f5 100%);
+}
+.sky-section-light {
+  position: relative;
+  background: linear-gradient(180deg, #6fc8f5 0%, #9dd5f5 40%, #c5e8fb 80%, #e4f4fc 100%);
+}
+.sky-section-white {
+  position: relative;
+  background: linear-gradient(180deg, #deeef9 0%, #eef6fc 50%, #f5fbff 100%);
+}
+
+/* NOISE TEXTURE OVERLAY */
+.sky-section::after,
+.sky-section-light::after,
+.sky-section-white::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; mix-blend-mode: overlay;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5%; height: 68px;
+  background: rgba(13,58,110,.6);
+  backdrop-filter: blur(28px) saturate(1.8);
+  border-bottom: 1px solid var(--border);
+  transition: transform .45s cubic-bezier(.25,.46,.45,.94);
+}
+.nav-logo {
+  font-family: var(--f-head); font-size: 13px; font-weight: 700;
+  color: white; text-decoration: none; letter-spacing: .12em; text-transform: uppercase; cursor: none;
+}
+.nav-logo em { font-style: normal; color: var(--sky-pale); }
+nav ul { display: flex; gap: 40px; list-style: none; }
+nav a {
+  font-family: var(--f-head); font-size: 10px; font-weight: 500;
+  color: var(--cloud-dim); text-decoration: none; letter-spacing: .14em;
+  text-transform: uppercase; transition: color .2s; cursor: none;
+}
+nav a:hover { color: white; }
+.nav-cta {
+  font-family: var(--f-head); font-size: 10px; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase; color: white;
+  border: 1px solid var(--border-hi); padding: 9px 22px;
+  text-decoration: none; cursor: none;
+  transition: background .2s, border-color .2s;
+}
+.nav-cta:hover { background: rgba(255,255,255,.12); border-color: white; }
+
+/* REVEAL */
+.rv {
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 1s cubic-bezier(.25,.46,.45,.94), transform 1s cubic-bezier(.25,.46,.45,.94);
+}
+.rv.in { opacity: 1; transform: translateY(0); }
+.rv.d1 { transition-delay: .1s; } .rv.d2 { transition-delay: .2s; }
+.rv.d3 { transition-delay: .3s; } .rv.d4 { transition-delay: .4s; }
+.rv.d5 { transition-delay: .5s; }
+
+/* SECTION SHARED */
+.sec-wrap { padding: 130px 5%; position: relative; z-index: 1; }
+.sec-tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--f-mono); font-size: 10px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--cloud-dim); margin-bottom: 22px;
+}
+.sec-tag::before { content: ''; width: 24px; height: 1px; background: var(--cloud-soft); }
+.sec-tag-dark {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--f-mono); font-size: 10px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--ink3); margin-bottom: 22px;
+}
+.sec-tag-dark::before { content: ''; width: 24px; height: 1px; background: var(--ink3); }
+
+.sec-title-light {
+  font-family: var(--f-display); font-size: clamp(72px, 10vw, 128px);
+  font-weight: 300; line-height: .84; letter-spacing: -.02em;
+  color: white; margin-bottom: 72px;
+  text-shadow: 0 2px 40px rgba(0,0,0,.08);
+}
+.sec-title-light em {
+  font-style: italic; color: var(--cloud-soft);
+  font-weight: 300;
+}
+.sec-title-light .dim {
+  color: var(--cloud-ghost); -webkit-text-stroke: 1px rgba(255,255,255,.25);
+}
+.sec-title-dark {
+  font-family: var(--f-display); font-size: clamp(72px, 10vw, 128px);
+  font-weight: 300; line-height: .84; letter-spacing: -.02em;
+  color: var(--ink); margin-bottom: 72px;
+}
+.sec-title-dark em { font-style: italic; color: var(--sky); }
+
+/* KEYFRAMES */
+@keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
+@keyframes fadeUp   { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+@keyframes slideR   { from { opacity:0; transform:translateX(-32px); } to { opacity:1; transform:none; } }
+@keyframes blink    { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes float    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+@keyframes scanH    { 0%,100%{opacity:.04} 50%{opacity:.1} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+@keyframes slideUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+@keyframes shimmer { from { background-position: -1000px 0; } to { background-position: 1000px 0; } }
+@keyframes glow { 0%,100% { text-shadow: 0 0 10px rgba(40,117,217,.3); } 50% { text-shadow: 0 0 25px rgba(40,117,217,.6); } }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes ripple {
+  0% { box-shadow: 0 0 0 0 rgba(255,255,255,.6); }
+  70% { box-shadow: 0 0 0 10px rgba(255,255,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}
+
+/* ========== HERO ========== */
+#hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  background: linear-gradient(175deg, #061f3d 0%, #0d3a6e 25%, #1a5fa8 55%, #2875d9 80%, #6fc8f5 100%);
+  position: relative; overflow: hidden;
+}
+
+/* Hero cloud layers */
+.h-cloud-back {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 120% 60% at 110% 85%, rgba(255,255,255,.25) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 50% at -10% 90%, rgba(255,255,255,.18) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 50% 95%, rgba(255,255,255,.3) 0%, transparent 50%);
+}
+.h-cloud-mid {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 45vh; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 200% 80% at 50% 120%, rgba(255,255,255,.55) 0%, rgba(255,255,255,.15) 40%, transparent 65%);
+  filter: blur(1px);
+}
+.h-cloud-fore {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 22vh; z-index: 2; pointer-events: none;
+  background: linear-gradient(to top, rgba(255,255,255,.72) 0%, rgba(255,255,255,.3) 40%, transparent 100%);
+}
+
+.h-scan {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,.018) 3px, rgba(255,255,255,.018) 4px);
+  animation: scanH 4s ease-in-out infinite;
+}
+
+.h-badge {
+  position: absolute; top: 84px; right: 5%; z-index: 5;
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--f-mono); font-size: 10px; color: var(--cloud-soft);
+  letter-spacing: .12em; text-transform: uppercase;
+  opacity: 0; animation: fadeIn .6s 2s forwards;
+}
+.h-badge-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: white; flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(255,255,255,.6);
+  animation: ripple 2s infinite;
+}
+
+.hero-content {
+  position: relative; z-index: 4; flex: 1; display: flex;
+  flex-direction: column; justify-content: flex-end; padding: 120px 5% 0;
+}
+.h-eyebrow {
+  font-family: var(--f-mono); font-size: 10px; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--cloud-dim); margin-bottom: 28px;
+  opacity: 0; animation: slideR .7s .5s cubic-bezier(.25,.46,.45,.94) forwards;
+}
+.h-eyebrow span { color: rgba(255,255,255,.3); margin: 0 10px; }
+
+.hero-title-wrap {
+  opacity: 0; animation: fadeUp .9s .7s cubic-bezier(.16,1,.3,1) forwards;
+}
+.h-main {
+  display: block; font-family: var(--f-display);
+  font-size: clamp(100px, 15.5vw, 210px);
+  font-weight: 300; line-height: .82; letter-spacing: -.035em;
+  color: white;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.4),
+    0 8px 50px rgba(0,0,0,.1),
+    0 0 150px rgba(255,255,255,.2);
+  animation: glow 3s ease-in-out infinite;
+}
+.h-ghost {
+  display: block; font-family: var(--f-display);
+  font-size: clamp(100px, 15.5vw, 210px);
+  font-weight: 300; font-style: italic; line-height: .82; letter-spacing: -.035em;
+  color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.28);
+  margin-left: 3vw;
+}
+.h-ver {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em;
+  color: var(--cloud-soft); border: 1px solid var(--border-hi);
+  padding: 4px 14px; margin-left: 2rem; vertical-align: middle;
+  background: rgba(255,255,255,.08); backdrop-filter: blur(10px);
+}
+.h-ver-dot { width: 5px; height: 5px; border-radius: 50%; background: white; animation: blink 1.4s step-end infinite; }
+
+/* HERO GRID */
+.hero-grid {
+  position: relative; z-index: 4;
+  display: grid; grid-template-columns: 1fr 400px; gap: 0;
+  align-items: end;
+}
+.hero-desc-block {
+  padding: 48px 0 72px;
+  opacity: 0; animation: fadeUp .8s 1.1s cubic-bezier(.25,.46,.45,.94) forwards;
+}
+.hero-desc {
+  font-size: 15px; color: var(--cloud-soft); line-height: 1.9;
+  font-weight: 300; max-width: 520px; margin-bottom: 40px; letter-spacing: .01em;
+}
+.hero-desc strong { color: white; font-weight: 500; }
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.hero-panel {
+  border-left: 1px solid var(--border);
+  padding: 48px 0 48px 52px;
+  opacity: 0; animation: fadeUp .8s 1.3s cubic-bezier(.25,.46,.45,.94) forwards;
+}
+.panel-label {
+  font-family: var(--f-mono); font-size: 9px; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--cloud-dim); margin-bottom: 18px;
+}
+.prow { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--cloud-ultra); transition: padding-left .2s; }
+.prow:hover { padding-left: 8px; }
+.prow:first-of-type { border-top: 1px solid var(--cloud-ultra); }
+.prow-k { font-family: var(--f-mono); font-size: 10px; color: var(--cloud-dim); }
+.prow-v { font-family: var(--f-mono); font-size: 10px; font-weight: 500; color: white; letter-spacing: .04em; }
+.prow-v.alert { color: var(--sky-pale); }
+.prow-v.soft  { color: var(--cloud-soft); }
+
+/* HERO STATS */
+.hero-stats {
+  position: relative; z-index: 4;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: rgba(13,58,110,.55); backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  opacity: 0; animation: fadeUp .7s 1.6s cubic-bezier(.25,.46,.45,.94) forwards;
+}
+.hst {
+  padding: 32px; border-right: 1px solid var(--border);
+  position: relative; transition: background .3s;
+}
+.hst:last-child { border-right: none; }
+.hst:hover { background: rgba(255,255,255,.06); }
+.hst-num {
+  font-family: var(--f-display); font-size: clamp(44px, 5.5vw, 68px);
+  font-weight: 300; color: white; line-height: 1; margin-bottom: 8px;
+  letter-spacing: -.02em;
+}
+.hst-label {
+  font-family: var(--f-head); font-size: 9px; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--cloud-dim); line-height: 1.6;
+}
+
+/* MARQUEE */
+.marquee {
+  overflow: hidden; padding: 14px 0;
+  background: rgba(255,255,255,.08); backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.mq-track { display: flex; animation: mq 44s linear infinite; width: max-content; }
+.mq-item {
+  font-family: var(--f-mono); font-size: 10px; color: var(--cloud-dim);
+  letter-spacing: .14em; text-transform: uppercase; padding: 0 36px; white-space: nowrap;
+  display: flex; align-items: center; gap: 20px;
+}
+.mq-item::after { content: '○'; font-size: 7px; color: rgba(255,255,255,.25); }
+.mq-item.hi { color: rgba(255,255,255,.8); }
+@keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee:hover .mq-track { animation-play-state: paused; }
+
+/* BUTTONS */
+.btn-prime {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 30px; background: white; color: var(--sky-deep);
+  font-family: var(--f-head); font-size: 10px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; text-decoration: none;
+  cursor: none; transition: all .3s; border: 1px solid white;
+}
+.btn-prime:hover {
+  background: transparent; color: white;
+  box-shadow: 0 12px 40px rgba(0,0,0,.15);
+  transform: translateY(-4px) scale(1.05);
+}
+.btn-sec {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 28px; background: transparent; color: white;
+  font-family: var(--f-head); font-size: 10px; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase; text-decoration: none;
+  cursor: none; border: 1px solid var(--border-hi);
+  transition: all .3s;
+}
+.btn-sec:hover { background: rgba(255,255,255,.15); border-color: white; transform: translateY(-4px) scale(1.05); }
+
+/* ========== PILLARS ========== */
+#pillars {
+  background: linear-gradient(180deg, #1a5fa8 0%, #2875d9 50%, #6fc8f5 100%);
+}
+.pillars-header {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+  align-items: end; margin-bottom: 80px;
+}
+.pillars-intro {
+  font-size: 17px; color: var(--cloud-soft); line-height: 1.9; font-weight: 300;
+}
+.pillars-intro strong { color: white; font-weight: 500; }
+.pillars-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--border);
+}
+.pillar {
+  background: rgba(255,255,255,.06); backdrop-filter: blur(16px);
+  padding: 52px 44px; position: relative; overflow: hidden;
+  transition: background .35s, transform .3s; cursor: default;
+}
+.pillar:hover { background: rgba(255,255,255,.14); transform: translateY(-6px); }
+.pillar::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, white, transparent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .5s cubic-bezier(.25,.46,.45,.94);
+}
+.pillar:hover::before { transform: scaleX(1); }
+.p-bg {
+  position: absolute; bottom: -30px; right: -10px;
+  font-family: var(--f-display); font-size: 200px; font-weight: 300;
+  font-style: italic; color: rgba(255,255,255,.04); line-height: 1;
+  pointer-events: none; user-select: none; letter-spacing: -.02em;
+}
+.p-index { font-family: var(--f-mono); font-size: 10px; color: var(--cloud-dim); margin-bottom: 22px; letter-spacing: .1em; }
+.p-title {
+  font-family: var(--f-display); font-size: 38px; font-weight: 300;
+  color: white; line-height: 1.05; margin-bottom: 20px;
+}
+.p-title em { font-style: italic; color: var(--cloud-soft); }
+.p-body { font-size: 14px; color: var(--cloud-dim); line-height: 1.85; font-weight: 300; margin-bottom: 32px; }
+.p-metrics { display: flex; flex-direction: column; }
+.pm-row { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--cloud-ultra); }
+.pm-row:last-child { border-bottom: none; }
+.pm-k { font-family: var(--f-mono); font-size: 10px; color: rgba(255,255,255,.38); }
+.pm-v { font-family: var(--f-mono); font-size: 10px; font-weight: 500; color: var(--cloud-soft); }
+.pm-v.alert { color: var(--sky-pale); }
+
+/* ========== CONSOLE ========== */
+#console-sec {
+  background: linear-gradient(180deg, #6fc8f5 0%, #a0ddf8 50%, #c5e8fb 100%);
+}
+.con-layout { display: grid; grid-template-columns: 400px 1fr; gap: 80px; align-items: start; }
+.con-left-desc { font-size: 15px; color: #1a3a52; line-height: 1.9; font-weight: 400; margin-bottom: 32px; }
+.con-left-desc strong { color: #2875d9; font-weight: 600; }
+.api-list { display: flex; flex-direction: column; }
+.api-item {
+  display: flex; align-items: flex-start; gap: 0; padding: 14px 0;
+  border-bottom: 1px solid rgba(12,45,84,.1); cursor: default;
+  transition: padding-left .3s, background .2s;
+  background: transparent;
+}
+.api-item:first-child { border-top: 1px solid rgba(12,45,84,.1); }
+.api-item:hover { padding-left: 12px; background: rgba(12,45,84,.03); }
+.api-fn { font-family: var(--f-mono); font-size: 11px; color: #3d7db0; min-width: 250px; line-height: 1.4; font-weight: 500; }
+.api-fn span { color: #2875d9; font-weight: 600; }
+.api-fn-desc { font-family: var(--f-head); font-size: 10px; color: var(--ink3); letter-spacing: .04em; padding-top: 2px; font-weight: 500; }
+
+.con-terminal {
+  background: rgba(10,35,80,.88); border: 1px solid rgba(255,255,255,.15);
+  overflow: hidden; position: sticky; top: 88px;
+  backdrop-filter: blur(24px);
+  box-shadow: 0 24px 80px rgba(10,35,80,.18), inset 0 1px 0 rgba(255,255,255,.1);
+}
+.con-bar {
+  background: rgba(8,28,66,.85); padding: 14px 20px;
+  display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.cb-dot { width: 10px; height: 10px; border-radius: 50%; }
+.cb-title {
+  margin-left: 10px; font-family: var(--f-head); font-size: 10px;
+  font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.5);
+}
+.cb-status {
+  margin-left: auto; display: flex; align-items: center; gap: 6px;
+  font-family: var(--f-mono); font-size: 9px; color: rgba(255,255,255,.7); letter-spacing: .08em;
+}
+.live-dot { width: 5px; height: 5px; border-radius: 50%; background: white; animation: ripple 2s infinite; }
+.con-body { max-height: 540px; overflow-y: auto; }
+.con-body::-webkit-scrollbar { width: 2px; }
+.con-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); }
+.con-section-head {
+  padding: 10px 20px 6px; font-family: var(--f-head); font-size: 8px;
+  font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(255,255,255,.3); border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.con-fn-row {
+  display: grid; grid-template-columns: 220px 1fr auto;
+  gap: 12px; padding: 9px 20px; border-bottom: 1px solid rgba(255,255,255,.04);
+  align-items: baseline; transition: background .2s, padding-left .2s;
+}
+.con-fn-row:hover { background: rgba(255,255,255,.08); padding-left: 24px; }
+.cfr-fn { font-family: var(--f-mono); font-size: 10px; color: #4a90e8; font-weight: 500; }
+.cfr-fn span { color: #2a70d8; font-weight: 600; }
+.cfr-desc { font-family: var(--f-mono); font-size: 10px; color: #3a7bc8; font-weight: 500; }
+.cfr-src { font-family: var(--f-mono); font-size: 9px; color: #4a90e8; text-align: right; font-weight: 500; }
+.con-log {
+  display: grid; grid-template-columns: 18px 1fr auto;
+  gap: 10px; padding: 9px 20px; border-bottom: 1px solid rgba(255,255,255,.03);
+  align-items: baseline; transition: background .2s, padding-left .2s;
+}
+.con-log:hover { background: rgba(255,255,255,.06); padding-left: 24px; }
+.cl-ico { font-size: 10px; color: rgba(255,255,255,.3); }
+.cl-msg { font-family: var(--f-mono); font-size: 10px; line-height: 1.55; color: #3a7bc8; font-weight: 500; }
+.cl-msg.alert { color: #2a70d8; font-weight: 600; }
+.cl-src { font-family: var(--f-mono); font-size: 9px; color: #4a90e8; text-align: right; font-weight: 500; }
+
+/* ========== SIMULATION ========== */
+#simulation {
+  background: linear-gradient(180deg, #c5e8fb 0%, #deeef9 50%, #eef6fc 100%);
+}
+.sim-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-bottom: 80px; align-items: start; }
+.sim-quote {
+  font-family: var(--f-display); font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 300; font-style: italic; color: var(--sky-deep); line-height: 1.55;
+  border-left: 2px solid var(--sky-mid); padding-left: 32px;
+}
+.sim-quote cite {
+  display: block; margin-top: 16px; font-family: var(--f-mono); font-size: 9px;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--ink4); font-style: normal;
+}
+.sim-text { font-size: 15px; color: var(--ink2); line-height: 1.9; font-weight: 400; }
+.sim-text strong { color: var(--ink); font-weight: 600; }
+.sim-text p { margin-bottom: 20px; }
+.engine-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(12,45,84,.1); }
+.ecard {
+  background: white; padding: 52px 40px; position: relative;
+  overflow: hidden; transition: background .3s, transform .3s, box-shadow .3s; cursor: default;
+}
+.ecard:hover { background: #f0f8ff; transform: translateY(-8px); box-shadow: 0 24px 64px rgba(12,45,84,.12); }
+.ecard-bg {
+  position: absolute; bottom: -40px; right: -20px;
+  font-family: var(--f-display); font-size: 200px; font-weight: 300; font-style: italic;
+  color: rgba(13,58,110,.06); line-height: 1; pointer-events: none; user-select: none;
+}
+.ec-num { font-family: var(--f-mono); font-size: 10px; color: var(--ink3); margin-bottom: 24px; letter-spacing: .1em; }
+.ec-tag {
+  display: inline-block; font-family: var(--f-head); font-size: 8px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase; border: 1px solid;
+  padding: 4px 10px; margin-bottom: 20px;
+}
+.ec-tag.a { color: var(--sky-deep); border-color: rgba(13,58,110,.35); background: rgba(13,58,110,.08); }
+.ec-title {
+  font-family: var(--f-display); font-size: 30px; font-weight: 500;
+  color: var(--ink); line-height: 1.05; margin-bottom: 16px;
+}
+.ec-body { font-size: 13px; color: var(--ink2); line-height: 1.85; font-weight: 400; margin-bottom: 24px; }
+.ec-metrics { display: flex; flex-direction: column; }
+.em-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid rgba(12,45,84,.07); }
+.em-row:last-child { border-bottom: none; }
+.em-k { font-family: var(--f-mono); font-size: 9px; color: var(--ink4); }
+.em-v { font-family: var(--f-mono); font-size: 9px; font-weight: 600; color: #3d7db0; }
+
+/* signal panel */
+.signal-panel {
+  background: white; padding: 52px 40px; margin-top: 1px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px;
+  box-shadow: 0 4px 40px rgba(12,45,84,.06);
+}
+.sp-col-head {
+  font-family: var(--f-mono); font-size: 9px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--sky); margin-bottom: 20px;
+  padding-bottom: 12px; border-bottom: 1px solid rgba(12,45,84,.08);
+}
+.sp-event { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(12,45,84,.06); }
+.sp-event:last-child { border-bottom: none; }
+.sp-ico { font-size: 10px; flex-shrink: 0; margin-top: 2px; color: #3d7db0; font-weight: 600; }
+.sp-msg { font-family: var(--f-mono); font-size: 10px; line-height: 1.55; color: var(--ink2); }
+.sp-msg.hi { color: #2875d9; font-weight: 600; }
+
+/* ========== OVERVIEW ========== */
+#overview {
+  background: linear-gradient(180deg, #1a5fa8 0%, #2875d9 50%, #6fc8f5 100%);
+}
+.ov-layout { display: grid; grid-template-columns: 1fr 500px; gap: 96px; align-items: start; }
+.ov-text p { font-size: 17px; color: var(--cloud-soft); line-height: 1.95; font-weight: 300; margin-bottom: 28px; }
+.ov-text p strong { color: white; font-weight: 500; }
+.ov-text p em { color: var(--sky-pale); font-style: normal; font-weight: 400; }
+.pull-quote {
+  margin: 48px 0; padding: 32px 40px;
+  border-left: 2px solid rgba(255,255,255,.6);
+  background: rgba(255,255,255,.07); backdrop-filter: blur(10px);
+}
+.pq-text { font-family: var(--f-display); font-size: 22px; font-weight: 300; font-style: italic; color: white; line-height: 1.55; }
+.pq-cite { display: block; margin-top: 14px; font-family: var(--f-mono); font-size: 9px; color: var(--cloud-dim); letter-spacing: .1em; }
+
+.state-box {
+  position: sticky; top: 88px;
+  background: rgba(255,255,255,.1); backdrop-filter: blur(20px);
+  border: 1px solid var(--border-hi); padding: 36px 32px;
+}
+.sb-head {
+  font-family: var(--f-mono); font-size: 9px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--cloud-dim); margin-bottom: 20px;
+  padding-bottom: 14px; border-bottom: 1px solid var(--border);
+}
+.sb-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 11px 0; border-bottom: 1px solid var(--cloud-ultra);
+}
+.sb-row:last-of-type { border-bottom: none; }
+.sb-k { font-family: var(--f-mono); font-size: 10px; color: var(--cloud-dim); }
+.sb-v { font-family: var(--f-mono); font-size: 10px; font-weight: 500; color: white; letter-spacing: .04em; }
+.sb-v.a { color: var(--sky-pale); }
+.sb-mods { margin-top: 24px; }
+.sb-mod {
+  font-family: var(--f-mono); font-size: 10px; color: var(--cloud-dim);
+  padding: 7px 0; display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid var(--cloud-ultra);
+}
+.sb-mod:last-child { border-bottom: none; }
+.sb-mod::before { content: '›'; color: white; font-size: 14px; }
+
+/* ========== PRINCIPLES ========== */
+#principles {
+  background: linear-gradient(180deg, #2875d9 0%, #6fc8f5 50%, #a0ddf8 100%);
+}
+.pr-subtitle {
+  font-family: var(--f-display); font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 300; font-style: italic; color: var(--cloud-soft);
+  max-width: 700px; line-height: 1.7; margin-bottom: 80px;
+}
+.pr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(12,45,84,.08); }
+.pr-card {
+  background: rgba(255,255,255,.07); backdrop-filter: blur(14px);
+  padding: 44px 36px; position: relative; overflow: hidden; transition: background .3s, transform .3s; cursor: default;
+}
+.pr-card:hover { background: rgba(255,255,255,.15); transform: translateY(-6px); }
+.pr-bg-num {
+  position: absolute; bottom: -24px; right: -8px;
+  font-family: var(--f-display); font-size: 160px; font-weight: 300; font-style: italic;
+  color: rgba(255,255,255,.04); line-height: 1; pointer-events: none; user-select: none;
+}
+.pr-num { font-family: var(--f-mono); font-size: 10px; color: var(--cloud-dim); margin-bottom: 16px; letter-spacing: .08em; }
+.pr-tag {
+  display: inline-block; font-family: var(--f-head); font-size: 8px; font-weight: 700;
+  letter-spacing: .2em; text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,.3); padding: 3px 9px; margin-bottom: 16px;
+  color: white; background: rgba(255,255,255,.1);
+}
+.pr-title { font-family: var(--f-display); font-size: 24px; font-weight: 400; color: white; line-height: 1.1; margin-bottom: 12px; }
+.pr-body { font-size: 13px; color: var(--cloud-dim); line-height: 1.8; font-weight: 300; }
+.pr-code { display: block; margin-top: 16px; font-family: var(--f-mono); font-size: 9px; color: rgba(255,255,255,.28); letter-spacing: .06em; }
+
+/* ========== ARCHITECTURE ========== */
+#architecture {
+  background: linear-gradient(180deg, #eef6fc 0%, #f5fbff 50%, #fafdff 100%);
+}
+.ar-meta { font-family: var(--f-mono); font-size: 11px; color: var(--ink3); letter-spacing: .04em; margin-bottom: 48px; line-height: 1.8; }
+.ar-meta a { color: var(--sky); text-decoration: none; }
+.ar-blocks {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: 1px; background: rgba(12,45,84,.08); margin-bottom: 1px;
+}
+.ab {
+  background: white; padding: 28px 22px;
+  transition: background .25s, border-top-color .25s, transform .25s; border-top: 2px solid transparent; cursor: default;
+}
+.ab:hover { background: #f0f8ff; border-top-color: var(--sky); transform: translateY(-4px); }
+.ab-badge { font-family: var(--f-mono); font-size: 8px; letter-spacing: .16em; text-transform: uppercase; color: var(--sky); margin-bottom: 12px; display: block; }
+.ab-title { font-family: var(--f-head); font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.2; margin-bottom: 8px; }
+.ab-desc { font-size: 11px; color: var(--ink2); line-height: 1.6; font-weight: 400; }
+
+.ar-info {
+  background: white; border: 1px solid rgba(12,45,84,.08);
+  padding: 40px; margin-top: 1px;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 56px;
+}
+.ai-head {
+  font-family: var(--f-mono); font-size: 9px; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--sky); margin-bottom: 18px;
+  padding-bottom: 10px; border-bottom: 1px solid rgba(12,45,84,.08);
+}
+.ai-line { font-family: var(--f-mono); font-size: 10px; color: var(--ink2); line-height: 2.2; }
+.ai-line .c { color: var(--sky-light); }
+.bar-item { margin-bottom: 14px; }
+.bar-meta { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.bar-label { font-family: var(--f-head); font-size: 10px; font-weight: 500; color: var(--ink2); }
+.bar-pct { font-family: var(--f-mono); font-size: 10px; color: var(--sky); }
+.bar-track { height: 2px; background: rgba(12,45,84,.07); overflow: hidden; }
+.bar-fill { height: 100%; background: linear-gradient(90deg, var(--sky-deep), var(--sky-mid)); }
+
+.ar-pipe {
+  background: white; border: 1px solid rgba(12,45,84,.08);
+  padding: 36px 40px; margin-top: 1px;
+}
+.pipe-head { font-family: var(--f-mono); font-size: 9px; letter-spacing: .2em; text-transform: uppercase; color: var(--sky); margin-bottom: 24px; }
+.pipeline { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+.pipe-node {
+  background: rgba(12,45,84,.04); border: 1px solid rgba(12,45,84,.1);
+  padding: 12px 20px; font-family: var(--f-mono); font-size: 10px;
+  color: var(--ink2); letter-spacing: .04em; text-transform: uppercase;
+  transition: all .2s;
+}
+.pipe-node:hover { border-color: var(--sky); color: var(--sky); background: rgba(41,128,217,.06); }
+.pipe-node.act { border-color: rgba(41,128,217,.35); color: var(--sky); background: rgba(41,128,217,.07); }
+.pipe-node.hot { border-color: rgba(26,107,191,.35); color: var(--sky-deep); background: rgba(26,107,191,.05); }
+.pipe-arr { font-family: var(--f-mono); font-size: 14px; color: var(--ink4); padding: 0 2px; }
+
+/* ========== RESEARCH ========== */
+#research {
+  background: linear-gradient(180deg, #2875d9 0%, #3d9be8 40%, #6fc8f5 80%, #a0ddf8 100%);
+}
+.res-bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: var(--border); }
+.rcard {
+  background: rgba(255,255,255,.07); backdrop-filter: blur(14px);
+  padding: 48px 40px; position: relative; overflow: hidden; transition: background .3s, transform .3s; cursor: default;
+}
+.rcard:hover { background: rgba(255,255,255,.14); transform: translateY(-8px); }
+.rcard.wide { grid-column: span 3; } .rcard.med { grid-column: span 2; }
+.rcard.solid:hover { background: rgba(255,255,255,.22); }
+.rc-num { font-family: var(--f-mono); font-size: 10px; color: #3d7db0; margin-bottom: 16px; letter-spacing: .08em; font-weight: 600; }
+.rc-title { font-family: var(--f-display); font-size: 26px; font-weight: 500; color: var(--ink); margin-bottom: 12px; line-height: 1.1; }
+.rc-body { font-size: 13px; color: var(--ink2); line-height: 1.8; font-weight: 400; }
+.rc-badge {
+  display: inline-block; margin-top: 18px; font-family: var(--f-mono); font-size: 9px;
+  letter-spacing: .14em; text-transform: uppercase; color: white;
+  border: 1px solid var(--border-hi); padding: 4px 10px; background: rgba(255,255,255,.1);
+  transition: all .3s;
+}
+.rc-badge:hover { background: rgba(255,255,255,.2); transform: scale(1.08); }
+
+/* ========== STACK ========== */
+#stack {
+  background: linear-gradient(180deg, #f5fbff 0%, #fafdff 50%, white 100%);
+}
+.st-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(12,45,84,.08); }
+.sc {
+  background: white; padding: 36px 28px; position: relative; overflow: hidden;
+  transition: background .3s, transform .3s; cursor: default;
+}
+.sc:hover { background: #f0f8ff; transform: translateY(-6px); }
+.sc::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--sky-deep), var(--sky-mid), transparent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .5s cubic-bezier(.25,.46,.45,.94);
+}
+.sc:hover::after { transform: scaleX(1); }
+.sc-cat { font-family: var(--f-mono); font-size: 9px; color: var(--sky); margin-bottom: 14px; letter-spacing: .1em; }
+.sc-name { font-family: var(--f-display); font-size: 22px; font-weight: 500; color: var(--ink); line-height: 1.1; margin-bottom: 16px; }
+.sc-items { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.sc-item { font-family: var(--f-mono); font-size: 9px; color: var(--ink3); background: rgba(41,128,217,.06); padding: 3px 9px; border: 1px solid rgba(12,45,84,.08); }
+
+/* ========== FUTURE ========== */
+#future {
+  background: linear-gradient(180deg, #1a5fa8 0%, #2875d9 60%, #6fc8f5 100%);
+}
+.ft-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+.fc {
+  background: rgba(255,255,255,.06); backdrop-filter: blur(14px);
+  padding: 52px 40px; transition: background .3s, transform .3s; cursor: default;
+}
+.fc:hover { background: rgba(255,255,255,.14); transform: translateY(-8px); }
+.fc-num { font-family: var(--f-display); font-size: 72px; font-style: italic; font-weight: 300; color: rgba(255,255,255,.1); line-height: 1; margin-bottom: 20px; }
+.fc-title { font-family: var(--f-display); font-size: 28px; font-weight: 400; color: white; margin-bottom: 12px; line-height: 1.1; }
+.fc-body { font-size: 13px; color: var(--cloud-dim); line-height: 1.8; font-weight: 300; }
+.fc-status {
+  display: inline-block; margin-top: 20px; font-family: var(--f-mono); font-size: 9px;
+  font-weight: 600; letter-spacing: .14em; text-transform: uppercase; border: 1px solid; padding: 4px 10px;
+}
+/* FIX: Added missing .plan status color */
+.fc-status.next { color: white; border-color: rgba(255,255,255,.4); }
+.fc-status.plan { color: var(--sky-pale); border-color: rgba(168,220,245,.35); }
+
+/* ========== CTA ========== */
+#cta {
+  background: linear-gradient(175deg, #061f3d 0%, #0d3a6e 40%, #1a5fa8 80%, #2875d9 100%);
+  position: relative; overflow: hidden;
+}
+.cta-clouds {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse 150% 60% at 50% 110%, rgba(255,255,255,.4) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 40% at 0% 80%, rgba(255,255,255,.15) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 40% at 100% 70%, rgba(255,255,255,.12) 0%, transparent 50%);
+}
+.cta-bg-text {
+  position: absolute; bottom: -10%; left: 50%; transform: translateX(-50%);
+  font-family: var(--f-display); font-size: clamp(180px, 28vw, 480px);
+  color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.07);
+  pointer-events: none; user-select: none; line-height: 1; white-space: nowrap; font-weight: 300;
+}
+.cta-inner { padding: 160px 5%; text-align: center; position: relative; z-index: 2; }
+.cta-eyebrow {
+  font-family: var(--f-mono); font-size: 10px; letter-spacing: .24em;
+  text-transform: uppercase; color: var(--cloud-dim); margin-bottom: 28px;
+}
+.cta-title {
+  font-family: var(--f-display); font-size: clamp(72px, 11vw, 140px);
+  font-weight: 300; color: white; line-height: .84; letter-spacing: -.025em; margin-bottom: 28px;
+  text-shadow: 0 4px 60px rgba(0,0,0,.08);
+}
+.cta-title em { font-style: italic; color: var(--cloud-soft); }
+.cta-sub {
+  font-family: var(--f-display); font-size: 20px; font-weight: 300; font-style: italic;
+  color: var(--cloud-soft); max-width: 520px; margin: 0 auto 52px; line-height: 1.6;
+}
+.cta-links { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+/* FOOTER */
+footer {
+  background: rgba(6,31,61,.95); backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border); padding: 0 5%; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.foot-l, .foot-r {
+  font-family: var(--f-mono); font-size: 9px; color: var(--cloud-dim);
+  letter-spacing: .1em; text-transform: uppercase;
+}
+.foot-r a { color: var(--cloud-dim); text-decoration: none; transition: color .2s; }
+.foot-r a:hover { color: white; }
+.foot-dot { color: var(--cloud-soft); margin-right: 6px; }
+
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--sky-deep); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.3); }
+
+@media(max-width:1100px){
+  .hero-grid,.ov-layout,.con-layout,.pillars-header,.sim-intro { grid-template-columns:1fr; }
+  .hero-panel { border-left:none; border-top:1px solid var(--border); padding:36px 0 60px; }
+  .ov-layout .state-box, .con-layout .con-terminal { position:relative; top:0; }
+  .pr-grid,.ft-grid,.pillars-grid,.engine-cards { grid-template-columns:1fr 1fr; }
+  .st-grid { grid-template-columns:1fr 1fr; }
+  .ar-blocks { grid-template-columns:repeat(3,1fr); }
+  .ar-info { grid-template-columns:1fr; }
+  .res-bento .rcard { grid-column: span 6 !important; }
+  .signal-panel { grid-template-columns:1fr; }
+  nav ul { display:none; }
+}
+@media(max-width:640px){
+  .pr-grid,.ft-grid,.pillars-grid,.engine-cards,.st-grid,.ar-blocks { grid-template-columns:1fr; }
+  .hero-stats { grid-template-columns:1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur-ring"></div>
+<div id="cur-dot"></div>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="index.html" class="nav-logo">T<em>eja</em>swanth</a>
+  <ul>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#projects">Work</a></li>
+    <li><a href="index.html#achievements">Wins</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <a href="index.html#projects" class="nav-cta">← All Projects</a>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section id="hero">
+  <div class="h-cloud-back"></div>
+  <div class="h-cloud-mid"></div>
+  <div class="h-scan"></div>
+  <div class="h-badge">
+    <span class="h-badge-dot"></span>
+    Simulation Engine · Online · Tick_<span id="tick-count">1541</span>
+  </div>
+
+  <div class="hero-content">
+    <!-- FIX: restructured hero-grid — hero-left now contains only title block,
+         hero-desc-block moved outside panel, panel only contains data rows -->
+    <div class="hero-grid">
+      <div class="hero-left">
+        <p class="h-eyebrow">Cognitive Simulation<span>·</span>Physics<span>·</span>Information<span>·</span>Learning</p>
+        <div class="hero-title-wrap">
+          <span class="h-main">HAKARI</span>
+          <span class="h-ghost">Engine<span class="h-ver"><span class="h-ver-dot"></span>v3</span></span>
+        </div>
+        <div class="hero-desc-block">
+          <p class="hero-desc">A running <strong>cognitive simulation engine</strong> with real-time physics, information-theoretic entropy tracking, and live machine learning. HAKARI simulates, detects collapse cascades, and <strong>learns from every tick</strong> of its internal clock.</p>
+          <div class="hero-actions">
+            <a href="https://github.com/Tejaswanth2406/hakari" target="_blank" class="btn-prime">View on GitHub ↗</a>
+            <a href="#simulation" class="btn-sec">See the Engine ↓</a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <p class="panel-label">System State · Live</p>
+        <div class="prow"><span class="prow-k">version</span><span class="prow-v">HAKARI_v3</span></div>
+        <div class="prow"><span class="prow-k">engine</span><span class="prow-v">Cognitive Simulation</span></div>
+        <div class="prow"><span class="prow-k">physics</span><span class="prow-v">RUNNING · tick-loop</span></div>
+        <div class="prow"><span class="prow-k">entropy</span><span class="prow-v alert">S=<span id="entropy-live">2.840</span> spike</span></div>
+        <div class="prow"><span class="prow-k">csd_status</span><span class="prow-v alert">TIPPING POINT RISK</span></div>
+        <div class="prow"><span class="prow-k">learning</span><span class="prow-v soft">J declining · tracked</span></div>
+        <div class="prow"><span class="prow-k">memory</span><span class="prow-v">MongoDB</span></div>
+        <div class="prow"><span class="prow-k">ai_engine</span><span class="prow-v">GPT (OpenAI)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="mq-track">
+      <span class="mq-item hi">Entropy Spike +2.840</span>
+      <span class="mq-item">Physics Simulation</span>
+      <span class="mq-item hi">Collapse Cascade Detected</span>
+      <span class="mq-item">Information Theory</span>
+      <span class="mq-item hi">Learning Regression Tracked</span>
+      <span class="mq-item">Tipping Point Risk</span>
+      <span class="mq-item">CSD AR1 + VarAccel</span>
+      <span class="mq-item hi">Strength Freefall</span>
+      <span class="mq-item">Network Collapse vel=0.709</span>
+      <span class="mq-item hi">Semantic Map Live</span>
+      <span class="mq-item">Causal Trace Engine</span>
+      <span class="mq-item">Deterministic Replay</span>
+      <span class="mq-item hi">Entropy Spike +2.840</span>
+      <span class="mq-item">Physics Simulation</span>
+      <span class="mq-item hi">Collapse Cascade Detected</span>
+      <span class="mq-item">Information Theory</span>
+      <span class="mq-item hi">Learning Regression Tracked</span>
+      <span class="mq-item">Tipping Point Risk</span>
+      <span class="mq-item">CSD AR1 + VarAccel</span>
+      <span class="mq-item hi">Strength Freefall</span>
+      <span class="mq-item">Network Collapse vel=0.709</span>
+      <span class="mq-item hi">Semantic Map Live</span>
+      <span class="mq-item">Causal Trace Engine</span>
+      <span class="mq-item">Deterministic Replay</span>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hst"><div class="hst-num">3</div><div class="hst-label">Engine<br>Pillars</div></div>
+    <div class="hst"><div class="hst-num" style="font-size:clamp(32px,4vw,52px)">S=2.84</div><div class="hst-label">Peak Entropy<br>Spike</div></div>
+    <div class="hst"><div class="hst-num">Live</div><div class="hst-label">Tick-Loop<br>Running</div></div>
+    <div class="hst"><div class="hst-num" style="font-size:clamp(32px,4vw,52px)">CSD</div><div class="hst-label">Tipping Point<br>Detection</div></div>
+  </div>
+  <div class="h-cloud-fore"></div>
+</section>
+
+<!-- ========== PILLARS ========== -->
+<section id="pillars" class="sky-section">
+  <div class="sec-wrap">
+    <div class="pillars-header rv">
+      <div>
+        <p class="sec-tag">Three Pillars</p>
+        <!-- FIX: Added missing section heading text -->
+        <h2 class="sec-title-light" style="margin-bottom:0">The<br><em>Engine</em><br><span class="dim">Core</span></h2>
+      </div>
+      <p class="pillars-intro rv d1">HAKARI v3 is built on three interlocking layers — each a complete subsystem, each feeding the others. <strong>Physics, information theory, and machine learning</strong> running simultaneously in a single tick-loop, every second the engine is alive.</p>
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar rv">
+        <div class="p-bg">I</div>
+        <p class="p-index">01 — Physics Layer</p>
+        <h3 class="p-title">Newtonian &amp;<br><em>Network</em><br>Physics</h3>
+        <p class="p-body">Every node in HAKARI has mass, velocity, and force interactions. The engine runs a tick-loop updating positions, computing network strength (meanH), and detecting structural collapse in real time.</p>
+        <div class="p-metrics">
+          <div class="pm-row"><span class="pm-k">network_strength</span><span class="pm-v alert">FREEFALL vel=−0.007</span></div>
+          <div class="pm-row"><span class="pm-k">collapse_cascade</span><span class="pm-v alert">6 nodes / tick</span></div>
+          <div class="pm-row"><span class="pm-k">tick_loop</span><span class="pm-v">RUNNING</span></div>
+        </div>
+      </div>
+      <div class="pillar rv d1">
+        <div class="p-bg">II</div>
+        <p class="p-index">02 — Information</p>
+        <h3 class="p-title">Shannon<br><em>Entropy</em> &amp;<br>Tipping Points</h3>
+        <p class="p-body">HAKARI continuously measures Shannon entropy across its node graph. Entropy spikes signal critical state transitions. CSD detection via AR1 autocorrelation and variance acceleration identifies approaching collapse bifurcations.</p>
+        <div class="p-metrics">
+          <div class="pm-row"><span class="pm-k">entropy_spike</span><span class="pm-v alert">S = +2.840</span></div>
+          <div class="pm-row"><span class="pm-k">tipping_point_risk</span><span class="pm-v alert">2 metrics flagged</span></div>
+          <div class="pm-row"><span class="pm-k">csd_method</span><span class="pm-v">AR1 + VarAccel</span></div>
+        </div>
+      </div>
+      <div class="pillar rv d2">
+        <div class="p-bg">III</div>
+        <p class="p-index">03 — Learning</p>
+        <h3 class="p-title">Online<br><em>Learning</em> &amp;<br>Regression</h3>
+        <p class="p-body">HAKARI tracks its own learning curve in real time. The J-metric (cost function) is monitored tick-by-tick for regression, plateau, and convergence. The engine flags when learning is declining and auto-adjusts update rules.</p>
+        <div class="p-metrics">
+          <div class="pm-row"><span class="pm-k">J_rate</span><span class="pm-v alert">−0.02246 (declining)</span></div>
+          <div class="pm-row"><span class="pm-k">regression_flag</span><span class="pm-v alert">ACTIVE</span></div>
+          <div class="pm-row"><span class="pm-k">update_rule</span><span class="pm-v">ONLINE</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CONSOLE ========== -->
+<section id="console-sec" class="sky-section-light">
+  <div class="sec-wrap">
+    <p class="sec-tag-dark rv">Live Console</p>
+    <!-- FIX: restored section heading -->
+    <h2 class="sec-title-dark rv">Engine<br><em>Output</em></h2>
+    <div class="con-layout">
+      <div class="rv">
+        <p class="con-left-desc">HAKARI exposes a full live console API accessible from the browser devtools. <strong>Every function below runs against the live simulation state</strong> — no mocking, no static data.</p>
+        <div class="api-list">
+          <div class="api-item"><div class="api-fn">window.<span>__hakari</span></div><div class="api-fn-desc">Master engine instance</div></div>
+          <div class="api-item"><div class="api-fn">__hakari.<span>systemReport</span>()</div><div class="api-fn-desc">Full snapshot as JSON</div></div>
+          <div class="api-item"><div class="api-fn">__hakari.<span>query</span>("text")</div><div class="api-fn-desc">LLM query with live state</div></div>
+          <div class="api-item"><div class="api-fn">__hakari.<span>whyDidNodeDie</span>(id)</div><div class="api-fn-desc">Causal trace to collapse</div></div>
+          <div class="api-item"><div class="api-fn">__hakari.<span>predictNext</span>(10)</div><div class="api-fn-desc">10-step lookahead</div></div>
+          <div class="api-item"><div class="api-fn">__hakari.<span>semanticMap</span>()</div><div class="api-fn-desc">Live concept space topology</div></div>
+          <div class="api-item"><div class="api-fn">__hakari.<span>importantMoments</span>()</div><div class="api-fn-desc">Key history extraction</div></div>
+          <div class="api-item"><div class="api-fn">__hakari.<span>downloadLog</span>()</div><div class="api-fn-desc">Export session as JSON</div></div>
+        </div>
+      </div>
+      <div class="con-terminal rv d1">
+        <div class="con-bar">
+          <span class="cb-dot" style="background:#c0392b"></span>
+          <span class="cb-dot" style="background:#e67e22"></span>
+          <span class="cb-dot" style="background:#27ae60"></span>
+          <span class="cb-title">HAKARI v3 · Terminal</span>
+          <span class="cb-status"><span class="live-dot"></span>Online</span>
+        </div>
+        <div class="con-body" id="con-body">
+          <div class="con-section-head">Exposed API Surface</div>
+          <div class="con-fn-row"><span class="cfr-fn">window.<span>__hakari</span></span><span class="cfr-desc">master engine</span><span class="cfr-src">main.js:126</span></div>
+          <div class="con-fn-row"><span class="cfr-fn">window.<span>__scheduler</span></span><span class="cfr-desc">tick loop</span><span class="cfr-src">main.js:121</span></div>
+          <div class="con-fn-row"><span class="cfr-fn">__hakari.<span>systemReport</span>()</span><span class="cfr-desc">full snapshot</span><span class="cfr-src">—</span></div>
+          <div class="con-fn-row"><span class="cfr-fn">__hakari.<span>whyDidNodeDie</span>(id)</span><span class="cfr-desc">causal trace</span><span class="cfr-src">—</span></div>
+          <div class="con-fn-row"><span class="cfr-fn">__hakari.<span>predictNext</span>(10)</span><span class="cfr-desc">predictions</span><span class="cfr-src">—</span></div>
+          <div class="con-section-head" style="margin-top:4px">Live Diagnostics</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SIMULATION ========== -->
+<section id="simulation" class="sky-section-white">
+  <div class="sec-wrap">
+    <p class="sec-tag-dark rv">Cognitive Simulation Engine</p>
+    <!-- FIX: restored section heading -->
+    <h2 class="sec-title-dark rv">Physics +<br>Information +<br><em>Learning</em></h2>
+    <div class="sim-intro rv">
+      <blockquote class="sim-quote">
+        "HAKARI v3 is not just another chatbot. It's a running cognitive simulation engine — with physics, entropy, cascade detection, and live learning regression, all ticking in real time."
+        <cite>— HAKARI v3 · Achieved Architecture</cite>
+      </blockquote>
+      <div class="sim-text">
+        <p>The engine runs a tick-loop that synchronizes three subsystems in parallel. Physics updates propagate through the node graph, entropy is sampled from the state distribution, and the learning cost function is updated — all within a single scheduler cycle.</p>
+        <p>Unlike agent frameworks that orchestrate API calls, HAKARI's simulation state is <strong>continuous and persistent</strong>. The system doesn't reset between conversations — it remembers where it was, what entropy looked like, and how its learning curve has evolved.</p>
+      </div>
+    </div>
+    <div class="engine-cards">
+      <div class="ecard rv">
+        <div class="ecard-bg">I</div>
+        <p class="ec-num">01 — Physics</p>
+        <span class="ec-tag a">Physics Layer</span>
+        <h3 class="ec-title">Network Physics &amp; Force Dynamics</h3>
+        <p class="ec-body">Nodes have mass, velocity, and inter-node force fields. The tick scheduler runs physics updates computing meanH, detecting structural weakening, and propagating cascade failures through the network topology.</p>
+        <div class="ec-metrics">
+          <div class="em-row"><span class="em-k">scheduler</span><span class="em-v">window.__scheduler</span></div>
+          <div class="em-row"><span class="em-k">meanH_velocity</span><span class="em-v">−0.0072 (freefall)</span></div>
+          <div class="em-row"><span class="em-k">collapse_vel</span><span class="em-v">0.709 accelerating</span></div>
+          <div class="em-row"><span class="em-k">nodes_collapsed</span><span class="em-v">6 / tick</span></div>
+          <div class="em-row"><span class="em-k">engine_state</span><span class="em-v">RUNNING</span></div>
+        </div>
+      </div>
+      <div class="ecard rv d1">
+        <div class="ecard-bg">II</div>
+        <p class="ec-num">02 — Information</p>
+        <span class="ec-tag a">Entropy</span>
+        <h3 class="ec-title">Shannon Entropy &amp; Critical Slowing Down</h3>
+        <p class="ec-body">HAKARI measures Shannon entropy S across the node-state distribution each tick. CSD detection uses AR1 autocorrelation and variance acceleration — two leading indicators of approaching bifurcation tipping points borrowed from ecology.</p>
+        <div class="ec-metrics">
+          <div class="em-row"><span class="em-k">entropy_S</span><span class="em-v">+2.840 (spike)</span></div>
+          <div class="em-row"><span class="em-k">csd_method</span><span class="em-v">AR1 + VarAccel</span></div>
+          <div class="em-row"><span class="em-k">tipping_metrics</span><span class="em-v">2 / 2 flagged</span></div>
+          <div class="em-row"><span class="em-k">bifurcation_risk</span><span class="em-v">HIGH</span></div>
+          <div class="em-row"><span class="em-k">semantic_map</span><span class="em-v">LIVE</span></div>
+        </div>
+      </div>
+      <div class="ecard rv d2">
+        <div class="ecard-bg">III</div>
+        <p class="ec-num">03 — Learning</p>
+        <span class="ec-tag a">Online ML</span>
+        <h3 class="ec-title">Online Learning &amp; J-Curve Tracking</h3>
+        <p class="ec-body">The engine monitors its own learning cost function J in real time. Regression events are detected when J consistently declines over multiple ticks. Rate tracking at multiple scales reveals the learning deceleration curve.</p>
+        <div class="ec-metrics">
+          <div class="em-row"><span class="em-k">J_rate[0]</span><span class="em-v">−0.02246</span></div>
+          <div class="em-row"><span class="em-k">J_rate[1]</span><span class="em-v">−0.00525</span></div>
+          <div class="em-row"><span class="em-k">J_rate[2]</span><span class="em-v">−0.00259</span></div>
+          <div class="em-row"><span class="em-k">J_rate[3]</span><span class="em-v">−0.00161</span></div>
+          <div class="em-row"><span class="em-k">regression_flag</span><span class="em-v">ACTIVE</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="signal-panel rv d3">
+      <div>
+        <p class="sp-col-head">Physics Signals</p>
+        <div class="sp-event"><span class="sp-ico">✕</span><span class="sp-msg hi">Collapse cascade: 6 nodes collapsed this tick</span></div>
+        <div class="sp-event"><span class="sp-ico">✕</span><span class="sp-msg hi">Network collapse accelerating — vel=0.709</span></div>
+        <div class="sp-event"><span class="sp-ico">△</span><span class="sp-msg">Strength freefall — meanH dropping fast (vel=−0.0072)</span></div>
+        <div class="sp-event"><span class="sp-ico">△</span><span class="sp-msg">Strength freefall — meanH dropping fast (vel=−0.0122)</span></div>
+      </div>
+      <div>
+        <p class="sp-col-head">Information Signals</p>
+        <div class="sp-event"><span class="sp-ico">△</span><span class="sp-msg hi">Entropy spike +2.840 (S=2.840)</span></div>
+        <div class="sp-event"><span class="sp-ico">△</span><span class="sp-msg">Tipping point risk — 2 metrics show CSD</span></div>
+        <div class="sp-event"><span class="sp-ico">✓</span><span class="sp-msg">Semantic map: concept space topology computed</span></div>
+        <div class="sp-event"><span class="sp-ico">✓</span><span class="sp-msg">importantMoments(): 7 key events logged</span></div>
+      </div>
+      <div>
+        <p class="sp-col-head">Learning Signals</p>
+        <div class="sp-event"><span class="sp-ico">△</span><span class="sp-msg">Learning regression — J declining (rate=−0.02246)</span></div>
+        <div class="sp-event"><span class="sp-ico">△</span><span class="sp-msg">Learning regression — J declining (rate=−0.00525)</span></div>
+        <div class="sp-event"><span class="sp-ico">△</span><span class="sp-msg">Learning regression — J declining (rate=−0.00259)</span></div>
+        <div class="sp-event"><span class="sp-ico">✓</span><span class="sp-msg">Online update rule: adapting to regression</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== OVERVIEW ========== -->
+<section id="overview" class="sky-section">
+  <div class="sec-wrap">
+    <p class="sec-tag rv">Overview</p>
+    <!-- FIX: restored section heading -->
+    <h2 class="sec-title-light rv">What Is<br><em>HAKARI</em></h2>
+    <div class="ov-layout">
+      <div class="ov-text rv">
+        <p>HAKARI v3 is a <strong>research-grade cognitive simulation engine</strong> that goes far beyond a standard AI assistant. At its core is a <em>running physics simulation</em> — nodes with mass, velocity, and force interactions, a tick-loop scheduler, and real-time network health monitoring.</p>
+        <p>Built on three interlocking layers — <strong>physics, information theory, and machine learning</strong> — HAKARI models the dynamics of a cognitive system as it runs, measures its own entropy, detects tipping points before they happen, and tracks its own learning regression in real time.</p>
+        <div class="pull-quote">
+          <p class="pq-text">"HAKARI v3 is not just another chatbot. It's a running cognitive simulation engine — with physics, entropy, cascade detection, and live learning regression, all ticking in real time."</p>
+          <cite class="pq-cite">— HAKARI v3 · Achieved Architecture</cite>
+        </div>
+        <p>The system exposes a full console API: <strong>causal trace</strong> for dead nodes, <strong>n-step prediction</strong>, <strong>semantic maps</strong>, and <strong>full JSON session export</strong> — making it a live scientific instrument, not just a product.</p>
+      </div>
+      <div class="rv d2">
+        <div class="state-box">
+          <p class="sb-head">System State · Live</p>
+          <div class="sb-row"><span class="sb-k">version</span><span class="sb-v">HAKARI_v3</span></div>
+          <div class="sb-row"><span class="sb-k">engine_type</span><span class="sb-v">Cognitive Simulation</span></div>
+          <div class="sb-row"><span class="sb-k">physics</span><span class="sb-v">RUNNING · tick-loop</span></div>
+          <div class="sb-row"><span class="sb-k">entropy</span><span class="sb-v a">S=2.840 spike detected</span></div>
+          <div class="sb-row"><span class="sb-k">csd_status</span><span class="sb-v a">TIPPING POINT RISK</span></div>
+          <div class="sb-row"><span class="sb-k">learning</span><span class="sb-v a">J declining · tracked</span></div>
+          <div class="sb-row"><span class="sb-k">memory_backend</span><span class="sb-v">MongoDB</span></div>
+          <div class="sb-row"><span class="sb-k">ai_engine</span><span class="sb-v">GPT (OpenAI)</span></div>
+          <div class="sb-mods">
+            <p class="sb-head" style="margin-top:20px">Active Modules</p>
+            <div class="sb-mod">physics_scheduler</div>
+            <div class="sb-mod">entropy_monitor</div>
+            <div class="sb-mod">csd_detector (AR1+VarAccel)</div>
+            <div class="sb-mod">learning_tracker (J-metric)</div>
+            <div class="sb-mod">causal_trace_engine</div>
+            <div class="sb-mod">memory_manager (MongoDB)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PRINCIPLES ========== -->
+<section id="principles" class="sky-section-light">
+  <div class="sec-wrap">
+    <p class="sec-tag-dark rv">Core Principles</p>
+    <!-- FIX: restored section heading -->
+    <h2 class="sec-title-dark rv"><span style="color:rgba(12,45,84,.18);-webkit-text-stroke:1px rgba(12,45,84,.15)">Nine</span><br><em>Pillars</em></h2>
+    <p class="pr-subtitle rv d1">The architectural principles that make HAKARI different from any AI system built before it. Each pillar is implemented, running, and observable in the live engine.</p>
+    <div class="pr-grid" style="background:rgba(12,45,84,.08)">
+      <div class="pr-card rv" style="background:white"><div class="pr-bg-num">01</div><p class="pr-num" style="color:var(--sky)">01</p><span class="pr-tag" style="color:var(--sky);border-color:rgba(41,128,217,.3);background:rgba(41,128,217,.06)">Simulation</span><h3 class="pr-title" style="color:var(--ink)">Live Physics Engine</h3><p class="pr-body" style="color:var(--ink2)">HAKARI runs a real tick-loop physics simulation. Nodes have mass and velocity, network health (meanH) is computed each tick, and structural collapse is detected as it propagates.</p><span class="pr-code" style="color:rgba(41,128,217,.4)">physics_first</span></div>
+      <div class="pr-card rv d1" style="background:rgba(41,128,217,.06)"><div class="pr-bg-num">02</div><p class="pr-num" style="color:var(--sky)">02</p><span class="pr-tag" style="color:var(--sky);border-color:rgba(41,128,217,.3);background:rgba(41,128,217,.06)">Entropy</span><h3 class="pr-title" style="color:var(--ink)">Shannon Entropy Monitoring</h3><p class="pr-body" style="color:var(--ink2)">Entropy S is measured across the node-state distribution continuously. Spikes (S=+2.840) signal critical transitions. The system distinguishes normal fluctuation from genuine regime change.</p><span class="pr-code" style="color:rgba(41,128,217,.4)">information_theory</span></div>
+      <div class="pr-card rv d2" style="background:white"><div class="pr-bg-num">03</div><p class="pr-num" style="color:var(--sky)">03</p><span class="pr-tag" style="color:var(--sky);border-color:rgba(41,128,217,.3);background:rgba(41,128,217,.06)">CSD</span><h3 class="pr-title" style="color:var(--ink)">Tipping Point Detection</h3><p class="pr-body" style="color:var(--ink2)">Critical Slowing Down detection via AR1 autocorrelation and variance acceleration identifies bifurcation tipping points before they occur — a technique from complex systems science.</p><span class="pr-code" style="color:rgba(41,128,217,.4)">early_warning</span></div>
+      <div class="pr-card rv d3" style="background:rgba(41,128,217,.06)"><div class="pr-bg-num">04</div><p class="pr-num" style="color:var(--sky)">04</p><span class="pr-tag" style="color:var(--sky-deep);border-color:rgba(26,107,191,.3);background:rgba(26,107,191,.06)">Learning</span><h3 class="pr-title" style="color:var(--ink)">Online Learning Regression</h3><p class="pr-body" style="color:var(--ink2)">The cost function J is tracked tick-by-tick. Multi-rate regression detection (−0.02246 → −0.00161) reveals the learning deceleration curve and triggers adaptive rule updates in real time.</p><span class="pr-code" style="color:rgba(26,107,191,.4)">self_monitoring</span></div>
+      <div class="pr-card rv d4" style="background:white"><div class="pr-bg-num">05</div><p class="pr-num" style="color:var(--sky)">05</p><span class="pr-tag" style="color:var(--sky);border-color:rgba(41,128,217,.3);background:rgba(41,128,217,.06)">Causality</span><h3 class="pr-title" style="color:var(--ink)">Causal Trace Engine</h3><p class="pr-body" style="color:var(--ink2)">whyDidNodeDie(id) reconstructs the exact causal chain behind any node collapse — tracing entropy propagation, force interactions, and learning state at time of failure.</p><span class="pr-code" style="color:rgba(41,128,217,.4)">explainability</span></div>
+      <div class="pr-card rv d5" style="background:rgba(41,128,217,.06)"><div class="pr-bg-num">06</div><p class="pr-num" style="color:var(--sky)">06</p><span class="pr-tag" style="color:var(--sky-deep);border-color:rgba(26,107,191,.3);background:rgba(26,107,191,.06)">Semantic</span><h3 class="pr-title" style="color:var(--ink)">Live Semantic Map</h3><p class="pr-body" style="color:var(--ink2)">semanticMap() renders the live concept-space topology — node clusters, semantic distances, and information density. The map evolves in real time as the simulation runs.</p><span class="pr-code" style="color:rgba(26,107,191,.4)">concept_space</span></div>
+      <div class="pr-card rv d1" style="grid-column:span 2;background:white"><div class="pr-bg-num">07</div><p class="pr-num" style="color:var(--sky)">07</p><span class="pr-tag" style="color:var(--sky);border-color:rgba(41,128,217,.3);background:rgba(41,128,217,.06)">Memory</span><h3 class="pr-title" style="color:var(--ink)">Memory-Driven + Simulation-Aware AI</h3><p class="pr-body" style="color:var(--ink2)">The LLM layer is informed not just by conversation history (MongoDB) but by the live simulation state — entropy level, network health, learning regression — giving HAKARI responses grounded in the actual dynamic state of the system.</p><span class="pr-code" style="color:rgba(41,128,217,.4)">simulation_grounded_intelligence</span></div>
+      <div class="pr-card rv d2" style="background:rgba(41,128,217,.06)"><div class="pr-bg-num">08</div><p class="pr-num" style="color:var(--sky)">08</p><span class="pr-tag" style="color:var(--sky-deep);border-color:rgba(26,107,191,.3);background:rgba(26,107,191,.06)">Export</span><h3 class="pr-title" style="color:var(--ink)">Full Session Export</h3><p class="pr-body" style="color:var(--ink2)">downloadLog() exports every tick, every diagnostic, every metric as structured JSON. Scientific reproducibility built into the core — not bolted on.</p><span class="pr-code" style="color:rgba(26,107,191,.4)">reproducibility</span></div>
+      <div class="pr-card rv d3" style="background:white"><div class="pr-bg-num">09</div><p class="pr-num" style="color:var(--sky)">09</p><span class="pr-tag" style="color:var(--sky);border-color:rgba(41,128,217,.3);background:rgba(41,128,217,.06)">Predict</span><h3 class="pr-title" style="color:var(--ink)">N-Step Prediction</h3><p class="pr-body" style="color:var(--ink2)">predictNext(n) runs n-step lookahead simulations — returning predicted entropy trajectories, collapse probabilities, and expected J-curve evolution.</p><span class="pr-code" style="color:rgba(41,128,217,.4)">predictive_intelligence</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ARCHITECTURE ========== -->
+<section id="architecture" class="sky-section-white">
+  <div class="sec-wrap">
+    <p class="sec-tag-dark rv">Architecture</p>
+    <!-- FIX: restored section heading -->
+    <h2 class="sec-title-dark rv">10 Blocks.<br><em>One Engine.</em></h2>
+    <p class="ar-meta rv d1"><a href="https://github.com/Tejaswanth2406/hakari" target="_blank">github.com/Tejaswanth2406/hakari</a> · JavaScript 94% · HTML 6% · Node.js backend</p>
+    <div class="ar-blocks rv">
+      <div class="ab"><span class="ab-badge">BLOCK 1</span><div class="ab-title">Mathematical Foundations</div><p class="ab-desc">Core primitives — tensors, probability distributions, Bayesian priors, and information-theoretic operators.</p></div>
+      <div class="ab"><span class="ab-badge">BLOCK 2</span><div class="ab-title">Physics &amp; Entropy Dynamics</div><p class="ab-desc">Force fields, velocity updates, Shannon entropy computation. The physics tick-loop lives here.</p></div>
+      <div class="ab"><span class="ab-badge">BLOCK 3</span><div class="ab-title">Node State Management</div><p class="ab-desc">Node lifecycle — birth, health decay, death. Each node tracks strength and causal history.</p></div>
+      <div class="ab"><span class="ab-badge">BLOCK 4</span><div class="ab-title">Network Evolution</div><p class="ab-desc">Edge formation, weight dynamics, topology changes. Detects structural weakening.</p></div>
+      <div class="ab"><span class="ab-badge">BLOCK 5</span><div class="ab-title">Thermodynamics Layer</div><p class="ab-desc">Temperature analogs, heat diffusion, phase transitions. Models information heat under stress.</p></div>
+      <div class="ab"><span class="ab-badge">BLOCK 6</span><div class="ab-title">Intelligence &amp; Decision</div><p class="ab-desc">Bayesian inference engine, decision routing. Drives predictNext(n) and semanticMap().</p></div>
+      <div class="ab"><span class="ab-badge">BLOCK 7</span><div class="ab-title">Evolutionary Mechanisms</div><p class="ab-desc">Genetic-algorithm mutation applied to node rules. J-metric learning regression detection.</p></div>
+      <div class="ab"><span class="ab-badge">BLOCK 8</span><div class="ab-title">Knowledge Diffusion &amp; Memory</div><p class="ab-desc">Information propagation, persistent memory. Integrates with MongoDB for session retention.</p></div>
+      <div class="ab"><span class="ab-badge">BLOCK 9</span><div class="ab-title">Knowledge Synthesis</div><p class="ab-desc">Higher-order concept formation. Feeds LLM context injection, grounding GPT in live state.</p></div>
+      <!-- FIX: renumbered BLOCK 12 → BLOCK 10 to match the "10 Blocks" heading -->
+      <div class="ab" style="border-top-color:var(--sky)"><span class="ab-badge">BLOCK 10</span><div class="ab-title">Runtime + Visualization</div><p class="ab-desc">window.__hakari, window.__scheduler, Diagnostics.js. BLOCK_15_UPGRADE — hot-swap without restart.</p></div>
+    </div>
+    <div class="ar-info rv d2">
+      <div>
+        <p class="ai-head">Backend</p>
+        <div class="ai-line">→ server.js <span class="c">// Node.js REST API</span></div>
+        <div class="ai-line">→ package.json</div>
+        <div class="ai-line" style="color:var(--ink4)">→ .env <span class="c">// local, not tracked</span></div>
+      </div>
+      <div>
+        <p class="ai-head">Language Breakdown</p>
+        <div class="bar-item"><div class="bar-meta"><span class="bar-label">JavaScript</span><span class="bar-pct">94.0%</span></div><div class="bar-track"><div class="bar-fill" style="width:94%"></div></div></div>
+        <div class="bar-item"><div class="bar-meta"><span class="bar-label">HTML</span><span class="bar-pct">6.0%</span></div><div class="bar-track"><div class="bar-fill" style="width:6%;background:var(--sky-light)"></div></div></div>
+      </div>
+      <div>
+        <p class="ai-head">Quick Start</p>
+        <div class="ai-line"><span class="c">$</span> npm install</div>
+        <div class="ai-line"><span class="c">$</span> npm start</div>
+        <div class="ai-line" style="color:var(--ink4)"># node hakari-backend/server.js</div>
+      </div>
+    </div>
+    <div class="ar-pipe rv d3">
+      <p class="pipe-head">Simulation Pipeline — Per Tick</p>
+      <div class="pipeline">
+        <div class="pipe-node act">Tick</div><div class="pipe-arr">→</div>
+        <div class="pipe-node act">Physics Update</div><div class="pipe-arr">→</div>
+        <div class="pipe-node act">Entropy Δ</div><div class="pipe-arr">→</div>
+        <div class="pipe-node hot">CSD Check</div><div class="pipe-arr">→</div>
+        <div class="pipe-node hot">Cascade?</div><div class="pipe-arr">→</div>
+        <div class="pipe-node act">J Update</div><div class="pipe-arr">→</div>
+        <div class="pipe-node act">Diagnostics</div><div class="pipe-arr">→</div>
+        <div class="pipe-node act">Store + Log</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== RESEARCH ========== -->
+<section id="research" class="sky-section">
+  <div class="sec-wrap">
+    <p class="sec-tag rv">Research Significance</p>
+    <!-- FIX: restored section heading -->
+    <h2 class="sec-title-light rv">Why It's<br><em>Different</em></h2>
+    <div class="res-bento">
+      <div class="rcard wide solid rv"><p class="rc-num">01</p><h3 class="rc-title">Running Cognitive Simulation Engine</h3><p class="rc-body">Most AI projects are static models. HAKARI is a running system — a tick-loop cognitive simulation where physics, information theory, and learning interact dynamically. The console diagnostics are not test outputs — they are live signals from a working simulation engine.</p><span class="rc-badge">Primary Achievement</span></div>
+      <div class="rcard wide rv d1"><p class="rc-num">02</p><h3 class="rc-title">Complex Systems Science Applied to AI</h3><p class="rc-body">CSD detection via AR1 autocorrelation and variance acceleration is a technique from ecology and climate science for detecting regime shifts before they occur. Applying it to an AI cognitive simulation is a novel cross-domain contribution.</p><span class="rc-badge">Novel Contribution</span></div>
+      <div class="rcard med rv d2"><p class="rc-num">03</p><h3 class="rc-title">Live Scientific Instrument</h3><p class="rc-body">importantMoments(), semanticMap(), and downloadLog() turn HAKARI into a scientific instrument. Every run produces analyzable data about cognitive dynamics under stress.</p><span class="rc-badge">Scientific Platform</span></div>
+      <div class="rcard med solid rv d3"><p class="rc-num">04</p><h3 class="rc-title">Simulation-Grounded LLM</h3><p class="rc-body">Unlike RAG systems that inject documents, HAKARI injects live simulation state — entropy, health, learning regression — into LLM context. Dynamic-state-augmented generation.</p><span class="rc-badge">New Paradigm</span></div>
+      <div class="rcard med rv d4"><p class="rc-num">05</p><h3 class="rc-title">Reproducible by Design</h3><p class="rc-body">Full JSON export via downloadLog(), Ctrl+Shift+D shortcut, and session logging mean every HAKARI run is fully reproducible — meeting computational research standards.</p><span class="rc-badge">Reproducibility</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== STACK ========== -->
+<section id="stack" class="sky-section-white">
+  <div class="sec-wrap">
+    <p class="sec-tag-dark rv">Tech Stack</p>
+    <!-- FIX: restored section heading -->
+    <h2 class="sec-title-dark rv">Built<br><em>With</em></h2>
+    <div class="st-grid">
+      <div class="sc rv"><p class="sc-cat">Simulation Core · JS 94%</p><p class="sc-name">BLOCK1–9 + BLOCK_10</p><div class="sc-items"><span class="sc-item">JavaScript</span><span class="sc-item">Tick Scheduler</span><span class="sc-item">Force Dynamics</span><span class="sc-item">Shannon Entropy</span><span class="sc-item">AR1 CSD</span><span class="sc-item">Bayesian Inference</span><span class="sc-item">Diagnostics.js</span></div></div>
+      <div class="sc rv d1"><p class="sc-cat">Backend · Node.js</p><p class="sc-name">hakari-backend/server.js</p><div class="sc-items"><span class="sc-item">Node.js</span><span class="sc-item">Express</span><span class="sc-item">REST API</span><span class="sc-item">.env secrets</span><span class="sc-item">OpenAI GPT</span></div></div>
+      <div class="sc rv d2"><p class="sc-cat">Memory + Persistence</p><p class="sc-name">MongoDB + Snapshots</p><div class="sc-items"><span class="sc-item">MongoDB</span><span class="sc-item">BSON</span><span class="sc-item">Session Memory</span><span class="sc-item">Snapshots</span><span class="sc-item">importantMoments()</span></div></div>
+      <div class="sc rv d3"><p class="sc-cat">Frontend + Console API</p><p class="sc-name">Controls.js · main.js</p><div class="sc-items"><span class="sc-item">HTML/CSS</span><span class="sc-item">window.__hakari</span><span class="sc-item">window.__scheduler</span><span class="sc-item">window.__controls</span><span class="sc-item">BLOCK_15_UPGRADE</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FUTURE ========== -->
+<section id="future" class="sky-section">
+  <div class="sec-wrap">
+    <p class="sec-tag rv">Roadmap</p>
+    <!-- FIX: restored section heading -->
+    <h2 class="sec-title-light rv">What's<br><em>Next</em></h2>
+    <div class="ft-grid">
+      <div class="fc rv"><div class="fc-num">01</div><h3 class="fc-title">Visual Simulation Renderer</h3><p class="fc-body">Real-time WebGL rendering of the node graph — visualizing physics forces, entropy gradients as heat maps, cascade propagation waves, and the live semantic topology as the simulation runs.</p><span class="fc-status next">Next Target</span></div>
+      <div class="fc rv d1"><div class="fc-num">02</div><h3 class="fc-title">Multi-Agent Simulation</h3><p class="fc-body">Spawn multiple HAKARI instances with distinct simulation states. Study inter-agent information exchange, emergent consensus, and how entropy propagates across agent boundaries.</p><span class="fc-status next">Next Target</span></div>
+      <div class="fc rv d2"><div class="fc-num">03</div><h3 class="fc-title">Bifurcation Control Layer</h3><p class="fc-body">When CSD signals tipping point risk, automatically propose intervention strategies to steer the system away from collapse — applying control theory to cognitive simulation stabilization.</p><span class="fc-status plan">Planned</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section id="cta">
+  <div class="cta-clouds"></div>
+  <div class="cta-inner">
+    <div class="cta-bg-text">HAKARI</div>
+    <p class="cta-eyebrow rv">Explore More</p>
+    <h2 class="cta-title rv">Interested<br>in <em>HAKARI?</em></h2>
+    <p class="cta-sub rv d1">Check the GitHub for the simulation engine source, or reach out to discuss cognitive simulation research.</p>
+    <div class="cta-links rv d2">
+      <a href="https://github.com/Tejaswanth2406/hakari" target="_blank" class="btn-prime">View on GitHub ↗</a>
+      <a href="index.html#contact" class="btn-sec">Get In Touch →</a>
+      <a href="index.html#projects" class="btn-sec">← All Projects</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="foot-l"><span class="foot-dot">○</span>HAKARI v3 · Cognitive Simulation Engine · Tejaswanth Surisetty</span>
+  <span class="foot-r"><span class="foot-dot">○</span><a href="index.html">Back to Portfolio</a></span>
+</footer>
+
+<script>
+// CURSOR
+const curRing = document.getElementById('cur-ring');
+const curDot  = document.getElementById('cur-dot');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  curDot.style.left  = mx+'px'; curDot.style.top  = my+'px';
+});
+(function loop(){ rx+=(mx-rx)*.1; ry+=(my-ry)*.1; curRing.style.left=rx+'px'; curRing.style.top=ry+'px'; requestAnimationFrame(loop); })();
+document.querySelectorAll('a,button,.pillar,.ecard,.pr-card,.rcard,.sc,.fc,.ab,.api-item,.hst').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+});
+
+// NAV HIDE
+let lastY = 0;
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll',()=>{
+  const y = window.scrollY;
+  nav.style.transform = (y>lastY && y>100) ? 'translateY(-100%)' : 'translateY(0)';
+  lastY = y;
+},{passive:true});
+
+// REVEAL
+const ro = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{threshold:.06, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
+
+// TICK COUNTER
+let ticks = 1541;
+const tickEl = document.getElementById('tick-count');
+setInterval(()=>{ ticks++; if(tickEl) tickEl.textContent = ticks; }, 2000);
+
+// ENTROPY FLUCTUATION
+const entropyEl = document.getElementById('entropy-live');
+setInterval(()=>{
+  const v = 2.840 + (Math.random()-.35)*.09;
+  if(entropyEl) entropyEl.textContent = Math.max(2.4,Math.min(3.6,v)).toFixed(3);
+},1900);
+
+// LIVE CONSOLE
+const logs = [
+  {t:'alert', m:'[HAKARI] Entropy spike +2.840 (S=2.840)'},
+  {t:'alert', m:'[HAKARI] Collapse cascade: 6 nodes collapsed this tick'},
+  {t:'norm',  m:'[HAKARI] Strength freefall — meanH dropping fast (vel=−0.0072)'},
+  {t:'alert', m:'[HAKARI] Network collapse accelerating — vel=0.709'},
+  {t:'norm',  m:'[HAKARI] Tipping point risk — 2 metrics CSD (AR1+VarAccel)'},
+  {t:'norm',  m:'[HAKARI] Learning regression — J declining (rate=−0.02246)'},
+  {t:'ok',    m:'[HAKARI] importantMoments(): 7 key events stored'},
+  {t:'ok',    m:'[HAKARI] semanticMap(): concept topology updated'},
+  {t:'norm',  m:'[HAKARI] Strength freefall — meanH dropping fast (vel=−0.0122)'},
+  {t:'ok',    m:'[HAKARI] Online update rule: adapting to regression'},
+  {t:'norm',  m:'[HAKARI] Learning regression — J declining (rate=−0.00525)'},
+];
+let li = 0;
+function addLog(){
+  const body = document.getElementById('con-body');
+  if(!body) return;
+  const e = logs[li%logs.length]; li++;
+  const row = document.createElement('div');
+  row.className = 'con-log';
+  row.style.cssText = 'opacity:0;transition:opacity .5s ease';
+  const ico = e.t==='alert'?'△': e.t==='ok'?'✓':'◆';
+  row.innerHTML = `<span class="cl-ico">${ico}</span><span class="cl-msg ${e.t==='alert'?'alert':''}">${e.m}</span><span class="cl-src">Diag:${1540+Math.floor(Math.random()*5)}</span>`;
+  body.appendChild(row);
+  requestAnimationFrame(()=>row.style.opacity='1');
+  const rows = body.querySelectorAll('.con-log');
+  if(rows.length>22) rows[0].remove();
+  body.scrollTop = body.scrollHeight;
+}
+setInterval(addLog, 2700);
+</script>
+</body>
+</html>

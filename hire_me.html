@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Hire Tejaswanth — Security Researcher & AI Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Serif+Display:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --bg-paper: #f4f1ea;
+      --sky-blue: #6b9ebb;
+      --sky-lt: #a5c8dd;
+      --ink: #1a1510;
+      --ink-70: rgba(26, 21, 16, .70);
+      --cream: #fafaf7;
+      /* Mesh Colors (Soft Aurora) */
+      --m-pink: rgba(252, 218, 218, 0.45);
+      --m-cream: rgba(250, 247, 242, 0.4);
+      --m-cyan: rgba(224, 247, 247, 0.45);
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      background: 
+        radial-gradient(at 0% 0%, var(--m-pink) 0, transparent 65%),
+        radial-gradient(at 100% 0%, var(--m-cream) 0, transparent 65%),
+        radial-gradient(at 100% 100%, var(--m-cyan) 0, transparent 65%),
+        var(--bg-paper);
+      color: var(--ink);
+      font-family: 'Crimson Pro', serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* LINEN TEXTURE */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: 
+        repeating-linear-gradient(to right, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 2px),
+        repeating-linear-gradient(to bottom, rgba(255,255,255,0.03) 0px, transparent 1px, transparent 2px);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 11;
+    }
+
+    /* CONTENT LAYOUT */
+    .poster-container {
+      position: relative;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 60px 5%;
+      flex-grow: 1;
+      display: flex;
+      gap: 60px;
+      z-index: 20;
+    }
+
+    /* VERTICAL TEXT (BUSAN STYLE) */
+    .vertical-brand {
+      position: relative;
+      width: 180px;
+      flex-shrink: 0;
+    }
+
+    .vertical-brand h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(80px, 12vw, 220px);
+      font-weight: 800;
+      color: var(--sky-blue);
+      line-height: 0.8;
+      writing-mode: vertical-lr;
+      text-transform: uppercase;
+      letter-spacing: -0.05em;
+      position: sticky;
+      top: 60px;
+    }
+
+    /* MAIN CONTENT */
+    .main-side {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    /* HEADER DECO */
+    .poster-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(242, 237, 228, 0.2);
+    }
+
+    .poster-header span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .deco-star {
+      font-size: 20px;
+      color: var(--sky-blue);
+    }
+
+    /* HERO AREA */
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .hero-text-block {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .hero-text-block h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 5vw, 64px);
+      font-weight: 700;
+      font-style: italic;
+      line-height: 1.1;
+    }
+
+    .hero-text-block p {
+      font-size: 18px;
+      line-height: 1.6;
+      opacity: 0.8;
+      max-width: 440px;
+    }
+
+    /* CONTACT CARDS */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2px;
+      background: rgba(242, 237, 228, 0.1);
+      border: 1px solid rgba(242, 237, 228, 0.1);
+    }
+
+    .contact-card {
+      background: var(--bg-paper);
+      padding: 32px;
+      text-decoration: none;
+      color: var(--ink);
+      transition: background 0.3s, transform 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-card:hover {
+      background: var(--cream);
+      transform: translateY(-2px);
+    }
+
+    .contact-card h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: 16px;
+    }
+
+    .contact-card .val {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 400;
+    }
+
+    .contact-card .arrow {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      opacity: 0.3;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .contact-card:hover .arrow {
+      opacity: 1;
+      transform: translate(4px, -4px);
+    }
+
+    /* ACTIONS */
+    .footer-actions {
+      display: flex;
+      justify-content: flex-end;
+      padding: 40px 0;
+    }
+
+    .btn-back {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--cream);
+      text-decoration: none;
+      padding: 12px 24px;
+      border: 1px solid rgba(242, 237, 228, 0.3);
+      transition: all 0.3s;
+    }
+
+    .btn-back:hover {
+      background: var(--ink);
+      color: var(--bg-paper);
+    }
+
+    /* FORM STYLES */
+    .contact-form-section {
+      margin-top: 24px;
+      padding: 48px;
+      background: rgba(242, 237, 228, 0.03);
+      border: 1px solid rgba(242, 237, 228, 0.1);
+    }
+
+    .form-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      margin-bottom: 32px;
+      font-style: italic;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      opacity: 0.6;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(26, 21, 16, 0.1);
+      padding: 12px 0;
+      color: var(--ink);
+      font-family: 'Crimson Pro', serif;
+      font-size: 18px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--sky-blue);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--ink);
+      color: var(--bg-paper);
+      border: none;
+      padding: 18px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: none;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--sky-blue);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      z-index: -1;
+    }
+
+    .btn-submit:hover {
+      color: var(--ink);
+    }
+
+    .btn-submit:hover::before {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    /* ANIMATIONS */
+    .rv {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .rv.in {
+      opacity: 1;
+      transform: none;
+    }
+
+    @keyframes revealVertical {
+      0% { transform: translateY(100%); clip-path: inset(0 0 100% 0); }
+      100% { transform: translateY(0); clip-path: inset(0 0 0 0); }
+    }
+
+    @keyframes rotateStar {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes textureBreathing {
+      0%, 100% { opacity: 0.08; transform: scale(1); }
+      50% { opacity: 0.1; transform: scale(1.02); }
+    }
+
+    .vertical-brand h1 {
+      animation: revealVertical 1.2s cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+
+    .deco-star {
+      display: inline-block;
+      animation: rotateStar 8s linear infinite;
+    }
+
+    body::after {
+      animation: textureBreathing 10s ease-in-out infinite;
+    }
+
+    .stagger-1 { transition-delay: 0.1s; }
+    .stagger-2 { transition-delay: 0.2s; }
+    .stagger-3 { transition-delay: 0.3s; }
+    .stagger-4 { transition-delay: 0.4s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .poster-container {
+        flex-direction: column;
+      }
+      .vertical-brand {
+        width: 100%;
+        margin-bottom: 40px;
+      }
+      .vertical-brand h1 {
+        writing-mode: horizontal-tb;
+        position: relative;
+        top: 0;
+        font-size: 80px;
+      }
+      .hero-content {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="poster-container">
+    <div class="vertical-brand">
+      <h1>HIRE ME</h1>
+    </div>
+
+    <div class="main-side">
+      <div class="poster-header rv">
+        <span>Tejaswanth Surisetty</span>
+        <span class="deco-star">✦</span>
+        <span>Availability: Mid-2026</span>
+      </div>
+
+      <div class="hero-content rv stagger-1">
+        <div class="hero-text-block">
+          <h2>Ready to solve complex problems.</h2>
+          <p>
+            Bringing a unique blend of offensive security research and agentic AI development. I build systems that don't just work, but adapt and defend.
+          </p>
+        </div>
+        <div style="border: 1px solid rgba(242, 237, 228, 0.1); padding: 2px;">
+          <div style="background: rgba(242, 237, 228, 0.05); height: 340px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            <svg width="100%" height="100%" viewBox="0 0 400 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="340" fill="transparent"/>
+              <path d="M200 170L240 130L200 90L160 130L200 170Z" fill="var(--sky-blue)" opacity="0.1"/>
+              <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="'Syne'" font-size="240" font-weight="800" fill="var(--ink)" opacity="0.03">T</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-section rv stagger-2">
+        <h3 class="form-title">Quick Message</h3>
+        <form action="https://formspree.io/f/tejaswanthsurisetty@gmail.com" method="POST">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" name="name" required placeholder="Enter your name">
+          </div>
+          <div class="form-group">
+            <label>Your Email</label>
+            <input type="email" name="_replyto" required placeholder="mail@example.com">
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea name="message" rows="4" required placeholder="Let's build something..."></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Submit Message →</button>
+        </form>
+      </div>
+
+      <div class="contact-grid">
+        <a href="mailto:tejaswanthsurisetty@gmail.com" class="contact-card rv stagger-3">
+          <h3>Send an Inquiry</h3>
+          <div class="val">tejaswanthsurisetty@gmail.com</div>
+          <div class="arrow">↗</div>
+        </a>
+        <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank" class="contact-card rv stagger-4">
+          <h3>Professional Network</h3>
+          <div class="val">LinkedIn Profile</div>
+          <div class="arrow">↗</div>
+        </a>
+        <a href="https://github.com/Tejaswanth2406" target="_blank" class="contact-card rv stagger-4">
+          <h3>Code & Research</h3>
+          <div class="val">GitHub Repository</div>
+          <div class="arrow">↗</div>
+        </a>
+      </div>
+
+      <div class="footer-actions rv stagger-4">
+        <a href="index.html" class="btn-back">← Back to Portfolio</a>
+      </div>
+
+      <div class="poster-header rv stagger-4" style="border-top: 1px solid var(--ink-08); border-bottom: none; padding-top: 24px; margin-top: auto; color: var(--ink-45);">
+        <span>Neural Defense</span>
+        <span class="deco-star">✦</span>
+        <span>Protocol Zero</span>
+        <span class="deco-star">✦</span>
+        <span>Ghost Circuit</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Intersection Observer for scroll reveals
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.rv').forEach(el => observer.observe(el));
+
+    // Subtle 3D tilt for cards
+    document.querySelectorAll('.contact-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `perspective(1000px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateY(-5px)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+  </script>
+</body>
+
+</html>

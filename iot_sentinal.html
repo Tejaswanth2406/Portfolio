@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IOT_SENTINEL — Security Intelligence for the Connected World</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Zen+Dots&family=Share+Tech+Mono&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f0ede6;
+    --red: #d42b2b;
+    --ink: #1a1a1a;
+    --paper: #e8e4da;
+    --halftone: #c8c4ba;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Share Tech Mono', monospace;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: multiply;
+    opacity: 0.4;
+  }
+
+  /* ── HALFTONE BG PATTERN ── */
+  .halftone-bg {
+    background-image: radial-gradient(circle, #1a1a1a 1px, transparent 1px);
+    background-size: 8px 8px;
+    opacity: 0.12;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  /* ── MARQUEE TICKER ── */
+  .ticker {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 8px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    border-bottom: 3px solid var(--red);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 22s linear infinite;
+  }
+  .ticker span { color: var(--red); margin: 0 20px; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    background: var(--black);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+  }
+
+  /* Big inky slash */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: 45%;
+    width: 12px;
+    height: 130%;
+    background: var(--red);
+    transform: rotate(-4deg);
+    z-index: 2;
+  }
+
+  .hero-left {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px 80px 80px;
+    z-index: 3;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    letter-spacing: 6px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    animation: fadeSlideUp 0.6s ease forwards;
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 8vw, 120px);
+    line-height: 0.9;
+    color: var(--white);
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+    animation: fadeSlideUp 0.7s ease forwards;
+  }
+
+  .hero-title .red { color: var(--red); }
+
+  .hero-title-jp {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: clamp(18px, 2.5vw, 32px);
+    color: var(--halftone);
+    letter-spacing: 8px;
+    margin-bottom: 40px;
+    animation: fadeSlideUp 0.8s ease forwards;
+  }
+
+  .hero-desc {
+    font-size: 13px;
+    color: #a0a0a0;
+    line-height: 1.8;
+    max-width: 360px;
+    margin-bottom: 50px;
+    border-left: 3px solid var(--red);
+    padding-left: 16px;
+    animation: fadeSlideUp 0.9s ease forwards;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 50px;
+    animation: fadeSlideUp 1s ease forwards;
+  }
+
+  .badge {
+    border: 1px solid #333;
+    color: #888;
+    font-size: 10px;
+    letter-spacing: 2px;
+    padding: 5px 12px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .badge:hover { border-color: var(--red); color: var(--red); }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    animation: fadeSlideUp 1.1s ease forwards;
+  }
+
+  .btn-primary {
+    background: var(--red);
+    color: var(--white);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.15s;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+  .btn-primary:hover { background: #ff3333; transform: translate(-2px, -2px); box-shadow: 4px 4px 0 #fff2; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 13px 32px;
+    border: 1px solid #444;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--white); }
+
+  /* ── HERO RIGHT — VISUAL DIAGRAM ── */
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    padding: 40px;
+  }
+
+  .radar-wrap {
+    position: relative;
+    width: 420px;
+    height: 420px;
+  }
+
+  .radar-svg {
+    width: 100%;
+    height: 100%;
+    animation: radarSpin 12s linear infinite;
+  }
+
+  @keyframes radarSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .radar-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .radar-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: var(--red);
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  .pulse-dot {
+    width: 12px; height: 12px;
+    background: var(--red);
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(212,43,43,0.7); }
+    50% { box-shadow: 0 0 0 20px rgba(212,43,43,0); }
+  }
+
+  /* scan line */
+  .scanline {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--red) 50%, transparent 100%);
+    animation: scanlineMove 3s ease-in-out infinite;
+    opacity: 0.6;
+  }
+  @keyframes scanlineMove {
+    0%, 100% { top: 0%; opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% { top: 100%; opacity: 0; }
+  }
+
+  /* ── STAT BAR ── */
+  .stat-bar {
+    background: var(--white);
+    border-top: 4px solid var(--black);
+    border-bottom: 4px solid var(--black);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .stat-item {
+    padding: 30px 40px;
+    border-right: 2px solid var(--black);
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { background: var(--black); }
+  .stat-item:hover .stat-num { color: var(--red); }
+  .stat-item:hover .stat-label { color: #666; }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    line-height: 1;
+    color: var(--black);
+    transition: color 0.2s;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #888;
+    margin-top: 4px;
+    transition: color 0.2s;
+  }
+
+  /* ── SECTION SHARED ── */
+  section { position: relative; overflow: hidden; }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 60px;
+  }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 80px;
+    color: var(--red);
+    line-height: 1;
+    opacity: 0.3;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 5vw, 64px);
+    letter-spacing: 4px;
+    line-height: 1;
+  }
+
+  /* ── PIPELINE SECTION ── */
+  .pipeline-section {
+    background: var(--black);
+    padding: 100px 80px;
+    color: var(--white);
+  }
+
+  .pipeline-section .section-title { color: var(--white); }
+
+  .pipeline-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .pipeline-grid::before {
+    content: '';
+    position: absolute;
+    top: 50px;
+    left: 40px;
+    right: 40px;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--red) 0, var(--red) 20px, transparent 20px, transparent 30px);
+    z-index: 1;
+  }
+
+  .phase-card {
+    position: relative;
+    padding: 20px 16px;
+    text-align: center;
+    z-index: 2;
+  }
+
+  .phase-num {
+    width: 40px; height: 40px;
+    background: var(--red);
+    color: var(--white);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    transition: transform 0.2s;
+  }
+
+  .phase-card:hover .phase-num { transform: scale(1.2) rotate(30deg); }
+
+  .phase-tool {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .phase-desc {
+    font-size: 10px;
+    color: #666;
+    line-height: 1.6;
+    letter-spacing: 1px;
+  }
+
+  /* ── FEATURES SECTION ── */
+  .features-section {
+    background: var(--paper);
+    padding: 100px 80px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--black);
+    border: 2px solid var(--black);
+  }
+
+  .feature-card {
+    background: var(--paper);
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+  .feature-card:hover { background: var(--white); }
+
+  .feature-card::before {
+    content: attr(data-jp);
+    position: absolute;
+    top: 10px; right: 16px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 900;
+    font-size: 48px;
+    color: var(--black);
+    opacity: 0.04;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .feature-icon {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--red);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .feature-icon::before {
+    content: '';
+    width: 20px; height: 2px;
+    background: var(--red);
+    display: inline-block;
+  }
+
+  .feature-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .feature-desc {
+    font-size: 12px;
+    line-height: 1.9;
+    color: #555;
+  }
+
+  /* ── THREATS SECTION ── */
+  .threats-section {
+    background: var(--black);
+    padding: 100px 80px;
+    color: var(--white);
+  }
+
+  .threats-section .section-title { color: var(--white); }
+
+  .threats-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .threat-item {
+    border-bottom: 1px solid #222;
+    border-right: 1px solid #222;
+    padding: 32px 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    transition: background 0.2s;
+    cursor: default;
+  }
+  .threat-item:nth-child(2n) { border-right: none; }
+  .threat-item:hover { background: #111; }
+
+  .threat-index {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--red);
+    opacity: 0.3;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 48px;
+  }
+
+  .threat-content {}
+
+  .threat-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  .threat-desc {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.8;
+  }
+
+  /* ── API SECTION ── */
+  .api-section {
+    background: var(--paper);
+    padding: 100px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .api-table {
+    border: 2px solid var(--black);
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  .api-table th {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    padding: 12px 20px;
+    text-align: left;
+    border-right: 1px solid #333;
+  }
+
+  .api-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    font-family: 'Share Tech Mono', monospace;
+    vertical-align: top;
+  }
+  .api-table tr:last-child td { border-bottom: none; }
+  .api-table tr:hover td { background: var(--white); }
+
+  .method {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    letter-spacing: 1px;
+    font-weight: bold;
+  }
+  .method.post { background: var(--red); color: white; }
+  .method.get { background: #1a4a1a; color: #4aff4a; }
+
+  .endpoint { color: var(--red); font-size: 11px; }
+
+  /* terminal block */
+  .terminal {
+    background: #0d0d0d;
+    border: 1px solid #333;
+    padding: 24px 28px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    line-height: 2;
+    color: #ccc;
+    position: relative;
+  }
+
+  .terminal::before {
+    content: '● ● ●';
+    display: block;
+    color: #444;
+    font-size: 14px;
+    margin-bottom: 16px;
+    letter-spacing: 4px;
+  }
+
+  .terminal .cmd { color: #4aff4a; }
+  .terminal .comment { color: #555; }
+  .terminal .flag { color: #ffaa00; }
+  .terminal .path { color: #4ab4ff; }
+
+  /* ── ARCHITECTURE SECTION ── */
+  .arch-section {
+    background: var(--black);
+    color: var(--white);
+    padding: 100px 80px;
+  }
+
+  .arch-section .section-title { color: var(--white); }
+
+  .arch-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: #222;
+    border: 2px solid #222;
+    margin-top: 20px;
+  }
+
+  .arch-module {
+    background: var(--black);
+    padding: 28px 24px;
+    border-top: 3px solid transparent;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: default;
+  }
+  .arch-module:hover { border-color: var(--red); background: #0f0f0f; }
+
+  .arch-module-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .arch-module-path {
+    font-size: 10px;
+    color: var(--red);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  .arch-module-desc {
+    font-size: 11px;
+    color: #555;
+    line-height: 1.7;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--paper);
+    border-top: 4px solid var(--black);
+    padding: 60px 80px 40px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 40px;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 6px;
+    line-height: 1;
+  }
+  .footer-logo span { color: var(--red); }
+
+  .footer-tagline {
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .footer-links a { color: #888; text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--red); }
+
+  .footer-copy {
+    grid-column: 1 / -1;
+    border-top: 1px solid #ccc;
+    padding-top: 24px;
+    font-size: 10px;
+    color: #aaa;
+    letter-spacing: 2px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+
+  /* ── BIG TYPE DECORATION ── */
+  .big-type-deco {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 12vw, 160px);
+    letter-spacing: 8px;
+    color: var(--red);
+    opacity: 0.05;
+    position: absolute;
+    pointer-events: none;
+    white-space: nowrap;
+    line-height: 1;
+    user-select: none;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero::after { display: none; }
+    .pipeline-grid { grid-template-columns: repeat(3, 1fr); }
+    .features-grid { grid-template-columns: 1fr 1fr; }
+    .threats-list { grid-template-columns: 1fr; }
+    .api-section { grid-template-columns: 1fr; }
+    .arch-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-bar { grid-template-columns: repeat(2, 1fr); }
+    .hero-left { padding: 60px 40px; }
+    .pipeline-section, .features-section, .threats-section,
+    .api-section, .arch-section { padding: 60px 40px; }
+    footer { padding: 40px; grid-template-columns: 1fr; }
+    footer .footer-copy { flex-direction: column; gap: 8px; }
+  }
+
+  @media (max-width: 640px) {
+    .pipeline-grid { grid-template-columns: repeat(2, 1fr); }
+    .features-grid { grid-template-columns: 1fr; }
+    .arch-grid { grid-template-columns: 1fr; }
+    .stat-bar { grid-template-columns: 1fr 1fr; }
+    .section-num { font-size: 50px; }
+    .pipeline-grid::before { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <span class="ticker-inner">
+    ■ CVE CORRELATION ACTIVE &nbsp;
+    <span>◆</span>
+    MASSCAN · RUSTSCAN · NMAP · NAABU · WIRESHARK &nbsp;
+    <span>◆</span>
+    PHASE 1 → PHASE 6 PIPELINE &nbsp;
+    <span>◆</span>
+    NETWORK THREAT INTELLIGENCE &nbsp;
+    <span>◆</span>
+    IOT_SENTINEL v1.0 &nbsp;
+    <span>◆</span>
+    CREDENTIAL ABUSE · CLEARTEXT PROTOCOLS · DEFAULT CREDS &nbsp;
+    <span>◆</span>
+    INDUSTRIAL PROTOCOL EXPOSURE DETECTION &nbsp;
+    <span>◆</span>
+    ■ CVE CORRELATION ACTIVE &nbsp;
+    <span>◆</span>
+    MASSCAN · RUSTSCAN · NMAP · NAABU · WIRESHARK &nbsp;
+    <span>◆</span>
+    PHASE 1 → PHASE 6 PIPELINE &nbsp;
+    <span>◆</span>
+    NETWORK THREAT INTELLIGENCE &nbsp;
+    <span>◆</span>
+    IOT_SENTINEL v1.0 &nbsp;
+    <span>◆</span>
+    CREDENTIAL ABUSE · CLEARTEXT PROTOCOLS · DEFAULT CREDS &nbsp;
+    <span>◆</span>
+    INDUSTRIAL PROTOCOL EXPOSURE DETECTION &nbsp;
+    <span>◆</span>
+  </span>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">新発売！— Advanced IoT Security</div>
+    <h1 class="hero-title">IOT_<br><span class="red">SENTI</span><br>NEL</h1>
+    <div class="hero-title-jp">銀河ネットワーク監視</div>
+    <p class="hero-desc">
+      Advanced IoT network security scanner.<br>
+      Unified multi-tool intelligence platform<br>
+      integrating Wireshark · Nmap · RustScan · Naabu · Masscan.
+    </p>
+    <div class="hero-badges">
+      <div class="badge">Python 96.6%</div>
+      <div class="badge">FastAPI</div>
+      <div class="badge">CVE Correlation</div>
+      <div class="badge">Docker</div>
+      <div class="badge">Kubernetes</div>
+    </div>
+    <div class="hero-cta">
+      <a href="https://github.com/Tejaswanth2406/iot-sentinal" class="btn-primary" target="_blank">★ GitHub Repo</a>
+      <a href="#pipeline" class="btn-secondary">View Pipeline →</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="radar-wrap">
+      <!-- Radar SVG -->
+      <svg class="radar-svg" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="200" cy="200" r="180" stroke="#d42b2b" stroke-width="0.5" opacity="0.3"/>
+        <circle cx="200" cy="200" r="140" stroke="#d42b2b" stroke-width="0.5" opacity="0.3"/>
+        <circle cx="200" cy="200" r="100" stroke="#d42b2b" stroke-width="0.5" opacity="0.3"/>
+        <circle cx="200" cy="200" r="60" stroke="#d42b2b" stroke-width="0.5" opacity="0.4"/>
+        <!-- cross hairs -->
+        <line x1="200" y1="20" x2="200" y2="380" stroke="#d42b2b" stroke-width="0.5" opacity="0.2"/>
+        <line x1="20" y1="200" x2="380" y2="200" stroke="#d42b2b" stroke-width="0.5" opacity="0.2"/>
+        <!-- diagonal lines -->
+        <line x1="73" y1="73" x2="327" y2="327" stroke="#d42b2b" stroke-width="0.3" opacity="0.15"/>
+        <line x1="327" y1="73" x2="73" y2="327" stroke="#d42b2b" stroke-width="0.3" opacity="0.15"/>
+        <!-- Sweep sector -->
+        <path d="M200 200 L200 20 A180 180 0 0 1 380 200 Z" fill="url(#sweepGrad)" opacity="0.18"/>
+        <!-- Threat dots -->
+        <circle cx="120" cy="90" r="4" fill="#d42b2b" opacity="0.9"/>
+        <circle cx="120" cy="90" r="8" fill="none" stroke="#d42b2b" stroke-width="1" opacity="0.4"/>
+        <circle cx="310" cy="150" r="3" fill="#d42b2b" opacity="0.7"/>
+        <circle cx="310" cy="150" r="7" fill="none" stroke="#d42b2b" stroke-width="1" opacity="0.3"/>
+        <circle cx="260" cy="320" r="5" fill="#d42b2b" opacity="0.8"/>
+        <circle cx="260" cy="320" r="10" fill="none" stroke="#d42b2b" stroke-width="1" opacity="0.3"/>
+        <circle cx="80" cy="270" r="3" fill="#d42b2b" opacity="0.5"/>
+        <circle cx="340" cy="240" r="4" fill="#d42b2b" opacity="0.6"/>
+        <!-- Tick marks -->
+        <line x1="200" y1="20" x2="200" y2="32" stroke="#d42b2b" stroke-width="1.5"/>
+        <line x1="200" y1="368" x2="200" y2="380" stroke="#d42b2b" stroke-width="1.5"/>
+        <line x1="20" y1="200" x2="32" y2="200" stroke="#d42b2b" stroke-width="1.5"/>
+        <line x1="368" y1="200" x2="380" y2="200" stroke="#d42b2b" stroke-width="1.5"/>
+        <defs>
+          <radialGradient id="sweepGrad" cx="200" cy="200" r="180" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#d42b2b"/>
+            <stop offset="100%" stop-color="#d42b2b" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+      </svg>
+      <div class="radar-center">
+        <div class="pulse-dot"></div>
+        <div class="radar-label">SCANNING</div>
+      </div>
+      <div class="scanline"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STAT BAR -->
+<div class="stat-bar">
+  <div class="stat-item">
+    <div class="stat-num">5</div>
+    <div class="stat-label">Scanner Integrations</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">6</div>
+    <div class="stat-label">Pipeline Phases</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">10K</div>
+    <div class="stat-label">Packets / Sec (Masscan)</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">4</div>
+    <div class="stat-label">API Endpoints</div>
+  </div>
+</div>
+
+<!-- PIPELINE -->
+<section class="pipeline-section" id="pipeline">
+  <div class="big-type-deco" style="bottom:-20px;right:-20px;opacity:0.04;">SCAN</div>
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <h2 class="section-title">Scan Pipeline</h2>
+  </div>
+  <div class="pipeline-grid">
+    <div class="phase-card">
+      <div class="phase-num">1</div>
+      <div class="phase-tool">Masscan</div>
+      <div class="phase-desc">Fast wide-area<br>discovery<br>10K pps</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">2</div>
+      <div class="phase-tool">RustScan</div>
+      <div class="phase-desc">Full port<br>enumeration<br>4500 batch</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">2</div>
+      <div class="phase-tool">Naabu</div>
+      <div class="phase-desc">SYN scan +<br>service detection<br>parallel</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">3</div>
+      <div class="phase-tool">Nmap</div>
+      <div class="phase-desc">Deep OS,<br>version, NSE<br>scripts</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">4</div>
+      <div class="phase-tool">Wireshark</div>
+      <div class="phase-desc">Passive traffic<br>capture<br>30 seconds</div>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">5+</div>
+      <div class="phase-tool">Analysis</div>
+      <div class="phase-desc">Fingerprint<br>CVE correlation<br>HTML report</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Intelligence Modules</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card" data-jp="指紋">
+      <div class="feature-icon">Fingerprinting</div>
+      <h3 class="feature-title">Device Identification</h3>
+      <p class="feature-desc">Automatic device type and vendor identification across the entire IoT landscape. Correlates OS signatures, banner grabs, and behavioral patterns.</p>
+    </div>
+    <div class="feature-card" data-jp="脆弱">
+      <div class="feature-icon">Vulnerability</div>
+      <h3 class="feature-title">CVE Correlation</h3>
+      <p class="feature-desc">Real-time correlation against known CVEs for Hikvision, D-Link, GoAhead, Netgear and other IoT firmware. Prioritized risk scoring.</p>
+    </div>
+    <div class="feature-card" data-jp="解析">
+      <div class="feature-icon">Traffic</div>
+      <h3 class="feature-title">Flow Analysis</h3>
+      <p class="feature-desc">Deep packet inspection and flow analysis. Anomaly detection for cleartext protocols, abnormal beacon intervals, and data exfiltration patterns.</p>
+    </div>
+    <div class="feature-card" data-jp="報告">
+      <div class="feature-icon">Reporting</div>
+      <h3 class="feature-title">Multi-Format Reports</h3>
+      <p class="feature-desc">Generates HTML, JSON, and PDF outputs automatically after each scan. Full audit trail with timestamped event persistence.</p>
+    </div>
+    <div class="feature-card" data-jp="接続">
+      <div class="feature-icon">API</div>
+      <h3 class="feature-title">FastAPI REST Server</h3>
+      <p class="feature-desc">Async REST API with scan orchestration, status polling, and report retrieval. Designed for integration into CI/CD security pipelines.</p>
+    </div>
+    <div class="feature-card" data-jp="基盤">
+      <div class="feature-icon">Infrastructure</div>
+      <h3 class="feature-title">Cloud-Native Deploy</h3>
+      <p class="feature-desc">Docker Compose for development, Kubernetes manifests and Terraform IaC for production. Scales horizontally across distributed scan nodes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- THREATS -->
+<section class="threats-section">
+  <div class="big-type-deco" style="top:-10px;left:-10px;opacity:0.03;">脅威</div>
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <h2 class="section-title">Detected Threat Categories</h2>
+  </div>
+  <div class="threats-list">
+    <div class="threat-item">
+      <div class="threat-index">01</div>
+      <div class="threat-content">
+        <div class="threat-title">Credential Abuse</div>
+        <div class="threat-desc">Over-permissioned IoT identities, token abuse via STS/OIDC/Workload identity chains.</div>
+      </div>
+    </div>
+    <div class="threat-item">
+      <div class="threat-index">02</div>
+      <div class="threat-content">
+        <div class="threat-title">Cleartext Protocols</div>
+        <div class="threat-desc">Detection of Telnet, unencrypted MQTT, and other plaintext data-in-transit risks.</div>
+      </div>
+    </div>
+    <div class="threat-item">
+      <div class="threat-index">03</div>
+      <div class="threat-content">
+        <div class="threat-title">Default Credentials</div>
+        <div class="threat-desc">Automated checks for admin/admin, root/root and other factory-default login pairs.</div>
+      </div>
+    </div>
+    <div class="threat-item">
+      <div class="threat-index">04</div>
+      <div class="threat-content">
+        <div class="threat-title">Known CVEs</div>
+        <div class="threat-desc">Hikvision, D-Link, GoAhead, Netgear — firmware vulnerability database correlation.</div>
+      </div>
+    </div>
+    <div class="threat-item">
+      <div class="threat-index">05</div>
+      <div class="threat-content">
+        <div class="threat-title">Industrial Protocols</div>
+        <div class="threat-desc">Exposed Modbus, BACnet, DNP3 endpoints in OT/ICS environments on public networks.</div>
+      </div>
+    </div>
+    <div class="threat-item">
+      <div class="threat-index">06</div>
+      <div class="threat-content">
+        <div class="threat-title">Token Abuse</div>
+        <div class="threat-desc">STS/OIDC/Workload identity chain analysis to detect privilege escalation vectors.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- API + QUICKSTART -->
+<section class="api-section">
+  <div>
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">API Endpoints</h2>
+    </div>
+    <table class="api-table">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Path</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="method post">POST</span></td>
+          <td class="endpoint">/api/v1/scan/start</td>
+          <td>Start async scan</td>
+        </tr>
+        <tr>
+          <td><span class="method get">GET</span></td>
+          <td class="endpoint">/api/v1/scan/status/{id}</td>
+          <td>Poll scan status</td>
+        </tr>
+        <tr>
+          <td><span class="method get">GET</span></td>
+          <td class="endpoint">/api/v1/reports/{id}</td>
+          <td>Get scan report</td>
+        </tr>
+        <tr>
+          <td><span class="method get">GET</span></td>
+          <td class="endpoint">/health</td>
+          <td>Health check</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <div class="section-header" style="margin-bottom:30px;">
+      <span class="section-num" style="font-size:50px;">05</span>
+      <h2 class="section-title">Quick Start</h2>
+    </div>
+    <div class="terminal">
+      <span class="comment"># 1. Bootstrap the environment</span><br>
+      <span class="cmd">python</span> <span class="path">scripts/bootstrap_env.py</span><br><br>
+      <span class="comment"># 2. Quick scan a subnet</span><br>
+      <span class="cmd">python</span> main.py scan <span class="flag">--target</span> 192.168.1.0/24 <span class="flag">--mode</span> quick<br><br>
+      <span class="comment"># 3. Full IoT audit (requires sudo)</span><br>
+      <span class="cmd">sudo python</span> main.py scan <span class="flag">--target</span> 192.168.1.0/24 <span class="flag">--mode</span> full<br><br>
+      <span class="comment"># 4. Passive traffic capture</span><br>
+      <span class="cmd">python</span> main.py capture <span class="flag">--interface</span> eth0 <span class="flag">--duration</span> 60<br><br>
+      <span class="comment"># 5. Launch REST API server</span><br>
+      <span class="cmd">python</span> main.py api <span class="flag">--port</span> 8080
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section class="arch-section">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <h2 class="section-title">Architecture</h2>
+  </div>
+  <div class="arch-grid">
+    <div class="arch-module">
+      <div class="arch-module-name">Core</div>
+      <div class="arch-module-path">core/</div>
+      <div class="arch-module-desc">Models, config, constants, and shared utilities across the platform.</div>
+    </div>
+    <div class="arch-module">
+      <div class="arch-module-name">Scanners</div>
+      <div class="arch-module-path">scanners/</div>
+      <div class="arch-module-desc">Wireshark, Nmap, RustScan, Naabu, Masscan adapters.</div>
+    </div>
+    <div class="arch-module">
+      <div class="arch-module-name">Integrations</div>
+      <div class="arch-module-path">integrations/</div>
+      <div class="arch-module-desc">Scanner bridge normalization layer. Unifies output formats.</div>
+    </div>
+    <div class="arch-module">
+      <div class="arch-module-name">Engine</div>
+      <div class="arch-module-path">engine/</div>
+      <div class="arch-module-desc">Orchestrator powering the 6-phase scanning pipeline.</div>
+    </div>
+    <div class="arch-module">
+      <div class="arch-module-name">Analysis</div>
+      <div class="arch-module-path">analysis/</div>
+      <div class="arch-module-desc">Fingerprinting, CVE correlation, traffic flow analysis.</div>
+    </div>
+    <div class="arch-module">
+      <div class="arch-module-name">Reports</div>
+      <div class="arch-module-path">reports/</div>
+      <div class="arch-module-desc">HTML + JSON + PDF generation from scan results.</div>
+    </div>
+    <div class="arch-module">
+      <div class="arch-module-name">API</div>
+      <div class="arch-module-path">api/</div>
+      <div class="arch-module-desc">FastAPI REST server with async scan orchestration.</div>
+    </div>
+    <div class="arch-module">
+      <div class="arch-module-name">Infra</div>
+      <div class="arch-module-path">infra/</div>
+      <div class="arch-module-desc">Docker, Kubernetes, Terraform IaC configurations.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo">IOT_<span>SENTINEL</span></div>
+    <div class="footer-tagline">Security Intelligence for the Connected World</div>
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/Tejaswanth2406/iot-sentinal" target="_blank">GitHub</a>
+    <a href="https://github.com/Tejaswanth2406/iot-sentinal/blob/main/README.md" target="_blank">Docs</a>
+    <a href="#pipeline">Pipeline</a>
+  </div>
+  <div class="footer-copy">
+    <span>© 2026 IOT_SENTINEL — Tejaswanth2406</span>
+    <span>PYTHON 96.6% · LUA 1.4% · OTHER 2.0%</span>
+  </div>
+</footer>
+
+</body>
+</html>
