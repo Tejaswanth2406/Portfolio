@@ -36,7 +36,7 @@
       --sky: #2C9FC7;
       
       /* Mesh Colors (Soft Aurora) */
-      --m-pink: rgba(252, 218, 218, 0.45);
+      --m-pink: rgba(224, 247, 247, 0.45);
       --m-cream: rgba(250, 247, 242, 0.4);
       --m-cyan: rgba(224, 247, 247, 0.45);
 
@@ -44,6 +44,11 @@
       --shadow-lg: 0 20px 60px rgba(26, 21, 16, .13), 0 4px 12px rgba(26, 21, 16, .07);
       --shadow-md: 0 8px 30px rgba(26, 21, 16, .09);
       --shadow-sm: 0 2px 10px rgba(26, 21, 16, .07);
+
+      /* Lino-cut specific */
+      --lino-blue: #1A3C5E;
+      --lino-cream: #F4F1EA;
+      --lino-texture: rgba(26, 60, 94, 0.05);
     }
 
     html {
@@ -84,9 +89,20 @@
       content: '';
       position: fixed;
       inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 9999;
+      mix-blend-mode: multiply;
+    }
+
+    .lino-art {
+      position: absolute;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.15;
+      mix-blend-mode: multiply;
+      transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform: translate(var(--px, 0), var(--py, 0)) rotate(var(--rot, 0deg));
     }
 
     /* ─── LOADER ─── */
@@ -392,10 +408,36 @@
       min-height: 100vh;
       position: relative;
       z-index: 1;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+      padding: 0 8%;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      padding-top: 100px;
+    }
+
+    .hero-visual {
+      position: relative;
+      height: 80vh;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 5% 80px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-main-art {
+      width: 100%;
+      max-width: 500px;
+      filter: drop-shadow(0 20px 40px rgba(26, 60, 94, 0.15));
+      animation: float 6s ease-in-out infinite;
+      mix-blend-mode: multiply;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
     }
 
     .hero-eyebrow {
@@ -421,15 +463,14 @@
 
     .hero-name {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(72px, 11vw, 160px);
+      font-size: clamp(64px, 9vw, 130px);
       font-weight: 900;
-      line-height: .88;
-      letter-spacing: -.03em;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
       color: var(--ink);
-      margin-bottom: 8px;
+      margin-bottom: 24px;
       opacity: 0;
-      animation: fadeUp .9s cubic-bezier(.22, .68, 0, 1.2) 1.5s forwards;
-      text-shadow: 0 8px 40px rgba(26, 21, 16, .08);
+      animation: fadeUp 0.9s cubic-bezier(0.22, 0.68, 0, 1.2) 1.5s forwards;
     }
 
     .hero-name em {
@@ -462,23 +503,19 @@
     }
 
     @keyframes blink {
-
-      0%,
-      100% {
-        opacity: 1
-      }
-
-      50% {
-        opacity: 0
-      }
+      0%, 100% { opacity: 1 }
+      50% { opacity: 0 }
     }
 
-    .hero-bottom {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
+    .hero-bottom-alt {
       opacity: 0;
       animation: fadeUp .8s cubic-bezier(.22, .68, 0, 1.2) 1.9s forwards;
+    }
+
+    .hero-stats-row {
+      display: flex;
+      gap: 48px;
+      margin-top: 48px;
     }
 
     .hero-desc {
@@ -491,14 +528,14 @@
 
     .hero-desc strong {
       color: var(--ink);
-      font-weight: 600
+      font-weight: 600;
     }
 
     .hero-actions {
       display: flex;
-      gap: 12px;
+      gap: 16px;
       flex-wrap: wrap;
-      margin-top: 24px
+      margin-top: 32px;
     }
 
     .btn-gold {
@@ -1321,6 +1358,10 @@
       transform: translateY(-6px) perspective(900px) rotateX(1.5deg);
     }
 
+    .pcard.sec:hover {
+      transform: translateY(-6px) perspective(900px) rotateX(1.5deg);
+    }
+
     .pcard::before {
       content: '';
       position: absolute;
@@ -1394,6 +1435,74 @@
 
     .pcard:hover .pcard-title {
       color: var(--gold)
+    }
+
+    /* ─── PHILOSOPHY ─── */
+    .philo-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 120px;
+      margin-top: 60px;
+    }
+
+    .philo-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .philo-block.rev {
+      direction: rtl;
+    }
+
+    .philo-block.rev > * {
+      direction: ltr;
+    }
+
+    .philo-img-wrap {
+      position: relative;
+      background: var(--cream);
+      border: 1px solid var(--ink-08);
+      padding: 40px;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .philo-block:hover .philo-img-wrap {
+      transform: translateY(-10px) rotate(1deg);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .philo-img {
+      width: 100%;
+      height: auto;
+      mix-blend-mode: multiply;
+      display: block;
+    }
+
+    .philo-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      color: var(--ink);
+    }
+
+    .philo-text p {
+      font-size: 17px;
+      color: var(--ink-70);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    @media(max-width: 1024px) {
+      .philo-block, .philo-block.rev {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+      }
     }
 
     .pcard-desc {
@@ -1896,9 +2005,21 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: url('arches_bg.png') center/cover no-repeat fixed;
-      opacity: .18;
-      filter: grayscale(10%) contrast(110%);
+      background: url('assets/waves.png') center/cover no-repeat fixed;
+      opacity: .12;
+      mix-blend-mode: multiply;
+    }
+
+    #contact::after {
+      content: '';
+      position: absolute;
+      bottom: 50px;
+      right: 50px;
+      width: 250px;
+      height: 350px;
+      background: url('assets/jellyfish.png') center/contain no-repeat;
+      opacity: 0.08;
+      pointer-events: none;
     }
 
     .contact-inner {
@@ -2062,17 +2183,34 @@
 
     /* ─── RESPONSIVE ─── */
     @media(max-width:1024px) {
-      .hero-bottom {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 32px
+      #hero {
+        grid-template-columns: 1fr;
+        padding: 120px 5% 80px;
+        text-align: center;
       }
 
-      .hero-stats-col {
-        align-items: flex-start;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 24px
+      .hero-content {
+        padding-top: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-visual {
+        height: 400px;
+        order: -1;
+      }
+
+      .hero-stats-row {
+        justify-content: center;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .hero-eyebrow {
+        justify-content: center;
       }
 
       .about-layout,
@@ -2140,6 +2278,7 @@
     <a href="#" class="nav-logo">T<em>ejaswanth</em></a>
     <ul>
       <li><a href="#about">About</a></li>
+      <li><a href="#methodology">Methodology</a></li>
       <li><a href="#projects">Work</a></li>
       <li><a href="#achievements">Wins</a></li>
       <li><a href="#certifications">Certs</a></li>
@@ -2153,18 +2292,30 @@
 
   <!-- HERO -->
   <section id="hero">
-    <div class="hero-eyebrow">GITAM University · CSE · 3rd Year · Vizag</div>
-    <h1 class="hero-name">Tejas<em>wanth</em><br><span class="stroke">Surisetty</span></h1>
-    <div class="hero-typing-wrap">
-      <div class="hero-typing"><span id="typed"></span><span class="cur">|</span></div>
+    <div class="lino-art" style="top: 15%; left: -5%; width: 400px; --rot: -15deg;">
+      <img src="assets/manta_ray.png" alt="" style="width: 100%; opacity: 0.12;">
     </div>
-    <div class="hero-bottom">
-      <div>
+    <div class="lino-art" style="bottom: 10%; right: 10%; width: 300px; --rot: 20deg;">
+      <img src="assets/shark.png" alt="" style="width: 100%; opacity: 0.12;">
+    </div>
+    
+    <div class="hero-content">
+      <div class="hero-eyebrow">GITAM University · CSE · 3rd Year · Vizag</div>
+      <h1 class="hero-name">Tejas<em>wanth</em><br><span class="stroke">Surisetty</span></h1>
+      
+
+      <div class="hero-typing-wrap">
+        <div class="hero-typing"><span id="typed"></span><span class="cur">|</span></div>
+      </div>
+
+      <img src="assets/red_wavy_eye.png" alt="SIGNATURE" class="rv d3" style="width: 320px; margin-bottom: 40px; mix-blend-mode: multiply; opacity: 1;">
+
+      <div class="hero-bottom-alt">
         <p class="hero-desc">
           Building <strong>adaptive security systems</strong> and AI-driven tools. I research cloud identity attack
-          paths, run bug bounty programs, reverse engineer binaries, and push agentic AI toward real-world decision
-          making.
+          paths, run bug bounty programs, and push agentic AI toward real-world decision making.
         </p>
+        
         <div class="hero-actions">
           <a href="#projects" class="btn-gold"><span>View Work</span><svg width="11" height="11" fill="none"
               stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -2175,24 +2326,33 @@
           <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank"
             class="btn-ghost">LinkedIn ↗</a>
         </div>
-      </div>
-      <div class="hero-stats-col">
-        <div class="hstat">
-          <div class="hstat-n">SIH</div>
-          <div class="hstat-l">National 2024</div>
+
+        <div class="hero-stats-row" style="display: flex; gap: 40px; margin-top: 60px;">
+          <div class="hstat">
+            <div class="hstat-n" style="font-size: 32px;">SIH</div>
+            <div class="hstat-l">National 2024</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-n" style="font-size: 32px;">10+</div>
+            <div class="hstat-l">Certifications</div>
+          </div>
+          <div class="hstat">
+            <div class="hstat-n" style="font-size: 32px;">4</div>
+            <div class="hstat-l">Research Projects</div>
+          </div>
         </div>
-        <div class="hstat">
-          <div class="hstat-n">10+</div>
-          <div class="hstat-l">Certifications</div>
-        </div>
-        <div class="hstat">
-          <div class="hstat-n">4</div>
-          <div class="hstat-l">Research Projects</div>
-        </div>
       </div>
+    </div>
+
+    <div class="hero-visual rv d2">
+      <img src="assets/grid_symbols.png" alt="System Symbols" class="hero-main-art">
+      <div class="lino-art" style="bottom: 10%; right: -10%; width: 250px; --rot: 10deg;">
+        <img src="assets/ai_brain.png" alt="" style="width: 100%; opacity: 0.3;">
       </div>
-      <div class="hero-scroll">Scroll</div>
-    </section>
+    </div>
+
+    <div class="hero-scroll">Scroll</div>
+  </section>
 
   <div class="forest-divider"></div>
 
@@ -2202,6 +2362,12 @@
   <!-- ABOUT -->
   <section id="about">
     <div class="sec-wrap">
+      <div class="lino-art" style="top: 10%; right: 5%; width: 200px; --rot: 15deg;">
+        <img src="assets/ai_brain.png" alt="" style="width: 100%; opacity: 0.15;">
+      </div>
+      <div class="lino-art" style="bottom: 5%; left: 0; width: 180px; --rot: -10deg;">
+        <img src="assets/seahorse.png" alt="" style="width: 100%; opacity: 0.1;">
+      </div>
       <div class="section-eyebrow rv">About</div>
       <h2 class="section-title rv">Who<br>I <em>Am</em></h2>
       <div class="about-layout">
@@ -2265,13 +2431,84 @@
     </div>
   </section>
 
+  <!-- METHODOLOGY -->
+  <section id="methodology">
+    <div class="lino-art" style="top: 50%; right: 0; width: 220px; --rot: 20deg;">
+      <img src="assets/crab.png" alt="" style="width: 100%; opacity: 0.08;">
+    </div>
+    <div class="sec-wrap">
+      <div class="section-eyebrow rv">Methodology</div>
+      <h2 class="section-title rv">Digital<br><em>Bio-mimicry</em></h2>
+      
+      <div class="philo-grid">
+        <!-- OCTOPUS -->
+        <div class="philo-block rv">
+          <div class="philo-img-wrap">
+            <img src="assets/octopus.jpg" alt="Octopus Lino-cut" class="philo-img">
+          </div>
+          <div class="philo-text">
+            <h3>Distributed<br><em>Intelligence</em></h3>
+            <p>Much like the <strong>nine brains</strong> of an octopus, my approach to AI focuses on <strong>distributed agentic orchestration</strong>. I build systems where specialized models operate with local autonomy yet contribute to a unified cognitive goal, ensuring resilience and complex problem-solving capabilities.</p>
+          </div>
+        </div>
+
+        <!-- MARLIN -->
+        <div class="philo-block rev rv">
+          <div class="philo-img-wrap">
+            <img src="assets/marlin.png" alt="Marlin Art" class="philo-img">
+          </div>
+          <div class="philo-text">
+            <h3>Offensive<br><em>Velocity</em></h3>
+            <p>In security research, <strong>speed is a defensive necessity</strong>. The marlin represents my philosophy of high-velocity offensive research — identifying and neutralizing threats before they can settle. I prioritize precision-guided exploitation to surface critical vulnerabilities at scale.</p>
+          </div>
+        </div>
+
+        <!-- FISH SCHOOL -->
+        <div class="philo-block rv">
+          <div class="philo-img-wrap">
+            <img src="assets/fish_school.png" alt="Fish School" class="philo-img">
+          </div>
+          <div class="philo-text">
+            <h3>Collective<br><em>Defense</em></h3>
+            <p>True security isn't found in a single wall, but in <strong>collective intelligence</strong>. By leveraging RAG (Retrieval-Augmented Generation) and swarm-based detection, I create defensive ecosystems that learn from every interaction, mimicking the coordinated movement of a school of fish.</p>
+          </div>
+        </div>
+
+        <!-- CIPHER CORE -->
+        <div class="philo-block rev rv">
+          <div class="philo-img-wrap">
+            <img src="assets/cipher_core.jpg" alt="Cipher Core Symbol" class="philo-img">
+          </div>
+          <div class="philo-text">
+            <h3>Systemic<br><em>Integrity</em></h3>
+            <p>At the center of every system lies its <strong>cryptographic core</strong>. My research into system integrity focuses on the fundamental patterns that govern security — ensuring that even as the digital tide changes, the core remains invariant and unassailable.</p>
+          </div>
+        </div>
+
+        <!-- CLOUD OPS -->
+        <div class="philo-block rv">
+          <div class="philo-img-wrap">
+            <img src="assets/manta_ray.png" alt="Operational Art" class="philo-img" style="transform: scale(1.1); rotate: -10deg;">
+          </div>
+          <div class="philo-text">
+            <h3>Cloud Security<br><em>Operations</em></h3>
+            <p>Cloud infrastructure requires a highly adaptive, multi-layered defensive posture. I focus on implementing robust IAM governance, continuous monitoring, and automated threat response across complex, distributed environments to ensure maximum systemic resilience.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- PROJECTS -->
   <section id="projects">
+    <div class="lino-art" style="top: 5%; right: -5%; width: 400px; --rot: -10deg;">
+      <img src="assets/security_eye.png" alt="" style="width: 100%; opacity: 0.08;">
+    </div>
     <div class="sec-wrap">
       <div class="section-eyebrow rv">Projects</div>
       <h2 class="section-title rv"><span class="out">What</span><br>I <em>Build</em></h2>
 
-      <div class="feat-proj rv" onclick="location.href='hollowpurple.html'">
+      <div class="feat-proj sec rv" onclick="location.href='hollowpurple.html'">
         <div class="fp-accent"></div>
         <div class="fp-left">
           <div class="fp-tag">Security Research · Featured</div>
@@ -2298,6 +2535,8 @@
           </div>
         </div>
         <div class="fp-right">
+          <img src="assets/sun_waves.png" alt="" style="position: absolute; top: -50px; right: -50px; width: 200px; opacity: 0.15; pointer-events: none; mix-blend-mode: multiply;">
+          <img src="assets/fish_bone.png" alt="" style="position: absolute; bottom: 10px; left: 10px; width: 80px; opacity: 0.2; mix-blend-mode: multiply; transform: rotate(45deg);">
           <div class="fp-meta-title">system_status</div>
           <div class="fp-row"><span class="fp-k">project</span><span class="fp-v">hollow_purple_v1</span></div>
           <div class="fp-row"><span class="fp-k">cloud</span><span class="fp-v cy">GCP</span></div>
@@ -2338,7 +2577,8 @@
 
       <div class="proj-grid">
         <div class="pcard rv" onclick="location.href='hakari.html'">
-          <div class="pcard-num">01</div>
+          <img src="assets/yin_yang_fish.png" alt="" style="position: absolute; top: 20px; right: 20px; width: 100px; opacity: 0.2; mix-blend-mode: multiply;">
+          
           <div class="pcard-tag ai">AI Research</div>
           <div class="pcard-title">HAKARI</div>
           <p class="pcard-desc">Cognitive simulation engine grounded in entropy physics, Bayesian inference, and
@@ -2353,8 +2593,9 @@
               Project →</a><a href="https://github.com/Tejaswanth2406/hakari" target="_blank" class="pcard-link gh"
               onclick="event.stopPropagation()">GitHub ↗</a></div>
         </div>
-        <div class="pcard rv d1" onclick="location.href='iot_sentinal.html'">
-          <div class="pcard-num">02</div>
+        <div class="pcard sec rv d1" onclick="location.href='iot_sentinel.html'">
+          <img src="assets/circle_fish.jpg" alt="" style="position: absolute; top: 20px; right: 20px; width: 100px; opacity: 0.2; mix-blend-mode: multiply;">
+          
           <div class="pcard-tag sec">Security</div>
           <div class="pcard-title">IOT Sentinel</div>
           <p class="pcard-desc">Unified IoT security scanner — 6-phase pipeline reducing manual toolchain orchestration
@@ -2366,12 +2607,13 @@
           </ul>
           <div class="pcard-tech"><span class="ptag">Python</span><span class="ptag">Lua</span><span
               class="ptag">FastAPI</span><span class="ptag">Docker</span><span class="ptag">Kubernetes</span></div>
-          <div class="pcard-links"><a href="iot_sentinal.html" class="pcard-link" onclick="event.stopPropagation()">Open
+          <div class="pcard-links"><a href="iot_sentinel.html" class="pcard-link" onclick="event.stopPropagation()">Open
               Project →</a><a href="https://github.com/Tejaswanth2406/iot-sentinal" target="_blank"
               class="pcard-link gh" onclick="event.stopPropagation()">GitHub ↗</a></div>
         </div>
         <div class="pcard rv d2" onclick="location.href='clu.html'">
-          <div class="pcard-num">03</div>
+          <img src="assets/shell_core.png" alt="" style="position: absolute; top: 20px; right: 20px; width: 100px; opacity: 0.2; mix-blend-mode: multiply;">
+          
           <div class="pcard-tag fs">Full Stack · AI</div>
           <div class="pcard-title">CLU</div>
           <p class="pcard-desc">AI-powered legal document analyzer — parses ToS, Privacy Policies, EULAs and surfaces
@@ -2392,6 +2634,12 @@
 
   <!-- ACHIEVEMENTS -->
   <section id="achievements">
+    <div class="lino-art" style="bottom: 5%; left: -5%; width: 500px; --rot: 5deg;">
+      <img src="assets/shark.png" alt="" style="width: 100%; opacity: 0.15;">
+    </div>
+    <div class="lino-art" style="top: 10%; right: 0; width: 300px; --rot: -20deg;">
+      <img src="assets/manta_ray.png" alt="" style="width: 100%; opacity: 0.1;">
+    </div>
     <div class="sec-wrap">
       <div class="section-eyebrow rv">Achievements</div>
       <h2 class="section-title rv">Key<br><em>Wins</em></h2>
@@ -2474,6 +2722,12 @@
 
   <!-- CERTIFICATIONS -->
   <section id="certifications">
+    <div class="lino-art" style="top: 20%; right: 0; width: 300px; --rot: 10deg;">
+      <img src="assets/shell_black.png" alt="" style="width: 100%; opacity: 0.06;">
+    </div>
+    <div class="lino-art" style="bottom: 0; left: 10%; width: 280px; --rot: -15deg;">
+      <img src="assets/manta_ray.png" alt="" style="width: 100%; opacity: 0.07;">
+    </div>
     <div class="sec-wrap">
       <div class="section-eyebrow rv">Certifications</div>
       <h2 class="section-title rv">Verified<br><em>Skills</em></h2>
@@ -2551,6 +2805,9 @@
   <!-- EDUCATION -->
   <section id="education">
     <div class="sec-wrap">
+      <div class="lino-art" style="top: 5%; left: 0; width: 300px; --rot: -5deg;">
+        <img src="assets/santorini.png" alt="" style="width: 100%; opacity: 0.1;">
+      </div>
       <div class="section-eyebrow rv">Education</div>
       <h2 class="section-title rv">Academic<br><em>Path</em></h2>
       <div class="edu-grid">
@@ -2646,7 +2903,7 @@
     document.querySelectorAll('.rv').forEach(el => ro.observe(el));
 
     const secObs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) { navAs.forEach(a => a.classList.remove('active')); const ac = document.querySelector('nav ul li a[href="#' + x.target.id + '"]'); if (ac) ac.classList.add('active') } }) }, { threshold: .3 });
-    ['about', 'projects', 'achievements', 'certifications', 'contact'].forEach(id => { const s = document.getElementById(id); if (s) secObs.observe(s) });
+    ['about', 'methodology', 'projects', 'achievements', 'certifications', 'contact'].forEach(id => { const s = document.getElementById(id); if (s) secObs.observe(s) });
 
     const roles = ['Security Researcher', 'AI Developer', 'Purple Teamer', 'Bug Bounty Hunter', 'Cloud IAM Researcher', 'Reverse Engineer', 'MCP Developer'];
     let ri = 0, ci = 0, del = false; const tel = document.getElementById('typed');
@@ -2670,8 +2927,16 @@
       });
     }
     addTilt('.pcard', 10, 8);
-    addTilt('.acard', 6, 5);
     addTilt('.cert-card', 8, 6);
+
+    document.addEventListener('mousemove', e => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 40;
+      const y = (e.clientY / window.innerHeight - 0.5) * 40;
+      document.querySelectorAll('.lino-art').forEach(art => {
+        art.style.setProperty('--px', x + 'px');
+        art.style.setProperty('--py', y + 'px');
+      });
+    });
 
     document.querySelectorAll('.cert-card').forEach(c => {
       c.addEventListener('mousemove', e => {

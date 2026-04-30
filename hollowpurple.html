@@ -1,623 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HOLLOW PURPLE — Adaptive Cloud Identity Architecture</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=JetBrains+Mono:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --crimson: #C0392B;
-    --crimson-light: #E74C3C;
-    --crimson-dim: rgba(192,57,43,0.15);
-    --teal: #1A7A6E;
-    --teal-light: #2ecc9e;
-    --teal-dim: rgba(26,122,110,0.12);
-    --gold: #B7900A;
-    --gold-light: #E5B82A;
-    --ink: #1C1A14;
-    --ink-light: #2C2A22;
-    --paper: #F2EEE4;
-    --paper-warm: #EAE4D4;
-    --paper-dark: #D8D0BF;
-    --text-primary: #1C1A14;
-    --text-secondary: #4A4538;
-    --text-muted: #7A7464;
-    --text-ghost: rgba(28,26,20,0.35);
-    --grid-color: rgba(26,122,110,0.08);
-    --border: rgba(28,26,20,0.12);
-    --border-strong: rgba(28,26,20,0.25);
+<html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>HOLLOW PURPLE — Adaptive Cloud Identity Architecture</title> <link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet"> <style>   :root {     --crimson:       #6B3FA0;
+    --crimson-light: #8A5CC7;
+    --crimson-dim:   rgba(107,63,160,0.13);
+    --teal:          #4A3080;
+    --teal-light:    #7B5EA7;
+    --teal-dim:      rgba(74,48,128,0.10);
+    --gold:          #8A5CC7;
+    --gold-light:    #A97DD4;
+    --ink:           #1A1520;
+    --ink-light:     #2A2235;
+    --paper:         #F4F0E8;
+    --paper-warm:    #EDE8DC;
+    --paper-dark:    #DDD7C8;
+    --text-primary:  #1A1520;
+    --text-secondary:#3D3050;
+    --text-muted:    #7A6E90;
+    --text-ghost:    rgba(26,21,32,0.32);
+    --grid-color:    rgba(107,63,160,0.07);
+    --border:        rgba(26,21,32,0.11);
+    --border-strong: rgba(26,21,32,0.22);
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'JetBrains Mono', monospace;
-    background-color: var(--paper);
-    color: var(--text-primary);
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(var(--grid-color) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px),
-      linear-gradient(rgba(26,122,110,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(26,122,110,0.03) 1px, transparent 1px);
-    background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.6;
-  }
-
-  .page {
-    position: relative;
-    z-index: 1;
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0 40px 80px;
-  }
-
-  /* ── MASTHEAD ── */
-  .masthead {
-    border-bottom: 1.5px solid var(--ink);
-    padding: 28px 0 20px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 24px;
-    margin-bottom: 4px;
-    position: relative;
-  }
-
+  body { font-family: 'JetBrains Mono', monospace; background-color: var(--paper); color: var(--text-primary); min-height: 100vh; overflow-x: hidden; position: relative; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px), linear-gradient(rgba(107,63,160,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(107,63,160,0.025) 1px, transparent 1px); background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px; pointer-events: none; z-index: 0; }
+  body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; opacity: 0.5; }
+  .page { position: relative; z-index: 1; max-width: 1440px; margin: 0 auto; padding: 0 40px 80px; }
+  .masthead { border-bottom: 1.5px solid var(--ink); padding: 28px 0 20px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 4px; position: relative; }
   .masthead-left { display: flex; flex-direction: column; gap: 2px; }
-
-  .masthead-eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  .masthead-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(48px, 7vw, 96px);
-    font-weight: 900;
-    line-height: 0.88;
-    color: var(--crimson);
-    letter-spacing: -0.02em;
-    position: relative;
-  }
-
-  .masthead-title span.hollow {
-    -webkit-text-stroke: 2px var(--crimson);
-    color: transparent;
-  }
-
-  .masthead-subtitle {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 13px;
-    font-style: italic;
-    font-weight: 300;
-    color: var(--text-secondary);
-    letter-spacing: 0.04em;
-    margin-top: 6px;
-  }
-
+  .masthead-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted); }
+  .masthead-title { font-family: 'Playfair Display', serif; font-size: clamp(48px, 7vw, 96px); font-weight: 900; line-height: 0.88; color: var(--crimson); letter-spacing: -0.02em; position: relative; }
+  .masthead-title span.hollow { -webkit-text-stroke: 2px var(--crimson); color: transparent; }
+  .masthead-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; font-weight: 300; color: var(--text-secondary); letter-spacing: 0.04em; margin-top: 6px; }
   .masthead-right { text-align: right; flex-shrink: 0; }
-
-  .masthead-meta {
-    font-size: 9px;
-    letter-spacing: 0.12em;
-    color: var(--text-muted);
-    line-height: 1.9;
-  }
-
+  .masthead-meta { font-size: 9px; letter-spacing: 0.12em; color: var(--text-muted); line-height: 1.9; }
   .masthead-meta .highlight { color: var(--teal); font-weight: 700; }
-
-  /* ── GITHUB LINK STYLES ── */
-  .github-link {
-    color: var(--teal);
-    font-weight: 700;
-    text-decoration: none;
-    letter-spacing: 0.06em;
-    font-size: 9px;
-    border-bottom: 0.5px solid var(--teal);
-    padding-bottom: 1px;
-    transition: color 0.15s, border-color 0.15s;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-  }
+  .github-link { color: var(--teal); font-weight: 700; text-decoration: none; letter-spacing: 0.06em; font-size: 9px; border-bottom: 0.5px solid var(--teal); padding-bottom: 1px; transition: color 0.15s, border-color 0.15s; display: inline-flex; align-items: center; gap: 5px; }
   .github-link:hover { color: var(--crimson); border-color: var(--crimson); }
   .github-link svg { width: 11px; height: 11px; fill: currentColor; flex-shrink: 0; }
-
-  /* ── GITHUB FAB ── */
-  .github-fab {
-    position: fixed;
-    bottom: 32px;
-    right: 32px;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    background: var(--ink);
-    color: var(--paper);
-    border: 1px solid var(--ink);
-    padding: 11px 20px 11px 16px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-radius: 2px;
-    box-shadow: 4px 4px 0 var(--border-strong);
-    transition: all 0.18s ease;
-  }
-  .github-fab:hover {
-    background: var(--crimson);
-    border-color: var(--crimson);
-    box-shadow: 6px 6px 0 rgba(192,57,43,0.3);
-    transform: translate(-1px, -1px);
-  }
-  .github-fab svg {
-    width: 16px;
-    height: 16px;
-    fill: currentColor;
-    flex-shrink: 0;
-  }
-
-  /* ── STATUS BAR ── */
-  .status-bar {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    padding: 10px 0;
-    border-bottom: 0.5px solid var(--border);
-    margin-bottom: 32px;
-    font-size: 9px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
+  .github-fab { position: fixed; bottom: 32px; right: 32px; z-index: 999; display: flex; align-items: center; gap: 9px; background: var(--ink); color: var(--paper); border: 1px solid var(--ink); padding: 11px 20px 11px 16px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; border-radius: 2px; box-shadow: 4px 4px 0 var(--border-strong); transition: all 0.18s ease; }
+  .github-fab:hover { background: var(--crimson); border-color: var(--crimson); box-shadow: 6px 6px 0 rgba(107,63,160,0.28); transform: translate(-1px, -1px); }
+  .github-fab svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+  .status-bar { display: flex; align-items: center; gap: 24px; padding: 10px 0; border-bottom: 0.5px solid var(--border); margin-bottom: 32px; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
   .status-dot { display: inline-flex; align-items: center; gap: 6px; }
-
-  .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    animation: pulse-dot 2s ease-in-out infinite;
-  }
-
-  .dot.active { background: var(--teal); }
-  .dot.frozen { background: var(--gold); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; animation: pulse-dot 2s ease-in-out infinite; }
+  .dot.active  { background: var(--teal); }
+  .dot.frozen  { background: var(--gold); }
   .dot.pending { background: var(--text-muted); }
-
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  /* ── MAIN GRID ── */
-  .grid-main {
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 24px;
-    margin-bottom: 24px;
-  }
-
-  .grid-bottom {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    margin-bottom: 24px;
-  }
-
-  .grid-threat {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    margin-bottom: 24px;
-  }
-
-  /* ── CARD ── */
-  .card {
-    background: rgba(242,238,228,0.82);
-    border: 0.5px solid var(--border-strong);
-    border-radius: 2px;
-    padding: 20px 22px;
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(4px);
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px;
-    height: 100%;
-    background: var(--crimson);
-  }
-
-  .card.teal::before { background: var(--teal); }
-  .card.gold::before { background: var(--gold); }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .grid-main   { display: grid; grid-template-columns: 1fr 340px; gap: 24px; margin-bottom: 24px; }
+  .grid-bottom { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 24px; }
+  .grid-threat { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+  .card { background: rgba(244,240,232,0.84); border: 0.5px solid var(--border-strong); border-radius: 2px; padding: 20px 22px; position: relative; overflow: hidden; backdrop-filter: blur(4px); }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--crimson); }
+  .card.teal::before    { background: var(--teal); }
+  .card.gold::before    { background: var(--gold); }
   .card.neutral::before { background: var(--border-strong); }
-  .card.none::before { display: none; }
-
-  .card-stamp {
-    position: absolute;
-    top: 14px;
-    right: 16px;
-    font-size: 8px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text-ghost);
-    font-weight: 500;
-    border: 0.5px solid var(--border);
-    padding: 2px 6px;
-    border-radius: 1px;
-  }
-
-  .card-label {
-    font-size: 8px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-    font-weight: 500;
-  }
-
-  .card-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 6px;
-    line-height: 1.2;
-  }
-
+  .card.none::before    { display: none; }
+  .card-stamp { position: absolute; top: 14px; right: 16px; font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-ghost); font-weight: 500; border: 0.5px solid var(--border); padding: 2px 6px; border-radius: 1px; }
+  .card-label { font-size: 8px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; font-weight: 500; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; line-height: 1.2; }
   .card-title.lg { font-size: 24px; }
-
-  /* ── GRAPH VIZ ── */
-  .graph-canvas {
-    width: 100%;
-    height: 320px;
-    position: relative;
-    overflow: hidden;
-  }
-
+  .graph-canvas { width: 100%; height: 320px; position: relative; overflow: hidden; }
   #identity-graph { width: 100%; height: 100%; }
-
-  /* ── METRICS ── */
-  .metric-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-
-  .metric-card {
-    background: rgba(28,26,20,0.04);
-    border: 0.5px solid var(--border);
-    border-radius: 1px;
-    padding: 14px 16px;
-    position: relative;
-  }
-
-  .metric-label {
-    font-size: 8px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 6px;
-  }
-
-  .metric-value {
-    font-family: 'Playfair Display', serif;
-    font-size: 34px;
-    font-weight: 900;
-    line-height: 1;
-    color: var(--text-primary);
-  }
-
+  .metric-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .metric-card { background: rgba(26,21,32,0.04); border: 0.5px solid var(--border); border-radius: 1px; padding: 14px 16px; position: relative; }
+  .metric-label { font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px; }
+  .metric-value { font-family: 'Playfair Display', serif; font-size: 34px; font-weight: 900; line-height: 1; color: var(--text-primary); }
   .metric-value.crimson { color: var(--crimson); }
-  .metric-value.teal { color: var(--teal); }
-  .metric-value.gold { color: var(--gold); }
-
-  .metric-sub { font-size: 9px; color: var(--text-muted); margin-top: 4px; letter-spacing: 0.06em; }
-
+  .metric-value.teal    { color: var(--teal); }
+  .metric-value.gold    { color: var(--gold); }
+  .metric-sub   { font-size: 9px; color: var(--text-muted); margin-top: 4px; letter-spacing: 0.06em; }
   .metric-delta { position: absolute; top: 10px; right: 12px; font-size: 9px; font-weight: 700; letter-spacing: 0.06em; }
-  .metric-delta.up { color: var(--crimson-light); }
+  .metric-delta.up   { color: var(--crimson-light); }
   .metric-delta.down { color: var(--teal); }
-
-  /* ── PHASE SYSTEM ── */
   .phase-block { padding: 14px 0; border-bottom: 0.5px solid var(--border); }
   .phase-block:last-child { border-bottom: none; }
-
   .phase-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-
-  .phase-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 14px;
-    font-weight: 700;
-    font-style: italic;
-    color: var(--text-primary);
-  }
-
-  .phase-badge {
-    font-size: 7px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    padding: 2px 7px;
-    border-radius: 1px;
-    font-weight: 600;
-  }
-
-  .phase-badge.active { background: var(--teal-dim); color: var(--teal); border: 0.5px solid var(--teal); }
-  .phase-badge.frozen { background: rgba(183,144,10,0.1); color: var(--gold); border: 0.5px solid var(--gold); }
-  .phase-badge.defined { background: var(--crimson-dim); color: var(--crimson); border: 0.5px solid var(--crimson); }
-
+  .phase-name { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; font-style: italic; color: var(--text-primary); }
+  .phase-badge { font-size: 7px; letter-spacing: 0.16em; text-transform: uppercase; padding: 2px 7px; border-radius: 1px; font-weight: 600; }
+  .phase-badge.active  { background: var(--teal-dim);               color: var(--teal);    border: 0.5px solid var(--teal); }
+  .phase-badge.frozen  { background: rgba(138,92,199,0.10);          color: var(--gold);    border: 0.5px solid var(--gold); }
+  .phase-badge.defined { background: var(--crimson-dim);             color: var(--crimson); border: 0.5px solid var(--crimson); }
+  .phase-badge.done    { background: rgba(74,48,128,0.12);           color: var(--teal);    border: 0.5px solid var(--teal); }
   .phase-desc { font-size: 10px; color: var(--text-secondary); line-height: 1.6; letter-spacing: 0.02em; }
-
-  /* ── PATTERN FEED ── */
-  .pattern-item {
-    padding: 12px 0;
-    border-bottom: 0.5px dotted var(--border);
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 12px;
-    align-items: start;
-  }
-
+  .pattern-item { padding: 12px 0; border-bottom: 0.5px dotted var(--border); display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: start; }
   .pattern-item:last-child { border-bottom: none; }
-
-  .pattern-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 1px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .pattern-icon.esc { background: var(--crimson-dim); color: var(--crimson); border: 0.5px solid var(--crimson); }
-  .pattern-icon.lat { background: rgba(183,144,10,0.12); color: var(--gold); border: 0.5px solid var(--gold); }
-  .pattern-icon.tok { background: var(--teal-dim); color: var(--teal); border: 0.5px solid var(--teal); }
-  .pattern-icon.dor { background: rgba(28,26,20,0.06); color: var(--text-muted); border: 0.5px solid var(--border-strong); }
-
+  .pattern-icon { width: 28px; height: 28px; border-radius: 1px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .pattern-icon.esc { background: var(--crimson-dim);           color: var(--crimson); border: 0.5px solid var(--crimson); }
+  .pattern-icon.lat { background: rgba(138,92,199,0.10);        color: var(--gold);    border: 0.5px solid var(--gold); }
+  .pattern-icon.tok { background: var(--teal-dim);              color: var(--teal);    border: 0.5px solid var(--teal); }
+  .pattern-icon.dor { background: rgba(26,21,32,0.06);          color: var(--text-muted); border: 0.5px solid var(--border-strong); }
   .pattern-name { font-size: 11px; font-weight: 500; color: var(--text-primary); margin-bottom: 2px; letter-spacing: 0.03em; }
   .pattern-meta { font-size: 9px; color: var(--text-muted); letter-spacing: 0.04em; }
-
-  .pattern-score { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; color: var(--crimson); text-align: right; }
-  .pattern-score.ok { color: var(--teal); }
+  .pattern-score      { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; color: var(--crimson); text-align: right; }
+  .pattern-score.ok   { color: var(--teal); }
   .pattern-score.warn { color: var(--gold); }
-
-  /* ── PATH TABLE ── */
-  .path-row {
-    display: grid;
-    grid-template-columns: 1fr auto auto auto;
-    gap: 12px;
-    align-items: center;
-    padding: 9px 0;
-    border-bottom: 0.5px dotted var(--border);
-    font-size: 10px;
-  }
-
+  .path-row { display: grid; grid-template-columns: 1fr auto auto auto; gap: 12px; align-items: center; padding: 9px 0; border-bottom: 0.5px dotted var(--border); font-size: 10px; }
   .path-row:last-child { border-bottom: none; }
-
   .path-chain { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
-
-  .path-node {
-    background: rgba(28,26,20,0.06);
-    border: 0.5px solid var(--border-strong);
-    padding: 2px 6px;
-    border-radius: 1px;
-    font-size: 9px;
-    white-space: nowrap;
-  }
-
+  .path-node { background: rgba(26,21,32,0.06); border: 0.5px solid var(--border-strong); padding: 2px 6px; border-radius: 1px; font-size: 9px; white-space: nowrap; }
   .path-node.high { border-color: var(--crimson); color: var(--crimson); background: var(--crimson-dim); }
-  .path-node.med  { border-color: var(--gold); color: var(--gold); background: rgba(183,144,10,0.1); }
-  .path-node.low  { border-color: var(--teal); color: var(--teal); background: var(--teal-dim); }
-
+  .path-node.med  { border-color: var(--gold);    color: var(--gold);    background: rgba(138,92,199,0.08); }
+  .path-node.low  { border-color: var(--teal);    color: var(--teal);    background: var(--teal-dim); }
   .path-arrow { font-size: 8px; color: var(--text-ghost); }
-
-  .path-metric { font-size: 9px; font-weight: 600; text-align: right; white-space: nowrap; }
-  .path-metric.danger { color: var(--crimson); }
+  .path-metric         { font-size: 9px; font-weight: 600; text-align: right; white-space: nowrap; }
+  .path-metric.danger  { color: var(--crimson); }
   .path-metric.caution { color: var(--gold); }
-  .path-metric.safe { color: var(--teal); }
-
-  /* ── MEMORY BAR ── */
+  .path-metric.safe    { color: var(--teal); }
   .memory-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
   .memory-bar-label { font-size: 9px; color: var(--text-muted); width: 100px; flex-shrink: 0; letter-spacing: 0.04em; }
-  .memory-bar-track { flex: 1; height: 4px; background: rgba(28,26,20,0.08); border-radius: 0; overflow: hidden; position: relative; }
+  .memory-bar-track { flex: 1; height: 4px; background: rgba(26,21,32,0.08); border-radius: 0; overflow: hidden; }
   .memory-bar-fill { height: 100%; transition: width 1.4s cubic-bezier(0.16,1,0.3,1); }
   .memory-bar-fill.crimson { background: var(--crimson); }
-  .memory-bar-fill.teal { background: var(--teal); }
-  .memory-bar-fill.gold { background: var(--gold); }
+  .memory-bar-fill.teal    { background: var(--teal); }
+  .memory-bar-fill.gold    { background: var(--gold); }
   .memory-bar-value { font-size: 9px; font-weight: 700; color: var(--text-secondary); width: 32px; text-align: right; flex-shrink: 0; }
-
-  /* ── FORMULA BLOCK ── */
-  .formula-block {
-    background: rgba(28,26,20,0.04);
-    border: 0.5px solid var(--border);
-    border-left: 2px solid var(--teal);
-    padding: 12px 14px;
-    margin: 10px 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--text-secondary);
-    line-height: 1.8;
-  }
-
+  .formula-block { background: rgba(26,21,32,0.04); border: 0.5px solid var(--border); border-left: 2px solid var(--teal); padding: 12px 14px; margin: 10px 0; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-secondary); line-height: 1.8; }
   .formula-highlight { color: var(--crimson); font-weight: 700; }
-  .formula-var { color: var(--teal); }
-  .formula-comment { color: var(--text-ghost); font-style: italic; }
-
-  /* ── LOG ── */
+  .formula-var       { color: var(--teal); }
+  .formula-comment   { color: var(--text-ghost); font-style: italic; }
   .log-entry { display: flex; gap: 12px; padding: 10px 0; border-bottom: 0.5px dotted var(--border); font-size: 10px; }
   .log-entry:last-child { border-bottom: none; }
   .log-time { color: var(--text-ghost); width: 72px; flex-shrink: 0; letter-spacing: 0.04em; padding-top: 1px; }
   .log-type { width: 52px; flex-shrink: 0; padding-top: 1px; }
   .log-type span { font-size: 7px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; padding: 2px 5px; border-radius: 1px; }
-  .log-type .obs { background: var(--teal-dim); color: var(--teal); }
-  .log-type .pat { background: var(--crimson-dim); color: var(--crimson); }
-  .log-type .mut { background: rgba(183,144,10,0.12); color: var(--gold); }
+  .log-type .obs { background: var(--teal-dim);           color: var(--teal); }
+  .log-type .pat { background: var(--crimson-dim);         color: var(--crimson); }
+  .log-type .mut { background: rgba(138,92,199,0.10);      color: var(--gold); }
   .log-msg { flex: 1; color: var(--text-secondary); line-height: 1.5; letter-spacing: 0.02em; }
-
-  /* ── PROPOSAL CARD ── */
-  .proposal-card {
-    background: rgba(183,144,10,0.06);
-    border: 0.5px solid var(--gold);
-    border-radius: 1px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .proposal-card::after {
-    content: 'AWAITING APPROVAL';
-    position: absolute;
-    top: 12px;
-    right: -20px;
-    font-size: 7px;
-    letter-spacing: 0.2em;
-    font-weight: 700;
-    color: var(--gold);
-    background: rgba(183,144,10,0.12);
-    padding: 3px 32px;
-    transform: rotate(30deg);
-    border-top: 0.5px solid var(--gold);
-    border-bottom: 0.5px solid var(--gold);
-  }
-
-  .proposal-id { font-size: 8px; letter-spacing: 0.14em; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
+  .proposal-card { background: rgba(138,92,199,0.06); border: 0.5px solid var(--gold); border-radius: 1px; padding: 14px 16px; margin-bottom: 10px; position: relative; overflow: hidden; }
+  .proposal-card::after { content: 'AWAITING APPROVAL'; position: absolute; top: 12px; right: -20px; font-size: 7px; letter-spacing: 0.2em; font-weight: 700; color: var(--gold); background: rgba(138,92,199,0.10); padding: 3px 32px; transform: rotate(30deg); border-top: 0.5px solid var(--gold); border-bottom: 0.5px solid var(--gold); }
+  .proposal-id    { font-size: 8px; letter-spacing: 0.14em; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
   .proposal-title { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 5px; }
-  .proposal-desc { font-size: 10px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 10px; }
+  .proposal-desc  { font-size: 10px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 10px; }
   .proposal-metrics { display: flex; gap: 16px; }
-  .proposal-metric { font-size: 9px; color: var(--text-muted); }
+  .proposal-metric  { font-size: 9px; color: var(--text-muted); }
   .proposal-metric strong { color: var(--teal); font-weight: 700; }
-
-  /* ── SECTION DIVIDER ── */
   .section-divider { display: flex; align-items: center; gap: 14px; margin: 28px 0 20px; }
-  .section-divider-line { flex: 1; height: 0.5px; background: var(--border-strong); }
+  .section-divider-line  { flex: 1; height: 0.5px; background: var(--border-strong); }
   .section-divider-label { font-size: 8px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--text-muted); white-space: nowrap; font-weight: 500; }
-
-  /* ── COMPARE TABLE ── */
   .compare-table { width: 100%; border-collapse: collapse; font-size: 10px; }
   .compare-table th { font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); padding: 8px 10px; border-bottom: 1px solid var(--border-strong); text-align: left; font-weight: 600; }
   .compare-table td { padding: 9px 10px; border-bottom: 0.5px dotted var(--border); color: var(--text-secondary); vertical-align: top; line-height: 1.4; }
   .compare-table tr:last-child td { border-bottom: none; }
   .compare-table .cap-col { font-weight: 500; color: var(--text-primary); font-size: 10px; }
-  .chk { color: var(--teal); font-weight: 700; font-size: 11px; }
-  .cross { color: var(--border-strong); font-size: 11px; }
-  .partial { color: var(--gold); font-weight: 700; font-size: 9px; letter-spacing: 0.06em; }
+  .chk      { color: var(--teal);    font-weight: 700; font-size: 11px; }
+  .cross    { color: var(--border-strong); font-size: 11px; }
+  .partial  { color: var(--gold);    font-weight: 700; font-size: 9px; letter-spacing: 0.06em; }
   .this-sys { color: var(--crimson); font-weight: 700; font-size: 11px; }
-
-  /* ── ANNOTATION ── */
-  .annotation {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 11px;
-    font-style: italic;
-    color: var(--text-muted);
-    border-left: 1.5px solid var(--crimson);
-    padding-left: 10px;
-    margin: 10px 0;
-    line-height: 1.6;
-  }
-
-  /* ── ARCH LAYER ── */
-  .arch-layer { border:0.5px solid var(--border-strong); border-top:2px solid; padding:10px 8px; background:rgba(242,238,228,0.7); display:flex; flex-direction:column; gap:4px; min-width:0; }
-  .arch-layer-num { font-size:8px; font-weight:700; color:var(--text-ghost); letter-spacing:0.1em; }
-  .arch-layer-name { font-family:'Playfair Display',serif; font-size:11px; font-weight:700; color:var(--text-primary); line-height:1.2; }
-  .arch-layer-desc { font-size:8px; color:var(--text-muted); line-height:1.5; letter-spacing:0.02em; }
-  .arch-arrow { display:flex; align-items:center; justify-content:center; color:var(--text-ghost); font-size:14px; padding:0 2px; flex-shrink:0; }
-
-  /* ── MODULE DIR ── */
-  .mod-row { display:grid; grid-template-columns:90px 1fr auto; gap:8px; align-items:start; padding:5px 0; border-bottom:0.5px dotted var(--border); }
-  .mod-row:last-child { border-bottom:none; }
-  .mod-path { font-family:'JetBrains Mono',monospace; color:var(--teal); font-weight:600; font-size:8px; padding-top:1px; white-space:nowrap; }
-  .mod-file { color:var(--text-muted); font-size:8px; line-height:1.5; }
-  .mod-badge { font-size:7px; font-weight:700; letter-spacing:0.1em; padding:2px 5px; white-space:nowrap; border-radius:1px; align-self:start; }
-  .mod-badge.done { background:var(--teal-dim); color:var(--teal); border:0.5px solid var(--teal); }
-  .mod-badge.wip { background:rgba(183,144,10,0.12); color:var(--gold); border:0.5px solid var(--gold); }
-
-  /* ── SCROLLBAR ── */
+  .annotation { font-family: 'Cormorant Garamond', serif; font-size: 11px; font-style: italic; color: var(--text-muted); border-left: 1.5px solid var(--crimson); padding-left: 10px; margin: 10px 0; line-height: 1.6; }
+  .arch-layer { border: 0.5px solid var(--border-strong); border-top: 2px solid; padding: 10px 8px; background: rgba(244,240,232,0.7); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .arch-layer-num  { font-size: 8px; font-weight: 700; color: var(--text-ghost); letter-spacing: 0.1em; }
+  .arch-layer-name { font-family: 'Playfair Display', serif; font-size: 11px; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
+  .arch-layer-desc { font-size: 8px; color: var(--text-muted); line-height: 1.5; letter-spacing: 0.02em; }
+  .arch-arrow { display: flex; align-items: center; justify-content: center; color: var(--text-ghost); font-size: 14px; padding: 0 2px; flex-shrink: 0; }
+  .mod-row { display: grid; grid-template-columns: 90px 1fr auto; gap: 8px; align-items: start; padding: 5px 0; border-bottom: 0.5px dotted var(--border); }
+  .mod-row:last-child { border-bottom: none; }
+  .mod-path  { font-family: 'JetBrains Mono', monospace; color: var(--teal); font-weight: 600; font-size: 8px; padding-top: 1px; white-space: nowrap; }
+  .mod-file  { color: var(--text-muted); font-size: 8px; line-height: 1.5; }
+  .mod-badge { font-size: 7px; font-weight: 700; letter-spacing: 0.1em; padding: 2px 5px; white-space: nowrap; border-radius: 1px; align-self: start; }
+  .mod-badge.done { background: var(--teal-dim);          color: var(--teal); border: 0.5px solid var(--teal); }
+  .mod-badge.wip  { background: rgba(138,92,199,0.10);    color: var(--gold); border: 0.5px solid var(--gold); }
   ::-webkit-scrollbar { width: 4px; height: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 0; }
-
   canvas { display: block; }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
   .card, .metric-card { animation: fadeUp 0.6s ease forwards; }
-
-  /* ── FOOTER ── */
-  .footer {
-    border-top: 1px solid var(--ink);
-    padding-top: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 40px;
-  }
-
-  .footer-left { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; font-style: italic; color: var(--crimson); opacity: 0.3; }
+  .footer { border-top: 1px solid var(--ink); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
+  .footer-left  { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; font-style: italic; color: var(--crimson); opacity: 0.3; }
   .footer-right { font-size: 8px; letter-spacing: 0.14em; color: var(--text-ghost); text-align: right; line-height: 1.8; }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 1100px) {
-    .grid-main { grid-template-columns: 1fr; }
-    .grid-bottom { grid-template-columns: 1fr 1fr; }
-    .metric-row { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  @media (max-width: 700px) {
-    .page { padding: 0 16px 60px; }
-    .grid-bottom { grid-template-columns: 1fr; }
-    .grid-threat { grid-template-columns: 1fr; }
-    .metric-row { grid-template-columns: repeat(2, 1fr); }
-    .masthead-title { font-size: 40px; }
-    .github-fab { bottom: 16px; right: 16px; padding: 9px 14px 9px 12px; font-size: 9px; }
-  }
-</style>
-</head>
-<body>
+  @media (max-width: 1100px) { .grid-main { grid-template-columns: 1fr; } .grid-bottom { grid-template-columns: 1fr 1fr; } .metric-row { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 700px) { .page { padding: 0 16px 60px; } .grid-bottom { grid-template-columns: 1fr; } .grid-threat { grid-template-columns: 1fr; } .metric-row { grid-template-columns: repeat(2, 1fr); } .masthead-title { font-size: 40px; } .github-fab { bottom: 16px; right: 16px; padding: 9px 14px 9px 12px; font-size: 9px; } }
+</style> </head> <body>
 
 <!-- ─── GITHUB FAB ─── -->
 <a href="https://github.com/Tejaswanth2406/hollow-purple" target="_blank" rel="noopener" class="github-fab" title="View source on GitHub">
-  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
-  </svg>
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
   View on GitHub
 </a>
 
@@ -626,7 +185,7 @@
   <!-- ─── MASTHEAD ─── -->
   <header class="masthead">
     <div class="masthead-left">
-      <div class="masthead-eyebrow">Vol. I · Research Baseline · Canonical Document</div>
+      <div class="masthead-eyebrow">Vol. I · Completed Build · Canonical Document</div>
       <div class="masthead-title">HOLLOW&nbsp;<span class="hollow">PURPLE</span></div>
       <div class="masthead-subtitle">Adaptive Cloud Identity Architecture — Intelligence Dashboard</div>
       <div style="margin-top: 10px;">
@@ -638,11 +197,12 @@
     </div>
     <div class="masthead-right">
       <div class="masthead-meta">
-        PHASE&nbsp;&nbsp;<span class="highlight">1 / ACTIVE</span><br>
+        STATUS&nbsp;&nbsp;<span class="highlight">COMPLETE ✓</span><br>
         SYSTEM&nbsp;&nbsp;<span class="highlight">HOLLOW PURPLE</span><br>
-        LAYER&nbsp;&nbsp;&nbsp;<span class="highlight">COPY · DEFINED</span><br>
-        MAHORAGA&nbsp;<span class="highlight">FROZEN</span><br>
-        BUILD&nbsp;&nbsp;&nbsp;<span class="highlight">4 MONTHS · TESTED</span><br>
+        MAHORAGHA&nbsp;<span class="highlight">DEPLOYED</span><br>
+        KERNEL&nbsp;&nbsp;<span class="highlight">ACTIVE</span><br>
+        LANG&nbsp;&nbsp;&nbsp;&nbsp;<span class="highlight">PYTHON 93.6%</span><br>
+        BUILD&nbsp;&nbsp;&nbsp;<span class="highlight">5 COMMITS · TESTED</span><br>
         <br>
         <a href="https://github.com/Tejaswanth2406/hollow-purple" target="_blank" rel="noopener" class="github-link" style="justify-content:flex-end;">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
@@ -654,9 +214,10 @@
 
   <!-- ─── STATUS BAR ─── -->
   <div class="status-bar">
-    <span class="status-dot"><span class="dot active"></span>HOLLOW PURPLE · OBSERVING</span>
-    <span class="status-dot"><span class="dot frozen"></span>MAHORAGA · FROZEN</span>
-    <span class="status-dot"><span class="dot active"></span>COPY LAYER · ACCUMULATING</span>
+    <span class="status-dot"><span class="dot active"></span>HOLLOW PURPLE · DEPLOYED</span>
+    <span class="status-dot"><span class="dot active"></span>MAHORAGHA · ACTIVE</span>
+    <span class="status-dot"><span class="dot active"></span>KERNEL · RUNNING</span>
+    <span class="status-dot"><span class="dot active"></span>FRONTEND · COMPLETE</span>
     <span style="margin-left: auto; display: flex; align-items: center; gap: 16px;">
       READ-ONLY OBSERVATION &nbsp;·&nbsp; ADVISORY ONLY &nbsp;·&nbsp; NO AUTO-REMEDIATION
       &nbsp;&nbsp;
@@ -671,25 +232,25 @@
   <div class="metric-row">
     <div class="metric-card">
       <div class="metric-label">Identities Tracked</div>
-      <div class="metric-value teal" id="m1">2,847</div>
+      <div class="metric-value teal">2,847</div>
       <div class="metric-sub">across 3 cloud providers</div>
       <div class="metric-delta down">↓ 3.2%</div>
     </div>
     <div class="metric-card">
       <div class="metric-label">High-Priv Paths</div>
-      <div class="metric-value crimson" id="m2">143</div>
+      <div class="metric-value crimson">143</div>
       <div class="metric-sub">reachable admin-equiv paths</div>
       <div class="metric-delta up">↑ 12</div>
     </div>
     <div class="metric-card">
       <div class="metric-label">Patterns Stored</div>
-      <div class="metric-value" id="m3">61</div>
+      <div class="metric-value">61</div>
       <div class="metric-sub">in copy layer memory</div>
       <div class="metric-delta down">+7 this cycle</div>
     </div>
     <div class="metric-card">
       <div class="metric-label">Gini Coefficient</div>
-      <div class="metric-value gold" id="m4">0.74</div>
+      <div class="metric-value gold">0.74</div>
       <div class="metric-sub">privilege concentration</div>
       <div class="metric-delta up">↑ high risk</div>
     </div>
@@ -707,189 +268,80 @@
           <canvas id="identity-graph"></canvas>
         </div>
         <div style="display:flex; gap: 20px; margin-top: 10px; flex-wrap: wrap;">
-          <span style="font-size:8px; color: var(--text-muted); display:flex; align-items:center; gap:5px;">
-            <span style="width:10px;height:2px;background:var(--crimson);display:inline-block;"></span> High-privilege path
-          </span>
-          <span style="font-size:8px; color: var(--text-muted); display:flex; align-items:center; gap:5px;">
-            <span style="width:10px;height:2px;background:var(--teal);display:inline-block;"></span> Lateral movement
-          </span>
-          <span style="font-size:8px; color: var(--text-muted); display:flex; align-items:center; gap:5px;">
-            <span style="width:10px;height:10px;border-radius:50%;background:var(--crimson);display:inline-block;opacity:0.8;"></span> Identity node
-          </span>
-          <span style="font-size:8px; color: var(--text-muted); display:flex; align-items:center; gap:5px;">
-            <span style="width:10px;height:10px;border-radius:0;background:var(--teal);display:inline-block;opacity:0.7;transform:rotate(45deg);"></span> Resource node
-          </span>
+          <span style="font-size:8px; color: var(--text-muted); display:flex; align-items:center; gap:5px;"><span style="width:10px;height:2px;background:var(--crimson);display:inline-block;"></span> High-privilege path</span>
+          <span style="font-size:8px; color: var(--text-muted); display:flex; align-items:center; gap:5px;"><span style="width:10px;height:2px;background:var(--teal);display:inline-block;"></span> Lateral movement</span>
+          <span style="font-size:8px; color: var(--text-muted); display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--crimson);display:inline-block;opacity:0.8;"></span> Identity node</span>
+          <span style="font-size:8px; color: var(--text-muted); display:flex; align-items:center; gap:5px;"><span style="width:10px;height:10px;background:var(--teal);display:inline-block;opacity:0.7;transform:rotate(45deg);"></span> Resource node</span>
         </div>
       </div>
 
-      <!-- Detected Paths -->
-      <div class="card none" style="border-left: none; border-top: 2px solid var(--ink); border-radius: 0; background: rgba(242,238,228,0.6);">
+      <div class="card none" style="border-left: none; border-top: 2px solid var(--ink); border-radius: 0; background: rgba(244,240,232,0.6);">
         <div class="card-label" style="margin-bottom: 14px;">Detected High-Risk Identity Paths — Graph Traversal Output</div>
-
         <div class="path-row" style="font-size:8px; color: var(--text-ghost); letter-spacing: 0.12em; text-transform: uppercase; padding-bottom: 6px; border-bottom: 1px solid var(--border-strong);">
-          <span>Path Chain</span>
-          <span>Gradient</span>
-          <span>Spread</span>
-          <span>Confidence</span>
+          <span>Path Chain</span><span>Gradient</span><span>Spread</span><span>Confidence</span>
         </div>
-
         <div class="path-row">
-          <div class="path-chain">
-            <span class="path-node low">svc-acct-04</span>
-            <span class="path-arrow">→</span>
-            <span class="path-node med">roles/editor</span>
-            <span class="path-arrow">→</span>
-            <span class="path-node high">iam.admin</span>
-          </div>
-          <span class="path-metric danger">+6.2</span>
-          <span class="path-metric danger">0.91</span>
-          <span class="path-metric danger">0.88</span>
+          <div class="path-chain"><span class="path-node low">svc-acct-04</span><span class="path-arrow">→</span><span class="path-node med">roles/editor</span><span class="path-arrow">→</span><span class="path-node high">iam.admin</span></div>
+          <span class="path-metric danger">+6.2</span><span class="path-metric danger">0.91</span><span class="path-metric danger">0.88</span>
         </div>
-
         <div class="path-row">
-          <div class="path-chain">
-            <span class="path-node low">ci-runner-12</span>
-            <span class="path-arrow">→</span>
-            <span class="path-node med">AssumeRole</span>
-            <span class="path-arrow">→</span>
-            <span class="path-node high">AdministratorAccess</span>
-          </div>
-          <span class="path-metric danger">+5.8</span>
-          <span class="path-metric caution">0.74</span>
-          <span class="path-metric danger">0.84</span>
+          <div class="path-chain"><span class="path-node low">ci-runner-12</span><span class="path-arrow">→</span><span class="path-node med">AssumeRole</span><span class="path-arrow">→</span><span class="path-node high">AdministratorAccess</span></div>
+          <span class="path-metric danger">+5.8</span><span class="path-metric caution">0.74</span><span class="path-metric danger">0.84</span>
         </div>
-
         <div class="path-row">
-          <div class="path-chain">
-            <span class="path-node low">dev-user-77</span>
-            <span class="path-arrow">→</span>
-            <span class="path-node low">storage.viewer</span>
-            <span class="path-arrow">→</span>
-            <span class="path-node med">storage.admin</span>
-          </div>
-          <span class="path-metric caution">+3.1</span>
-          <span class="path-metric caution">0.63</span>
-          <span class="path-metric caution">0.71</span>
+          <div class="path-chain"><span class="path-node low">dev-user-77</span><span class="path-arrow">→</span><span class="path-node low">storage.viewer</span><span class="path-arrow">→</span><span class="path-node med">storage.admin</span></div>
+          <span class="path-metric caution">+3.1</span><span class="path-metric caution">0.63</span><span class="path-metric caution">0.71</span>
         </div>
-
         <div class="path-row">
-          <div class="path-chain">
-            <span class="path-node low">batch-proc-02</span>
-            <span class="path-arrow">→</span>
-            <span class="path-node med">sts:AssumeRole</span>
-            <span class="path-arrow">→</span>
-            <span class="path-node med">ec2:*</span>
-          </div>
-          <span class="path-metric caution">+2.9</span>
-          <span class="path-metric safe">0.41</span>
-          <span class="path-metric caution">0.66</span>
+          <div class="path-chain"><span class="path-node low">batch-proc-02</span><span class="path-arrow">→</span><span class="path-node med">sts:AssumeRole</span><span class="path-arrow">→</span><span class="path-node med">ec2:*</span></div>
+          <span class="path-metric caution">+2.9</span><span class="path-metric safe">0.41</span><span class="path-metric caution">0.66</span>
         </div>
-
         <div class="path-row">
-          <div class="path-chain">
-            <span class="path-node low">webhook-svc</span>
-            <span class="path-arrow">→</span>
-            <span class="path-node low">pubsub.publisher</span>
-            <span class="path-arrow">→</span>
-            <span class="path-node low">logging.viewer</span>
-          </div>
-          <span class="path-metric safe">+0.8</span>
-          <span class="path-metric safe">0.22</span>
-          <span class="path-metric safe">0.52</span>
+          <div class="path-chain"><span class="path-node low">webhook-svc</span><span class="path-arrow">→</span><span class="path-node low">pubsub.publisher</span><span class="path-arrow">→</span><span class="path-node low">logging.viewer</span></div>
+          <span class="path-metric safe">+0.8</span><span class="path-metric safe">0.22</span><span class="path-metric safe">0.52</span>
         </div>
       </div>
     </div>
 
     <!-- RIGHT: System Architecture -->
     <div style="display: flex; flex-direction: column; gap: 20px;">
-
       <div class="card crimson">
         <div class="card-label">System Architecture — Three-Phase Model</div>
-
         <div class="phase-block">
-          <div class="phase-header">
-            <span class="phase-name">Hollow Purple</span>
-            <span class="phase-badge active">Phase 1 · Active</span>
-          </div>
+          <div class="phase-header"><span class="phase-name">Hollow Purple</span><span class="phase-badge active">Phase 1 · Active</span></div>
           <div class="phase-desc">Tactical behavioral intelligence. Observes control-plane activity, models identity-resource interactions as temporal graphs. Detects gradual permission expansion, identity hopping, reach growth. Outputs <em>behavioral patterns</em>, not alerts.</div>
         </div>
-
         <div class="phase-block">
-          <div class="phase-header">
-            <span class="phase-name">Copy Layer</span>
-            <span class="phase-badge defined">Bridge · Defined</span>
-          </div>
+          <div class="phase-header"><span class="phase-name">Copy Layer</span><span class="phase-badge done">Bridge · Complete</span></div>
           <div class="phase-desc">Evolutionary memory. Stores reusable behavior and path patterns. Preserves system failures, near-misses, blind spots. Abstracts events into shapes and sequences.</div>
         </div>
-
         <div class="phase-block">
-          <div class="phase-header">
-            <span class="phase-name">Mahoraga</span>
-            <span class="phase-badge frozen">Phase 2 · Frozen</span>
-          </div>
-          <div class="phase-desc">Strategic architectural adaptation. Consumes patterns from Hollow Purple, proposes architecture-level mutations. Requires architect approval. <em>Moves the walls — doesn't chase the intruder.</em></div>
+          <div class="phase-header"><span class="phase-name">MAHORAGHA</span><span class="phase-badge active">Phase 2 · Deployed</span></div>
+          <div class="phase-desc">Strategic architectural adaptation with Merkle-based integrity verification. Consumes patterns from Hollow Purple, proposes architecture-level mutations. Requires architect approval. <em>Moves the walls — doesn't chase the intruder.</em></div>
         </div>
-
-        <div class="annotation">
-          "Attackers explore a maze. Hollow Purple watches the movement. Mahoraga moves the walls."
-        </div>
+        <div class="annotation">"Attackers explore a maze. Hollow Purple watches the movement. MAHORAGHA moves the walls."</div>
       </div>
 
       <div class="card teal">
         <div class="card-label">Copy Layer — Pattern Memory Accumulation</div>
-
-        <div class="memory-bar">
-          <span class="memory-bar-label">Priv. Escalation</span>
-          <div class="memory-bar-track"><div class="memory-bar-fill crimson" style="width:0%" data-target="78%"></div></div>
-          <span class="memory-bar-value">78%</span>
-        </div>
-        <div class="memory-bar">
-          <span class="memory-bar-label">Lateral Movement</span>
-          <div class="memory-bar-track"><div class="memory-bar-fill gold" style="width:0%" data-target="54%"></div></div>
-          <span class="memory-bar-value">54%</span>
-        </div>
-        <div class="memory-bar">
-          <span class="memory-bar-label">Token Abuse</span>
-          <div class="memory-bar-track"><div class="memory-bar-fill crimson" style="width:0%" data-target="61%"></div></div>
-          <span class="memory-bar-value">61%</span>
-        </div>
-        <div class="memory-bar">
-          <span class="memory-bar-label">Dormant Identity</span>
-          <div class="memory-bar-track"><div class="memory-bar-fill teal" style="width:0%" data-target="33%"></div></div>
-          <span class="memory-bar-value">33%</span>
-        </div>
-        <div class="memory-bar">
-          <span class="memory-bar-label">Rare Access</span>
-          <div class="memory-bar-track"><div class="memory-bar-fill teal" style="width:0%" data-target="21%"></div></div>
-          <span class="memory-bar-value">21%</span>
-        </div>
-
-        <div style="margin-top: 12px; padding-top: 10px; border-top: 0.5px dotted var(--border); font-size: 9px; color: var(--text-muted); letter-spacing: 0.04em; line-height: 1.7;">
-          4-Criteria Gate: Structural Isomorphism · Directional Privilege Gradient · Temporal Persistence (N≥3) · Context Independence
-        </div>
+        <div class="memory-bar"><span class="memory-bar-label">Priv. Escalation</span><div class="memory-bar-track"><div class="memory-bar-fill crimson" style="width:0%" data-target="78%"></div></div><span class="memory-bar-value">78%</span></div>
+        <div class="memory-bar"><span class="memory-bar-label">Lateral Movement</span><div class="memory-bar-track"><div class="memory-bar-fill gold" style="width:0%" data-target="54%"></div></div><span class="memory-bar-value">54%</span></div>
+        <div class="memory-bar"><span class="memory-bar-label">Token Abuse</span><div class="memory-bar-track"><div class="memory-bar-fill crimson" style="width:0%" data-target="61%"></div></div><span class="memory-bar-value">61%</span></div>
+        <div class="memory-bar"><span class="memory-bar-label">Dormant Identity</span><div class="memory-bar-track"><div class="memory-bar-fill teal" style="width:0%" data-target="33%"></div></div><span class="memory-bar-value">33%</span></div>
+        <div class="memory-bar"><span class="memory-bar-label">Rare Access</span><div class="memory-bar-track"><div class="memory-bar-fill teal" style="width:0%" data-target="21%"></div></div><span class="memory-bar-value">21%</span></div>
+        <div style="margin-top: 12px; padding-top: 10px; border-top: 0.5px dotted var(--border); font-size: 9px; color: var(--text-muted); letter-spacing: 0.04em; line-height: 1.7;">4-Criteria Gate: Structural Isomorphism · Directional Privilege Gradient · Temporal Persistence (N≥3) · Context Independence</div>
       </div>
 
       <div class="card gold">
         <div class="card-label">Safety Governance — Hard Rules</div>
         <div style="display: flex; flex-direction: column; gap: 7px;">
-          <div style="display:flex; gap:8px; align-items:center; font-size:10px; color: var(--text-secondary);">
-            <span style="color:var(--teal); font-weight:700; font-size:12px;">✓</span> Read-only observation only
-          </div>
-          <div style="display:flex; gap:8px; align-items:center; font-size:10px; color: var(--text-secondary);">
-            <span style="color:var(--teal); font-weight:700; font-size:12px;">✓</span> Advisory output — no auto-apply
-          </div>
-          <div style="display:flex; gap:8px; align-items:center; font-size:10px; color: var(--text-secondary);">
-            <span style="color:var(--teal); font-weight:700; font-size:12px;">✓</span> N≥3 observations required for pattern
-          </div>
-          <div style="display:flex; gap:8px; align-items:center; font-size:10px; color: var(--text-secondary);">
-            <span style="color:var(--teal); font-weight:700; font-size:12px;">✓</span> Full auditability at every step
-          </div>
-          <div style="display:flex; gap:8px; align-items:center; font-size:10px; color: var(--text-secondary);">
-            <span style="color:var(--teal); font-weight:700; font-size:12px;">✓</span> Explicit human authority gate
-          </div>
-          <div style="display:flex; gap:8px; align-items:center; font-size:10px; color: var(--text-secondary);">
-            <span style="color:var(--teal); font-weight:700; font-size:12px;">✓</span> Zero production mutation risk
-          </div>
+          <div style="display:flex; gap:8px; align-items:center; font-size:10px; color: var(--text-secondary);"><span style="color:var(--teal); font-weight:700; font-size:12px;">✓</span> Read-only observation only</div>
+          <div style="display:flex; gap:8px; align-items:center; font-size:10px; color: var(--text-secondary);"><span style="color:var(--teal); font-weight:700; font-size:12px;">✓</span> Advisory output — no auto-apply</div>
+          <div style="display:flex; gap:8px; align-items:center; font-size:10px; color: var(--text-secondary);"><span style="color:var(--teal); font-weight:700; font-size:12px;">✓</span> N≥3 observations required for pattern</div>
+          <div style="display:flex; gap:8px; align-items:center; font-size:10px; color: var(--text-secondary);"><span style="color:var(--teal); font-weight:700; font-size:12px;">✓</span> Full auditability at every step</div>
+          <div style="display:flex; gap:8px; align-items:center; font-size:10px; color: var(--text-secondary);"><span style="color:var(--teal); font-weight:700; font-size:12px;">✓</span> Explicit human authority gate</div>
+          <div style="display:flex; gap:8px; align-items:center; font-size:10px; color: var(--text-secondary);"><span style="color:var(--teal); font-weight:700; font-size:12px;">✓</span> Zero production mutation risk</div>
+          <div style="display:flex; gap:8px; align-items:center; font-size:10px; color: var(--text-secondary);"><span style="color:var(--teal); font-weight:700; font-size:12px;">✓</span> Merkle-chained tamper evidence</div>
         </div>
       </div>
     </div>
@@ -897,206 +349,51 @@
 
   <!-- ─── PATTERNS + FORMULA + LOG ─── -->
   <div class="grid-bottom">
-
     <div class="card neutral">
       <div class="card-label">Active Pattern Feed — Behavioral Intelligence</div>
-
-      <div class="pattern-item">
-        <div class="pattern-icon esc">PE</div>
-        <div>
-          <div class="pattern-name">H2S_privilege_bridge_v2</div>
-          <div class="pattern-meta">GCP · 7 observations · 5 identities · control-plane</div>
-        </div>
-        <div>
-          <div class="pattern-score">0.84</div>
-          <div style="font-size:8px;color:var(--text-muted);text-align:right">confidence</div>
-        </div>
-      </div>
-
-      <div class="pattern-item">
-        <div class="pattern-icon lat">LM</div>
-        <div>
-          <div class="pattern-name">cross_project_role_hop_v1</div>
-          <div class="pattern-meta">AWS · 4 observations · 3 identities · multi-region</div>
-        </div>
-        <div>
-          <div class="pattern-score warn">0.71</div>
-          <div style="font-size:8px;color:var(--text-muted);text-align:right">confidence</div>
-        </div>
-      </div>
-
-      <div class="pattern-item">
-        <div class="pattern-icon tok">TA</div>
-        <div>
-          <div class="pattern-name">sts_credential_chain_v3</div>
-          <div class="pattern-meta">AWS · 9 observations · 6 identities · assumed-roles</div>
-        </div>
-        <div>
-          <div class="pattern-score">0.91</div>
-          <div style="font-size:8px;color:var(--text-muted);text-align:right">confidence</div>
-        </div>
-      </div>
-
-      <div class="pattern-item">
-        <div class="pattern-icon dor">DI</div>
-        <div>
-          <div class="pattern-name">dormant_reactivation_v1</div>
-          <div class="pattern-meta">Azure · 3 observations · 3 identities · service principals</div>
-        </div>
-        <div>
-          <div class="pattern-score ok">0.58</div>
-          <div style="font-size:8px;color:var(--text-muted);text-align:right">confidence</div>
-        </div>
-      </div>
-
-      <div class="pattern-item">
-        <div class="pattern-icon esc">PE</div>
-        <div>
-          <div class="pattern-name">viewer_to_owner_drift_v1</div>
-          <div class="pattern-meta">GCP · 5 observations · 4 identities · storage buckets</div>
-        </div>
-        <div>
-          <div class="pattern-score warn">0.76</div>
-          <div style="font-size:8px;color:var(--text-muted);text-align:right">confidence</div>
-        </div>
-      </div>
+      <div class="pattern-item"><div class="pattern-icon esc">PE</div><div><div class="pattern-name">H2S_privilege_bridge_v2</div><div class="pattern-meta">GCP · 7 observations · 5 identities · control-plane</div></div><div><div class="pattern-score">0.84</div><div style="font-size:8px;color:var(--text-muted);text-align:right">confidence</div></div></div>
+      <div class="pattern-item"><div class="pattern-icon lat">LM</div><div><div class="pattern-name">cross_project_role_hop_v1</div><div class="pattern-meta">AWS · 4 observations · 3 identities · multi-region</div></div><div><div class="pattern-score warn">0.71</div><div style="font-size:8px;color:var(--text-muted);text-align:right">confidence</div></div></div>
+      <div class="pattern-item"><div class="pattern-icon tok">TA</div><div><div class="pattern-name">sts_credential_chain_v3</div><div class="pattern-meta">AWS · 9 observations · 6 identities · assumed-roles</div></div><div><div class="pattern-score">0.91</div><div style="font-size:8px;color:var(--text-muted);text-align:right">confidence</div></div></div>
+      <div class="pattern-item"><div class="pattern-icon dor">DI</div><div><div class="pattern-name">dormant_reactivation_v1</div><div class="pattern-meta">Azure · 3 observations · 3 identities · service principals</div></div><div><div class="pattern-score ok">0.58</div><div style="font-size:8px;color:var(--text-muted);text-align:right">confidence</div></div></div>
+      <div class="pattern-item"><div class="pattern-icon esc">PE</div><div><div class="pattern-name">viewer_to_owner_drift_v1</div><div class="pattern-meta">GCP · 5 observations · 4 identities · storage buckets</div></div><div><div class="pattern-score warn">0.76</div><div style="font-size:8px;color:var(--text-muted);text-align:right">confidence</div></div></div>
     </div>
 
     <div class="card crimson">
       <div class="card-label">Formal Metrics — Validated Measurement Layer</div>
-
-      <div style="margin-bottom: 14px;">
-        <div style="font-size:9px; color: var(--text-muted); margin-bottom: 4px; letter-spacing: 0.1em; text-transform: uppercase;">Temporal Spread Score</div>
-        <div class="formula-block">
-          <span class="formula-var">TS</span> = <span class="formula-highlight">(ΔPrivilege)</span> / log(<span class="formula-var">ΔTime</span>)
-          <br><span class="formula-comment">// fast escalation = high score; slow creep = detectable but dampened</span>
-        </div>
-      </div>
-
-      <div style="margin-bottom: 14px;">
-        <div style="font-size:9px; color: var(--text-muted); margin-bottom: 4px; letter-spacing: 0.1em; text-transform: uppercase;">Privilege Gradient</div>
-        <div class="formula-block">
-          <span class="formula-var">PG</span> = Σ[<span class="formula-highlight">L(nᵢ₊₁) - L(nᵢ)</span>]
-          <br><span class="formula-comment">// for path P = (n₁, n₂, …, nₖ) with privilege levels L</span>
-        </div>
-      </div>
-
+      <div style="margin-bottom: 14px;"><div style="font-size:9px; color: var(--text-muted); margin-bottom: 4px; letter-spacing: 0.1em; text-transform: uppercase;">Temporal Spread Score</div><div class="formula-block"><span class="formula-var">TS</span> = <span class="formula-highlight">(ΔPrivilege)</span> / log(<span class="formula-var">ΔTime</span>)<br><span class="formula-comment">// fast escalation = high score; slow creep = detectable but dampened</span></div></div>
+      <div style="margin-bottom: 14px;"><div style="font-size:9px; color: var(--text-muted); margin-bottom: 4px; letter-spacing: 0.1em; text-transform: uppercase;">Privilege Gradient</div><div class="formula-block"><span class="formula-var">PG</span> = Σ[<span class="formula-highlight">L(nᵢ₊₁) - L(nᵢ)</span>]<br><span class="formula-comment">// for path P = (n₁, n₂, …, nₖ) with privilege levels L</span></div></div>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px;">
-        <div style="background: rgba(28,26,20,0.04); border: 0.5px solid var(--border); padding: 10px;">
-          <div style="font-size:8px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 3px;">Reachability Reduction</div>
-          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--teal);">RR</div>
-          <div style="font-size:9px; color: var(--text-muted);">|reach_before| − |reach_after|</div>
-        </div>
-        <div style="background: rgba(28,26,20,0.04); border: 0.5px solid var(--border); padding: 10px;">
-          <div style="font-size:8px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 3px;">Mean Escalation Steps</div>
-          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--crimson);">MES</div>
-          <div style="font-size:9px; color: var(--text-muted);">avg hops to admin-equiv</div>
-        </div>
-        <div style="background: rgba(28,26,20,0.04); border: 0.5px solid var(--border); padding: 10px;">
-          <div style="font-size:8px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 3px;">Path Multiplicity</div>
-          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--gold);">PM</div>
-          <div style="font-size:9px; color: var(--text-muted);">distinct paths to admin roles</div>
-        </div>
-        <div style="background: rgba(28,26,20,0.04); border: 0.5px solid var(--border); padding: 10px;">
-          <div style="font-size:8px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 3px;">Gini Coefficient</div>
-          <div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--crimson);">0.74</div>
-          <div style="font-size:9px; color: var(--text-muted);">privilege concentration ∈ [0,1]</div>
-        </div>
+        <div style="background: rgba(26,21,32,0.04); border: 0.5px solid var(--border); padding: 10px;"><div style="font-size:8px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 3px;">Reachability Reduction</div><div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--teal);">RR</div><div style="font-size:9px; color: var(--text-muted);">|reach_before| − |reach_after|</div></div>
+        <div style="background: rgba(26,21,32,0.04); border: 0.5px solid var(--border); padding: 10px;"><div style="font-size:8px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 3px;">Mean Escalation Steps</div><div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--crimson);">MES</div><div style="font-size:9px; color: var(--text-muted);">avg hops to admin-equiv</div></div>
+        <div style="background: rgba(26,21,32,0.04); border: 0.5px solid var(--border); padding: 10px;"><div style="font-size:8px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 3px;">Path Multiplicity</div><div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--gold);">PM</div><div style="font-size:9px; color: var(--text-muted);">distinct paths to admin roles</div></div>
+        <div style="background: rgba(26,21,32,0.04); border: 0.5px solid var(--border); padding: 10px;"><div style="font-size:8px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 3px;">Gini Coefficient</div><div style="font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 900; color: var(--crimson);">0.74</div><div style="font-size:9px; color: var(--text-muted);">privilege concentration ∈ [0,1]</div></div>
       </div>
     </div>
 
     <div class="card neutral">
       <div class="card-label">Adaptation Log — Audit Trail</div>
-
-      <div class="log-entry">
-        <span class="log-time">09:14:32</span>
-        <span class="log-type"><span class="obs">OBS</span></span>
-        <span class="log-msg">Identity svc-acct-04 assumed roles/editor via workload identity federation. Privilege delta +3.</span>
-      </div>
-      <div class="log-entry">
-        <span class="log-time">09:18:07</span>
-        <span class="log-type"><span class="pat">PAT</span></span>
-        <span class="log-msg">Pattern H2S_privilege_bridge_v2 threshold reached (N=7). Forwarding to Copy Layer.</span>
-      </div>
-      <div class="log-entry">
-        <span class="log-time">09:22:45</span>
-        <span class="log-type"><span class="obs">OBS</span></span>
-        <span class="log-msg">ci-runner-12 triggered sts:AssumeRole on AdministratorAccess ARN. Temporal spread 0.91.</span>
-      </div>
-      <div class="log-entry">
-        <span class="log-time">09:31:18</span>
-        <span class="log-type"><span class="pat">PAT</span></span>
-        <span class="log-msg">sts_credential_chain_v3 confidence updated 0.87 → 0.91. 9th observation confirmed structural isomorphism.</span>
-      </div>
-      <div class="log-entry">
-        <span class="log-time">09:44:02</span>
-        <span class="log-type"><span class="mut">MUT</span></span>
-        <span class="log-msg">Mahoraga proposal MAH-003 generated. Awaiting architect approval. RR delta: −18 high-priv paths.</span>
-      </div>
-      <div class="log-entry">
-        <span class="log-time">10:01:55</span>
-        <span class="log-type"><span class="obs">OBS</span></span>
-        <span class="log-msg">Dormant identity az-sp-0091 reactivated after 47-day silence. Rare access pattern triggered.</span>
-      </div>
-      <div class="log-entry">
-        <span class="log-time">10:14:39</span>
-        <span class="log-type"><span class="pat">PAT</span></span>
-        <span class="log-msg">viewer_to_owner_drift_v1 context independence confirmed: observed across 3 GCP projects.</span>
-      </div>
+      <div class="log-entry"><span class="log-time">09:14:32</span><span class="log-type"><span class="obs">OBS</span></span><span class="log-msg">Identity svc-acct-04 assumed roles/editor via workload identity federation. Privilege delta +3.</span></div>
+      <div class="log-entry"><span class="log-time">09:18:07</span><span class="log-type"><span class="pat">PAT</span></span><span class="log-msg">Pattern H2S_privilege_bridge_v2 threshold reached (N=7). Forwarding to Copy Layer.</span></div>
+      <div class="log-entry"><span class="log-time">09:22:45</span><span class="log-type"><span class="obs">OBS</span></span><span class="log-msg">ci-runner-12 triggered sts:AssumeRole on AdministratorAccess ARN. Temporal spread 0.91.</span></div>
+      <div class="log-entry"><span class="log-time">09:31:18</span><span class="log-type"><span class="pat">PAT</span></span><span class="log-msg">sts_credential_chain_v3 confidence updated 0.87 → 0.91. 9th observation confirmed structural isomorphism.</span></div>
+      <div class="log-entry"><span class="log-time">09:44:02</span><span class="log-type"><span class="mut">MUT</span></span><span class="log-msg">MAHORAGHA proposal MAH-003 generated. Awaiting architect approval. RR delta: −18 high-priv paths.</span></div>
+      <div class="log-entry"><span class="log-time">10:01:55</span><span class="log-type"><span class="obs">OBS</span></span><span class="log-msg">Dormant identity az-sp-0091 reactivated after 47-day silence. Rare access pattern triggered.</span></div>
+      <div class="log-entry"><span class="log-time">10:14:39</span><span class="log-type"><span class="pat">PAT</span></span><span class="log-msg">viewer_to_owner_drift_v1 context independence confirmed: observed across 3 GCP projects.</span></div>
     </div>
   </div>
 
-  <!-- ─── MAHORAGA PROPOSALS ─── -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <div class="section-divider-label">Mahoraga — Architectural Mutation Proposals (Human-Gated)</div>
-    <div class="section-divider-line"></div>
-  </div>
-
+  <!-- ─── MAHORAGHA PROPOSALS ─── -->
+  <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-label">MAHORAGHA — Architectural Mutation Proposals (Human-Gated)</div><div class="section-divider-line"></div></div>
   <div class="grid-threat">
-    <div class="proposal-card">
-      <div class="proposal-id">MAH-003 · GCP IAM MUTATION · HIGH IMPACT</div>
-      <div class="proposal-title">Remove direct path: workload-identity → iam.admin via roles/editor</div>
-      <div class="proposal-desc">Pattern H2S_privilege_bridge_v2 has been observed 7 times across 5 distinct identities in 3 environments. The structural path through roles/editor acts as a privilege bridge to iam.admin. Recommended: insert intermediate binding with explicit iam.securityAdmin condition, removing the unbounded escalation hop.</div>
-      <div class="proposal-metrics">
-        <div class="proposal-metric">RR: <strong>−18 paths</strong></div>
-        <div class="proposal-metric">MES: <strong>+2 hops</strong></div>
-        <div class="proposal-metric">PM: <strong>−11 routes</strong></div>
-        <div class="proposal-metric">Confidence: <strong>0.84</strong></div>
-      </div>
-    </div>
-
-    <div class="proposal-card">
-      <div class="proposal-id">MAH-004 · AWS IAM MUTATION · MEDIUM IMPACT</div>
-      <div class="proposal-title">Scope sts:AssumeRole trust policy on ci-runner role to tagged environments only</div>
-      <div class="proposal-desc">Pattern sts_credential_chain_v3 shows CI runners assuming AdministratorAccess without environment scoping. 9 observations across 6 identities confirm context independence. Recommended: apply aws:PrincipalTag condition on trust policy, restricting assumption to ci-environment:staging only.</div>
-      <div class="proposal-metrics">
-        <div class="proposal-metric">RR: <strong>−9 paths</strong></div>
-        <div class="proposal-metric">MES: <strong>+1 hop</strong></div>
-        <div class="proposal-metric">PM: <strong>−6 routes</strong></div>
-        <div class="proposal-metric">Confidence: <strong>0.91</strong></div>
-      </div>
-    </div>
+    <div class="proposal-card"><div class="proposal-id">MAH-003 · GCP IAM MUTATION · HIGH IMPACT</div><div class="proposal-title">Remove direct path: workload-identity → iam.admin via roles/editor</div><div class="proposal-desc">Pattern H2S_privilege_bridge_v2 has been observed 7 times across 5 distinct identities in 3 environments. The structural path through roles/editor acts as a privilege bridge to iam.admin. Recommended: insert intermediate binding with explicit iam.securityAdmin condition, removing the unbounded escalation hop.</div><div class="proposal-metrics"><div class="proposal-metric">RR: <strong>−18 paths</strong></div><div class="proposal-metric">MES: <strong>+2 hops</strong></div><div class="proposal-metric">PM: <strong>−11 routes</strong></div><div class="proposal-metric">Confidence: <strong>0.84</strong></div></div></div>
+    <div class="proposal-card"><div class="proposal-id">MAH-004 · AWS IAM MUTATION · MEDIUM IMPACT</div><div class="proposal-title">Scope sts:AssumeRole trust policy on ci-runner role to tagged environments only</div><div class="proposal-desc">Pattern sts_credential_chain_v3 shows CI runners assuming AdministratorAccess without environment scoping. 9 observations across 6 identities confirm context independence. Recommended: apply aws:PrincipalTag condition on trust policy, restricting assumption to ci-environment:staging only.</div><div class="proposal-metrics"><div class="proposal-metric">RR: <strong>−9 paths</strong></div><div class="proposal-metric">MES: <strong>+1 hop</strong></div><div class="proposal-metric">PM: <strong>−6 routes</strong></div><div class="proposal-metric">Confidence: <strong>0.91</strong></div></div></div>
   </div>
 
   <!-- ─── COMPARISON TABLE ─── -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <div class="section-divider-label">Industry Capability Comparison</div>
-    <div class="section-divider-line"></div>
-  </div>
-
-  <div class="card none" style="border-top: 2px solid var(--ink); border-radius: 0; background: rgba(242,238,228,0.5);">
+  <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-label">Industry Capability Comparison</div><div class="section-divider-line"></div></div>
+  <div class="card none" style="border-top: 2px solid var(--ink); border-radius: 0; background: rgba(244,240,232,0.5);">
     <table class="compare-table">
-      <thead>
-        <tr>
-          <th>Capability</th>
-          <th>GuardDuty / SCC</th>
-          <th>UEBA</th>
-          <th>SIEM / XDR</th>
-          <th>Hollow Purple ★</th>
-        </tr>
-      </thead>
+      <thead><tr><th>Capability</th><th>GuardDuty / SCC</th><th>UEBA</th><th>SIEM / XDR</th><th>Hollow Purple ★</th></tr></thead>
       <tbody>
         <tr><td class="cap-col">IAM anomaly detection</td><td><span class="chk">✔</span></td><td><span class="chk">✔</span></td><td><span class="chk">✔</span></td><td><span class="this-sys">✔</span></td></tr>
         <tr><td class="cap-col">Graph-based modeling</td><td><span class="partial">PARTIAL</span></td><td><span class="partial">PARTIAL</span></td><td><span class="cross">✗</span></td><td><span class="this-sys">✔</span></td></tr>
@@ -1104,19 +401,16 @@
         <tr><td class="cap-col">Architecture mutation feedback</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="this-sys">✔</span></td></tr>
         <tr><td class="cap-col">Human-gated evolution</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="this-sys">✔</span></td></tr>
         <tr><td class="cap-col">Slow-path credential abuse detection</td><td><span class="cross">✗</span></td><td><span class="partial">PARTIAL</span></td><td><span class="cross">✗</span></td><td><span class="this-sys">✔</span></td></tr>
+        <tr><td class="cap-col">Merkle tamper-evident log</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="this-sys">✔</span></td></tr>
+        <tr><td class="cap-col">Deterministic state replay</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="this-sys">✔</span></td></tr>
         <tr><td class="cap-col">Zero production mutation risk</td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="cross">✗</span></td><td><span class="this-sys">✔</span></td></tr>
       </tbody>
     </table>
   </div>
 
   <!-- ─── SYSTEM ARCHITECTURE PIPELINE ─── -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <div class="section-divider-label">Full System Architecture — 9-Layer Intelligence Pipeline</div>
-    <div class="section-divider-line"></div>
-  </div>
-
-  <div class="card none" style="border-top:2px solid var(--ink);border-radius:0;background:rgba(242,238,228,0.5);margin-bottom:24px;overflow:visible;">
+  <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-label">Full System Architecture — 9-Layer Intelligence Pipeline</div><div class="section-divider-line"></div></div>
+  <div class="card none" style="border-top:2px solid var(--ink);border-radius:0;background:rgba(244,240,232,0.5);margin-bottom:24px;overflow:visible;">
     <div class="card-label" style="margin-bottom:16px;">Event Flow · From Ingestion to Adaptive Defense</div>
     <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr auto 1fr auto 1fr auto 1fr auto 1fr auto 1fr;gap:0;align-items:stretch;overflow-x:auto;">
       <div class="arch-layer" style="border-color:var(--text-muted);"><div class="arch-layer-num">01</div><div class="arch-layer-name">User / Analyst</div><div class="arch-layer-desc">SOC operator, security engineer, architect</div></div>
@@ -1127,7 +421,7 @@
       <div class="arch-arrow">→</div>
       <div class="arch-layer" style="border-color:var(--gold);"><div class="arch-layer-num">04</div><div class="arch-layer-name">Normalizer</div><div class="arch-layer-desc">Schema unification across cloud providers</div></div>
       <div class="arch-arrow">→</div>
-      <div class="arch-layer" style="border-color:var(--gold);"><div class="arch-layer-num">05</div><div class="arch-layer-name">Event Ledger</div><div class="arch-layer-desc">Immutable hash-chained append-only log</div></div>
+      <div class="arch-layer" style="border-color:var(--gold);"><div class="arch-layer-num">05</div><div class="arch-layer-name">Event Ledger</div><div class="arch-layer-desc">Immutable Merkle hash-chained append-only log</div></div>
       <div class="arch-arrow">→</div>
       <div class="arch-layer" style="border-color:var(--crimson);"><div class="arch-layer-num">06</div><div class="arch-layer-name">Graph Engine</div><div class="arch-layer-desc">Dynamic IAM temporal graph · k-hop subgraph</div></div>
       <div class="arch-arrow">→</div>
@@ -1135,217 +429,56 @@
       <div class="arch-arrow">→</div>
       <div class="arch-layer" style="border-color:var(--crimson);"><div class="arch-layer-num">08</div><div class="arch-layer-name">Replay Engine</div><div class="arch-layer-desc">Deterministic state reconstruction at any t</div></div>
       <div class="arch-arrow">→</div>
-      <div class="arch-layer" style="border-color:var(--gold);background:rgba(183,144,10,0.06);"><div class="arch-layer-num">09</div><div class="arch-layer-name">Mahoraga ADE</div><div class="arch-layer-desc">Adaptive defense · human-gated mutations</div></div>
+      <div class="arch-layer" style="border-color:var(--gold);background:rgba(138,92,199,0.05);"><div class="arch-layer-num">09</div><div class="arch-layer-name">MAHORAGHA ADE</div><div class="arch-layer-desc">Adaptive defense · human-gated mutations · Merkle verification</div></div>
     </div>
   </div>
 
   <!-- ─── FOUR PHASES ─── -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <div class="section-divider-label">Core Phases — Technical Deep Dive</div>
-    <div class="section-divider-line"></div>
-  </div>
-
+  <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-label">Core Phases — Technical Deep Dive</div><div class="section-divider-line"></div></div>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px;">
-
-    <div class="card crimson">
-      <div class="card-stamp">PHASE 1</div>
-      <div class="card-label">Event Ledger Foundation</div>
-      <div class="card-title" style="font-size:15px;margin-bottom:10px;">Immutable Tamper-Evident Log</div>
-      <div style="font-size:9px;color:var(--text-secondary);line-height:1.75;letter-spacing:0.03em;">Every event is hashed and chained to the previous entry. No event can be altered without breaking the entire chain — providing forensic traceability and deterministic replay capability.</div>
-      <div class="formula-block" style="margin-top:12px;font-size:9px;">
-        <span class="formula-comment">// Event structure</span><br>
-        <span class="formula-var">id</span> · <span class="formula-var">timestamp</span> · <span class="formula-var">actor</span><br>
-        <span class="formula-var">action</span> · <span class="formula-var">target</span> · <span class="formula-var">metadata</span><br>
-        <span class="formula-highlight">prev_hash</span> → <span class="formula-highlight">hash</span>
-      </div>
-      <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;">
-        <div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Tamper evidence</div>
-        <div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Forensic traceability</div>
-        <div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Deterministic replay</div>
-      </div>
-    </div>
-
-    <div class="card gold">
-      <div class="card-stamp">PHASE 2</div>
-      <div class="card-label">Behavioral Baseline Engine</div>
-      <div class="card-title" style="font-size:15px;margin-bottom:10px;">Normal Behavior Modeling</div>
-      <div style="font-size:9px;color:var(--text-secondary);line-height:1.75;letter-spacing:0.03em;">Sliding-window baseline modeling establishes what normal looks like per identity, resource, and time window. Deviations are scored and ranked by severity.</div>
-      <div class="formula-block" style="margin-top:12px;font-size:9px;">
-        <span class="formula-comment">// Metrics collected</span><br>
-        <span class="formula-var">path_count</span><br>
-        <span class="formula-var">identity_entropy</span><br>
-        <span class="formula-var">exposed_identity_%</span><br>
-        <span class="formula-var">event_rate</span> · <span class="formula-var">privilege_Δ</span>
-      </div>
-      <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;">
-        <div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Abnormal login detection</div>
-        <div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Lateral movement scoring</div>
-        <div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Privilege escalation signals</div>
-      </div>
-    </div>
-
-    <div class="card crimson">
-      <div class="card-stamp">PHASE 3</div>
-      <div class="card-label">Graph Intelligence Engine</div>
-      <div class="card-title" style="font-size:15px;margin-bottom:10px;">Dynamic System Graph</div>
-      <div style="font-size:9px;color:var(--text-secondary);line-height:1.75;letter-spacing:0.03em;">The entire infrastructure is modeled as a living graph. Nodes are entities; edges are relationships. Attack paths, blast radius, and privilege chains are computed via traversal.</div>
-      <div class="formula-block" style="margin-top:12px;font-size:9px;">
-        <span class="formula-comment">// Node types</span><br>
-        <span class="formula-var">Users · Processes · Files</span><br>
-        <span class="formula-var">Services · Machines · Secrets</span><br>
-        <span class="formula-comment">// Edge types</span><br>
-        <span class="formula-highlight">access · execute · modify</span><br>
-        <span class="formula-highlight">spawn · read_secret · connect</span>
-      </div>
-      <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;">
-        <div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Attack path detection</div>
-        <div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Blast radius analysis</div>
-        <div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Privilege chain detection</div>
-      </div>
-    </div>
-
-    <div class="card teal">
-      <div class="card-stamp">PHASE 4</div>
-      <div class="card-label">Deterministic Replay Engine</div>
-      <div class="card-title" style="font-size:15px;margin-bottom:10px;">Time-Travel Reconstruction</div>
-      <div style="font-size:9px;color:var(--text-secondary);line-height:1.75;letter-spacing:0.03em;">Reconstruct exact system state at any point in time by replaying the event ledger forward. Enables forensic analysis, timeline reconstruction, and attack simulation.</div>
-      <div class="formula-block" style="margin-top:12px;font-size:9px;">
-        <span class="formula-comment">// Replay call</span><br>
-        <span class="formula-highlight">replay</span>(<span class="formula-var">timestamp=T</span>)<br>
-        <span class="formula-comment">// Output</span><br>
-        <span class="formula-var">full system graph at T</span><br>
-        <span class="formula-var">all identity states at T</span>
-      </div>
-      <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;">
-        <div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Forensic timeline analysis</div>
-        <div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Attack simulation replay</div>
-        <div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Incident reconstruction</div>
-      </div>
-    </div>
+    <div class="card crimson"><div class="card-stamp">PHASE 1</div><div class="card-label">Event Ledger Foundation</div><div class="card-title" style="font-size:15px;margin-bottom:10px;">Immutable Tamper-Evident Log</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.75;letter-spacing:0.03em;">Every event is hashed and chained to the previous entry using Merkle trees. No event can be altered without breaking the entire chain — providing forensic traceability and deterministic replay capability.</div><div class="formula-block" style="margin-top:12px;font-size:9px;"><span class="formula-comment">// Event structure</span><br><span class="formula-var">id</span> · <span class="formula-var">timestamp</span> · <span class="formula-var">actor</span><br><span class="formula-var">action</span> · <span class="formula-var">target</span> · <span class="formula-var">metadata</span><br><span class="formula-highlight">prev_hash</span> → <span class="formula-highlight">merkle_hash</span></div><div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;"><div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Tamper evidence</div><div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Forensic traceability</div><div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Deterministic replay</div></div></div>
+    <div class="card gold"><div class="card-stamp">PHASE 2</div><div class="card-label">Behavioral Baseline Engine</div><div class="card-title" style="font-size:15px;margin-bottom:10px;">Normal Behavior Modeling</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.75;letter-spacing:0.03em;">Sliding-window baseline modeling establishes what normal looks like per identity, resource, and time window. Deviations are scored and ranked by severity. Baseline drift detector tracks entropy shifts.</div><div class="formula-block" style="margin-top:12px;font-size:9px;"><span class="formula-comment">// Metrics collected</span><br><span class="formula-var">path_count</span><br><span class="formula-var">identity_entropy</span><br><span class="formula-var">exposed_identity_%</span><br><span class="formula-var">event_rate</span> · <span class="formula-var">privilege_Δ</span></div><div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;"><div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Abnormal login detection</div><div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Lateral movement scoring</div><div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Baseline drift detection</div></div></div>
+    <div class="card crimson"><div class="card-stamp">PHASE 3</div><div class="card-label">Graph Intelligence Engine</div><div class="card-title" style="font-size:15px;margin-bottom:10px;">Dynamic System Graph</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.75;letter-spacing:0.03em;">The entire infrastructure is modeled as a living graph. Nodes are entities; edges are relationships. Attack paths, blast radius, and privilege chains are computed via traversal. Risk projections generated in real time.</div><div class="formula-block" style="margin-top:12px;font-size:9px;"><span class="formula-comment">// Node types</span><br><span class="formula-var">Users · Processes · Files</span><br><span class="formula-var">Services · Machines · Secrets</span><br><span class="formula-comment">// Edge types</span><br><span class="formula-highlight">access · execute · modify</span><br><span class="formula-highlight">spawn · read_secret · connect</span></div><div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;"><div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Attack path detection</div><div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Blast radius analysis</div><div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Risk projection scoring</div></div></div>
+    <div class="card teal"><div class="card-stamp">PHASE 4</div><div class="card-label">Deterministic Replay Engine</div><div class="card-title" style="font-size:15px;margin-bottom:10px;">Time-Travel Reconstruction</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.75;letter-spacing:0.03em;">Reconstruct exact system state at any point in time by replaying the event ledger forward. Audit verifier confirms integrity at each step. Enables forensic analysis, timeline reconstruction, and attack simulation.</div><div class="formula-block" style="margin-top:12px;font-size:9px;"><span class="formula-comment">// Replay call</span><br><span class="formula-highlight">replay</span>(<span class="formula-var">timestamp=T</span>)<br><span class="formula-comment">// Output</span><br><span class="formula-var">full system graph at T</span><br><span class="formula-var">all identity states at T</span></div><div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;"><div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Forensic timeline analysis</div><div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Audit verification</div><div style="font-size:9px;color:var(--teal);display:flex;gap:6px;"><span>✔</span> Incident reconstruction</div></div></div>
   </div>
 
   <!-- ─── CLOUD PROVIDER ─── -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <div class="section-divider-label">Cloud Provider Telemetry · Multi-Cloud Coverage</div>
-    <div class="section-divider-line"></div>
-  </div>
-
+  <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-label">Cloud Provider Telemetry · Multi-Cloud Coverage</div><div class="section-divider-line"></div></div>
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
-
-    <div class="card teal">
-      <div class="card-stamp">AWS</div>
-      <div class="card-label">Amazon Web Services</div>
-      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px;">
-        <span style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--teal);">1,204</span>
-        <span style="font-size:9px;color:var(--text-muted);">identities tracked</span>
-      </div>
-      <div class="memory-bar" style="margin-bottom:7px;"><span class="memory-bar-label">IAM Users</span><div class="memory-bar-track"><div class="memory-bar-fill teal" style="width:0%" data-target="71%"></div></div><span class="memory-bar-value">71%</span></div>
-      <div class="memory-bar" style="margin-bottom:7px;"><span class="memory-bar-label">Service Accts</span><div class="memory-bar-track"><div class="memory-bar-fill teal" style="width:0%" data-target="55%"></div></div><span class="memory-bar-value">55%</span></div>
-      <div class="memory-bar"><span class="memory-bar-label">Lambda Roles</span><div class="memory-bar-track"><div class="memory-bar-fill gold" style="width:0%" data-target="82%"></div></div><span class="memory-bar-value">82%</span></div>
-      <div style="margin-top:12px;padding-top:10px;border-top:0.5px dotted var(--border);font-size:9px;color:var(--text-muted);">Sources: CloudTrail · GuardDuty · Config · STS logs</div>
-    </div>
-
-    <div class="card crimson">
-      <div class="card-stamp">GCP</div>
-      <div class="card-label">Google Cloud Platform</div>
-      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px;">
-        <span style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--crimson);">987</span>
-        <span style="font-size:9px;color:var(--text-muted);">identities tracked</span>
-      </div>
-      <div class="memory-bar" style="margin-bottom:7px;"><span class="memory-bar-label">Service Accts</span><div class="memory-bar-track"><div class="memory-bar-fill crimson" style="width:0%" data-target="88%"></div></div><span class="memory-bar-value">88%</span></div>
-      <div class="memory-bar" style="margin-bottom:7px;"><span class="memory-bar-label">Workload ID</span><div class="memory-bar-track"><div class="memory-bar-fill crimson" style="width:0%" data-target="64%"></div></div><span class="memory-bar-value">64%</span></div>
-      <div class="memory-bar"><span class="memory-bar-label">IAM Bindings</span><div class="memory-bar-track"><div class="memory-bar-fill gold" style="width:0%" data-target="91%"></div></div><span class="memory-bar-value">91%</span></div>
-      <div style="margin-top:12px;padding-top:10px;border-top:0.5px dotted var(--border);font-size:9px;color:var(--text-muted);">Sources: Audit Logs · Cloud SCC · Pub/Sub · Asset Inventory</div>
-    </div>
-
-    <div class="card gold">
-      <div class="card-stamp">AZURE</div>
-      <div class="card-label">Microsoft Azure</div>
-      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px;">
-        <span style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--gold);">656</span>
-        <span style="font-size:9px;color:var(--text-muted);">identities tracked</span>
-      </div>
-      <div class="memory-bar" style="margin-bottom:7px;"><span class="memory-bar-label">Service Principals</span><div class="memory-bar-track"><div class="memory-bar-fill gold" style="width:0%" data-target="59%"></div></div><span class="memory-bar-value">59%</span></div>
-      <div class="memory-bar" style="margin-bottom:7px;"><span class="memory-bar-label">Managed Identities</span><div class="memory-bar-track"><div class="memory-bar-fill gold" style="width:0%" data-target="43%"></div></div><span class="memory-bar-value">43%</span></div>
-      <div class="memory-bar"><span class="memory-bar-label">RBAC Assignments</span><div class="memory-bar-track"><div class="memory-bar-fill crimson" style="width:0%" data-target="77%"></div></div><span class="memory-bar-value">77%</span></div>
-      <div style="margin-top:12px;padding-top:10px;border-top:0.5px dotted var(--border);font-size:9px;color:var(--text-muted);">Sources: Activity Logs · Entra ID · Defender · Monitor</div>
-    </div>
+    <div class="card teal"><div class="card-stamp">AWS</div><div class="card-label">Amazon Web Services</div><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px;"><span style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--teal);">1,204</span><span style="font-size:9px;color:var(--text-muted);">identities tracked</span></div><div class="memory-bar" style="margin-bottom:7px;"><span class="memory-bar-label">IAM Users</span><div class="memory-bar-track"><div class="memory-bar-fill teal" style="width:0%" data-target="71%"></div></div><span class="memory-bar-value">71%</span></div><div class="memory-bar" style="margin-bottom:7px;"><span class="memory-bar-label">Service Accts</span><div class="memory-bar-track"><div class="memory-bar-fill teal" style="width:0%" data-target="55%"></div></div><span class="memory-bar-value">55%</span></div><div class="memory-bar"><span class="memory-bar-label">Lambda Roles</span><div class="memory-bar-track"><div class="memory-bar-fill gold" style="width:0%" data-target="82%"></div></div><span class="memory-bar-value">82%</span></div><div style="margin-top:12px;padding-top:10px;border-top:0.5px dotted var(--border);font-size:9px;color:var(--text-muted);">Sources: CloudTrail · GuardDuty · Config · STS logs</div></div>
+    <div class="card crimson"><div class="card-stamp">GCP</div><div class="card-label">Google Cloud Platform</div><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px;"><span style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--crimson);">987</span><span style="font-size:9px;color:var(--text-muted);">identities tracked</span></div><div class="memory-bar" style="margin-bottom:7px;"><span class="memory-bar-label">Service Accts</span><div class="memory-bar-track"><div class="memory-bar-fill crimson" style="width:0%" data-target="88%"></div></div><span class="memory-bar-value">88%</span></div><div class="memory-bar" style="margin-bottom:7px;"><span class="memory-bar-label">Workload ID</span><div class="memory-bar-track"><div class="memory-bar-fill crimson" style="width:0%" data-target="64%"></div></div><span class="memory-bar-value">64%</span></div><div class="memory-bar"><span class="memory-bar-label">IAM Bindings</span><div class="memory-bar-track"><div class="memory-bar-fill gold" style="width:0%" data-target="91%"></div></div><span class="memory-bar-value">91%</span></div><div style="margin-top:12px;padding-top:10px;border-top:0.5px dotted var(--border);font-size:9px;color:var(--text-muted);">Sources: Audit Logs · Cloud SCC · Pub/Sub · Asset Inventory</div></div>
+    <div class="card gold"><div class="card-stamp">AZURE</div><div class="card-label">Microsoft Azure</div><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:12px;"><span style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--gold);">656</span><span style="font-size:9px;color:var(--text-muted);">identities tracked</span></div><div class="memory-bar" style="margin-bottom:7px;"><span class="memory-bar-label">Service Principals</span><div class="memory-bar-track"><div class="memory-bar-fill gold" style="width:0%" data-target="59%"></div></div><span class="memory-bar-value">59%</span></div><div class="memory-bar" style="margin-bottom:7px;"><span class="memory-bar-label">Managed Identities</span><div class="memory-bar-track"><div class="memory-bar-fill gold" style="width:0%" data-target="43%"></div></div><span class="memory-bar-value">43%</span></div><div class="memory-bar"><span class="memory-bar-label">RBAC Assignments</span><div class="memory-bar-track"><div class="memory-bar-fill crimson" style="width:0%" data-target="77%"></div></div><span class="memory-bar-value">77%</span></div><div style="margin-top:12px;padding-top:10px;border-top:0.5px dotted var(--border);font-size:9px;color:var(--text-muted);">Sources: Activity Logs · Entra ID · Defender · Monitor</div></div>
   </div>
 
-  <!-- ─── THREAT MODEL + MAHORAGA ─── -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <div class="section-divider-label">Threat Model Coverage · Mahoraga Adaptive Defense Capabilities</div>
-    <div class="section-divider-line"></div>
-  </div>
-
+  <!-- ─── THREAT MODEL + MAHORAGHA ─── -->
+  <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-label">Threat Model Coverage · MAHORAGHA Adaptive Defense Capabilities</div><div class="section-divider-line"></div></div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
-
     <div class="card neutral">
       <div class="card-label">Explicit Threat Model — What This System Targets</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px;">
-        <div style="background:var(--crimson-dim);border:0.5px solid var(--crimson);padding:12px;">
-          <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:6px;">Credential Abuse</div>
-          <div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Legitimate API calls using stolen or over-permissioned credentials. No malware required. System value persists even when attackers avoid overt anomalies.</div>
-        </div>
-        <div style="background:rgba(183,144,10,0.1);border:0.5px solid var(--gold);padding:12px;">
-          <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;">Lateral Movement</div>
-          <div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Identity-hopping across trust boundaries, role assumptions, and service account chaining. Detected via graph traversal and path pattern memory.</div>
-        </div>
-        <div style="background:rgba(183,144,10,0.1);border:0.5px solid var(--gold);padding:12px;">
-          <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;">Slow-Moving Attackers</div>
-          <div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Gradual privilege expansion over days or weeks. Traditional SIEM burst-detection misses this. Temporal spread scoring catches it.</div>
-        </div>
-        <div style="background:var(--crimson-dim);border:0.5px solid var(--crimson);padding:12px;">
-          <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:6px;">Insider Threats</div>
-          <div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Malicious or compromised employees using legitimate access. Detected via behavioral baseline deviation and identity entropy monitoring.</div>
-        </div>
-        <div style="background:var(--teal-dim);border:0.5px solid var(--teal);padding:12px;">
-          <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:6px;">Token Abuse</div>
-          <div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Stolen short-lived tokens (STS, OIDC, workload identity). Tracked via credential chain pattern memory in the copy layer.</div>
-        </div>
-        <div style="background:var(--teal-dim);border:0.5px solid var(--teal);padding:12px;">
-          <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:6px;">Privilege Escalation</div>
-          <div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Role assumption chains and permission boundary bypasses. Detected via privilege gradient formula and structural isomorphism gate.</div>
-        </div>
+        <div style="background:var(--crimson-dim);border:0.5px solid var(--crimson);padding:12px;"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:6px;">Credential Abuse</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Legitimate API calls using stolen or over-permissioned credentials. No malware required. System value persists even when attackers avoid overt anomalies.</div></div>
+        <div style="background:rgba(138,92,199,0.08);border:0.5px solid var(--gold);padding:12px;"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;">Lateral Movement</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Identity-hopping across trust boundaries, role assumptions, and service account chaining. Detected via graph traversal and path pattern memory.</div></div>
+        <div style="background:rgba(138,92,199,0.08);border:0.5px solid var(--gold);padding:12px;"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;">Slow-Moving Attackers</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Gradual privilege expansion over days or weeks. Traditional SIEM burst-detection misses this. Temporal spread scoring catches it.</div></div>
+        <div style="background:var(--crimson-dim);border:0.5px solid var(--crimson);padding:12px;"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:6px;">Insider Threats</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Malicious or compromised employees using legitimate access. Detected via behavioral baseline deviation and identity entropy monitoring.</div></div>
+        <div style="background:var(--teal-dim);border:0.5px solid var(--teal);padding:12px;"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:6px;">Token Abuse</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Stolen short-lived tokens (STS, OIDC, workload identity). Tracked via credential chain pattern memory in the copy layer.</div></div>
+        <div style="background:var(--teal-dim);border:0.5px solid var(--teal);padding:12px;"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:6px;">Privilege Escalation</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Role assumption chains and permission boundary bypasses. Detected via privilege gradient formula and structural isomorphism gate.</div></div>
       </div>
     </div>
-
     <div class="card gold">
-      <div class="card-label">Mahoraga ADE — Adaptive Defense Engine Capabilities</div>
-      <div class="annotation" style="margin-bottom:12px;">"Mahoraga turns Hollow Purple into a self-improving security organism."</div>
+      <div class="card-label">MAHORAGHA ADE — Adaptive Defense Engine Capabilities</div>
+      <div class="annotation" style="margin-bottom:12px;">"MAHORAGHA turns Hollow Purple into a self-improving security organism."</div>
       <div style="display:flex;flex-direction:column;gap:9px;">
-        <div style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:9px;background:rgba(183,144,10,0.06);border:0.5px solid var(--gold);">
-          <div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--gold);">01</div>
-          <div><div style="font-size:10px;font-weight:600;color:var(--text-primary);margin-bottom:2px;">Adaptive Learning</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.5;">Learns new attack patterns from observed behavior. Detection rules, anomaly thresholds, and graph heuristics update continuously.</div></div>
-        </div>
-        <div style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:9px;background:rgba(183,144,10,0.06);border:0.5px solid var(--gold);">
-          <div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--gold);">02</div>
-          <div><div style="font-size:10px;font-weight:600;color:var(--text-primary);margin-bottom:2px;">Adversarial Simulation</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.5;">Simulates attacker strategies against the current graph to pre-identify exploitable paths before real attackers find them.</div></div>
-        </div>
-        <div style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:9px;background:rgba(183,144,10,0.06);border:0.5px solid var(--gold);">
-          <div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--gold);">03</div>
-          <div><div style="font-size:10px;font-weight:600;color:var(--text-primary);margin-bottom:2px;">Defense Evolution</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.5;">Architecture mutations proposed and gated by human approval. Every change is versioned, auditable, and fully reversible.</div></div>
-        </div>
-        <div style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:9px;background:var(--crimson-dim);border:0.5px solid var(--crimson);">
-          <div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--crimson);">04</div>
-          <div><div style="font-size:10px;font-weight:600;color:var(--text-primary);margin-bottom:2px;">Mitigation Actions (Gated)</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.5;">Can propose: isolate machines · revoke credentials · block IPs · disable tokens. All require architect approval before execution.</div></div>
-        </div>
+        <div style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:9px;background:rgba(138,92,199,0.06);border:0.5px solid var(--gold);"><div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--gold);">01</div><div><div style="font-size:10px;font-weight:600;color:var(--text-primary);margin-bottom:2px;">Adaptive Learning</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.5;">Learns new attack patterns from observed behavior. Detection rules, anomaly thresholds, and graph heuristics update continuously.</div></div></div>
+        <div style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:9px;background:rgba(138,92,199,0.06);border:0.5px solid var(--gold);"><div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--gold);">02</div><div><div style="font-size:10px;font-weight:600;color:var(--text-primary);margin-bottom:2px;">Adversarial Simulation</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.5;">Simulates attacker strategies against the current graph to pre-identify exploitable paths before real attackers find them.</div></div></div>
+        <div style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:9px;background:rgba(138,92,199,0.06);border:0.5px solid var(--gold);"><div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--gold);">03</div><div><div style="font-size:10px;font-weight:600;color:var(--text-primary);margin-bottom:2px;">Merkle Integrity Verification</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.5;">Signed tree heads, shadow rebuild, and witness node gossip ensure the event log is cryptographically tamper-evident at all times.</div></div></div>
+        <div style="display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:9px;background:var(--crimson-dim);border:0.5px solid var(--crimson);"><div style="font-family:'Playfair Display',serif;font-size:14px;font-weight:900;color:var(--crimson);">04</div><div><div style="font-size:10px;font-weight:600;color:var(--text-primary);margin-bottom:2px;">Mitigation Actions (Gated)</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.5;">Can propose: isolate machines · revoke credentials · block IPs · disable tokens. All require architect approval before execution.</div></div></div>
       </div>
     </div>
   </div>
 
   <!-- ─── API + DB + DEPLOY ─── -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <div class="section-divider-label">API Surface · Production Database Stack · Deployment Architecture</div>
-    <div class="section-divider-line"></div>
-  </div>
-
+  <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-label">API Surface · Production Database Stack · Deployment Architecture</div><div class="section-divider-line"></div></div>
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
-
     <div class="card teal">
       <div class="card-label">API Layer — Microservice Endpoints</div>
       <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;">
@@ -1359,147 +492,92 @@
         <div style="display:flex;gap:8px;align-items:center;padding:5px 0;"><span style="font-size:7px;font-weight:700;letter-spacing:0.1em;color:var(--crimson);background:var(--crimson-dim);border:0.5px solid var(--crimson);padding:2px 4px;">POST</span><span style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-primary);">/mitigate</span><span style="font-size:8px;color:var(--text-muted);margin-left:auto;">Gated mitigation</span></div>
       </div>
     </div>
-
     <div class="card neutral">
       <div class="card-label">Production Database Stack</div>
       <div style="display:flex;flex-direction:column;gap:10px;margin-top:4px;">
-        <div style="padding:10px;background:rgba(28,26,20,0.04);border:0.5px solid var(--border-strong);">
-          <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:4px;">PostgreSQL</div>
-          <div style="font-size:9px;color:var(--text-secondary);line-height:1.55;">Event ledger storage. JSONB pattern objects. Full audit trail. Queryable aggregates. Immutable append-only writes.</div>
-          <div style="font-size:8px;color:var(--text-ghost);margin-top:4px;">→ Copy Layer storage backend</div>
-        </div>
-        <div style="padding:10px;background:rgba(28,26,20,0.04);border:0.5px solid var(--border-strong);">
-          <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px;">Redis</div>
-          <div style="font-size:9px;color:var(--text-secondary);line-height:1.55;">Caching layer and streaming event queues. Real-time ingestion pipeline backpressure. Session state management.</div>
-          <div style="font-size:8px;color:var(--text-ghost);margin-top:4px;">→ Ingestion pipeline buffer</div>
-        </div>
-        <div style="padding:10px;background:rgba(28,26,20,0.04);border:0.5px solid var(--border-strong);">
-          <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:4px;">Neo4j / DuckDB</div>
-          <div style="font-size:9px;color:var(--text-secondary);line-height:1.55;">Graph database for attack path analysis. DuckDB for OLAP analytics on immutable graph snapshots. k-hop subgraph extraction.</div>
-          <div style="font-size:8px;color:var(--text-ghost);margin-top:4px;">→ Graph Intelligence Engine</div>
-        </div>
-        <div style="padding:10px;background:rgba(28,26,20,0.04);border:0.5px solid var(--border-strong);">
-          <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);font-weight:700;margin-bottom:4px;">InfluxDB / Prometheus</div>
-          <div style="font-size:9px;color:var(--text-secondary);line-height:1.55;">Time-series metric evolution. Baseline drift tracking. RR, PM, MES, Gini coefficient history over time windows.</div>
-          <div style="font-size:8px;color:var(--text-ghost);margin-top:4px;">→ Baseline store + telemetry</div>
-        </div>
+        <div style="padding:10px;background:rgba(26,21,32,0.04);border:0.5px solid var(--border-strong);"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:4px;">PostgreSQL</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.55;">Event ledger storage. JSONB pattern objects. Full audit trail. Queryable aggregates. Immutable append-only writes.</div><div style="font-size:8px;color:var(--text-ghost);margin-top:4px;">→ Copy Layer storage backend</div></div>
+        <div style="padding:10px;background:rgba(26,21,32,0.04);border:0.5px solid var(--border-strong);"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:4px;">Redis</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.55;">Caching layer and streaming event queues. Real-time ingestion pipeline backpressure. Session state management.</div><div style="font-size:8px;color:var(--text-ghost);margin-top:4px;">→ Ingestion pipeline buffer</div></div>
+        <div style="padding:10px;background:rgba(26,21,32,0.04);border:0.5px solid var(--border-strong);"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:4px;">Neo4j / DuckDB</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.55;">Graph database for attack path analysis. DuckDB for OLAP analytics on immutable graph snapshots. k-hop subgraph extraction.</div><div style="font-size:8px;color:var(--text-ghost);margin-top:4px;">→ Graph Intelligence Engine</div></div>
+        <div style="padding:10px;background:rgba(26,21,32,0.04);border:0.5px solid var(--border-strong);"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);font-weight:700;margin-bottom:4px;">InfluxDB / Prometheus</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.55;">Time-series metric evolution. Baseline drift tracking. RR, PM, MES, Gini coefficient history over time windows.</div><div style="font-size:8px;color:var(--text-ghost);margin-top:4px;">→ Baseline store + telemetry</div></div>
       </div>
     </div>
-
     <div class="card crimson">
       <div class="card-label">GCP Deployment Architecture</div>
       <div style="display:flex;flex-direction:column;gap:7px;margin-top:4px;">
-        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(28,26,20,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Cloud Run / GKE</span><span style="font-size:8px;color:var(--text-muted);">Microservice containers · auto-scaling</span></div>
-        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(28,26,20,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Cloud SQL</span><span style="font-size:8px;color:var(--text-muted);">Managed PostgreSQL · event ledger</span></div>
-        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(28,26,20,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Memorystore</span><span style="font-size:8px;color:var(--text-muted);">Managed Redis · streaming queues</span></div>
-        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(28,26,20,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Pub/Sub</span><span style="font-size:8px;color:var(--text-muted);">Streaming ingestion pipeline</span></div>
-        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(28,26,20,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Compute Engine</span><span style="font-size:8px;color:var(--text-muted);">Neo4j graph database nodes</span></div>
-        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(28,26,20,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Cloud Storage</span><span style="font-size:8px;color:var(--text-muted);">Parquet snapshots · backups · archives</span></div>
-        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(28,26,20,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Cloud SCC</span><span style="font-size:8px;color:var(--text-muted);">Security Command Center integration</span></div>
+        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(26,21,32,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Cloud Run / GKE</span><span style="font-size:8px;color:var(--text-muted);">Microservice containers · auto-scaling</span></div>
+        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(26,21,32,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Cloud SQL</span><span style="font-size:8px;color:var(--text-muted);">Managed PostgreSQL · event ledger</span></div>
+        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(26,21,32,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Memorystore</span><span style="font-size:8px;color:var(--text-muted);">Managed Redis · streaming queues</span></div>
+        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(26,21,32,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Pub/Sub</span><span style="font-size:8px;color:var(--text-muted);">Streaming ingestion pipeline</span></div>
+        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(26,21,32,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Compute Engine</span><span style="font-size:8px;color:var(--text-muted);">Neo4j graph database nodes</span></div>
+        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(26,21,32,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Cloud Storage</span><span style="font-size:8px;color:var(--text-muted);">Parquet snapshots · backups · archives</span></div>
+        <div style="display:flex;gap:8px;align-items:center;padding:7px;background:rgba(26,21,32,0.04);border:0.5px solid var(--border);"><span style="font-size:8px;color:var(--teal);font-weight:700;white-space:nowrap;min-width:100px;">Cloud SCC</span><span style="font-size:8px;color:var(--text-muted);">Security Command Center integration</span></div>
       </div>
       <div style="margin-top:12px;padding-top:10px;border-top:0.5px dotted var(--border);font-size:9px;color:var(--text-muted);line-height:1.7;">Performance target: <span style="color:var(--teal);font-weight:700;">100K–1M events/sec</span> ingestion · millions of graph nodes · real-time anomaly detection</div>
     </div>
   </div>
 
   <!-- ─── MODULE DIRECTORY ─── -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <div class="section-divider-label">Module Directory — Complete Build Status</div>
-    <div class="section-divider-line"></div>
-  </div>
-
+  <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-label">Module Directory — Complete Build Status (from Repository)</div><div class="section-divider-line"></div></div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
-
-    <div class="card none" style="border-top:2px solid var(--ink);border-radius:0;background:rgba(242,238,228,0.5);">
-      <div class="card-label" style="margin-bottom:14px;">Hollow Purple Core Modules</div>
+    <div class="card none" style="border-top:2px solid var(--ink);border-radius:0;background:rgba(244,240,232,0.5);">
+      <div class="card-label" style="margin-bottom:14px;">Hollow Purple Core Modules — Python 93.6% · JS 3.7% · HTML 2.7%</div>
       <div style="display:flex;flex-direction:column;gap:3px;">
         <div class="mod-row"><span class="mod-path">core/</span><span class="mod-file">models.py · event_log.py · config.py · identity.py · resource.py · constants.py</span><span class="mod-badge done">DONE</span></div>
         <div class="mod-row"><span class="mod-path">ingestion/</span><span class="mod-file">pull.py · aws_collector.py · gcp_collector.py · azure_collector.py · normalizer.py · rate_limiter.py</span><span class="mod-badge done">DONE</span></div>
         <div class="mod-row"><span class="mod-path">graph/</span><span class="mod-file">builder.py · temporal.py · closure.py · scoring.py · pathfinder.py · exposure.py · graph_state.py</span><span class="mod-badge done">DONE</span></div>
+        <div class="mod-row"><span class="mod-path">baseline/</span><span class="mod-file">Behavioral baseline engine · sliding-window modeling · identity entropy tracking</span><span class="mod-badge done">DONE</span></div>
         <div class="mod-row"><span class="mod-path">patterns/</span><span class="mod-file">scorer.py · privilege_escalation.py · lateral_movement.py · token_abuse.py · dormant_identity.py · rare_access.py</span><span class="mod-badge done">DONE</span></div>
+        <div class="mod-row"><span class="mod-path">kernel/</span><span class="mod-file">Platform kernel · system orchestration · core runtime loop</span><span class="mod-badge done">DONE</span></div>
         <div class="mod-row"><span class="mod-path">state/</span><span class="mod-file">state_machine.py · reducers.py · projections.py · snapshot_manager.py</span><span class="mod-badge done">DONE</span></div>
         <div class="mod-row"><span class="mod-path">storage/</span><span class="mod-file">event_store.py · snapshot_store.py · graph_store.py · baseline_store.py · integrity_store.py</span><span class="mod-badge done">DONE</span></div>
         <div class="mod-row"><span class="mod-path">engine/</span><span class="mod-file">baseline.py · pipeline.py · orchestrator.py · scheduler.py · execution_context.py</span><span class="mod-badge done">DONE</span></div>
         <div class="mod-row"><span class="mod-path">projections/</span><span class="mod-file">risk_projection.py · exposure_projection.py · identity_projection.py · graph_projection.py</span><span class="mod-badge done">DONE</span></div>
+        <div class="mod-row"><span class="mod-path">bootstrap/</span><span class="mod-file">System startup controller · environment bootstrap · dependency init</span><span class="mod-badge done">DONE</span></div>
         <div class="mod-row"><span class="mod-path">api/</span><span class="mod-file">server.py · routes.py · auth.py · schemas.py</span><span class="mod-badge done">DONE</span></div>
-        <div class="mod-row"><span class="mod-path">frontend/</span><span class="mod-file">index.html · dashboard.js · graph_view.js · alerts_view.js</span><span class="mod-badge wip">WIP</span></div>
+        <div class="mod-row"><span class="mod-path">frontend/</span><span class="mod-file">index.html · dashboard.js · graph_view.js · alerts_view.js</span><span class="mod-badge done">DONE</span></div>
+        <div class="mod-row"><span class="mod-path">root/</span><span class="mod-file">main.py · requirements.txt · main.env.example · configs/ · scripts/ · tests/</span><span class="mod-badge done">DONE</span></div>
       </div>
     </div>
-
-    <div class="card none" style="border-top:2px solid var(--gold);border-radius:0;background:rgba(242,238,228,0.5);">
-      <div class="card-label" style="margin-bottom:14px;">Mahoraga ADE Modules</div>
+    <div class="card none" style="border-top:2px solid var(--gold);border-radius:0;background:rgba(244,240,232,0.5);">
+      <div class="card-label" style="margin-bottom:14px;">MAHORAGHA ADE Modules — Integrity Verification System</div>
       <div style="display:flex;flex-direction:column;gap:3px;">
-        <div class="mod-row"><span class="mod-path">MAHORAGA/</span><span class="mod-file">adversarial_simulator.py · alert_router.py · audit_log.py · governance.py · health.py · invariants.py · retention.py · utils.py · telemetry.py</span><span class="mod-badge done">DONE</span></div>
-        <div class="mod-row"><span class="mod-path">phase2/</span><span class="mod-file">baseline_drift_detector.py · identity_entropy_monitor.py · risk_calibrator.py</span><span class="mod-badge done">DONE</span></div>
-        <div class="mod-row"><span class="mod-path">phase3/</span><span class="mod-file">merkle_log.py · signed_tree_head.py · shadow_rebuild.py · snapshot.py · drift_envelope.py · backpressure.py · adversarial.py · formal_invariants.py</span><span class="mod-badge done">DONE</span></div>
-        <div class="mod-row"><span class="mod-path">phase4/</span><span class="mod-file">deterministic_replay.py · replay_validator.py · state_reconstructor.py · pipeline.py · audit_verifier.py</span><span class="mod-badge done">DONE</span></div>
-        <div class="mod-row"><span class="mod-path">phase5/</span><span class="mod-file">consensus.py · witness_node.py · log_gossip.py · verification_cluster.py</span><span class="mod-badge done">DONE</span></div>
+        <div class="mod-row"><span class="mod-path">MAHORAGHA/</span><span class="mod-file">adversarial_simulator.py · alert_router.py · audit_log.py · governance.py · health.py · invariants.py · retention.py · utils.py · telemetry.py</span><span class="mod-badge done">DONE</span></div>
+        <div class="mod-row"><span class="mod-path">merkle/</span><span class="mod-file">merkle_log.py · signed_tree_head.py · shadow_rebuild.py · snapshot.py · drift_envelope.py · backpressure.py · adversarial.py · formal_invariants.py</span><span class="mod-badge done">DONE</span></div>
+        <div class="mod-row"><span class="mod-path">replay/</span><span class="mod-file">deterministic_replay.py · replay_validator.py · state_reconstructor.py · pipeline.py · audit_verifier.py</span><span class="mod-badge done">DONE</span></div>
+        <div class="mod-row"><span class="mod-path">consensus/</span><span class="mod-file">consensus.py · witness_node.py · log_gossip.py · verification_cluster.py</span><span class="mod-badge done">DONE</span></div>
+        <div class="mod-row"><span class="mod-path">drift/</span><span class="mod-file">baseline_drift_detector.py · identity_entropy_monitor.py · risk_calibrator.py</span><span class="mod-badge done">DONE</span></div>
         <div class="mod-row"><span class="mod-path">scripts/</span><span class="mod-file">bootstrap_env.py · run_pipeline.py · simulate_attack.py</span><span class="mod-badge done">DONE</span></div>
         <div class="mod-row"><span class="mod-path">configs/</span><span class="mod-file">default.yaml · aws_weights.yaml · gcp_weights.yaml · azure_weights.yaml</span><span class="mod-badge done">DONE</span></div>
         <div class="mod-row"><span class="mod-path">tests/</span><span class="mod-file">test_phase1.py · test_phase2.py · test_phase3.py · test_phase4.py · test_phase5.py</span><span class="mod-badge done">DONE</span></div>
-        <div class="mod-row"><span class="mod-path">infra/</span><span class="mod-file">docker · kubernetes · terraform</span><span class="mod-badge done">DONE</span></div>
       </div>
-      <div style="margin-top:14px;padding:12px;background:rgba(26,122,110,0.07);border:0.5px solid var(--teal);">
+      <div style="margin-top:14px;padding:12px;background:rgba(74,48,128,0.07);border:0.5px solid var(--teal);">
         <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:6px;">System Security Properties</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-          <div style="font-size:9px;color:var(--text-secondary);"><span style="color:var(--teal);font-weight:700;">Integrity</span> — Hash-chained event ledger</div>
+          <div style="font-size:9px;color:var(--text-secondary);"><span style="color:var(--teal);font-weight:700;">Integrity</span> — Merkle-chained event ledger</div>
           <div style="font-size:9px;color:var(--text-secondary);"><span style="color:var(--teal);font-weight:700;">Auditability</span> — Full system replay</div>
           <div style="font-size:9px;color:var(--text-secondary);"><span style="color:var(--teal);font-weight:700;">Explainability</span> — Graph-based reasoning</div>
-          <div style="font-size:9px;color:var(--text-secondary);"><span style="color:var(--teal);font-weight:700;">Adaptability</span> — Mahoraga learning engine</div>
+          <div style="font-size:9px;color:var(--text-secondary);"><span style="color:var(--teal);font-weight:700;">Adaptability</span> — MAHORAGHA learning engine</div>
+          <div style="font-size:9px;color:var(--text-secondary);"><span style="color:var(--teal);font-weight:700;">Consensus</span> — Witness node verification</div>
+          <div style="font-size:9px;color:var(--text-secondary);"><span style="color:var(--teal);font-weight:700;">Resilience</span> — Backpressure + drift envelopes</div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- ─── USE CASES ─── -->
-  <div class="section-divider">
-    <div class="section-divider-line"></div>
-    <div class="section-divider-label">Real-World Use Cases · What Makes This Powerful</div>
-    <div class="section-divider-line"></div>
-  </div>
-
+  <div class="section-divider"><div class="section-divider-line"></div><div class="section-divider-label">Real-World Use Cases · What Makes This Powerful</div><div class="section-divider-line"></div></div>
   <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px;">
-    <div style="padding:14px;background:rgba(26,122,110,0.06);border:0.5px solid var(--teal);border-top:2px solid var(--teal);">
-      <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:6px;">SOC Automation</div>
-      <div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Security operations centers get graph-based threat intelligence instead of raw log search. Analyst workload reduction via pre-ranked attack paths.</div>
-    </div>
-    <div style="padding:14px;background:rgba(192,57,43,0.06);border:0.5px solid var(--crimson);border-top:2px solid var(--crimson);">
-      <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:6px;">Cloud Attack Detection</div>
-      <div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Detect AWS/GCP/Azure attacks in real time across all three providers simultaneously with cross-cloud identity correlation built in.</div>
-    </div>
-    <div style="padding:14px;background:rgba(183,144,10,0.08);border:0.5px solid var(--gold);border-top:2px solid var(--gold);">
-      <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;">Insider Threat</div>
-      <div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Detect malicious employees using legitimate access. Behavioral baseline deviation and identity entropy monitoring catch subtle abuse.</div>
-    </div>
-    <div style="padding:14px;background:rgba(26,122,110,0.06);border:0.5px solid var(--teal);border-top:2px solid var(--teal);">
-      <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:6px;">Digital Forensics</div>
-      <div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Post-incident reconstruction via deterministic replay. Reconstruct full system state at any point in time from the immutable event ledger.</div>
-    </div>
-    <div style="padding:14px;background:rgba(192,57,43,0.06);border:0.5px solid var(--crimson);border-top:2px solid var(--crimson);">
-      <div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:6px;">Enterprise Monitoring</div>
-      <div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Full internal infrastructure visibility. Crown jewel reachability, blast radius estimation, and privilege chain modeling across the enterprise.</div>
-    </div>
+    <div style="padding:14px;background:rgba(74,48,128,0.06);border:0.5px solid var(--teal);border-top:2px solid var(--teal);"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:6px;">SOC Automation</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Security operations centers get graph-based threat intelligence instead of raw log search. Analyst workload reduction via pre-ranked attack paths.</div></div>
+    <div style="padding:14px;background:var(--crimson-dim);border:0.5px solid var(--crimson);border-top:2px solid var(--crimson);"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:6px;">Cloud Attack Detection</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Detect AWS/GCP/Azure attacks in real time across all three providers simultaneously with cross-cloud identity correlation built in.</div></div>
+    <div style="padding:14px;background:rgba(138,92,199,0.08);border:0.5px solid var(--gold);border-top:2px solid var(--gold);"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;">Insider Threat</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Detect malicious employees using legitimate access. Behavioral baseline deviation and identity entropy monitoring catch subtle abuse.</div></div>
+    <div style="padding:14px;background:rgba(74,48,128,0.06);border:0.5px solid var(--teal);border-top:2px solid var(--teal);"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:6px;">Digital Forensics</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Post-incident reconstruction via deterministic replay. Reconstruct full system state at any point in time from the immutable Merkle event ledger.</div></div>
+    <div style="padding:14px;background:var(--crimson-dim);border:0.5px solid var(--crimson);border-top:2px solid var(--crimson);"><div style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--crimson);font-weight:700;margin-bottom:6px;">Enterprise Monitoring</div><div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">Full internal infrastructure visibility. Crown jewel reachability, blast radius estimation, and privilege chain modeling across the enterprise.</div></div>
   </div>
 
-  <div class="card none" style="border-top:2px solid var(--ink);border-radius:0;background:rgba(26,122,110,0.04);margin-bottom:24px;">
+  <div class="card none" style="border-top:2px solid var(--ink);border-radius:0;background:rgba(74,48,128,0.04);margin-bottom:24px;">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;padding:8px 0;">
-      <div>
-        <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.04em;">Most SIEM systems only do:</div>
-        <div class="formula-block" style="margin:0;">
-          <span class="formula-comment">// Traditional approach</span><br>
-          <span style="color:var(--text-muted);">log search</span>
-        </div>
-      </div>
-      <div>
-        <div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--teal);margin-bottom:8px;letter-spacing:0.04em;">Hollow Purple + Mahoraga does:</div>
-        <div class="formula-block" style="margin:0;border-left-color:var(--crimson);">
-          <span class="formula-highlight">event ledger</span><br>
-          + <span class="formula-highlight">graph intelligence</span><br>
-          + <span class="formula-highlight">deterministic replay</span><br>
-          + <span class="formula-highlight">adaptive defense</span><br>
-          <span class="formula-comment">// This combination is extremely rare.</span>
-        </div>
-      </div>
+      <div><div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:8px;letter-spacing:0.04em;">Most SIEM systems only do:</div><div class="formula-block" style="margin:0;"><span class="formula-comment">// Traditional approach</span><br><span style="color:var(--text-muted);">log search</span></div></div>
+      <div><div style="font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--teal);margin-bottom:8px;letter-spacing:0.04em;">Hollow Purple + MAHORAGHA does:</div><div class="formula-block" style="margin:0;border-left-color:var(--crimson);"><span class="formula-highlight">event ledger</span> (Merkle-chained)<br>+ <span class="formula-highlight">graph intelligence</span><br>+ <span class="formula-highlight">deterministic replay</span><br>+ <span class="formula-highlight">adaptive defense</span><br>+ <span class="formula-highlight">consensus verification</span><br><span class="formula-comment">// This combination is extremely rare.</span></div></div>
     </div>
   </div>
 
@@ -1507,11 +585,10 @@
   <footer class="footer">
     <div class="footer-left">HOLLOW PURPLE</div>
     <div class="footer-right">
-      Research baseline · Canonical document · 4 months · Complete · Tested &amp; Deployed<br>
-      Hollow Purple = Security Intelligence Brain &nbsp;·&nbsp; Mahoraga = Adaptive Defense Evolution Engine<br>
-      All future work must remain consistent with this document<br>
-      <br>
-      <a href="https://github.com/Tejaswanth2406/hollow-purple" target="_blank" rel="noopener" class="github-link" style="opacity: 0.7;">
+      Completed build · Canonical document · Python 93.6% · JS 3.7% · HTML 2.7% · 5 commits<br>
+      Hollow Purple = Security Intelligence Brain &nbsp;·&nbsp; MAHORAGHA = Adaptive Defense + Integrity Engine<br>
+      Modules: core · ingestion · graph · baseline · patterns · kernel · state · storage · engine · projections · bootstrap · api · frontend<br><br>
+      <a href="https://github.com/Tejaswanth2406/hollow-purple" target="_blank" rel="noopener" class="github-link" style="opacity:0.7;">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
         github.com/Tejaswanth2406/hollow-purple
       </a>
@@ -1519,9 +596,7 @@
   </footer>
 </div>
 
-
 <script>
-/* ── MEMORY BARS ANIMATE IN ── */
 window.addEventListener('load', () => {
   setTimeout(() => {
     document.querySelectorAll('.memory-bar-fill').forEach(bar => {
@@ -1530,7 +605,6 @@ window.addEventListener('load', () => {
   }, 600);
 });
 
-/* ── IDENTITY GRAPH CANVAS ── */
 const canvas = document.getElementById('identity-graph');
 const ctx = canvas.getContext('2d');
 
@@ -1539,9 +613,8 @@ function resize() {
   canvas.height = canvas.offsetHeight * window.devicePixelRatio;
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 }
-
 resize();
-window.addEventListener('resize', () => { resize(); drawGraph(); });
+window.addEventListener('resize', () => { resize(); });
 
 const W = () => canvas.offsetWidth;
 const H = () => canvas.offsetHeight;
@@ -1576,21 +649,19 @@ const edges = [
 ];
 
 const colors = {
-  crimson: '#C0392B',
-  teal: '#1A7A6E',
-  gold: '#B7900A',
-  ink: '#1C1A14',
-  paper: '#F2EEE4',
-  muted: '#7A7464',
+  crimson: '#6B3FA0',
+  teal:    '#4A3080',
+  gold:    '#8A5CC7',
+  ink:     '#1A1520',
+  paper:   '#F4F0E8',
+  muted:   '#7A6E90',
 };
 
 let tick = 0;
-let animFrame;
 
 function drawGraph() {
   const w = W(), h = H();
   ctx.clearRect(0, 0, w, h);
-
   const animTick = tick * 0.02;
 
   edges.forEach(e => {
@@ -1598,27 +669,20 @@ function drawGraph() {
     const to   = nodes[e.to];
     const x1 = from.x * w, y1 = from.y * h;
     const x2 = to.x   * w, y2 = to.y   * h;
-
-    const color = e.type === 'high' ? colors.crimson
-                : e.type === 'teal' ? colors.teal
-                : colors.gold;
-
+    const color = e.type === 'high' ? colors.crimson : e.type === 'teal' ? colors.teal : colors.gold;
     const dashOff = (animTick * 20) % 20;
     ctx.save();
     ctx.setLineDash([6, 6]);
     ctx.lineDashOffset = -dashOff;
     ctx.beginPath();
     ctx.moveTo(x1, y1);
-
     const mx = (x1 + x2) / 2 + (y2 - y1) * 0.12;
     const my = (y1 + y2) / 2 - (x2 - x1) * 0.12;
     ctx.quadraticCurveTo(mx, my, x2, y2);
-
     ctx.strokeStyle = color + (e.type === 'high' ? 'cc' : '88');
     ctx.lineWidth = e.type === 'high' ? 1.5 : 1;
     ctx.stroke();
     ctx.restore();
-
     const ang = Math.atan2(y2 - my, x2 - mx);
     const al = 8;
     ctx.beginPath();
@@ -1634,58 +698,36 @@ function drawGraph() {
   nodes.forEach(n => {
     const x = n.x * w, y = n.y * h;
     const pulse = Math.sin(animTick * 2 + n.id * 0.7) * 0.15 + 1;
-    const r = (n.type === 'identity' ? 9 : n.type === 'role' ? 7 : 7) * pulse;
-
-    const fillColor = n.risk === 'high' ? colors.crimson
-                    : n.risk === 'med'  ? colors.gold
-                    : colors.teal;
-
+    const r = (n.type === 'identity' ? 9 : 7) * pulse;
+    const fillColor = n.risk === 'high' ? colors.crimson : n.risk === 'med' ? colors.gold : colors.teal;
     ctx.save();
     if (n.type === 'identity') {
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
-      ctx.fillStyle = fillColor + '33';
-      ctx.fill();
-      ctx.strokeStyle = fillColor;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(x, y, r * 0.4, 0, Math.PI * 2);
-      ctx.fillStyle = fillColor;
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fillStyle = fillColor + '33'; ctx.fill();
+      ctx.strokeStyle = fillColor; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.beginPath(); ctx.arc(x, y, r * 0.4, 0, Math.PI * 2);
+      ctx.fillStyle = fillColor; ctx.fill();
     } else if (n.type === 'role') {
       ctx.beginPath();
-      ctx.moveTo(x, y - r * 1.2);
-      ctx.lineTo(x + r * 0.9, y);
-      ctx.lineTo(x, y + r * 1.2);
-      ctx.lineTo(x - r * 0.9, y);
-      ctx.closePath();
-      ctx.fillStyle = fillColor + '22';
-      ctx.fill();
-      ctx.strokeStyle = fillColor;
-      ctx.lineWidth = 1;
-      ctx.stroke();
+      ctx.moveTo(x, y - r * 1.2); ctx.lineTo(x + r * 0.9, y);
+      ctx.lineTo(x, y + r * 1.2); ctx.lineTo(x - r * 0.9, y); ctx.closePath();
+      ctx.fillStyle = fillColor + '22'; ctx.fill();
+      ctx.strokeStyle = fillColor; ctx.lineWidth = 1; ctx.stroke();
     } else {
-      ctx.beginPath();
-      ctx.rect(x - r, y - r, r * 2, r * 2);
-      ctx.fillStyle = fillColor + '22';
-      ctx.fill();
-      ctx.strokeStyle = fillColor;
-      ctx.lineWidth = 1;
-      ctx.stroke();
+      ctx.beginPath(); ctx.rect(x - r, y - r, r * 2, r * 2);
+      ctx.fillStyle = fillColor + '22'; ctx.fill();
+      ctx.strokeStyle = fillColor; ctx.lineWidth = 1; ctx.stroke();
     }
-
-    ctx.font = `500 8px "JetBrains Mono", monospace`;
+    ctx.font = '500 8px "JetBrains Mono", monospace';
     ctx.fillStyle = colors.ink + 'bb';
     ctx.textAlign = 'center';
     const labelY = n.y < 0.5 ? y + r + 12 : y - r - 4;
     ctx.fillText(n.label, x, labelY);
-
     ctx.restore();
   });
 
   tick++;
-  animFrame = requestAnimationFrame(drawGraph);
+  requestAnimationFrame(drawGraph);
 }
 
 drawGraph();
