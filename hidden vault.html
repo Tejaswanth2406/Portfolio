@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hidden Vault | Tejaswanth Surisetty</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=JetBrains+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --paper: #f5f0e8;
+      --paper-soft: #fbf7f0;
+      --ink: #15110d;
+      --ink-70: rgba(21, 17, 13, 0.7);
+      --ink-45: rgba(21, 17, 13, 0.45);
+      --ink-12: rgba(21, 17, 13, 0.12);
+      --wine: #7d1f1f;
+      --rust: #8f431d;
+      --gold: #c2a263;
+      --dark: #15110d;
+      --body-font: "Cormorant Garamond", serif;
+      --display-font: "Playfair Display", serif;
+      --mono-font: "JetBrains Mono", monospace;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        linear-gradient(135deg, rgba(125, 31, 31, 0.08), transparent 36%),
+        linear-gradient(315deg, rgba(194, 162, 99, 0.16), transparent 32%),
+        var(--paper);
+      color: var(--ink);
+      font-family: var(--body-font);
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    body.vault-locked {
+      overflow: hidden;
+    }
+
+    body.vault-locked .hero,
+    body.vault-locked main,
+    body.vault-locked .exit {
+      display: none;
+    }
+
+    .vault-login {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      background:
+        radial-gradient(circle at top left, rgba(194, 162, 99, 0.2), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(125, 31, 31, 0.22), transparent 36%),
+        var(--dark);
+      color: var(--paper-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.vault-unlocked .vault-login {
+      display: none;
+    }
+
+    .vault-login::before {
+      content: "LOCKED";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(140px, 28vw, 360px);
+      line-height: 0.8;
+      color: rgba(251, 247, 240, 0.045);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .login-panel {
+      width: min(440px, 100%);
+      position: relative;
+      z-index: 2;
+      border: 1px solid rgba(251, 247, 240, 0.16);
+      background: rgba(251, 247, 240, 0.055);
+      backdrop-filter: blur(18px);
+      padding: 34px;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.26);
+    }
+
+    .login-kicker {
+      margin-bottom: 14px;
+      font-family: var(--mono-font);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .login-title {
+      margin-bottom: 10px;
+      font-family: var(--display-font);
+      font-size: clamp(42px, 9vw, 68px);
+      font-style: italic;
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .login-copy {
+      margin-bottom: 26px;
+      font-size: 19px;
+      line-height: 1.55;
+      color: rgba(251, 247, 240, 0.68);
+    }
+
+    .login-field {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .login-field label {
+      font-family: var(--mono-font);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(251, 247, 240, 0.58);
+    }
+
+    .login-field input {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid rgba(251, 247, 240, 0.16);
+      background: rgba(21, 17, 13, 0.34);
+      color: var(--paper-soft);
+      padding: 0 14px;
+      font-family: var(--mono-font);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .login-field input:focus {
+      border-color: var(--gold);
+      background: rgba(21, 17, 13, 0.48);
+    }
+
+    .login-button {
+      width: 100%;
+      min-height: 48px;
+      margin-top: 4px;
+      border: 1px solid var(--gold);
+      background: var(--gold);
+      color: var(--dark);
+      font-family: var(--mono-font);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: filter 0.2s ease, transform 0.2s ease;
+    }
+
+    .login-button:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .login-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .login-secondary,
+    .vault-action {
+      border: 0;
+      background: transparent;
+      color: rgba(251, 247, 240, 0.62);
+      font-family: var(--mono-font);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .login-secondary:hover,
+    .vault-action:hover {
+      color: var(--gold);
+    }
+
+    .login-error {
+      min-height: 20px;
+      margin-top: 14px;
+      font-family: var(--mono-font);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: #f1a6a6;
+    }
+
+    .hero {
+      min-height: 92vh;
+      position: relative;
+      display: grid;
+      align-items: end;
+      padding: 40px 5vw 64px;
+      overflow: hidden;
+      background: var(--wine);
+      color: var(--paper-soft);
+    }
+
+    .hero::before {
+      content: "VAULT";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(180px, 32vw, 430px);
+      letter-spacing: 0;
+      color: rgba(245, 240, 232, 0.07);
+      line-height: 0.8;
+      white-space: nowrap;
+    }
+
+    .hero-top {
+      position: absolute;
+      inset: 38px 5vw auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      z-index: 2;
+    }
+
+    .brand {
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(72px, 12vw, 142px);
+      line-height: 0.82;
+      letter-spacing: 0;
+    }
+
+    .meta {
+      padding-top: 10px;
+      text-align: right;
+      font-family: var(--mono-font);
+      font-size: 10px;
+      line-height: 1.9;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(251, 247, 240, 0.62);
+    }
+
+    .vault-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 16px;
+      padding-top: 10px;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+    }
+
+    .eyebrow {
+      margin-bottom: 20px;
+      font-family: var(--mono-font);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .hero h1 {
+      max-width: 920px;
+      font-family: var(--display-font);
+      font-size: clamp(48px, 9vw, 112px);
+      font-style: italic;
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    .hero-subtitle {
+      max-width: 620px;
+      margin-top: 28px;
+      font-size: clamp(19px, 2vw, 26px);
+      line-height: 1.45;
+      color: rgba(251, 247, 240, 0.78);
+    }
+
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 34px;
+    }
+
+    .tag {
+      border: 1px solid rgba(251, 247, 240, 0.22);
+      padding: 8px 12px;
+      font-family: var(--mono-font);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(251, 247, 240, 0.66);
+      background: rgba(251, 247, 240, 0.04);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .reading-section {
+      padding: 100px 5vw;
+      border-bottom: 1px solid var(--ink-12);
+    }
+
+    .reading-wrap {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+
+    .reading-kicker {
+      margin-bottom: 18px;
+      font-family: var(--mono-font);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--wine);
+    }
+
+    .reading-title {
+      margin-bottom: 34px;
+      font-family: var(--display-font);
+      font-size: clamp(48px, 8vw, 104px);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: 0;
+    }
+
+    .reading-title em {
+      color: var(--rust);
+      font-style: italic;
+    }
+
+    .reading-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.82fr) minmax(320px, 1.18fr);
+      gap: clamp(36px, 6vw, 86px);
+      align-items: start;
+    }
+
+    .pull-note {
+      position: sticky;
+      top: 42px;
+      padding-top: 18px;
+      border-top: 2px solid var(--ink);
+      font-family: var(--display-font);
+      font-size: clamp(26px, 3vw, 42px);
+      font-style: italic;
+      line-height: 1.18;
+    }
+
+    .pull-note span {
+      display: block;
+      margin-top: 22px;
+      font-family: var(--mono-font);
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-45);
+    }
+
+    .essay {
+      max-width: 760px;
+      font-size: clamp(20px, 2vw, 27px);
+      line-height: 1.48;
+      color: var(--ink);
+    }
+
+    .essay p + p {
+      margin-top: 28px;
+    }
+
+    .essay strong {
+      font-weight: 700;
+      color: var(--wine);
+      letter-spacing: 0.02em;
+    }
+
+    .essay .drop:first-letter {
+      float: left;
+      padding: 9px 9px 0 0;
+      font-family: var(--display-font);
+      font-size: 82px;
+      line-height: 0.72;
+      color: var(--wine);
+      font-weight: 900;
+    }
+
+    .butterfly {
+      background: var(--paper-soft);
+    }
+
+    .transform {
+      background:
+        linear-gradient(180deg, rgba(21, 17, 13, 0.04), transparent 46%),
+        var(--paper);
+    }
+
+    .become {
+      background: #f9f1ea;
+    }
+
+    .become .reading-title,
+    .become .pull-note,
+    .become strong {
+      color: #8b3a11;
+    }
+
+    .exit {
+      min-height: 72vh;
+      display: grid;
+      place-items: center;
+      padding: 90px 5vw;
+      text-align: center;
+      background: var(--dark);
+      color: var(--paper-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .exit::before {
+      content: "BECOME";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-family: "Bebas Neue", sans-serif;
+      font-size: clamp(140px, 25vw, 330px);
+      color: rgba(251, 247, 240, 0.05);
+      line-height: 0.8;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .exit-inner {
+      position: relative;
+      z-index: 2;
+      width: min(760px, 100%);
+    }
+
+    .exit-label {
+      margin-bottom: 18px;
+      font-family: var(--mono-font);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .exit h2 {
+      font-family: var(--display-font);
+      font-size: clamp(48px, 8vw, 104px);
+      font-style: italic;
+      line-height: 0.92;
+      letter-spacing: 0;
+    }
+
+    .exit h2 span {
+      display: block;
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    .exit-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 42px;
+    }
+
+    .exit-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      border: 1px solid rgba(251, 247, 240, 0.18);
+      padding: 0 20px;
+      font-family: var(--mono-font);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      text-transform: uppercase;
+      color: rgba(251, 247, 240, 0.68);
+      transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    .exit-link:hover,
+    .exit-link.primary {
+      border-color: var(--gold);
+      background: var(--gold);
+      color: var(--dark);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        min-height: 88vh;
+        padding: 32px 26px 52px;
+      }
+
+      .hero-top {
+        inset: 28px 26px auto;
+      }
+
+      .meta {
+        display: none;
+      }
+
+      .reading-section {
+        padding: 78px 26px;
+      }
+
+      .reading-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .pull-note {
+        position: relative;
+        top: auto;
+      }
+
+      .essay {
+        font-size: 21px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .brand {
+        font-size: 64px;
+      }
+
+      .hero h1,
+      .reading-title,
+      .exit h2 {
+        font-size: clamp(42px, 14vw, 64px);
+      }
+
+      .hero-subtitle,
+      .essay {
+        font-size: 19px;
+      }
+
+      .essay .drop:first-letter {
+        font-size: 64px;
+      }
+
+      .tag-cloud,
+      .exit-links,
+      .login-actions,
+      .vault-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .exit-link,
+      .vault-action {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body class="vault-locked">
+  <section class="vault-login" aria-label="Vault login">
+    <form class="login-panel" id="vaultLogin" autocomplete="off">
+      <p class="login-kicker">Restricted Access</p>
+      <h1 class="login-title">Enter the vault.</h1>
+      <p class="login-copy">This page needs a username and password before the hidden notes open.</p>
+
+      <div class="login-field">
+        <label for="vaultUsername">Username</label>
+        <input id="vaultUsername" name="username" type="text" autocomplete="username" required />
+      </div>
+
+      <div class="login-field">
+        <label for="vaultPassword">Password</label>
+        <input id="vaultPassword" name="password" type="password" autocomplete="current-password" required />
+      </div>
+
+      <button class="login-button" type="submit">Unlock Vault</button>
+      <div class="login-actions">
+        <button class="login-secondary" type="button" id="togglePassword">Show password</button>
+        <a class="login-secondary" href="index.html">Return to portfolio</a>
+      </div>
+      <p class="login-error" id="loginError" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <header class="hero">
+    <div class="hero-top">
+      <div class="brand">VAULT</div>
+      <div class="meta">
+        Private archive<br />
+        Three notes for becoming<br />
+        Opened quietly
+      </div>
+      <div class="vault-actions" aria-label="Vault actions">
+        <a class="vault-action" href="vault-content.html">Inner Sanctum</a>
+        <button class="vault-action" type="button" id="vaultLogout">Lock Vault</button>
+      </div>
+    </div>
+
+    <div class="hero-copy reveal">
+      <p class="eyebrow">Unlocked | Read Slowly</p>
+      <h1>Hidden pages for <span>staying, changing, becoming.</span></h1>
+      <p class="hero-subtitle">
+        A quieter vault for the words that matter: small choices, steady habits, silent discipline.
+      </p>
+      <div class="tag-cloud" aria-label="Vault themes">
+        <span class="tag">Stay</span>
+        <span class="tag">Start small</span>
+        <span class="tag">Stay consistent</span>
+        <span class="tag">Do not announce</span>
+        <span class="tag">Become</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="reading-section butterfly">
+      <div class="reading-wrap">
+        <p class="reading-kicker reveal">01 | The Butterfly Effect</p>
+        <h2 class="reading-title reveal">Stay. <em>Stay loudly.</em></h2>
+        <div class="reading-grid">
+          <aside class="pull-note reveal">
+            The universe would notice. So just stay.
+            <span>by srwpoetry</span>
+          </aside>
+          <article class="essay reveal">
+            <p class="drop">
+              You need to stay. And you need to stay loudly. You are afraid of making bad choices, but the truth is this: the tiniest actions will influence the course of the rest of your life and you cannot control it.
+            </p>
+            <p>
+              So many factors play a part in you being here today: a delayed train, an extra cup of tea, the number of seconds your parents took to cross the street. This is chaos theory. Sensitivity. Mathematics. You are here.
+            </p>
+            <p>
+              Every choice you have ever made has led you to right now, reading this. While you exist, every movement and moment matters. Those bad choices may lead you to the best days of your life, if you were to play it all in rewind.
+            </p>
+            <p>
+              Change will come, even if you are standing still. Butterflies will keep flapping their wings and causing hurricanes. So make your choices and make them loud. Trust your gut. Trust energy.
+            </p>
+            <p>
+              If you ceased to exist, the universe would notice. The mess that would make. The hearts that would break. So just stay. Stay for bad choices. Stay for great ones. Stay. Cause a few hurricanes.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="reading-section transform">
+      <div class="reading-wrap">
+        <p class="reading-kicker reveal">02 | Actually Transform Your Life</p>
+        <h2 class="reading-title reveal">Start <em>small.</em><br />Keep going.</h2>
+        <div class="reading-grid">
+          <aside class="pull-note reveal">
+            Habits keep you moving when motivation fades.
+            <span>sunailablog</span>
+          </aside>
+          <article class="essay reveal">
+            <p class="drop">
+              The best way to create lasting change in your life is through habits. Habits make you keep going, even when motivation fades. In the beginning, we are usually full of energy and try to be perfect, but once a low point hits, we tend to drop everything.
+            </p>
+            <p>
+              The goal is to develop habits that you do automatically without even thinking, like brushing your teeth or checking your phone without realizing it. When things become that natural, you have really achieved something.
+            </p>
+            <p>
+              The key is: <strong>start small.</strong> When motivation is high, you may feel like you can change the world. But the bigger the goal, the faster you burn out. If you want to start running regularly, begin with a daily walk outside. It does not have to be long. Maybe just five minutes.
+            </p>
+            <p>
+              Once you are used to it, focus on keeping it <strong>consistent.</strong> When simple habits become automatic, you create the foundation to gradually build more. Maybe you jog once a week and enjoy a healthy meal afterward. Eventually, preparing healthy meals or going for a quick run becomes part of your daily rhythm.
+            </p>
+            <p>
+              Over time, even on tough days, you may find yourself naturally keeping up with these small changes. Bit by bit, they add up. You are not pushing yourself to make big changes; you are layering small wins until they shape your lifestyle.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="reading-section become">
+      <div class="reading-wrap">
+        <p class="reading-kicker reveal">03 | Becoming Her</p>
+        <h2 class="reading-title reveal">Do not announce, <em>become.</em></h2>
+        <div class="reading-grid">
+          <aside class="pull-note reveal">
+            Not everything sacred is visible.
+            <span>@miraclediariesxo</span>
+          </aside>
+          <article class="essay reveal">
+            <p class="drop">
+              Discipline is not loud. It does not need to announce itself to be effective. It exists in the shadows, in the quiet moments no one claps for. It is the version of you that wakes up early even when no one is watching.
+            </p>
+            <p>
+              You do not need to prove that you are evolving when you know you are. That is the beauty of quiet growth. The deeper the transformation, the less you feel like talking about it. You stop explaining your healing, updating people about your goals, and oversharing your routines.
+            </p>
+            <p>
+              There is a calm that arrives when you no longer need people to understand your journey. When you trade external validation for internal alignment, you begin to make decisions based on who you are becoming, not who you have been.
+            </p>
+            <p>
+              This version of you is softer, but stronger. She does not broadcast every win because she is too busy preparing for the next one. She does not need eyes on her to keep going. She does not need a camera to stick to her routine.
+            </p>
+            <p>
+              Some people will fall away. Some will not understand why you are quieter now. Let them wonder. Your silence is not absence; it is ascension. The more you disconnect from distraction, the more you reconnect with direction.
+            </p>
+            <p>
+              This is the era of full focus. Of radical self-trust. Of doing it for you, not them. You did not just change. You became.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="exit">
+    <div class="exit-inner reveal">
+      <p class="exit-label">End of Vault</p>
+      <h2>Stay quiet.<span>Become loud.</span></h2>
+      <div class="exit-links">
+        <a href="index.html" class="exit-link primary">Return to Portfolio</a>
+        <a href="mailto:tejaswanthsurisetty@gmail.com" class="exit-link">Get in Touch</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const VAULT_CREDENTIALS = [
+      { username: "tejaswanth", password: "2406" },
+      { username: "tejas", password: "2406" }
+    ];
+
+    const loginForm = document.getElementById("vaultLogin");
+    const usernameInput = document.getElementById("vaultUsername");
+    const passwordInput = document.getElementById("vaultPassword");
+    const loginError = document.getElementById("loginError");
+    const togglePassword = document.getElementById("togglePassword");
+    const vaultLogout = document.getElementById("vaultLogout");
+
+    const vaultSession = {
+      get() {
+        try {
+          return sessionStorage.getItem("vaultUnlocked") === "true";
+        } catch {
+          return document.body.dataset.vaultUnlocked === "true";
+        }
+      },
+      set(value) {
+        try {
+          if (value) sessionStorage.setItem("vaultUnlocked", "true");
+          else sessionStorage.removeItem("vaultUnlocked");
+        } catch {
+          document.body.dataset.vaultUnlocked = value ? "true" : "false";
+        }
+      }
+    };
+
+    function revealVisibleContent() {
+      document.querySelectorAll(".hero .reveal").forEach((element) => element.classList.add("visible"));
+    }
+
+    function unlockVault() {
+      vaultSession.set(true);
+      document.body.classList.remove("vault-locked");
+      document.body.classList.add("vault-unlocked");
+      loginError.textContent = "";
+      revealVisibleContent();
+      requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
+    }
+
+    function lockVault() {
+      vaultSession.set(false);
+      document.body.classList.add("vault-locked");
+      document.body.classList.remove("vault-unlocked");
+      passwordInput.value = "";
+      usernameInput.focus();
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+
+    function isValidCredential(username, password) {
+      const normalizedUsername = username.trim().toLowerCase();
+      return VAULT_CREDENTIALS.some((credential) => (
+        credential.username === normalizedUsername && credential.password === password
+      ));
+    }
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add("visible");
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll(".reveal").forEach((element) => observer.observe(element));
+    } else {
+      document.querySelectorAll(".reveal").forEach((element) => element.classList.add("visible"));
+    }
+
+    if (new URLSearchParams(window.location.search).has("logout")) {
+      vaultSession.set(false);
+      history.replaceState(null, "", window.location.pathname);
+    }
+
+    if (vaultSession.get()) {
+      unlockVault();
+    } else {
+      usernameInput.focus();
+    }
+
+    loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (isValidCredential(usernameInput.value, passwordInput.value)) {
+        unlockVault();
+        return;
+      }
+
+      loginError.textContent = "Wrong username or password.";
+      passwordInput.value = "";
+      passwordInput.focus();
+    });
+
+    [usernameInput, passwordInput].forEach((input) => {
+      input.addEventListener("input", () => {
+        loginError.textContent = "";
+      });
+    });
+
+    togglePassword.addEventListener("click", () => {
+      const isHidden = passwordInput.type === "password";
+      passwordInput.type = isHidden ? "text" : "password";
+      togglePassword.textContent = isHidden ? "Hide password" : "Show password";
+      passwordInput.focus();
+    });
+
+    vaultLogout.addEventListener("click", lockVault);
+  </script>
+</body>
+</html>

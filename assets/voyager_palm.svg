@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 210" role="img" aria-labelledby="title">
+  <title id="title">Blue lino palm mark</title>
+  <rect width="320" height="210" fill="#f4f1ea"/>
+  <g fill="none" stroke="#1a3c8f" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M160 188c4-30 7-62 4-96"/>
+    <path d="M163 92c-10 24-23 45-38 63"/>
+    <path d="M165 91c18 24 31 49 39 74"/>
+    <path d="M156 78c-34-6-66-3-98 10"/>
+    <path d="M154 75c-24-21-51-32-82-33"/>
+    <path d="M159 70c-13-25-32-43-58-55"/>
+    <path d="M169 67c11-25 29-45 54-61"/>
+    <path d="M173 74c35-17 68-22 100-15"/>
+    <path d="M177 82c30 4 57 15 80 33"/>
+    <path d="M152 82c-18 9-36 21-53 36"/>
+    <path d="M170 83c23 13 43 30 59 51"/>
+    <path d="M160 66c-2-17 1-34 8-52"/>
+  </g>
+</svg>

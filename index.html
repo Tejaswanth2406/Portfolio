@@ -12,12 +12,12 @@
   <meta property="og:title" content="Tejaswanth Surisetty — Security Researcher & AI Developer" />
   <meta property="og:description"
     content="Security research, AI systems, cloud IAM detection, bug bounty work, and research-grade engineering projects." />
-  <meta property="og:image" content="assets/security_eye.png" />
+  <meta property="og:image" content="assets/red_wavy_eye.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Serif+Display:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Serif+Display:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+Devanagari:wght@400;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap"
     rel="stylesheet" />
   <style>
     *,
@@ -44,7 +44,7 @@
       --rust: #9e4220;
       --cream: #fafaf7;
       --sky: #2C9FC7;
-      
+
       /* Mesh Colors (Soft Aurora) */
       --m-pink: rgba(224, 247, 247, 0.45);
       --m-cream: rgba(250, 247, 242, 0.4);
@@ -131,7 +131,7 @@
       position: fixed;
       inset: 0;
       z-index: 0;
-      background: 
+      background:
         radial-gradient(at 0% 0%, var(--m-pink) 0, transparent 65%),
         radial-gradient(at 100% 0%, var(--m-cream) 0, transparent 65%),
         radial-gradient(at 100% 100%, var(--m-cyan) 0, transparent 65%),
@@ -181,10 +181,6 @@
     #loader.done {
       opacity: 0;
       visibility: hidden
-    }
-
-    #loader {
-      display: none;
     }
 
     .loader-title {
@@ -542,8 +538,15 @@
     }
 
     @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-20px); }
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-20px);
+      }
     }
 
     .hero-eyebrow {
@@ -609,8 +612,15 @@
     }
 
     @keyframes blink {
-      0%, 100% { opacity: 1 }
-      50% { opacity: 0 }
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0
+      }
     }
 
     .hero-bottom-alt {
@@ -917,31 +927,53 @@
       margin: 36px 0;
       padding: 32px 40px;
       border-left: 3px solid var(--gold);
-      background: rgba(138, 108, 46, .05);
+      background: linear-gradient(135deg, rgba(250, 250, 247, .96), rgba(165, 200, 221, .08));
       position: relative;
       overflow: hidden;
       box-shadow: var(--shadow-sm);
+      isolation: isolate;
+    }
+
+    .pull-quote::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: transparent;
+      pointer-events: none;
+      z-index: 0;
     }
 
     .pull-quote::before {
-      content: '❝';
+      content: 'श्लोक';
       position: absolute;
       right: 24px;
-      top: -8px;
-      font-size: 100px;
-      color: rgba(138, 108, 46, .07);
-      font-family: 'Playfair Display', serif;
+      top: 20px;
+      font-size: 12px;
+      color: rgba(158, 66, 32, .22);
+      font-family: 'Noto Serif Devanagari', 'Crimson Pro', serif;
+      letter-spacing: .18em;
       line-height: 1;
+      z-index: 1;
     }
 
     .pull-quote p {
-      font-family: 'DM Serif Display', serif;
-      font-size: 22px;
-      font-style: italic;
+      font-family: 'Noto Serif Devanagari', 'DM Serif Display', serif;
+      font-size: clamp(21px, 2.4vw, 30px);
+      font-style: normal;
+      font-weight: 600;
       color: var(--ink);
-      line-height: 1.65;
+      line-height: 1.85;
       position: relative;
-      z-index: 1;
+      z-index: 2;
+    }
+
+    .pull-quote .quote-translation {
+      margin-top: 16px;
+      font-family: 'Crimson Pro', serif;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--ink-70);
+      font-weight: 300;
     }
 
     .pull-quote cite {
@@ -952,6 +984,8 @@
       color: var(--gold);
       letter-spacing: .2em;
       text-transform: uppercase;
+      position: relative;
+      z-index: 2;
     }
 
     .skill-group {
@@ -1562,7 +1596,7 @@
       direction: rtl;
     }
 
-    .philo-block.rev > * {
+    .philo-block.rev>* {
       direction: ltr;
     }
 
@@ -1604,7 +1638,9 @@
     }
 
     @media(max-width: 1024px) {
-      .philo-block, .philo-block.rev {
+
+      .philo-block,
+      .philo-block.rev {
         grid-template-columns: 1fr;
         gap: 40px;
         text-align: center;
@@ -1753,6 +1789,261 @@
       to {
         transform: translateX(-50%)
       }
+    }
+
+    /* --- PROFESSIONAL SECTIONS --- */
+    #experience {
+      background: #f8fbfc;
+      overflow: hidden;
+    }
+
+    .experience-grid {
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+      gap: 48px;
+      align-items: stretch;
+    }
+
+    .experience-visual,
+    .collab-visual {
+      min-height: 520px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(26, 21, 16, .1);
+      background: var(--ink);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .experience-visual img,
+    .collab-visual img,
+    .study-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(.88) contrast(1.04);
+      transition: transform .7s cubic-bezier(.25, .46, .45, .94), filter .4s;
+    }
+
+    .experience-visual:hover img,
+    .collab-visual:hover img,
+    .study-card:hover .study-media img {
+      transform: scale(1.045);
+      filter: saturate(1) contrast(1.08);
+    }
+
+    .visual-caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 26px 28px;
+      color: var(--cream);
+      background: linear-gradient(to top, rgba(26, 21, 16, .86), transparent);
+    }
+
+    .visual-caption span,
+    .experience-kicker,
+    .study-kicker,
+    .collab-kicker {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold-lt);
+      margin-bottom: 8px;
+    }
+
+    .visual-caption strong {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: .98;
+      letter-spacing: -.01em;
+    }
+
+    .experience-list {
+      display: grid;
+      gap: 14px;
+      align-content: center;
+    }
+
+    .experience-item {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr);
+      gap: 24px;
+      padding: 28px 0;
+      border-top: 1px solid var(--ink-08);
+    }
+
+    .experience-item:last-child {
+      border-bottom: 1px solid var(--ink-08);
+    }
+
+    .experience-year {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--rust);
+    }
+
+    .experience-item h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(26px, 3vw, 36px);
+      line-height: 1.05;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+
+    .experience-item p,
+    .study-card p,
+    .collab-panel p {
+      font-size: 15px;
+      line-height: 1.85;
+      color: var(--ink-70);
+      font-weight: 300;
+    }
+
+    #case-studies {
+      background: var(--ink);
+      color: var(--cream);
+      overflow: hidden;
+    }
+
+    #case-studies .section-title {
+      color: var(--cream);
+    }
+
+    #case-studies .section-eyebrow::after {
+      background: rgba(250, 247, 242, .14);
+    }
+
+    .study-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 3px;
+    }
+
+    .study-card {
+      min-height: 560px;
+      position: relative;
+      overflow: hidden;
+      background: #111;
+      isolation: isolate;
+      border: 1px solid rgba(250, 247, 242, .08);
+    }
+
+    .study-media {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+    }
+
+    .study-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(to top, rgba(26, 21, 16, .93) 0%, rgba(26, 21, 16, .55) 48%, rgba(26, 21, 16, .1) 100%);
+    }
+
+    .study-content {
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 34px 30px;
+    }
+
+    .study-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: .95;
+      color: var(--cream);
+      margin-bottom: 18px;
+    }
+
+    .study-card p {
+      color: rgba(250, 247, 242, .72);
+      margin-bottom: 22px;
+    }
+
+    .study-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .study-tags span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .08em;
+      color: rgba(250, 247, 242, .72);
+      border: 1px solid rgba(250, 247, 242, .18);
+      padding: 5px 9px;
+      background: rgba(250, 247, 242, .06);
+    }
+
+    #collaboration {
+      background: #f5f8f4;
+      overflow: hidden;
+    }
+
+    .collab-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(340px, .9fr);
+      gap: 44px;
+      align-items: stretch;
+    }
+
+    .collab-copy {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 3px;
+    }
+
+    .collab-panel {
+      background: var(--cream);
+      border: 1px solid var(--ink-08);
+      padding: 34px 30px;
+      min-height: 250px;
+      transition: transform .3s, box-shadow .3s, border-color .25s;
+    }
+
+    .collab-panel:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(107, 158, 187, .35);
+    }
+
+    .collab-panel h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 30px;
+      line-height: 1.05;
+      font-weight: 400;
+      margin-bottom: 14px;
+    }
+
+    .collab-link {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 26px;
+      color: var(--ink);
+      text-decoration: none;
+      font-family: 'Syne', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 6px;
+    }
+
+    .collab-link:hover {
+      color: var(--gold);
     }
 
     /* ─── ACHIEVEMENTS ─── */
@@ -2322,8 +2613,19 @@
       .about-layout,
       .feat-proj,
       .contact-inner,
-      .edu-grid {
+      .edu-grid,
+      .experience-grid,
+      .collab-layout {
         grid-template-columns: 1fr
+      }
+
+      .study-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .experience-visual,
+      .collab-visual {
+        min-height: 380px;
       }
 
       .fp-right {
@@ -2422,8 +2724,18 @@
 
       .hero-actions,
       .hero-stats-row,
-      .lab-stats {
+      .lab-stats,
+      .collab-copy {
         width: 100%;
+      }
+
+      .collab-copy {
+        grid-template-columns: 1fr;
+      }
+
+      .experience-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
       }
 
       .hero-actions a,
@@ -2451,6 +2763,7 @@
         overflow-wrap: anywhere;
       }
     }
+
     /* ─── EYE SHOWCASE ─── */
     #eye-showcase {
       margin-top: 0;
@@ -2473,7 +2786,7 @@
       width: 100%;
       height: auto;
       mix-blend-mode: multiply;
-      filter: drop-shadow(0 30px 60px rgba(0,0,0,0.12));
+      filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.12));
     }
 
     .showcase-label {
@@ -2497,6 +2810,7 @@
       background: var(--sky);
       opacity: 0.3;
     }
+
     /* ─── MOTION REVEAL SECTION ─── */
     #motion-reveal {
       height: 100vh;
@@ -2541,7 +2855,7 @@
     }
 
     #motion-reveal.in-view .motion-vignette {
-      background: radial-gradient(circle at center, transparent 20%, rgba(0,0,0,0.95) 100%);
+      background: radial-gradient(circle at center, transparent 20%, rgba(0, 0, 0, 0.95) 100%);
     }
 
     .motion-content-wrap {
@@ -2551,12 +2865,12 @@
     }
 
     .motion-heading {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(60px, 14vw, 200px);
-      font-weight: 900;
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(60px, 14vw, 220px);
+      font-weight: 400;
       color: #fff;
-      line-height: 0.82;
-      letter-spacing: -0.05em;
+      line-height: 0.8;
+      letter-spacing: -0.04em;
       text-transform: uppercase;
       opacity: 0;
       transform: translateY(100px);
@@ -2570,18 +2884,23 @@
     }
 
     .motion-heading em {
+      font-family: 'Playfair Display', serif;
       font-style: italic;
+      font-weight: 400;
       color: transparent;
       -webkit-text-stroke: 1px var(--gold-lt);
+      display: block;
+      margin-top: -10px;
     }
 
     .motion-tagline {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
       font-size: clamp(10px, 1.2vw, 13px);
-      letter-spacing: 0.7em;
+      letter-spacing: 0.8em;
       text-transform: uppercase;
       color: var(--gold-lt);
-      margin-top: 40px;
+      margin-top: 50px;
       opacity: 0;
       transform: translateY(20px);
       transition: all 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.8s;
@@ -2595,7 +2914,7 @@
     .motion-scanline {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom, transparent 50%, rgba(255,255,255,0.03) 50%);
+      background: linear-gradient(to bottom, transparent 50%, rgba(255, 255, 255, 0.03) 50%);
       background-size: 100% 4px;
       pointer-events: none;
       z-index: 5;
@@ -2610,6 +2929,7 @@
       z-index: 6;
       mix-blend-mode: overlay;
     }
+
     /* ─── RESEARCH LABORATORY ─── */
     #research-lab {
       background: var(--ink);
@@ -2629,7 +2949,7 @@
       background: #0d0d0d;
       border: 1px solid var(--ink-20);
       border-radius: 12px;
-      box-shadow: 0 60px 120px rgba(0,0,0,0.6);
+      box-shadow: 0 60px 120px rgba(0, 0, 0, 0.6);
       overflow: hidden;
       font-family: 'JetBrains Mono', monospace;
       position: relative;
@@ -2644,10 +2964,23 @@
       border-bottom: 2px solid var(--rust);
     }
 
-    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .t-dot.r { background: #ff5f56; }
-    .t-dot.y { background: #ffbd2e; }
-    .t-dot.g { background: #27c93f; }
+    .t-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .t-dot.r {
+      background: #ff5f56;
+    }
+
+    .t-dot.y {
+      background: #ffbd2e;
+    }
+
+    .t-dot.g {
+      background: #27c93f;
+    }
 
     .terminal-body {
       padding: 35px;
@@ -2656,9 +2989,25 @@
       color: var(--gold-lt);
     }
 
-    .t-cmd { color: #fff; margin-bottom: 12px; display: block; font-weight: 500; }
-    .t-cmd::before { content: '➜ '; color: var(--gold-lt); }
-    .t-out { opacity: 0.7; margin-bottom: 24px; display: block; padding-left: 20px; border-left: 1px solid rgba(165, 200, 221, 0.2); }
+    .t-cmd {
+      color: #fff;
+      margin-bottom: 12px;
+      display: block;
+      font-weight: 500;
+    }
+
+    .t-cmd::before {
+      content: '➜ ';
+      color: var(--gold-lt);
+    }
+
+    .t-out {
+      opacity: 0.7;
+      margin-bottom: 24px;
+      display: block;
+      padding-left: 20px;
+      border-left: 1px solid rgba(165, 200, 221, 0.2);
+    }
 
     .lab-content h2 {
       font-family: 'Playfair Display', serif;
@@ -2669,7 +3018,19 @@
       color: #fff;
     }
 
-    .lab-content h2 em { font-style: italic; color: var(--gold-lt); }
+    .lab-content h2 em {
+      font-style: italic;
+      color: var(--gold-lt);
+    }
+
+    .lab-note {
+      max-width: 620px;
+      color: rgba(250, 250, 247, .7);
+      font-size: 16px;
+      line-height: 1.8;
+      font-weight: 300;
+      margin: -24px 0 36px;
+    }
 
     .lab-stats {
       display: grid;
@@ -2679,25 +3040,51 @@
     }
 
     .ls-card {
-      background: rgba(255,255,255,0.02);
+      background: rgba(255, 255, 255, 0.02);
       padding: 32px;
-      border: 1px solid rgba(255,255,255,0.05);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       transition: background 0.3s, border-color 0.3s;
     }
 
     .ls-card:hover {
-      background: rgba(255,255,255,0.04);
+      background: rgba(255, 255, 255, 0.04);
       border-color: var(--gold-lt);
     }
 
-    .ls-n { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 900; color: var(--gold-lt); line-height: 1; display: block; margin-bottom: 8px; }
-    .ls-l { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.25em; opacity: 0.5; }
+    .ls-n {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 900;
+      color: var(--gold-lt);
+      line-height: 1;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .ls-l {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      opacity: 0.5;
+    }
 
     @media(max-width: 1024px) {
-      .lab-grid { grid-template-columns: 1fr; gap: 60px; }
-      .lab-content { order: -1; text-align: center; }
-      .lab-stats { justify-content: center; }
+      .lab-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+      }
+
+      .lab-content {
+        order: -1;
+        text-align: center;
+      }
+
+      .lab-stats {
+        justify-content: center;
+      }
     }
+
     /* ─── STRATEGIC TOOLKIT ─── */
     #toolkit {
       background: var(--bg-base);
@@ -2773,97 +3160,6 @@
       font-family: 'Syne', sans-serif;
       font-size: 18px;
       font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-      margin-bottom: 20px;
-    }
-
-    .tool-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .tool-list li {
-      font-size: 13px;
-      color: var(--ink-70);
-      font-weight: 300;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .tool-list li::before {
-      content: '';
-      width: 4px;
-      height: 4px;
-      background: var(--gold);
-      border-radius: 50%;
-      opacity: 0.4;
-    }
-
-    @media(max-width: 1024px) {
-      .toolkit-grid { grid-template-columns: 1fr 1fr; }
-    }
-
-    @media(max-width: 640px) {
-      .toolkit-grid { grid-template-columns: 1fr; }
-    }
-    /* ─── VOYAGER STAMPS ─── */
-    #voyager-log {
-      background: var(--ink);
-      padding: 180px 5%;
-      position: relative;
-      overflow: hidden;
-      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 50Q25 0 50 50T100 50' stroke='%23ffffff' stroke-opacity='0.03' fill='none'/%3E%3C/svg%3E");
-    }
-
-    .stamps-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 80px;
-      margin-top: 60px;
-    }
-
-    .stamp {
-      width: 280px;
-      background: #111;
-      padding: 12px;
-      position: relative;
-      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-    }
-
-    .stamp:hover {
-      transform: translateY(-20px) rotate(3deg);
-    }
-
-    .stamp::before {
-      content: '';
-      position: absolute;
-      inset: -8px;
-      background-image: radial-gradient(circle, var(--ink) 6px, transparent 7px);
-      background-size: 20px 20px;
-      z-index: 1;
-    }
-
-    .stamp-inner {
-      border: 1px solid rgba(158, 66, 32, 0.3);
-      padding: 30px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      height: 100%;
-    }
-
-    .stamp-art-wrap {
-      width: 120px;
-      height: 120px;
-      margin-bottom: 30px;
-      display: flex;
       align-items: center;
       justify-content: center;
       background: rgba(158, 66, 32, 0.05);
@@ -2871,10 +3167,284 @@
       position: relative;
     }
 
+    /* VOYAGER LEDGER */
+    #voyager-log {
+      background:
+        linear-gradient(135deg, rgba(0, 28, 45, 0.96), rgba(24, 48, 52, 0.94)),
+        url("assets/fish_school.png") center/cover;
+      color: var(--cream);
+      overflow: hidden;
+      padding-bottom: 120px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    #voyager-log::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+      pointer-events: none;
+    }
+
+    .voyager-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.55fr);
+      gap: 64px;
+      align-items: end;
+    }
+
+    .voyager-head .section-title {
+      margin-bottom: 0;
+    }
+
+    .voyager-intro {
+      color: rgba(250, 250, 247, 0.72);
+      font-size: 17px;
+      line-height: 1.75;
+      max-width: 560px;
+      border-left: 1px solid rgba(165, 200, 221, 0.35);
+      padding-left: 24px;
+      margin-bottom: 10px;
+    }
+
+    .voyager-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 28px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .voyager-stat {
+      min-height: 92px;
+      padding: 18px;
+      background: rgba(250, 250, 247, 0.05);
+    }
+
+    .voyager-stat strong {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 34px;
+      line-height: 1;
+      color: var(--gold-lt);
+      margin-bottom: 8px;
+    }
+
+    .voyager-stat span {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(250, 250, 247, 0.54);
+      line-height: 1.5;
+    }
+
+    .voyager-route {
+      width: min(1180px, 90%);
+      margin: 28px auto 34px;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 28px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .route-panel {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(250, 250, 247, 0.06);
+      padding: 28px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.16);
+      backdrop-filter: blur(10px);
+    }
+
+    .route-label,
+    .manifest-label,
+    .stamp-meta,
+    .stamp-code {
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+    }
+
+    .route-label {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      color: var(--gold-lt);
+      margin-bottom: 18px;
+    }
+
+    .route-track {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding-top: 26px;
+    }
+
+    .route-track::before {
+      content: '';
+      position: absolute;
+      top: 38px;
+      left: 10px;
+      right: 10px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--rust), var(--gold-lt), rgba(250, 250, 247, 0.32));
+    }
+
+    .route-stop {
+      position: relative;
+      padding-top: 34px;
+      color: rgba(250, 250, 247, 0.72);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .route-stop::before {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 0;
+      width: 13px;
+      height: 13px;
+      background: var(--rust);
+      border: 2px solid var(--gold-lt);
+      box-shadow: 0 0 0 6px rgba(165, 200, 221, 0.08);
+    }
+
+    .route-stop strong {
+      display: block;
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+
+    .manifest-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .manifest-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .manifest-item:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .manifest-mark {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(165, 200, 221, 0.36);
+      color: var(--gold-lt);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+    }
+
+    .manifest-label {
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      color: rgba(250, 250, 247, 0.46);
+      margin-bottom: 4px;
+    }
+
+    .manifest-item strong {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      color: var(--cream);
+    }
+
+    .manifest-state {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rust);
+      border: 1px solid rgba(158, 66, 32, 0.38);
+      padding: 4px 7px;
+      background: rgba(158, 66, 32, 0.08);
+    }
+
+    .stamps-container {
+      width: min(1180px, 90%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .stamp {
+      min-height: 520px;
+      position: relative;
+      padding: 10px;
+      background:
+        linear-gradient(45deg, transparent 8px, rgba(250, 250, 247, 0.94) 8px),
+        linear-gradient(-45deg, transparent 8px, rgba(250, 250, 247, 0.94) 8px);
+      color: var(--ink);
+      box-shadow: 0 26px 80px rgba(0, 0, 0, 0.24);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .stamp:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 34px 100px rgba(0, 0, 0, 0.32);
+    }
+
+    .stamp::before {
+      content: '';
+      position: absolute;
+      inset: 5px;
+      border: 1px dashed rgba(26, 21, 16, 0.2);
+      pointer-events: none;
+    }
+
+    .stamp-inner {
+      min-height: 500px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      padding: 22px;
+      background:
+        linear-gradient(rgba(250, 250, 247, 0.9), rgba(250, 250, 247, 0.9)),
+        url("assets/sun_waves.png") right -40px bottom -48px/150px auto no-repeat;
+      border: 1px solid rgba(26, 21, 16, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stamp-art-wrap {
+      width: 100%;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(107, 158, 187, 0.08);
+      border: 1px solid rgba(107, 158, 187, 0.22);
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
     .stamp-art-wrap img {
-      width: 70%;
-      height: auto;
-      filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(158, 66, 32, 0.5));
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 15px rgba(165, 200, 221, 0.4));
       transition: transform 0.5s;
     }
 
@@ -2883,6 +3453,7 @@
     }
 
     .stamp-tag {
+      display: block;
       font-family: 'JetBrains Mono', monospace;
       font-size: 9px;
       color: var(--rust);
@@ -2895,16 +3466,71 @@
       font-family: 'Playfair Display', serif;
       font-size: 20px;
       font-weight: 900;
-      color: #fff;
+      color: var(--ink);
       margin-bottom: 10px;
       line-height: 1.2;
     }
 
     .stamp-desc {
       font-size: 12px;
-      color: rgba(255,255,255,0.4);
+      color: rgba(26, 21, 16, 0.62);
       line-height: 1.6;
       font-weight: 300;
+    }
+
+    .stamp-meta {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 0 0 14px;
+    }
+
+    .stamp-meta span {
+      font-size: 8px;
+      letter-spacing: 0.13em;
+      color: rgba(26, 21, 16, 0.6);
+      border: 1px solid rgba(26, 21, 16, 0.1);
+      background: rgba(26, 21, 16, 0.03);
+      padding: 5px 7px;
+    }
+
+    .stamp-evidence {
+      list-style: none;
+      display: grid;
+      gap: 9px;
+      margin-top: auto;
+      padding-top: 18px;
+      border-top: 1px solid rgba(26, 21, 16, 0.1);
+    }
+
+    .stamp-evidence li {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 8px;
+      align-items: start;
+      font-size: 11px;
+      line-height: 1.45;
+      color: rgba(26, 21, 16, 0.68);
+    }
+
+    .stamp-evidence li::before {
+      content: attr(data-mark);
+      width: 18px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      color: var(--rust);
+      border: 1px solid rgba(158, 66, 32, 0.22);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      line-height: 1;
+    }
+
+    .stamp-code {
+      margin-top: 16px;
+      color: var(--gold);
+      font-size: 8px;
+      letter-spacing: 0.16em;
     }
 
     .stamp-price {
@@ -2915,6 +3541,7 @@
       font-size: 14px;
       font-weight: 900;
       color: rgba(158, 66, 32, 0.6);
+      z-index: 3;
     }
 
     .voyager-bg-text {
@@ -2929,6 +3556,91 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+    }
+
+    @media(max-width: 1180px) {
+      .stamps-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media(max-width: 1024px) {
+
+      .voyager-head,
+      .voyager-route {
+        grid-template-columns: 1fr;
+      }
+
+      .voyager-head {
+        gap: 32px;
+      }
+
+      .voyager-route {
+        margin-top: 42px;
+      }
+    }
+
+    @media(max-width: 640px) {
+      #voyager-log {
+        padding-bottom: 72px;
+      }
+
+      .voyager-intro {
+        padding-left: 16px;
+        font-size: 15px;
+      }
+
+      .voyager-stats,
+      .stamps-container,
+      .route-track {
+        grid-template-columns: 1fr;
+      }
+
+      .voyager-route,
+      .stamps-container {
+        width: calc(100% - 40px);
+      }
+
+      .route-panel {
+        padding: 22px;
+      }
+
+      .route-track {
+        gap: 18px;
+      }
+
+      .route-track::before {
+        top: 26px;
+        bottom: 12px;
+        left: 6px;
+        right: auto;
+        width: 1px;
+        height: auto;
+        background: linear-gradient(to bottom, var(--rust), var(--gold-lt), rgba(250, 250, 247, 0.32));
+      }
+
+      .route-stop {
+        padding-top: 0;
+        padding-left: 30px;
+      }
+
+      .route-stop::before {
+        top: 2px;
+      }
+
+      .manifest-item {
+        grid-template-columns: auto 1fr;
+      }
+
+      .manifest-state {
+        grid-column: 2;
+        justify-self: start;
+      }
+
+      .stamp,
+      .stamp-inner {
+        min-height: auto;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -2952,6 +3664,190 @@
       .rv {
         opacity: 1;
         transform: none;
+      }
+    }
+
+    /* ─── VOYAGER SHIP SHOWCASE ─── */
+    #voyager-ship {
+      background:
+        linear-gradient(120deg, rgba(0, 20, 34, .96), rgba(7, 42, 58, .9)),
+        url("https://images.unsplash.com/photo-1743715033185-11ee19e66522?auto=format&fit=crop&fm=jpg&q=60&w=1800") center/cover;
+      padding: 150px 5%;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    #voyager-ship::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(165, 200, 221, .16), transparent 32%),
+        linear-gradient(to bottom, rgba(0, 26, 51, .2), rgba(0, 14, 28, .88));
+      pointer-events: none;
+    }
+
+    #voyager-ship::after {
+      content: 'ETERNAL VOYAGE';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'DM Serif Display', serif;
+      font-size: 13vw;
+      font-weight: 400;
+      font-style: italic;
+      color: rgba(255, 255, 255, .028);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    #voyager-ship .ship-wrap {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(340px, .55fr);
+      gap: 48px;
+      align-items: center;
+    }
+
+    #voyager-ship img {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 40px 80px rgba(0, 0, 0, 0.6));
+    }
+
+    .ship-visual {
+      position: relative;
+    }
+
+    .ship-visual::before {
+      content: '';
+      position: absolute;
+      inset: 12% 8% 0;
+      border: 1px solid rgba(165, 200, 221, .16);
+      transform: rotate(-2deg);
+    }
+
+    .ship-copy {
+      color: var(--cream);
+    }
+
+    .ship-kicker {
+      font-family: 'Syne', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold-lt);
+      margin-bottom: 18px;
+    }
+
+    .ship-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(54px, 6.2vw, 92px);
+      font-weight: 400;
+      line-height: .92;
+      letter-spacing: 0;
+      margin-bottom: 22px;
+    }
+
+    .ship-title em {
+      color: var(--gold-lt);
+      font-style: italic;
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+    }
+
+    .ship-text {
+      font-family: 'Crimson Pro', serif;
+      font-size: 17px;
+      line-height: 1.85;
+      color: rgba(250, 250, 247, .72);
+      margin-bottom: 28px;
+      max-width: 520px;
+    }
+
+    .ship-ledger {
+      display: grid;
+      gap: 1px;
+      background: rgba(255, 255, 255, .1);
+      border: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .ship-ledger-row {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 18px;
+      padding: 17px 18px;
+      background: rgba(1, 18, 31, .54);
+      backdrop-filter: blur(10px);
+    }
+
+    .ship-ledger-row span {
+      font-family: 'Syne', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(165, 200, 221, .72);
+    }
+
+    .ship-ledger-row strong {
+      font-family: 'Crimson Pro', serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.45;
+      color: var(--cream);
+    }
+
+    .ship-caption {
+      font-family: 'Syne', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.52);
+      margin-top: 34px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .ship-caption::before,
+    .ship-caption::after {
+      content: '';
+      width: 50px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    @media(max-width: 1024px) {
+      #voyager-ship .ship-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .ship-copy {
+        order: -1;
+      }
+    }
+
+    @media(max-width: 640px) {
+      #voyager-ship {
+        padding: 96px 20px;
+      }
+
+      .ship-ledger-row {
+        grid-template-columns: 1fr;
+        gap: 7px;
+      }
+
+      .ship-caption {
+        letter-spacing: .24em;
       }
     }
   </style>
@@ -2981,6 +3877,7 @@
       <li><a href="#about">About</a></li>
       <li><a href="#methodology">Methodology</a></li>
       <li><a href="#projects">Work</a></li>
+      <li><a href="#experience">Experience</a></li>
       <li><a href="#achievements">Wins</a></li>
       <li><a href="#certifications">Certs</a></li>
       <li><a href="#contact">Contact</a></li>
@@ -2998,753 +3895,1046 @@
 
   <main id="main">
 
-  <!-- HERO -->
-  <section id="hero">
-    <div class="lino-art" style="top: 15%; left: -5%; width: 400px; --rot: -15deg;">
-      <img src="assets/manta_ray.png" alt="" style="width: 100%; opacity: 0.12;">
-    </div>
-    
-    <div class="hero-content">
-      <div class="hero-eyebrow">GITAM University · CSE · 3rd Year · Vizag</div>
-      <h1 class="hero-name">Tejas<em>wanth</em><br><span class="stroke">Surisetty</span></h1>
-      
-
-      <div class="hero-typing-wrap">
-        <div class="hero-typing"><span id="typed"></span><span class="cur">|</span></div>
+    <!-- HERO -->
+    <section id="hero">
+      <div class="lino-art" style="top: 15%; left: -5%; width: 400px; --rot: -15deg;">
+        <img src="assets/manta_ray.png" alt="" style="width: 100%; opacity: 0.12;">
       </div>
 
+      <div class="hero-content">
+        <div class="hero-eyebrow">GITAM University · CSE · 3rd Year · Vizag</div>
+        <h1 class="hero-name">Tejas<em>wanth</em><br><span class="stroke">Surisetty</span></h1>
 
-      <div class="hero-bottom-alt">
-        <p class="hero-desc">
-          Building <strong>adaptive security systems</strong> and AI-driven tools. I research cloud identity attack
-          paths, run bug bounty programs, and push agentic AI toward real-world decision making.
-        </p>
-        
-        <div class="hero-actions">
-          <a href="#projects" class="btn-gold"><span>View Work</span><svg width="11" height="11" fill="none"
-              stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <line x1="5" y1="12" x2="19" y2="12" />
-              <polyline points="12,5 19,12 12,19" />
-            </svg></a>
-          <a href="https://github.com/Tejaswanth2406" target="_blank" rel="noopener noreferrer" class="btn-ghost">GitHub ↗</a>
-          <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank" rel="noopener noreferrer"
-            class="btn-ghost">LinkedIn ↗</a>
+
+        <div class="hero-typing-wrap">
+          <div class="hero-typing"><span id="typed"></span><span class="cur">|</span></div>
         </div>
 
-        <div class="hero-stats-row" style="display: flex; gap: 40px; margin-top: 60px;">
-          <div class="hstat">
-            <div class="hstat-n" style="font-size: 32px;">SIH</div>
-            <div class="hstat-l">National 2024</div>
-          </div>
-          <div class="hstat">
-            <div class="hstat-n" style="font-size: 32px;">10+</div>
-            <div class="hstat-l">Certifications</div>
-          </div>
-          <div class="hstat">
-            <div class="hstat-n" style="font-size: 32px;">4</div>
-            <div class="hstat-l">Research Projects</div>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="hero-visual rv d2">
-      <img src="assets/grid_symbols.png" alt="System Symbols" class="hero-main-art">
-    </div>
-
-    <div class="hero-scroll">Scroll</div>
-  </section>
-
-  <div class="forest-divider"></div>
-
-  <!-- MOTION SHOWCASE -->
-  <section id="motion-reveal">
-    <div class="motion-container">
-      <video autoplay muted loop playsinline>
-        <source src="https://player.vimeo.com/external/403463138.sd.mp4?s=919ef368a51480020473859666c823f669a7442a&profile_id=165&oauth2_token_id=57447761" type="video/mp4">
-      </video>
-    </div>
-    <div class="motion-vignette"></div>
-    <div class="motion-scanline"></div>
-    <div class="motion-grain"></div>
-    <div class="motion-content-wrap">
-      <div class="section-eyebrow" style="color: var(--gold-lt); justify-content: center; margin-bottom: 40px; border: none; opacity: 0.6;">Research Philosophy</div>
-      <h2 class="motion-heading">Systemic<br><em>Integrity</em></h2>
-      <p class="motion-tagline">The Art of Resilience</p>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="sec-wrap">
-      <div class="lino-art" style="bottom: 5%; left: 0; width: 180px; --rot: -10deg;">
-        <img src="assets/seahorse.png" alt="" style="width: 100%; opacity: 0.1;">
-      </div>
-      <div class="section-eyebrow rv">About</div>
-      <h2 class="section-title rv">Who<br>I <em>Am</em></h2>
-      <div class="about-layout">
-        <div class="about-text rv">
-          <p>I'm a <strong>3rd year Computer Science student at GITAM University, Visakhapatnam</strong> — Core CSE,
-            working at the intersection of offensive security and applied AI. I don't just study how systems behave. I
-            study how they break, why they break, and what it takes to make them impossible to break the same way twice.
+        <div class="hero-bottom-alt">
+          <p class="hero-desc">
+            Building <strong>adaptive security systems</strong> and AI-driven tools. I research cloud identity attack
+            paths, run bug bounty programs, and push agentic AI toward real-world decision making.
           </p>
-          <p>My interests span <em>cybersecurity</em>, <em>AI &amp; LLMs</em>, <em>RAG systems</em>, <em>security
-              research</em>, and <em>cloud security</em>. My current flagship work is <strong>Hollow Purple</strong> — a
-            research-grade adaptive cloud identity detection platform that models GCP IAM as live temporal graphs and
-            surfaces multi-stage attack chains with sub-second latency.</p>
-          <div class="pull-quote rv d1">
-            <p>"Most systems wait to be attacked. Hollow Purple maps every possible path before the attacker takes the
-              first step."</p>
-            <cite>— Hollow Purple · Research Design Doc</cite>
-          </div>
-          <p>Day-to-day: Arch Linux as my daily driver, Kali for offensive work, active bug hunting across Bugcrowd,
-            HackerOne and Intigriti. I pull apart binaries, build AI systems that make real decisions, and led a team to
-            <strong>national stage at Smart India Hackathon 2024</strong>.
-          </p>
-        </div>
-        <div class="rv d2">
-          <div class="skill-group">
-            <div class="sg-label">Languages</div>
-            <div class="tags"><span class="tag tag-a">Python</span><span class="tag tag-a">JavaScript</span><span
-                class="tag tag-a">TypeScript</span><span class="tag tag-a">Java</span><span
-                class="tag tag-a">Lua</span><span class="tag tag-a">HTML / CSS</span></div>
-          </div>
-          <div class="skill-group">
-            <div class="sg-label">Frameworks & UI</div>
-            <div class="tags"><span class="tag tag-d">React 18</span><span class="tag tag-d">Node.js</span><span
-                class="tag tag-d">FastAPI</span><span class="tag tag-d">Vite</span><span class="tag tag-d">Tailwind
-                CSS</span><span class="tag tag-d">Zustand</span><span class="tag tag-d">Framer Motion</span></div>
-          </div>
-          <div class="skill-group">
-            <div class="sg-label">Security & Offensive</div>
-            <div class="tags"><span class="tag tag-b">Bug Bounty</span><span class="tag tag-b">Reverse
-                Engineering</span><span class="tag tag-b">Purple Team</span><span class="tag tag-b">IAM
-                Security</span><span class="tag tag-b">Pen Testing</span><span class="tag tag-b">Metasploit</span><span
-                class="tag tag-b">Wireshark</span><span class="tag tag-b">CVE Correlation</span></div>
-          </div>
-          <div class="skill-group">
-            <div class="sg-label">Cloud · DevOps · AI</div>
-            <div class="tags"><span class="tag tag-c">GCP</span><span class="tag tag-c">OCI</span><span
-                class="tag tag-c">Docker</span><span class="tag tag-c">Kubernetes</span><span
-                class="tag tag-c">Terraform</span><span class="tag tag-c">LLMs</span><span class="tag tag-c">RAG
-                Systems</span><span class="tag tag-c">Anthropic API</span><span class="tag tag-c">MCP</span></div>
-          </div>
-          <div class="extra-strip rv d3">
-            <div class="extra-label">beyond engineering</div>
-            <div class="extra-items">
-              <span class="extra-item">Game Development</span>
-              <span class="extra-item">Writer</span>
-              <span class="extra-item">Visual Artist</span>
-              <span class="extra-item">Spotify Artist</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- METHODOLOGY -->
-  <section id="methodology">
-    <div class="lino-art" style="top: 50%; right: 0; width: 220px; --rot: 20deg;">
-      <img src="assets/crab.png" alt="" style="width: 100%; opacity: 0.08;">
-    </div>
-    <div class="sec-wrap">
-      <div class="section-eyebrow rv">Methodology</div>
-      <h2 class="section-title rv">Digital<br><em>Bio-mimicry</em></h2>
-      
-      <div class="philo-grid">
-        <!-- OCTOPUS -->
-        <div class="philo-block rv">
-          <div class="philo-img-wrap">
-            <img src="assets/octopus.jpg" alt="Octopus Lino-cut" class="philo-img">
-          </div>
-          <div class="philo-text">
-            <h3>Distributed<br><em>Intelligence</em></h3>
-            <p>Much like the <strong>nine brains</strong> of an octopus, my approach to AI focuses on <strong>distributed agentic orchestration</strong>. I build systems where specialized models operate with local autonomy yet contribute to a unified cognitive goal, ensuring resilience and complex problem-solving capabilities.</p>
-          </div>
-        </div>
-
-        <!-- MARLIN -->
-        <div class="philo-block rev rv">
-          <div class="philo-img-wrap">
-            <img src="assets/marlin.png" alt="Marlin Art" class="philo-img">
-          </div>
-          <div class="philo-text">
-            <h3>Offensive<br><em>Velocity</em></h3>
-            <p>In security research, <strong>speed is a defensive necessity</strong>. The marlin represents my philosophy of high-velocity offensive research — identifying and neutralizing threats before they can settle. I prioritize precision-guided exploitation to surface critical vulnerabilities at scale.</p>
-          </div>
-        </div>
-
-        <!-- FISH SCHOOL -->
-        <div class="philo-block rv">
-          <div class="philo-img-wrap">
-            <img src="assets/fish_school.png" alt="Fish School" class="philo-img">
-          </div>
-          <div class="philo-text">
-            <h3>Collective<br><em>Defense</em></h3>
-            <p>True security isn't found in a single wall, but in <strong>collective intelligence</strong>. By leveraging RAG (Retrieval-Augmented Generation) and swarm-based detection, I create defensive ecosystems that learn from every interaction, mimicking the coordinated movement of a school of fish.</p>
-          </div>
-        </div>
-
-        <!-- CIPHER CORE -->
-        <div class="philo-block rev rv">
-          <div class="philo-img-wrap">
-            <img src="assets/cipher_core.jpg" alt="Cipher Core Symbol" class="philo-img">
-          </div>
-          <div class="philo-text">
-            <h3>Systemic<br><em>Integrity</em></h3>
-            <p>At the center of every system lies its <strong>cryptographic core</strong>. My research into system integrity focuses on the fundamental patterns that govern security — ensuring that even as the digital tide changes, the core remains invariant and unassailable.</p>
-          </div>
-        </div>
-
-        <!-- CLOUD OPS -->
-        <div class="philo-block rv">
-          <div class="philo-img-wrap">
-            <img src="assets/manta_ray.png" alt="Operational Art" class="philo-img" style="transform: scale(1.1); rotate: -10deg;">
-          </div>
-          <div class="philo-text">
-            <h3>Cloud Security<br><em>Operations</em></h3>
-            <p>Cloud infrastructure requires a highly adaptive, multi-layered defensive posture. I focus on implementing robust IAM governance, continuous monitoring, and automated threat response across complex, distributed environments to ensure maximum systemic resilience.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- RESEARCH LABORATORY -->
-  <section id="research-lab">
-    <div class="lino-art" style="top: -10%; left: -5%; width: 500px; opacity: 0.03; filter: invert(1);">
-      <img src="assets/whale.png" alt="" style="width: 100%;">
-    </div>
-    <div class="lino-art" style="bottom: 0; right: 5%; width: 250px; opacity: 0.08; filter: invert(1) brightness(2);">
-      <img src="assets/marlin.png" alt="" style="width: 100%; transform: rotate(-20deg);">
-    </div>
-    <div class="lab-wrap">
-      <div class="lab-grid">
-        <div class="rv d1">
-          <div class="terminal-window">
-            <div class="terminal-header">
-              <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
-              <div style="margin-left: auto; font-size: 10px; opacity: 0.6; letter-spacing: 2px; color: var(--rust);">VOLCANIC_OS_v3</div>
-            </div>
-            <div class="terminal-body">
-              <span class="t-cmd">hollow-purple --status</span>
-              <span class="t-out">Active Detection Nodes: 15/15<br>Integrity Chain: [VERIFIED]<br>Tribal Entropy: 0.0023bits</span>
-              
-              <span class="t-cmd">detect --target=cloud-iam --mode=aggressive</span>
-              <span class="t-out">Scanning temporal graphs...<br>Potential lateral movement identified in 'reef-node-721'.<br>Mitigation factor: 0.98.</span>
-              
-              <span class="t-cmd">whoami --deep</span>
-              <span class="t-out">Researcher · Security Engineer · AI Developer<br>Current focus: Adaptive offensive security in heritage waters.</span>
-            </div>
-          </div>
-        </div>
-        <div class="lab-content rv d2">
-          <div class="section-eyebrow" style="color: var(--rust); margin-bottom: 24px; border-color: var(--rust);">Research Hub</div>
-          <h2 style="color: #fff; text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">Systemic<br><em style="color: var(--rust);">Integrity</em></h2>
-          <div class="lab-stats">
-            <div class="ls-card" style="border-bottom: 3px solid var(--rust);">
-              <span class="ls-n" style="color: var(--rust);">15+</span>
-              <span class="ls-l">Microservices</span>
-            </div>
-            <div class="ls-card" style="border-bottom: 3px solid var(--rust);">
-              <span class="ls-n" style="color: var(--rust);">45ms</span>
-              <span class="ls-l">Graph Latency</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section id="projects">
-    <div class="lino-art" style="top: 5%; right: -5%; width: 400px; --rot: -10deg;">
-      <img src="assets/security_eye.png" alt="" style="width: 100%; opacity: 0.08;">
-    </div>
-    <div class="sec-wrap">
-      <div class="section-eyebrow rv">Projects</div>
-      <h2 class="section-title rv"><span class="out">What</span><br>I <em>Build</em></h2>
-
-      <div class="feat-proj sec rv" onclick="location.href='hollowpurple.html'">
-        <div class="fp-accent"></div>
-        <div class="fp-left">
-          <div class="fp-tag">Security Research · Featured</div>
-          <div class="fp-title">Hollow<br><em>Purple</em></div>
-          <div class="fp-sub">adaptive_cloud_identity_detection · 15 microservices</div>
-          <ul class="fp-bullets">
-            <li>Constructs live temporal identity interaction graphs from cloud event streams — detects privilege
-              escalation, lateral movement, and token abuse with sub-second latency.</li>
-            <li>MAHORAGHA — a novel Merkle-tree integrity subsystem producing tamper-evident, cryptographically
-              verifiable audit chains for forensic-grade evidence preservation.</li>
-            <li>Deterministic event replay engine enabling full state reconstruction at any historical point.</li>
-          </ul>
-          <div class="fp-stack"><span class="fp-s">Python</span><span class="fp-s">JavaScript</span><span
-              class="fp-s">GCP IAM</span><span class="fp-s">Temporal Graphs</span><span class="fp-s">Merkle
-              Integrity</span><span class="fp-s">FastAPI</span></div>
-          <div class="fp-links">
-            <a href="hollowpurple.html" class="fp-link">Open Project <svg width="10" height="10" fill="none"
+          <div class="hero-actions">
+            <a href="#projects" class="btn-gold"><span>View Work</span><svg width="11" height="11" fill="none"
                 stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12,5 19,12 12,19" />
               </svg></a>
-            <a href="https://github.com/Tejaswanth2406/hollow-purple" target="_blank" rel="noopener noreferrer" class="fp-link-sec"
-              onclick="event.stopPropagation()">GitHub ↗</a>
+            <a href="https://github.com/Tejaswanth2406" target="_blank" rel="noopener noreferrer"
+              class="btn-ghost">GitHub ↗</a>
+            <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank"
+              rel="noopener noreferrer" class="btn-ghost">LinkedIn ↗</a>
           </div>
-        </div>
-        <div class="fp-right">
-          <img src="assets/sun_waves.png" alt="" style="position: absolute; top: -50px; right: -50px; width: 200px; opacity: 0.15; pointer-events: none; mix-blend-mode: multiply;">
-          <img src="assets/fish_bone.png" alt="" style="position: absolute; bottom: 10px; left: 10px; width: 80px; opacity: 0.2; mix-blend-mode: multiply; transform: rotate(45deg);">
-          <div class="fp-meta-title">system_status</div>
-          <div class="fp-row"><span class="fp-k">project</span><span class="fp-v">hollow_purple_v1</span></div>
-          <div class="fp-row"><span class="fp-k">cloud</span><span class="fp-v cy">GCP</span></div>
-          <div class="fp-row"><span class="fp-k">integrity</span><span class="fp-v">MAHORAGHA (Merkle)</span></div>
-          <div class="fp-row"><span class="fp-k">modules</span><span class="fp-v">15 microservices</span></div>
-          <div class="fp-row"><span class="fp-k">replay</span><span class="fp-v am">Deterministic</span></div>
-          <div class="fp-row"><span class="fp-k">audit</span><span class="fp-v gr">Forensic-Grade</span></div>
-          <div class="phase-block">
-            <div class="fp-meta-title">subsystems</div>
-            <div class="ph-item">
-              <div class="ph-dot act"></div><span class="ph-name">Ingestion Pipeline</span><span
-                class="ph-badge act">ACTIVE</span>
+
+          <div class="hero-stats-row" style="display: flex; gap: 40px; margin-top: 60px;">
+            <div class="hstat">
+              <div class="hstat-n" style="font-size: 32px;">SIH</div>
+              <div class="hstat-l">National 2024</div>
             </div>
-            <div class="ph-item">
-              <div class="ph-dot act"></div><span class="ph-name">Graph Engine</span><span
-                class="ph-badge act">ACTIVE</span>
+            <div class="hstat">
+              <div class="hstat-n" style="font-size: 32px;">10+</div>
+              <div class="hstat-l">Certifications</div>
             </div>
-            <div class="ph-item">
-              <div class="ph-dot act"></div><span class="ph-name">MAHORAGHA Integrity</span><span
-                class="ph-badge act">ACTIVE</span>
-            </div>
-            <div class="ph-item">
-              <div class="ph-dot frz"></div><span class="ph-name" style="color:var(--ink-45)">Viz Dashboard</span><span
-                class="ph-badge frz">ROADMAP</span>
+            <div class="hstat">
+              <div class="hstat-n" style="font-size: 32px;">4</div>
+              <div class="hstat-l">Research Projects</div>
             </div>
           </div>
-          <div class="detect-list">
-            <div class="dl-title">detection_targets</div>
-            <div class="dl-item">Privilege escalation paths</div>
-            <div class="dl-item">Lateral movement chains</div>
-            <div class="dl-item">Token abuse & STS chains</div>
-            <div class="dl-item">Behavioral drift detection</div>
+        </div>
+      </div>
+
+      <div class="hero-visual rv d2">
+        <img src="assets/grid_symbols.png" alt="System Symbols" class="hero-main-art">
+      </div>
+
+      <div class="hero-scroll">Scroll</div>
+    </section>
+
+    <div class="forest-divider"></div>
+
+    <!-- MOTION SHOWCASE -->
+    <section id="motion-reveal">
+      <div class="motion-container">
+        <video autoplay muted loop playsinline>
+          <source
+            src="https://player.vimeo.com/external/403463138.sd.mp4?s=919ef368a51480020473859666c823f669a7442a&profile_id=165&oauth2_token_id=57447761"
+            type="video/mp4">
+        </video>
+      </div>
+      <div class="motion-vignette"></div>
+      <div class="motion-scanline"></div>
+      <div class="motion-grain"></div>
+      <div class="motion-content-wrap">
+        <div class="section-eyebrow"
+          style="color: var(--gold-lt); justify-content: center; margin-bottom: 40px; border: none; opacity: 0.6;">
+          Research Philosophy</div>
+        <h2 class="motion-heading">Verifiable<br><em>Integrity</em></h2>
+        <p class="motion-tagline">Evidence before assumption</p>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="sec-wrap">
+        <div class="lino-art" style="bottom: 5%; left: 0; width: 180px; --rot: -10deg;">
+          <img src="assets/seahorse.png" alt="" style="width: 100%; opacity: 0.1;">
+        </div>
+        <div class="section-eyebrow rv">About</div>
+        <h2 class="section-title rv">Who<br>I <em>Am</em></h2>
+        <div class="about-layout">
+          <div class="about-text rv">
+            <p>I'm a <strong>3rd year Computer Science student at GITAM University, Visakhapatnam</strong> — Core CSE,
+              working at the intersection of offensive security and applied AI. I don't just study how systems behave. I
+              study how they break, why they break, and what it takes to make them impossible to break the same way
+              twice.
+            </p>
+            <p>My interests span <em>cybersecurity</em>, <em>AI &amp; LLMs</em>, <em>RAG systems</em>, <em>security
+                research</em>, and <em>cloud security</em>. My current flagship work is <strong>Hollow Purple</strong> —
+              a
+              research-grade adaptive cloud identity detection platform that models GCP IAM as live temporal graphs and
+              surfaces multi-stage attack chains with sub-second latency.</p>
+            <div class="pull-quote rv d1">
+              <p>कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।<br>मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥</p>
+              <p class="quote-translation">Your claim is to the work alone, never to the fruits. Build with discipline;
+                let the outcome become evidence.</p>
+              <cite>Bhagavad Gita 2.47</cite>
+            </div>
+            <p>Day-to-day: Arch Linux as my daily driver, Kali for offensive work, active bug hunting across Bugcrowd,
+              HackerOne and Intigriti. I pull apart binaries, build AI systems that make real decisions, and led a team
+              to
+              <strong>national stage at Smart India Hackathon 2024</strong>.
+            </p>
+          </div>
+          <div class="rv d2">
+            <div class="skill-group">
+              <div class="sg-label">Languages</div>
+              <div class="tags"><span class="tag tag-a">Python</span><span class="tag tag-a">JavaScript</span><span
+                  class="tag tag-a">TypeScript</span><span class="tag tag-a">Java</span><span
+                  class="tag tag-a">Lua</span><span class="tag tag-a">HTML / CSS</span></div>
+            </div>
+            <div class="skill-group">
+              <div class="sg-label">Frameworks & UI</div>
+              <div class="tags"><span class="tag tag-d">React 18</span><span class="tag tag-d">Node.js</span><span
+                  class="tag tag-d">FastAPI</span><span class="tag tag-d">Vite</span><span class="tag tag-d">Tailwind
+                  CSS</span><span class="tag tag-d">Zustand</span><span class="tag tag-d">Framer Motion</span></div>
+            </div>
+            <div class="skill-group">
+              <div class="sg-label">Security & Offensive</div>
+              <div class="tags"><span class="tag tag-b">Bug Bounty</span><span class="tag tag-b">Reverse
+                  Engineering</span><span class="tag tag-b">Purple Team</span><span class="tag tag-b">IAM
+                  Security</span><span class="tag tag-b">Pen Testing</span><span
+                  class="tag tag-b">Metasploit</span><span class="tag tag-b">Wireshark</span><span class="tag tag-b">CVE
+                  Correlation</span></div>
+            </div>
+            <div class="skill-group">
+              <div class="sg-label">Cloud · DevOps · AI</div>
+              <div class="tags"><span class="tag tag-c">GCP</span><span class="tag tag-c">OCI</span><span
+                  class="tag tag-c">Docker</span><span class="tag tag-c">Kubernetes</span><span
+                  class="tag tag-c">Terraform</span><span class="tag tag-c">LLMs</span><span class="tag tag-c">RAG
+                  Systems</span><span class="tag tag-c">Anthropic API</span><span class="tag tag-c">MCP</span></div>
+            </div>
+            <div class="extra-strip rv d3">
+              <div class="extra-label">beyond engineering</div>
+              <div class="extra-items">
+                <span class="extra-item">Game Development</span>
+                <span class="extra-item">Writer</span>
+                <span class="extra-item">Visual Artist</span>
+                <span class="extra-item">Spotify Artist</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- METHODOLOGY -->
+    <section id="methodology">
+      <div class="lino-art" style="top: 50%; right: 0; width: 220px; --rot: 20deg;">
+        <img src="assets/crab.png" alt="" style="width: 100%; opacity: 0.08;">
+      </div>
+      <div class="sec-wrap">
+        <div class="section-eyebrow rv">Methodology</div>
+        <h2 class="section-title rv">Digital<br><em>Bio-mimicry</em></h2>
+
+        <div class="philo-grid">
+          <!-- OCTOPUS -->
+          <div class="philo-block rv">
+            <div class="philo-img-wrap">
+              <img src="assets/octopus.jpg" alt="Octopus Lino-cut" class="philo-img">
+            </div>
+            <div class="philo-text">
+              <h3>Distributed<br><em>Intelligence</em></h3>
+              <p>Much like the <strong>nine brains</strong> of an octopus, my approach to AI focuses on
+                <strong>distributed agentic orchestration</strong>. I build systems where specialized models operate
+                with local autonomy yet contribute to a unified cognitive goal, ensuring resilience and complex
+                problem-solving capabilities.
+              </p>
+            </div>
+          </div>
+
+          <!-- MARLIN -->
+          <div class="philo-block rev rv">
+            <div class="philo-img-wrap vault-trigger-wrap">
+              <img src="assets/marlin.png" alt="Marlin Art" class="philo-img vault-trigger"
+                style="cursor: pointer; transition: all 0.2s;">
+            </div>
+            <div class="philo-text">
+              <h3>Offensive<br><em>Velocity</em></h3>
+              <p>In security research, <strong>speed is a defensive necessity</strong>. The marlin represents my
+                philosophy of high-velocity offensive research — identifying and neutralizing threats before they can
+                settle. I prioritize precision-guided exploitation to surface critical vulnerabilities at scale.</p>
+            </div>
+          </div>
+
+          <!-- FISH SCHOOL -->
+          <div class="philo-block rv">
+            <div class="philo-img-wrap">
+              <img src="assets/fish_school.png" alt="Fish School" class="philo-img">
+            </div>
+            <div class="philo-text">
+              <h3>Collective<br><em>Defense</em></h3>
+              <p>True security isn't found in a single wall, but in <strong>collective intelligence</strong>. By
+                leveraging RAG (Retrieval-Augmented Generation) and swarm-based detection, I create defensive ecosystems
+                that learn from every interaction, mimicking the coordinated movement of a school of fish.</p>
+            </div>
+          </div>
+
+          <!-- VERIFIABLE INTEGRITY -->
+          <div class="philo-block rev rv">
+            <div class="philo-img-wrap">
+              <img src="assets/cipher_core.jpg" alt="Cipher Core Symbol" class="philo-img">
+            </div>
+            <div class="philo-text">
+              <h3>Verifiable<br><em>Integrity</em></h3>
+              <p>Security evidence should survive pressure. I design integrity around <strong>hash-chained events,
+                  replayable state, and clear audit trails</strong>, so every finding can be traced from signal to
+                source instead of depending on trust alone.</p>
+            </div>
+          </div>
+
+          <!-- CLOUD OPS -->
+          <div class="philo-block rv">
+            <div class="philo-img-wrap">
+              <img src="assets/manta_ray.png" alt="Operational Art" class="philo-img"
+                style="transform: scale(1.1); rotate: -10deg;">
+            </div>
+            <div class="philo-text">
+              <h3>Cloud Security<br><em>Operations</em></h3>
+              <p>Cloud infrastructure requires a highly adaptive, multi-layered defensive posture. I focus on
+                implementing robust IAM governance, continuous monitoring, and automated threat response across complex,
+                distributed environments to keep operations resilient and auditable.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESEARCH LABORATORY -->
+    <section id="research-lab">
+      <div class="lino-art" style="top: -10%; left: -5%; width: 500px; opacity: 0.03; filter: invert(1);">
+        <img src="assets/whale.png" alt="" style="width: 100%;">
+      </div>
+      <div class="lino-art" style="bottom: 0; right: 5%; width: 250px; opacity: 0.08; filter: invert(1) brightness(2);">
+        <img src="assets/marlin.png" alt="" style="width: 100%; transform: rotate(-20deg);">
+      </div>
+      <div class="lab-wrap">
+        <div class="lab-grid">
+          <div class="rv d1">
+            <div class="terminal-window">
+              <div class="terminal-header">
+                <div class="t-dot r"></div>
+                <div class="t-dot y"></div>
+                <div class="t-dot g"></div>
+                <div style="margin-left: auto; font-size: 10px; opacity: 0.6; letter-spacing: 2px; color: var(--rust);">
+                  RESEARCH_CONSOLE</div>
+              </div>
+              <div class="terminal-body">
+                <span class="t-cmd">hollow-purple --verify-ledger</span>
+                <span class="t-out">Detection Nodes: 15/15 online<br>Merkle Chain: VERIFIED<br>Replay Window:
+                  45ms</span>
+
+                <span class="t-cmd">detect --target=cloud-iam --mode=aggressive</span>
+                <span class="t-out">Scanning temporal graphs...<br>Potential lateral movement identified in
+                  'reef-node-721'.<br>Mitigation factor: 0.98.</span>
+
+                <span class="t-cmd">whoami --deep</span>
+                <span class="t-out">Researcher · Security Engineer · AI Developer<br>Current focus: adaptive cloud
+                  detection, agentic AI, and offensive security tooling.</span>
+              </div>
+            </div>
+          </div>
+          <div class="lab-content rv d2">
+            <div class="section-eyebrow" style="color: var(--rust); margin-bottom: 24px; border-color: var(--rust);">
+              Research Hub</div>
+            <h2 style="color: #fff; text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">Verifiable<br><em
+                style="color: var(--rust);">Integrity</em></h2>
+            <p class="lab-note">A research console for systems that need proof: graph evidence, tamper-evident logs,
+              deterministic replay, and clean operator-facing signals.</p>
+            <div class="lab-stats">
+              <div class="ls-card" style="border-bottom: 3px solid var(--rust);">
+                <span class="ls-n" style="color: var(--rust);">15+</span>
+                <span class="ls-l">Microservices</span>
+              </div>
+              <div class="ls-card" style="border-bottom: 3px solid var(--rust);">
+                <span class="ls-n" style="color: var(--rust);">45ms</span>
+                <span class="ls-l">Graph Latency</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="lino-art" style="top: 5%; right: -5%; width: 400px; --rot: -10deg;">
+        <img src="assets/red_wavy_eye.png" alt="" style="width: 100%; opacity: 0.08;">
+      </div>
+      <div class="sec-wrap">
+        <div class="section-eyebrow rv">Projects</div>
+        <h2 class="section-title rv"><span class="out">What</span><br>I <em>Build</em></h2>
+
+        <div class="feat-proj sec rv" onclick="location.href='hollowpurple.html'">
+          <div class="fp-accent"></div>
+          <div class="fp-left">
+            <div class="fp-tag">Security Research · Featured</div>
+            <div class="fp-title">Hollow<br><em>Purple</em></div>
+            <div class="fp-sub">adaptive_cloud_identity_detection · 15 microservices</div>
+            <ul class="fp-bullets">
+              <li>Constructs live temporal identity interaction graphs from cloud event streams — detects privilege
+                escalation, lateral movement, and token abuse with sub-second latency.</li>
+              <li>MAHORAGHA — a novel Merkle-tree integrity subsystem producing tamper-evident, cryptographically
+                verifiable audit chains for forensic-grade evidence preservation.</li>
+              <li>Deterministic event replay engine enabling full state reconstruction at any historical point.</li>
+            </ul>
+            <div class="fp-stack"><span class="fp-s">Python</span><span class="fp-s">JavaScript</span><span
+                class="fp-s">GCP IAM</span><span class="fp-s">Temporal Graphs</span><span class="fp-s">Merkle
+                Integrity</span><span class="fp-s">FastAPI</span></div>
+            <div class="fp-links">
+              <a href="hollowpurple.html" class="fp-link">Open Project <svg width="10" height="10" fill="none"
+                  stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12,5 19,12 12,19" />
+                </svg></a>
+              <a href="https://github.com/Tejaswanth2406/hollow-purple" target="_blank" rel="noopener noreferrer"
+                class="fp-link-sec" onclick="event.stopPropagation()">GitHub ↗</a>
+            </div>
+          </div>
+          <div class="fp-right">
+            <img src="assets/sun_waves.png" alt=""
+              style="position: absolute; top: -50px; right: -50px; width: 200px; opacity: 0.15; pointer-events: none; mix-blend-mode: multiply;">
+            <img src="assets/fish_bone.png" alt=""
+              style="position: absolute; bottom: 10px; left: 10px; width: 80px; opacity: 0.2; mix-blend-mode: multiply; transform: rotate(45deg);">
+            <div class="fp-meta-title">system_status</div>
+            <div class="fp-row"><span class="fp-k">project</span><span class="fp-v">hollow_purple_v1</span></div>
+            <div class="fp-row"><span class="fp-k">cloud</span><span class="fp-v cy">GCP</span></div>
+            <div class="fp-row"><span class="fp-k">integrity</span><span class="fp-v">MAHORAGHA (Merkle)</span></div>
+            <div class="fp-row"><span class="fp-k">modules</span><span class="fp-v">15 microservices</span></div>
+            <div class="fp-row"><span class="fp-k">replay</span><span class="fp-v am">Deterministic</span></div>
+            <div class="fp-row"><span class="fp-k">audit</span><span class="fp-v gr">Forensic-Grade</span></div>
+            <div class="phase-block">
+              <div class="fp-meta-title">subsystems</div>
+              <div class="ph-item">
+                <div class="ph-dot act"></div><span class="ph-name">Ingestion Pipeline</span><span
+                  class="ph-badge act">ACTIVE</span>
+              </div>
+              <div class="ph-item">
+                <div class="ph-dot act"></div><span class="ph-name">Graph Engine</span><span
+                  class="ph-badge act">ACTIVE</span>
+              </div>
+              <div class="ph-item">
+                <div class="ph-dot act"></div><span class="ph-name">MAHORAGHA Integrity</span><span
+                  class="ph-badge act">ACTIVE</span>
+              </div>
+              <div class="ph-item">
+                <div class="ph-dot frz"></div><span class="ph-name" style="color:var(--ink-45)">Viz
+                  Dashboard</span><span class="ph-badge frz">ROADMAP</span>
+              </div>
+            </div>
+            <div class="detect-list">
+              <div class="dl-title">detection_targets</div>
+              <div class="dl-item">Privilege escalation paths</div>
+              <div class="dl-item">Lateral movement chains</div>
+              <div class="dl-item">Token abuse & STS chains</div>
+              <div class="dl-item">Behavioral drift detection</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="proj-hint rv"><span>↑ Click on any project card for complete details</span></div>
+
+        <div class="proj-grid">
+          <div class="pcard rv" onclick="location.href='hakari.html'">
+            <img src="assets/yin_yang_fish.png" alt=""
+              style="position: absolute; top: 20px; right: 20px; width: 100px; opacity: 0.2; mix-blend-mode: multiply;">
+
+            <div class="pcard-tag ai">AI Research</div>
+            <div class="pcard-title">HAKARI</div>
+            <p class="pcard-desc">Cognitive simulation engine grounded in entropy physics, Bayesian inference, and
+              information theory.</p>
+            <ul class="pcard-bullets">
+              <li>9 mathematically distinct BLOCKs spanning entropy dynamics, intelligence & decision systems.</li>
+              <li>Modular upgrade system enabling runtime extension without simulation restart.</li>
+            </ul>
+            <div class="pcard-tech"><span class="ptag">JavaScript</span><span class="ptag">Node.js</span><span
+                class="ptag">Bayesian Inference</span><span class="ptag">Entropy Physics</span></div>
+            <div class="pcard-links"><a href="hakari.html" class="pcard-link" onclick="event.stopPropagation()">Open
+                Project →</a><a href="https://github.com/Tejaswanth2406/hakari" target="_blank"
+                rel="noopener noreferrer" class="pcard-link gh" onclick="event.stopPropagation()">GitHub ↗</a></div>
+          </div>
+          <div class="pcard sec rv d1" onclick="location.href='iot_sentinal.html'">
+            <img src="assets/circle_fish.jpg" alt=""
+              style="position: absolute; top: 20px; right: 20px; width: 100px; opacity: 0.2; mix-blend-mode: multiply;">
+
+            <div class="pcard-tag sec">Security</div>
+            <div class="pcard-title">IOT Sentinel</div>
+            <p class="pcard-desc">Unified IoT security scanner — 6-phase pipeline reducing manual toolchain
+              orchestration
+              to a single command.</p>
+            <ul class="pcard-bullets">
+              <li>Wide-area discovery at 10K pps through deep OS fingerprinting. CVE correlation against major vendors.
+              </li>
+              <li>Industrial protocol exposure detection: Modbus, BACnet, DNP3.</li>
+            </ul>
+            <div class="pcard-tech"><span class="ptag">Python</span><span class="ptag">Lua</span><span
+                class="ptag">FastAPI</span><span class="ptag">Docker</span><span class="ptag">Kubernetes</span></div>
+            <div class="pcard-links"><a href="iot_sentinal.html" class="pcard-link"
+                onclick="event.stopPropagation()">Open
+                Project →</a><a href="https://github.com/Tejaswanth2406/iot-sentinal" target="_blank"
+                rel="noopener noreferrer" class="pcard-link gh" onclick="event.stopPropagation()">GitHub ↗</a></div>
+          </div>
+          <div class="pcard rv d2" onclick="location.href='clu.html'">
+            <img src="assets/shell_core.png" alt=""
+              style="position: absolute; top: 20px; right: 20px; width: 100px; opacity: 0.2; mix-blend-mode: multiply;">
+
+            <div class="pcard-tag fs">Full Stack · AI</div>
+            <div class="pcard-title">CLU</div>
+            <p class="pcard-desc">AI-powered legal document analyzer — parses ToS, Privacy Policies, EULAs and surfaces
+              risk scores via Claude API.</p>
+            <ul class="pcard-bullets">
+              <li>Severity-tagged findings (0–100 risk score) with plain-English summaries.</li>
+              <li>Vitest + Playwright tests, GitHub Actions CI/CD, deployed to Vercel/Netlify.</li>
+            </ul>
+            <div class="pcard-tech"><span class="ptag">TypeScript</span><span class="ptag">React 18</span><span
+                class="ptag">Vite</span><span class="ptag">Anthropic API</span><span class="ptag">Tailwind</span></div>
+            <div class="pcard-links"><a href="clu.html" class="pcard-link" onclick="event.stopPropagation()">Open
+                Project
+                →</a><a href="https://github.com/Tejaswanth2406/CLU" target="_blank" rel="noopener noreferrer"
+                class="pcard-link gh" onclick="event.stopPropagation()">GitHub ↗</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE HIGHLIGHTS -->
+    <section id="experience">
+      <div class="sec-wrap">
+        <div class="section-eyebrow rv">Experience</div>
+        <h2 class="section-title rv">Professional<br><em>Signal</em></h2>
+        <div class="experience-grid">
+          <div class="experience-visual rv">
+            <img src="assets/cloud_ops_sharks.jpg" alt="Cloud operations security artwork">
+            <div class="visual-caption">
+              <span>Security operations mindset</span>
+              <strong>Research that turns risk into working systems.</strong>
+            </div>
+          </div>
+          <div class="experience-list">
+            <article class="experience-item rv d1">
+              <div class="experience-year">2026</div>
+              <div>
+                <span class="experience-kicker">Cloud IAM research</span>
+                <h3>Adaptive detection architecture for modern cloud identity.</h3>
+                <p>Designed Hollow Purple around temporal identity graphs, deterministic replay, and tamper-evident
+                  audit chains so cloud privilege movement can be investigated as a timeline, not a pile of logs.</p>
+              </div>
+            </article>
+            <article class="experience-item rv d2">
+              <div class="experience-year">2024-26</div>
+              <div>
+                <span class="experience-kicker">Applied AI engineering</span>
+                <h3>LLM systems built for decisions, not demos.</h3>
+                <p>Built AI assistants, RAG pipelines, document analyzers, and agent-style workflows with strong
+                  emphasis on traceability, severity scoring, user clarity, and production-minded testing.</p>
+              </div>
+            </article>
+            <article class="experience-item rv d3">
+              <div class="experience-year">Ongoing</div>
+              <div>
+                <span class="experience-kicker">Offensive security</span>
+                <h3>Bug bounty practice with responsible disclosure discipline.</h3>
+                <p>Active across vulnerability research, reverse engineering practice, IAM challenge environments, and
+                  security tooling, with a bias toward clear evidence and reproducible findings.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE STUDIES -->
+    <section id="case-studies">
+      <div class="sec-wrap">
+        <div class="section-eyebrow rv" style="color: var(--gold-lt);">Case Studies</div>
+        <h2 class="section-title rv">Problems<br><em>Worth Solving</em></h2>
+        <div class="study-grid">
+          <article class="study-card rv">
+            <div class="study-media">
+              <img src="assets/lobster.jpg" alt="Detailed defensive systems artwork">
+            </div>
+            <div class="study-content">
+              <span class="study-kicker">Detection engineering</span>
+              <h3>From noisy events to attack paths.</h3>
+              <p>Convert cloud activity streams into ranked identity-path evidence: who touched what, which privilege
+                changed, and how the chain can be replayed for review.</p>
+              <div class="study-tags"><span>GCP IAM</span><span>Graph Modeling</span><span>Audit Replay</span></div>
+            </div>
+          </article>
+          <article class="study-card rv d1">
+            <div class="study-media">
+              <img src="assets/pufferfish.png" alt="Risk scoring visual artwork">
+            </div>
+            <div class="study-content">
+              <span class="study-kicker">AI risk analysis</span>
+              <h3>Readable AI for high-stakes review.</h3>
+              <p>Design LLM workflows that explain why something is risky, attach severity, preserve source context, and
+                stay useful to non-specialists under time pressure.</p>
+              <div class="study-tags"><span>LLMs</span><span>RAG</span><span>Risk Scoring</span></div>
+            </div>
+          </article>
+          <article class="study-card rv d2">
+            <div class="study-media">
+              <img src="assets/call_of_the_sea.png" alt="Strategic product direction artwork">
+            </div>
+            <div class="study-content">
+              <span class="study-kicker">Product engineering</span>
+              <h3>Security tools people can actually use.</h3>
+              <p>Shape complex backend intelligence into calm, inspectable interfaces with clear states, strong
+                defaults, and direct paths from finding to action.</p>
+              <div class="study-tags"><span>React</span><span>FastAPI</span><span>UX Systems</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLLABORATION FIT -->
+    <section id="collaboration">
+      <div class="sec-wrap">
+        <div class="section-eyebrow rv">Collaboration</div>
+        <h2 class="section-title rv">Where I<br><em>Fit</em></h2>
+        <div class="collab-layout">
+          <div class="collab-copy">
+            <article class="collab-panel rv">
+              <span class="collab-kicker">Security teams</span>
+              <h3>Threat research, cloud IAM, detection prototypes.</h3>
+              <p>I can help investigate attack surfaces, model abuse paths, build proof-of-concept detection logic, and
+                document findings in a way engineers can reproduce.</p>
+            </article>
+            <article class="collab-panel rv d1">
+              <span class="collab-kicker">AI teams</span>
+              <h3>LLM products with clearer reasoning loops.</h3>
+              <p>I am strongest where AI needs structure: retrieval, evaluation, scoring, agent tooling, prompt systems,
+                and interfaces that make model output accountable.</p>
+            </article>
+            <article class="collab-panel rv d2">
+              <span class="collab-kicker">Product teams</span>
+              <h3>Fast prototypes with production instincts.</h3>
+              <p>I move quickly across frontend, backend, and integration work while keeping the experience legible,
+                accessible, and useful for repeated professional workflows.</p>
+            </article>
+            <article class="collab-panel rv d3">
+              <span class="collab-kicker">Internship focus</span>
+              <h3>Security research, AI systems, cloud platforms.</h3>
+              <p>Looking for teams that value curiosity, evidence, hands-on building, and the discipline to turn hard
+                technical ideas into tools that survive real use.</p>
+              <a href="hire_me.html" class="collab-link">Hire Me</a>
+            </article>
+          </div>
+          <div class="collab-visual rv d2">
+            <img src="assets/image.png" alt="Portfolio collaboration artwork">
+            <div class="visual-caption">
+              <span>Ready for professional work</span>
+              <strong>Security, AI, and cloud engineering with range.</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRATEGIC TOOLKIT -->
+    <section id="toolkit">
+      <div class="lino-art" style="top: 0; right: 0; width: 300px; opacity: 0.05;">
+        <img src="assets/seahorse.png" alt="" style="width: 100%; transform: rotate(15deg);">
+      </div>
+      <div class="lino-art" style="bottom: -50px; left: 10%; width: 200px; opacity: 0.05;">
+        <img src="assets/crab.png" alt="" style="width: 100%;">
+      </div>
+      <div class="sec-wrap" style="position: relative; z-index: 2;">
+        <div class="section-eyebrow rv" style="color: var(--rust);">Arsenal</div>
+        <h2 class="section-title rv">The Strategic<br><em style="color: var(--rust);">Toolkit</em></h2>
+      </div>
+      <div class="toolkit-grid rv">
+        <div class="tool-box">
+          <div class="tool-box-inner">
+            <span class="tool-cat">Offensive</span>
+            <h3 class="tool-title">Security</h3>
+            <ul class="tool-list">
+              <li>Bug Hunting</li>
+              <li>IAM Exploitation</li>
+              <li>Network Pivoting</li>
+              <li>Reverse Engineering</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tool-box">
+          <div class="tool-box-inner">
+            <span class="tool-cat">Intelligence</span>
+            <h3 class="tool-title">AI & LLMs</h3>
+            <ul class="tool-list">
+              <li>Agentic Orchestration</li>
+              <li>RAG Architectures</li>
+              <li>Temporal Graphs</li>
+              <li>Prompt Engineering</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tool-box">
+          <div class="tool-box-inner">
+            <span class="tool-cat">Infrastructure</span>
+            <h3 class="tool-title">Cloud</h3>
+            <ul class="tool-list">
+              <li>GCP / OCI</li>
+              <li>Docker & K8s</li>
+              <li>Terraform (IaC)</li>
+              <li>Microservices</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tool-box">
+          <div class="tool-box-inner">
+            <span class="tool-cat">Engineering</span>
+            <h3 class="tool-title">Development</h3>
+            <ul class="tool-list">
+              <li>Python / FastAPI</li>
+              <li>React / TypeScript</li>
+              <li>Go / Systems</li>
+              <li>Node.js</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACHIEVEMENTS -->
+    <section id="achievements">
+      <div class="lino-art" style="top: 10%; right: 0; width: 300px; --rot: -20deg;">
+        <img src="assets/manta_ray.png" alt="" style="width: 100%; opacity: 0.1;">
+      </div>
+      <div class="sec-wrap">
+        <div class="section-eyebrow rv">Achievements</div>
+        <h2 class="section-title rv">Key<br><em>Wins</em></h2>
+        <div class="ach-bento">
+          <div class="acard wide dark rv">
+            <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path
+                  d="M8 21h8M12 17v4M7 4H4a1 1 0 0 0-1 1v2a4 4 0 0 0 4 4h1M17 4h3a1 1 0 0 1 1 1v2a4 4 0 0 1-4 4h-1M7 4h10v6a5 5 0 0 1-10 0V4z" />
+              </svg></div>
+            <div class="ac-title">SIH 2024 — National Level</div>
+            <p class="ac-body">Led team through regional selection to compete at the national stage of Smart India
+              Hackathon 2024. Handled full solution design and team leadership.</p>
+            <span class="ac-tag">Smart India Hackathon</span>
+          </div>
+          <div class="acard wide rv d1">
+            <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <path d="M9 12l2 2 4-4" />
+              </svg></div>
+            <div class="ac-title">Bug Bounty Researcher</div>
+            <p class="ac-body">Actively identifying and responsibly disclosing security vulnerabilities in live
+              production
+              systems across public and private programs on Bugcrowd, HackerOne, and Intigriti.</p>
+            <span class="ac-tag">Ongoing · Bugcrowd · HackerOne · Intigriti</span>
+          </div>
+          <div class="acard med rv d2">
+            <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+              </svg></div>
+            <div class="ac-title">Cloud Security Competitions</div>
+            <p class="ac-body">Active participant in IAM exploitation and offensive cloud threat hunting challenges.</p>
+            <div style="margin-top:14px;display:flex;flex-direction:column;gap:7px">
+              <a href="https://bigiamchallenge.com" target="_blank" rel="noopener noreferrer"
+                style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold);text-decoration:none;letter-spacing:.1em;transition:color .2s"
+                onmouseenter="this.style.color='var(--ink)'" onmouseleave="this.style.color='var(--gold)'">↗
+                bigiamchallenge.com</a>
+              <a href="https://cloudsecuritychampionship.com" target="_blank" rel="noopener noreferrer"
+                style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold);text-decoration:none;letter-spacing:.1em;transition:color .2s"
+                onmouseenter="this.style.color='var(--ink)'" onmouseleave="this.style.color='var(--gold)'">↗
+                cloudsecuritychampionship.com</a>
+              <a href="https://cloudhuntinggames.com" target="_blank" rel="noopener noreferrer"
+                style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold);text-decoration:none;letter-spacing:.1em;transition:color .2s"
+                onmouseenter="this.style.color='var(--ink)'" onmouseleave="this.style.color='var(--gold)'">↗
+                cloudhuntinggames.com</a>
+            </div>
+          </div>
+          <div class="acard med rv d3">
+            <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polyline points="4 17 10 11 4 5" />
+                <line x1="12" y1="19" x2="20" y2="19" />
+              </svg></div>
+            <div class="ac-title">Reverse Engineering</div>
+            <p class="ac-body">Binary analysis and RE practice — studying compiled code to identify vulnerabilities and
+              dissect techniques for defensive research and CTFs.</p>
+            <span class="ac-tag">Ongoing</span>
+          </div>
+          <div class="acard med rv d4">
+            <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                <polyline points="2 17 12 22 22 17" />
+                <polyline points="2 12 12 17 22 12" />
+              </svg></div>
+            <div class="ac-title">Purple Team Ops</div>
+            <p class="ac-body">Combining red team offensive tactics with blue team detection engineering to improve
+              overall security posture in real environments.</p>
+            <span class="ac-tag">Security Research</span>
+          </div>
+          <div class="acard med rv d5">
+            <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4l3 3" />
+              </svg></div>
+            <div class="ac-title">Cross-Domain Learning</div>
+            <p class="ac-body">Deliberately study outside CS — finance, international economics, ML, animation, MCP.
+              Building context that pure engineers miss.</p>
+            <span class="ac-tag">Ongoing</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certifications">
+      <div class="lino-art" style="top: 20%; right: 0; width: 300px; --rot: 10deg;">
+        <img src="assets/shell_black.png" alt="" style="width: 100%; opacity: 0.06;">
+      </div>
+      <div class="lino-art" style="bottom: 0; left: 10%; width: 280px; --rot: -15deg;">
+        <img src="assets/manta_ray.png" alt="" style="width: 100%; opacity: 0.07;">
+      </div>
+      <div class="sec-wrap">
+        <div class="section-eyebrow rv">Certifications</div>
+        <h2 class="section-title rv">Verified<br><em>Skills</em></h2>
+        <div class="cert-grid">
+          <div class="cert-card rv">
+            <div class="cert-new">New</div>
+            <div class="cert-bar"></div>
+            <div class="cert-issuer">Fortinet</div>
+            <div class="cert-name">Network Security Expert Level 3: Certified Associate</div>
+            <div class="cert-date">Issued Apr 2026 · Expires Apr 2028 · ID 6209435523TS</div>
+          </div>
+          <div class="cert-card rv d1">
+            <div class="cert-new">New</div>
+            <div class="cert-bar"></div>
+            <div class="cert-issuer">Anthropic</div>
+            <div class="cert-name">Model Context Protocol: Advanced Topics</div>
+            <div class="cert-date">Issued Apr 2026 · Credential ID 52fh992occqb</div>
+          </div>
+          <div class="cert-card rv d2">
+            <div class="cert-bar"></div>
+            <div class="cert-issuer">Oracle Cloud Infrastructure</div>
+            <div class="cert-name">OCI 2025 Certified Architect Associate</div>
+            <div class="cert-date">Issued Dec 2025 · Credential ID 102989690OCI25CAA</div>
+          </div>
+          <div class="cert-card rv d3">
+            <div class="cert-bar"></div>
+            <div class="cert-issuer">Cisco Networking Academy</div>
+            <div class="cert-name">Ethical Hacker</div>
+            <div class="cert-date">Issued Aug 2025</div>
+          </div>
+          <div class="cert-card rv d4">
+            <div class="cert-bar"></div>
+            <div class="cert-issuer">Google</div>
+            <div class="cert-name">Google Ads Creative</div>
+            <div class="cert-date">Issued Oct 2025 · Expires Oct 2026 · ID gacc-video-mastery-lp01</div>
+          </div>
+          <div class="cert-card rv d1">
+            <div class="cert-bar"></div>
+            <div class="cert-issuer">Politecnico di Milano</div>
+            <div class="cert-name">Machine Learning</div>
+            <div class="cert-date">Issued Mar 2026 · Politecnico di Milano · Italy</div>
+          </div>
+          <div class="cert-card rv d2">
+            <div class="cert-bar"></div>
+            <div class="cert-issuer">千葉大学 · Chiba University</div>
+            <div class="cert-name">International Economics</div>
+            <div class="cert-date">Chiba University · Japan</div>
+          </div>
+          <div class="cert-card rv d3">
+            <div class="cert-bar"></div>
+            <div class="cert-issuer">SPSUFE · Finance</div>
+            <div class="cert-name">Finance</div>
+            <div class="cert-date">Saint Petersburg State University of Finance & Economics</div>
+          </div>
+          <div class="cert-card rv d4">
+            <div class="cert-bar"></div>
+            <div class="cert-issuer">HP LIFE</div>
+            <div class="cert-name">Data Science & Analytics</div>
+            <div class="cert-date">Issued Oct 2025 · Credential ID a8622dce-2d17</div>
+          </div>
+          <div class="cert-card rv">
+            <div class="cert-bar"></div>
+            <div class="cert-issuer">Sony Pictures Animation</div>
+            <div class="cert-name">Animation Program</div>
+            <div class="cert-date">Issued Oct 2025</div>
+          </div>
+        </div>
+        <p
+          style="margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-45);letter-spacing:.14em;text-transform:uppercase;">
+          Full list → <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/details/certifications/"
+            target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none;">LinkedIn
+            Certifications ↗</a></p>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education">
+      <div class="sec-wrap">
+        <div class="lino-art" style="top: -10%; right: -5%; width: 450px; --rot: 15deg; opacity: 0.15;">
+          <img src="assets/sardines.png" alt="Sardines lino-cut" style="width: 100%;">
+        </div>
+        <div class="section-eyebrow rv">Education</div>
+        <h2 class="section-title rv">Academic<br><em>Path</em></h2>
+        <div class="edu-grid">
+          <div class="edu-card rv">
+            <div class="edu-year">2023 — Present</div>
+            <div class="edu-degree">B.Tech — <em>Computer Science</em></div>
+            <div class="edu-school">GITAM University · Visakhapatnam</div>
+            <div class="edu-detail">3rd Year · Core CSE · AI, LLMs, Cybersecurity & Cloud Security</div>
+            <div class="edu-deco">CSE</div>
+          </div>
+          <div class="edu-card rv d2">
+            <div class="edu-year">Completed 2023</div>
+            <div class="edu-degree">Intermediate — <em>MPC</em></div>
+            <div class="edu-school">ASCNET Junior College · Visakhapatnam</div>
+            <div class="edu-detail">Mathematics, Physics, Chemistry · 844/940 (~89.8%)</div>
+            <div class="edu-deco">MPC</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VOYAGER LOG -->
+    <section id="voyager-log">
+      <div class="voyager-bg-text">PACIFIC</div>
+      <div class="sec-wrap voyager-head" style="padding-bottom: 0; position: relative; z-index: 2;">
+        <div>
+          <div class="section-eyebrow rv" style="color: var(--rust); border-color: var(--rust);">Chronicle</div>
+          <h2 class="section-title rv" style="color: #fff; text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);">The
+            Voyager's<br><em style="color: var(--gold-lt);">Ledger</em></h2>
+        </div>
+        <div class="rv d1">
+          <p class="voyager-intro">A compact travel log for the work behind the portfolio: the campus chapter, security
+            systems, national-stage builds, and the research discipline that ties them together.</p>
+          <div class="voyager-stats" aria-label="Voyager ledger summary">
+            <div class="voyager-stat"><strong>04</strong><span>charted milestones</span></div>
+            <div class="voyager-stat"><strong>15+</strong><span>systems and services</span></div>
+            <div class="voyager-stat"><strong>24-26</strong><span>active build window</span></div>
           </div>
         </div>
       </div>
 
-      <div class="proj-hint rv"><span>↑ Click on any project card for complete details</span></div>
-
-      <div class="proj-grid">
-        <div class="pcard rv" onclick="location.href='hakari.html'">
-          <img src="assets/yin_yang_fish.png" alt="" style="position: absolute; top: 20px; right: 20px; width: 100px; opacity: 0.2; mix-blend-mode: multiply;">
-          
-          <div class="pcard-tag ai">AI Research</div>
-          <div class="pcard-title">HAKARI</div>
-          <p class="pcard-desc">Cognitive simulation engine grounded in entropy physics, Bayesian inference, and
-            information theory.</p>
-          <ul class="pcard-bullets">
-            <li>9 mathematically distinct BLOCKs spanning entropy dynamics, intelligence & decision systems.</li>
-            <li>Modular upgrade system enabling runtime extension without simulation restart.</li>
-          </ul>
-          <div class="pcard-tech"><span class="ptag">JavaScript</span><span class="ptag">Node.js</span><span
-              class="ptag">Bayesian Inference</span><span class="ptag">Entropy Physics</span></div>
-          <div class="pcard-links"><a href="hakari.html" class="pcard-link" onclick="event.stopPropagation()">Open
-              Project →</a><a href="https://github.com/Tejaswanth2406/hakari" target="_blank" rel="noopener noreferrer" class="pcard-link gh"
-              onclick="event.stopPropagation()">GitHub ↗</a></div>
-        </div>
-        <div class="pcard sec rv d1" onclick="location.href='iot_sentinal.html'">
-          <img src="assets/circle_fish.jpg" alt="" style="position: absolute; top: 20px; right: 20px; width: 100px; opacity: 0.2; mix-blend-mode: multiply;">
-          
-          <div class="pcard-tag sec">Security</div>
-          <div class="pcard-title">IOT Sentinel</div>
-          <p class="pcard-desc">Unified IoT security scanner — 6-phase pipeline reducing manual toolchain orchestration
-            to a single command.</p>
-          <ul class="pcard-bullets">
-            <li>Wide-area discovery at 10K pps through deep OS fingerprinting. CVE correlation against major vendors.
-            </li>
-            <li>Industrial protocol exposure detection: Modbus, BACnet, DNP3.</li>
-          </ul>
-          <div class="pcard-tech"><span class="ptag">Python</span><span class="ptag">Lua</span><span
-              class="ptag">FastAPI</span><span class="ptag">Docker</span><span class="ptag">Kubernetes</span></div>
-          <div class="pcard-links"><a href="iot_sentinal.html" class="pcard-link" onclick="event.stopPropagation()">Open
-              Project →</a><a href="https://github.com/Tejaswanth2406/iot-sentinal" target="_blank" rel="noopener noreferrer"
-              class="pcard-link gh" onclick="event.stopPropagation()">GitHub ↗</a></div>
-        </div>
-        <div class="pcard rv d2" onclick="location.href='clu.html'">
-          <img src="assets/shell_core.png" alt="" style="position: absolute; top: 20px; right: 20px; width: 100px; opacity: 0.2; mix-blend-mode: multiply;">
-          
-          <div class="pcard-tag fs">Full Stack · AI</div>
-          <div class="pcard-title">CLU</div>
-          <p class="pcard-desc">AI-powered legal document analyzer — parses ToS, Privacy Policies, EULAs and surfaces
-            risk scores via Claude API.</p>
-          <ul class="pcard-bullets">
-            <li>Severity-tagged findings (0–100 risk score) with plain-English summaries.</li>
-            <li>Vitest + Playwright tests, GitHub Actions CI/CD, deployed to Vercel/Netlify.</li>
-          </ul>
-          <div class="pcard-tech"><span class="ptag">TypeScript</span><span class="ptag">React 18</span><span
-              class="ptag">Vite</span><span class="ptag">Anthropic API</span><span class="ptag">Tailwind</span></div>
-          <div class="pcard-links"><a href="clu.html" class="pcard-link" onclick="event.stopPropagation()">Open Project
-              →</a><a href="https://github.com/Tejaswanth2406/CLU" target="_blank" rel="noopener noreferrer" class="pcard-link gh"
-              onclick="event.stopPropagation()">GitHub ↗</a></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- STRATEGIC TOOLKIT -->
-  <section id="toolkit">
-    <div class="lino-art" style="top: 0; right: 0; width: 300px; opacity: 0.05;">
-      <img src="assets/seahorse.png" alt="" style="width: 100%; transform: rotate(15deg);">
-    </div>
-    <div class="lino-art" style="bottom: -50px; left: 10%; width: 200px; opacity: 0.05;">
-      <img src="assets/crab.png" alt="" style="width: 100%;">
-    </div>
-    <div class="sec-wrap" style="position: relative; z-index: 2;">
-      <div class="section-eyebrow rv" style="color: var(--rust);">Arsenal</div>
-      <h2 class="section-title rv">The Strategic<br><em style="color: var(--rust);">Toolkit</em></h2>
-    </div>
-    <div class="toolkit-grid rv">
-      <div class="tool-box">
-        <div class="tool-box-inner">
-          <span class="tool-cat">Offensive</span>
-          <h3 class="tool-title">Security</h3>
-          <ul class="tool-list">
-            <li>Bug Hunting</li>
-            <li>IAM Exploitation</li>
-            <li>Network Pivoting</li>
-            <li>Reverse Engineering</li>
-          </ul>
-        </div>
-      </div>
-      <div class="tool-box">
-        <div class="tool-box-inner">
-          <span class="tool-cat">Intelligence</span>
-          <h3 class="tool-title">AI & LLMs</h3>
-          <ul class="tool-list">
-            <li>Agentic Orchestration</li>
-            <li>RAG Architectures</li>
-            <li>Temporal Graphs</li>
-            <li>Prompt Engineering</li>
-          </ul>
-        </div>
-      </div>
-      <div class="tool-box">
-        <div class="tool-box-inner">
-          <span class="tool-cat">Infrastructure</span>
-          <h3 class="tool-title">Cloud</h3>
-          <ul class="tool-list">
-            <li>GCP / OCI</li>
-            <li>Docker & K8s</li>
-            <li>Terraform (IaC)</li>
-            <li>Microservices</li>
-          </ul>
-        </div>
-      </div>
-      <div class="tool-box">
-        <div class="tool-box-inner">
-          <span class="tool-cat">Engineering</span>
-          <h3 class="tool-title">Development</h3>
-          <ul class="tool-list">
-            <li>Python / FastAPI</li>
-            <li>React / TypeScript</li>
-            <li>Go / Systems</li>
-            <li>Node.js</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ACHIEVEMENTS -->
-  <section id="achievements">
-    <div class="lino-art" style="top: 10%; right: 0; width: 300px; --rot: -20deg;">
-      <img src="assets/manta_ray.png" alt="" style="width: 100%; opacity: 0.1;">
-    </div>
-    <div class="sec-wrap">
-      <div class="section-eyebrow rv">Achievements</div>
-      <h2 class="section-title rv">Key<br><em>Wins</em></h2>
-      <div class="ach-bento">
-        <div class="acard wide dark rv">
-          <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path
-                d="M8 21h8M12 17v4M7 4H4a1 1 0 0 0-1 1v2a4 4 0 0 0 4 4h1M17 4h3a1 1 0 0 1 1 1v2a4 4 0 0 1-4 4h-1M7 4h10v6a5 5 0 0 1-10 0V4z" />
-            </svg></div>
-          <div class="ac-title">SIH 2024 — National Level</div>
-          <p class="ac-body">Led team through regional selection to compete at the national stage of Smart India
-            Hackathon 2024. Handled full solution design and team leadership.</p>
-          <span class="ac-tag">Smart India Hackathon</span>
-        </div>
-        <div class="acard wide rv d1">
-          <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              <path d="M9 12l2 2 4-4" />
-            </svg></div>
-          <div class="ac-title">Bug Bounty Researcher</div>
-          <p class="ac-body">Actively identifying and responsibly disclosing security vulnerabilities in live production
-            systems across public and private programs on Bugcrowd, HackerOne, and Intigriti.</p>
-          <span class="ac-tag">Ongoing · Bugcrowd · HackerOne · Intigriti</span>
-        </div>
-        <div class="acard med rv d2">
-          <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
-            </svg></div>
-          <div class="ac-title">Cloud Security Competitions</div>
-          <p class="ac-body">Active participant in IAM exploitation and offensive cloud threat hunting challenges.</p>
-          <div style="margin-top:14px;display:flex;flex-direction:column;gap:7px">
-            <a href="https://bigiamchallenge.com" target="_blank" rel="noopener noreferrer"
-              style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold);text-decoration:none;letter-spacing:.1em;transition:color .2s"
-              onmouseenter="this.style.color='var(--ink)'" onmouseleave="this.style.color='var(--gold)'">↗
-              bigiamchallenge.com</a>
-            <a href="https://cloudsecuritychampionship.com" target="_blank" rel="noopener noreferrer"
-              style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold);text-decoration:none;letter-spacing:.1em;transition:color .2s"
-              onmouseenter="this.style.color='var(--ink)'" onmouseleave="this.style.color='var(--gold)'">↗
-              cloudsecuritychampionship.com</a>
-            <a href="https://cloudhuntinggames.com" target="_blank" rel="noopener noreferrer"
-              style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold);text-decoration:none;letter-spacing:.1em;transition:color .2s"
-              onmouseenter="this.style.color='var(--ink)'" onmouseleave="this.style.color='var(--gold)'">↗
-              cloudhuntinggames.com</a>
+      <div class="voyager-route rv d2">
+        <div class="route-panel">
+          <div class="route-label">route map</div>
+          <div class="route-track" aria-label="Voyager route timeline">
+            <div class="route-stop"><strong>Foundation</strong><span>CSE, math, security basics.</span></div>
+            <div class="route-stop"><strong>Builds</strong><span>AI tools, cloud systems, scanners.</span></div>
+            <div class="route-stop"><strong>Proof</strong><span>finals, tests, disclosures, demos.</span></div>
+            <div class="route-stop"><strong>Next</strong><span>internship-ready research work.</span></div>
           </div>
         </div>
-        <div class="acard med rv d3">
-          <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="4 17 10 11 4 5" />
-              <line x1="12" y1="19" x2="20" y2="19" />
-            </svg></div>
-          <div class="ac-title">Reverse Engineering</div>
-          <p class="ac-body">Binary analysis and RE practice — studying compiled code to identify vulnerabilities and
-            dissect techniques for defensive research and CTFs.</p>
-          <span class="ac-tag">Ongoing</span>
-        </div>
-        <div class="acard med rv d4">
-          <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="12 2 2 7 12 12 22 7 12 2" />
-              <polyline points="2 17 12 22 22 17" />
-              <polyline points="2 12 12 17 22 12" />
-            </svg></div>
-          <div class="ac-title">Purple Team Ops</div>
-          <p class="ac-body">Combining red team offensive tactics with blue team detection engineering to improve
-            overall security posture in real environments.</p>
-          <span class="ac-tag">Security Research</span>
-        </div>
-        <div class="acard med rv d5">
-          <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 8v4l3 3" />
-            </svg></div>
-          <div class="ac-title">Cross-Domain Learning</div>
-          <p class="ac-body">Deliberately study outside CS — finance, international economics, ML, animation, MCP.
-            Building context that pure engineers miss.</p>
-          <span class="ac-tag">Ongoing</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CERTIFICATIONS -->
-  <section id="certifications">
-    <div class="lino-art" style="top: 20%; right: 0; width: 300px; --rot: 10deg;">
-      <img src="assets/shell_black.png" alt="" style="width: 100%; opacity: 0.06;">
-    </div>
-    <div class="lino-art" style="bottom: 0; left: 10%; width: 280px; --rot: -15deg;">
-      <img src="assets/manta_ray.png" alt="" style="width: 100%; opacity: 0.07;">
-    </div>
-    <div class="sec-wrap">
-      <div class="section-eyebrow rv">Certifications</div>
-      <h2 class="section-title rv">Verified<br><em>Skills</em></h2>
-      <div class="cert-grid">
-        <div class="cert-card rv">
-          <div class="cert-new">New</div>
-          <div class="cert-bar"></div>
-          <div class="cert-issuer">Fortinet</div>
-          <div class="cert-name">Network Security Expert Level 3: Certified Associate</div>
-          <div class="cert-date">Issued Apr 2026 · Expires Apr 2028 · ID 6209435523TS</div>
-        </div>
-        <div class="cert-card rv d1">
-          <div class="cert-new">New</div>
-          <div class="cert-bar"></div>
-          <div class="cert-issuer">Anthropic</div>
-          <div class="cert-name">Model Context Protocol: Advanced Topics</div>
-          <div class="cert-date">Issued Apr 2026 · Credential ID 52fh992occqb</div>
-        </div>
-        <div class="cert-card rv d2">
-          <div class="cert-bar"></div>
-          <div class="cert-issuer">Oracle Cloud Infrastructure</div>
-          <div class="cert-name">OCI 2025 Certified Architect Associate</div>
-          <div class="cert-date">Issued Dec 2025 · Credential ID 102989690OCI25CAA</div>
-        </div>
-        <div class="cert-card rv d3">
-          <div class="cert-bar"></div>
-          <div class="cert-issuer">Cisco Networking Academy</div>
-          <div class="cert-name">Ethical Hacker</div>
-          <div class="cert-date">Issued Aug 2025</div>
-        </div>
-        <div class="cert-card rv d4">
-          <div class="cert-bar"></div>
-          <div class="cert-issuer">Google</div>
-          <div class="cert-name">Google Ads Creative</div>
-          <div class="cert-date">Issued Oct 2025 · Expires Oct 2026 · ID gacc-video-mastery-lp01</div>
-        </div>
-        <div class="cert-card rv d1">
-          <div class="cert-bar"></div>
-          <div class="cert-issuer">Politecnico di Milano</div>
-          <div class="cert-name">Machine Learning</div>
-          <div class="cert-date">Issued Mar 2026 · Politecnico di Milano · Italy</div>
-        </div>
-        <div class="cert-card rv d2">
-          <div class="cert-bar"></div>
-          <div class="cert-issuer">千葉大学 · Chiba University</div>
-          <div class="cert-name">International Economics</div>
-          <div class="cert-date">Chiba University · Japan</div>
-        </div>
-        <div class="cert-card rv d3">
-          <div class="cert-bar"></div>
-          <div class="cert-issuer">SPSUFE · Finance</div>
-          <div class="cert-name">Finance</div>
-          <div class="cert-date">Saint Petersburg State University of Finance & Economics</div>
-        </div>
-        <div class="cert-card rv d4">
-          <div class="cert-bar"></div>
-          <div class="cert-issuer">HP LIFE</div>
-          <div class="cert-name">Data Science & Analytics</div>
-          <div class="cert-date">Issued Oct 2025 · Credential ID a8622dce-2d17</div>
-        </div>
-        <div class="cert-card rv">
-          <div class="cert-bar"></div>
-          <div class="cert-issuer">Sony Pictures Animation</div>
-          <div class="cert-name">Animation Program</div>
-          <div class="cert-date">Issued Oct 2025</div>
-        </div>
-      </div>
-      <p
-        style="margin-top:22px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-45);letter-spacing:.14em;text-transform:uppercase;">
-        Full list → <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/details/certifications/"
-          target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:none;">LinkedIn Certifications ↗</a></p>
-    </div>
-  </section>
-
-  <!-- EDUCATION -->
-  <section id="education">
-    <div class="sec-wrap">
-      <div class="lino-art" style="top: 5%; left: 0; width: 300px; --rot: -5deg;">
-        <img src="assets/cloud_sec.png" alt="" style="width: 100%; opacity: 0.1;">
-      </div>
-      <div class="section-eyebrow rv">Education</div>
-      <h2 class="section-title rv">Academic<br><em>Path</em></h2>
-      <div class="edu-grid">
-        <div class="edu-card rv">
-          <div class="edu-year">2023 — Present</div>
-          <div class="edu-degree">B.Tech — <em>Computer Science</em></div>
-          <div class="edu-school">GITAM University · Visakhapatnam</div>
-          <div class="edu-detail">3rd Year · Core CSE · AI, LLMs, Cybersecurity & Cloud Security</div>
-          <div class="edu-deco">CSE</div>
-        </div>
-        <div class="edu-card rv d2">
-          <div class="edu-year">Completed 2023</div>
-          <div class="edu-degree">Intermediate — <em>MPC</em></div>
-          <div class="edu-school">ASCNET Junior College · Visakhapatnam</div>
-          <div class="edu-detail">Mathematics, Physics, Chemistry · 844/940 (~89.8%)</div>
-          <div class="edu-deco">MPC</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- VOYAGER LOG -->
-  <section id="voyager-log">
-    <div class="voyager-bg-text">PACIFIC</div>
-    <div class="sec-wrap" style="padding-bottom: 0;">
-      <div class="section-eyebrow rv" style="color: var(--rust); border-color: var(--rust);">Chronicle</div>
-      <h2 class="section-title rv" style="color: #fff;">The Voyager's<br><em style="color: var(--rust);">Ledger</em></h2>
-    </div>
-    
-    <div class="stamps-container rv">
-      <!-- STAMP 1 -->
-      <div class="stamp">
-        <div class="stamp-price">2026</div>
-        <div class="stamp-inner">
-          <div class="stamp-art-wrap">
-            <img src="assets/manta_ray.png" alt="Manta Ray">
-          </div>
-          <span class="stamp-tag">Navigator</span>
-          <h3 class="stamp-name">GITAM<br>University</h3>
-          <p class="stamp-desc">Charting the depths of Computer Science & Engineering in Vizag.</p>
-        </div>
-      </div>
-
-      <!-- STAMP 2 -->
-      <div class="stamp">
-        <div class="stamp-price">2025</div>
-        <div class="stamp-inner">
-          <div class="stamp-art-wrap">
-            <img src="assets/marlin.png" alt="Marlin">
-          </div>
-          <span class="stamp-tag">Expedition</span>
-          <h3 class="stamp-name">Hollow<br>Purple</h3>
-          <p class="stamp-desc">Voyaging through GCP IAM and temporal identity graphs.</p>
-        </div>
-      </div>
-
-      <!-- STAMP 3 -->
-      <div class="stamp">
-        <div class="stamp-price">2024</div>
-        <div class="stamp-inner">
-          <div class="stamp-art-wrap">
-            <img src="assets/octopus.jpg" alt="Octopus">
-          </div>
-          <span class="stamp-tag">National</span>
-          <h3 class="stamp-name">SIH<br>Stage</h3>
-          <p class="stamp-desc">Leading distributed intelligence to the national finals.</p>
-        </div>
-      </div>
-
-      <!-- STAMP 4 -->
-      <div class="stamp">
-        <div class="stamp-price">2026</div>
-        <div class="stamp-inner">
-          <div class="stamp-art-wrap">
-            <img src="assets/shark.png" alt="Shark">
-          </div>
-          <span class="stamp-tag">Guardian</span>
-          <h3 class="stamp-name">Offensive<br>Research</h3>
-          <p class="stamp-desc">Responsible disclosure and bug hunting in global waters.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="contact-inner">
-      <div class="rv">
-        <div class="ct-eyebrow">Let's Connect</div>
-        <h2 class="ct-title">Let's<br>Build<br><em>Some</em><span class="out">thing.</span></h2>
-      </div>
-      <div class="rv d2">
-        <div class="ct-right">
-          <p class="ct-sub">Looking for internships in AI, security research, LLMs, RAG systems, and cloud security. Open
-            to collaborations, research partnerships, and interesting problems.</p>
-          <div class="ct-links">
-            <a href="mailto:tejaswanthsurisetty@gmail.com"
-              class="ct-link"><span>✉&nbsp;&nbsp;tejaswanthsurisetty@gmail.com</span><span
-                class="ct-link-icon">→</span></a>
-            <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank" rel="noopener noreferrer"
-              class="ct-link"><span>in&nbsp;&nbsp;LinkedIn Profile</span><span class="ct-link-icon">↗</span></a>
-            <a href="https://github.com/Tejaswanth2406" target="_blank" rel="noopener noreferrer" class="ct-link"><span>{ }&nbsp;&nbsp;GitHub /
-                Tejaswanth2406</span><span class="ct-link-icon">↗</span></a>
-            <a href="tel:7396244673" class="ct-link"><span>☏&nbsp;&nbsp;+91 7396244673</span><span
-                class="ct-link-icon">→</span></a>
+        <div class="route-panel">
+          <div class="route-label">ship manifest</div>
+          <div class="manifest-list">
+            <div class="manifest-item">
+              <div class="manifest-mark">AI</div>
+              <div>
+                <div class="manifest-label">cargo</div><strong>LLMs, RAG, simulation engines</strong>
+              </div>
+              <span class="manifest-state">active</span>
+            </div>
+            <div class="manifest-item">
+              <div class="manifest-mark">SEC</div>
+              <div>
+                <div class="manifest-label">watch</div><strong>IAM graphs, IoT scanning, bug hunting</strong>
+              </div>
+              <span class="manifest-state">live</span>
+            </div>
+            <div class="manifest-item">
+              <div class="manifest-mark">UX</div>
+              <div>
+                <div class="manifest-label">signal</div><strong>calm interfaces for technical evidence</strong>
+              </div>
+              <span class="manifest-state">built</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- EYE SHOWCASE -->
-  <section id="eye-showcase">
-    <div class="showcase-wrap rv">
-      <div class="showcase-label">The Observant Mind</div>
-      <img src="assets/red_wavy_eye.png" alt="Eye Showcase">
-    </div>
-  </section>
+      <div class="stamps-container rv">
+        <!-- STAMP 1 -->
+        <div class="stamp">
+          <div class="stamp-price">2026</div>
+          <div class="stamp-inner">
+            <div class="stamp-art-wrap">
+              <img src="assets/voyager_ledger_ammonite.png" alt="Ammonite Spiral">
+            </div>
+            <span class="stamp-tag">Navigator</span>
+            <h3 class="stamp-name">GITAM<br>University</h3>
+            <div class="stamp-meta"><span>CSE</span><span>2023-Present</span><span>Vizag</span></div>
+            <p class="stamp-desc">Charting the depths of Computer Science & Engineering in Vizag.</p>
+            <ul class="stamp-evidence">
+              <li data-mark="01">Core CS foundation across AI, cloud platforms, software engineering, and security.</li>
+              <li data-mark="02">Built portfolio work around research-grade systems instead of isolated demos.</li>
+            </ul>
+            <div class="stamp-code">ledger.ref / academic-current</div>
+          </div>
+        </div>
+
+        <!-- STAMP 2 -->
+        <div class="stamp">
+          <div class="stamp-price">2025</div>
+          <div class="stamp-inner">
+            <div class="stamp-art-wrap">
+              <img src="assets/voyager_ledger_turtle.png" alt="Sea Turtle">
+            </div>
+            <span class="stamp-tag">Expedition</span>
+            <h3 class="stamp-name">Hollow<br>Purple</h3>
+            <div class="stamp-meta"><span>Cloud IAM</span><span>Merkle</span><span>Graph</span></div>
+            <p class="stamp-desc">Voyaging through GCP IAM and temporal identity graphs.</p>
+            <ul class="stamp-evidence">
+              <li data-mark="01">Temporal graph model for privilege paths, lateral movement, token abuse, and drift.
+              </li>
+              <li data-mark="02">MAHORAGHA integrity layer for tamper-evident forensic replay and audit trails.</li>
+            </ul>
+            <div class="stamp-code">ledger.ref / hollow-purple</div>
+          </div>
+        </div>
+
+        <!-- STAMP 3 -->
+        <div class="stamp">
+          <div class="stamp-price">2024</div>
+          <div class="stamp-inner">
+            <div class="stamp-art-wrap">
+              <img src="assets/voyager_ledger_jellyfish.png" alt="Jellyfish">
+            </div>
+            <span class="stamp-tag">National</span>
+            <h3 class="stamp-name">SIH<br>Stage</h3>
+            <div class="stamp-meta"><span>Team</span><span>Finals</span><span>Delivery</span></div>
+            <p class="stamp-desc">Leading distributed intelligence to the national finals.</p>
+            <ul class="stamp-evidence">
+              <li data-mark="01">Turned a problem statement into a working technical direction under competition
+                pressure.</li>
+              <li data-mark="02">Practiced the useful parts of leadership: clarity, delegation, demo readiness, and
+                evidence.</li>
+            </ul>
+            <div class="stamp-code">ledger.ref / national-stage</div>
+          </div>
+        </div>
+
+        <!-- STAMP 4 -->
+        <div class="stamp">
+          <div class="stamp-price">2026</div>
+          <div class="stamp-inner">
+            <div class="stamp-art-wrap">
+              <img src="assets/voyager_ledger_sardines.png" alt="Sardine Tin">
+            </div>
+            <span class="stamp-tag">Guardian</span>
+            <h3 class="stamp-name">Offensive<br>Research</h3>
+            <div class="stamp-meta"><span>Bug bounty</span><span>Disclosure</span><span>Cloud</span></div>
+            <p class="stamp-desc">Responsible disclosure and bug hunting in global waters.</p>
+            <ul class="stamp-evidence">
+              <li data-mark="01">Research practice focused on reproducible findings, scoped testing, and clean reports.
+              </li>
+              <li data-mark="02">Security interests spanning IAM abuse, IoT exposure, reverse engineering, and tooling.
+              </li>
+            </ul>
+            <div class="stamp-code">ledger.ref / offensive-research</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="contact-inner">
+        <div class="rv">
+          <div class="ct-eyebrow">Let's Connect</div>
+          <h2 class="ct-title">Let's<br>Build<br><em>Some</em><span class="out">thing.</span></h2>
+        </div>
+        <div class="rv d2">
+          <div class="ct-right">
+            <p class="ct-sub">Looking for internships in AI, security research, LLMs, RAG systems, and cloud security.
+              Open
+              to collaborations, research partnerships, and interesting problems.</p>
+            <div class="ct-links">
+              <a href="mailto:tejaswanthsurisetty@gmail.com"
+                class="ct-link"><span>✉&nbsp;&nbsp;tejaswanthsurisetty@gmail.com</span><span
+                  class="ct-link-icon">→</span></a>
+              <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank"
+                rel="noopener noreferrer" class="ct-link"><span>in&nbsp;&nbsp;LinkedIn Profile</span><span
+                  class="ct-link-icon">↗</span></a>
+              <a href="https://github.com/Tejaswanth2406" target="_blank" rel="noopener noreferrer"
+                class="ct-link"><span>{ }&nbsp;&nbsp;GitHub /
+                  Tejaswanth2406</span><span class="ct-link-icon">↗</span></a>
+              <a href="tel:7396244673" class="ct-link"><span>☏&nbsp;&nbsp;+91 7396244673</span><span
+                  class="ct-link-icon">→</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EYE SHOWCASE -->
+    <section id="eye-showcase">
+      <div class="showcase-wrap rv">
+        <div class="showcase-label">The Observant Mind</div>
+        <img src="assets/red_wavy_eye.png" alt="Eye Showcase">
+      </div>
+    </section>
+
+    <!-- SHIP SHOWCASE -->
+    <section id="voyager-ship">
+      <div class="ship-wrap rv">
+        <div class="ship-visual">
+          <img src="assets/voyager_ship.png" alt="Voyager Ship Illustration">
+          <div class="ship-caption">Eternal Voyage</div>
+        </div>
+        <div class="ship-copy">
+          <div class="ship-kicker">Closing bearing</div>
+          <h2 class="ship-title">Eternal<br><em>Voyage</em></h2>
+          <p class="ship-text">The portfolio closes like a captain's log: not with arrival, but with direction. Every
+            project is a coordinate toward stronger evidence, sharper systems, and work that can keep sailing after the
+            first demo.</p>
+          <div class="ship-ledger" aria-label="Eternal voyage principles">
+            <div class="ship-ledger-row"><span>North Star</span><strong>Build systems that explain themselves under
+                pressure.</strong></div>
+            <div class="ship-ledger-row"><span>Discipline</span><strong>Prefer repeatable evidence over theatrical
+                claims.</strong></div>
+            <div class="ship-ledger-row"><span>Horizon</span><strong>Security research, AI engineering, and cloud
+                platforms.</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
   </main>
 
@@ -3760,6 +4950,47 @@
     document.querySelectorAll('img').forEach((img) => {
       if (!img.closest('#hero') && !img.hasAttribute('loading')) img.loading = 'lazy';
       if (!img.hasAttribute('decoding')) img.decoding = 'async';
+    });
+
+    // VAULT TRIGGER
+    document.querySelectorAll('.vault-trigger').forEach((vaultTrigger) => {
+      vaultTrigger.setAttribute('role', 'link');
+      vaultTrigger.setAttribute('tabindex', '0');
+      vaultTrigger.setAttribute('aria-label', 'Open the hidden vault');
+
+      const openVault = (event) => {
+        event.preventDefault();
+        // Smooth transition to vault
+        const body = document.body;
+        body.style.transition = 'opacity 0.4s ease';
+        body.style.opacity = '0';
+
+        setTimeout(() => {
+          window.location.href = 'hidden vault.html';
+        }, 400);
+      };
+
+      vaultTrigger.addEventListener('click', openVault);
+      vaultTrigger.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') openVault(event);
+      });
+
+      // Visual feedback on hover
+      vaultTrigger.addEventListener('mouseenter', () => {
+        const wrap = vaultTrigger.closest('.vault-trigger-wrap');
+        if (wrap) {
+          wrap.style.transform = 'scale(1.05)';
+          wrap.style.filter = 'brightness(1.1)';
+        }
+      });
+
+      vaultTrigger.addEventListener('mouseleave', () => {
+        const wrap = vaultTrigger.closest('.vault-trigger-wrap');
+        if (wrap) {
+          wrap.style.transform = '';
+          wrap.style.filter = '';
+        }
+      });
     });
 
     function finishLoading() {
@@ -3827,7 +5058,7 @@
         requestAnimationFrame(animateCursor);
       })();
 
-      document.querySelectorAll('a,button,.pcard,.feat-proj,.acard,.cert-card,.tag,.hstat,.edu-card,.extra-item').forEach((el) => {
+      document.querySelectorAll('a,button,.pcard,.feat-proj,.acard,.cert-card,.tag,.hstat,.edu-card,.extra-item,.experience-item,.study-card,.collab-panel').forEach((el) => {
         el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
         el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
       });
@@ -3875,7 +5106,7 @@
           }
         });
       }, { threshold: .3 });
-      ['about', 'methodology', 'projects', 'achievements', 'certifications', 'contact'].forEach((id) => {
+      ['about', 'methodology', 'projects', 'experience', 'case-studies', 'collaboration', 'achievements', 'certifications', 'contact'].forEach((id) => {
         const section = document.getElementById(id);
         if (section) secObs.observe(section);
       });
