@@ -92,7 +92,7 @@
 
     .vertical-brand h1 {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(80px, 12vw, 220px);
+      font-size: clamp(60px, 10vw, 140px);
       font-weight: 800;
       color: var(--sky-blue);
       line-height: 0.8;
@@ -197,8 +197,9 @@
 
     .contact-card .val {
       font-family: 'Playfair Display', serif;
-      font-size: 24px;
+      font-size: clamp(16px, 2vw, 20px);
       font-weight: 400;
+      word-break: break-all;
     }
 
     .contact-card .arrow {
@@ -226,10 +227,10 @@
       font-size: 12px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: var(--cream);
+      color: var(--ink);
       text-decoration: none;
       padding: 12px 24px;
-      border: 1px solid rgba(242, 237, 228, 0.3);
+      border: 1px solid rgba(26, 21, 16, 0.2);
       transition: all 0.3s;
     }
 
@@ -280,6 +281,11 @@
       outline: none;
       transition: border-color 0.3s;
     }
+    
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
 
     .form-group input:focus,
     .form-group textarea:focus {
@@ -287,7 +293,8 @@
     }
 
     .btn-submit {
-      width: 100%;
+      width: max-content;
+      min-width: 200px;
       background: var(--ink);
       color: var(--bg-paper);
       border: none;

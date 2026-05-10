@@ -19,6 +19,9 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Serif+Display:ital@0;1&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+Devanagari:wght@400;600;700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap"
     rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@200;300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap"
+    rel="stylesheet" />
   <style>
     *,
     *::before,
@@ -143,15 +146,6 @@
     }
 
     /* subtle paper grain */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
-      mix-blend-mode: multiply;
-    }
 
     .lino-art {
       position: absolute;
@@ -989,7 +983,11 @@
     }
 
     .skill-group {
-      margin-bottom: 28px
+      margin-bottom: 18px;
+      padding: 18px 18px 16px;
+      border: 1px solid var(--ink-08);
+      background: rgba(255, 255, 255, .72);
+      box-shadow: 0 10px 30px rgba(12, 45, 84, .04);
     }
 
     .sg-label {
@@ -1621,6 +1619,18 @@
       display: block;
     }
 
+    .philo-img-wrap.portrait-frame {
+      display: grid;
+      place-items: center;
+      aspect-ratio: 4 / 5;
+    }
+
+    .philo-img-wrap.portrait-frame .philo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
     .philo-text h3 {
       font-family: 'Playfair Display', serif;
       font-size: clamp(32px, 4vw, 52px);
@@ -1799,27 +1809,39 @@
 
     .experience-grid {
       display: grid;
-      grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+      grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
       gap: 48px;
-      align-items: stretch;
+      align-items: center;
     }
 
     .experience-visual,
     .collab-visual {
-      min-height: 520px;
+      min-height: 0;
+      aspect-ratio: 4 / 5;
+      max-height: 620px;
       position: relative;
       overflow: hidden;
       border: 1px solid rgba(26, 21, 16, .1);
       background: var(--ink);
+      border-radius: 10px;
       box-shadow: var(--shadow-lg);
     }
 
     .experience-visual img,
-    .collab-visual img,
     .study-media img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
+      filter: saturate(.88) contrast(1.04);
+      transition: transform .7s cubic-bezier(.25, .46, .45, .94), filter .4s;
+    }
+
+    .collab-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
       display: block;
       filter: saturate(.88) contrast(1.04);
       transition: transform .7s cubic-bezier(.25, .46, .45, .94), filter .4s;
@@ -1842,6 +1864,11 @@
       background: linear-gradient(to top, rgba(26, 21, 16, .86), transparent);
     }
 
+    .experience-visual .visual-caption,
+    .collab-visual .visual-caption {
+      padding: 22px 24px;
+    }
+
     .visual-caption span,
     .experience-kicker,
     .study-kicker,
@@ -1858,8 +1885,8 @@
     .visual-caption strong {
       display: block;
       font-family: 'Playfair Display', serif;
-      font-size: clamp(30px, 4vw, 48px);
-      line-height: .98;
+      font-size: clamp(24px, 3vw, 36px);
+      line-height: 1.02;
       letter-spacing: -.01em;
     }
 
@@ -2884,11 +2911,11 @@
     }
 
     .motion-heading em {
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-weight: 400;
-      color: transparent;
-      -webkit-text-stroke: 1px var(--gold-lt);
+      font-family: inherit;
+      font-style: normal;
+      font-weight: inherit;
+      color: #fff;
+      -webkit-text-stroke: 0;
       display: block;
       margin-top: -10px;
     }
@@ -2909,15 +2936,6 @@
     #motion-reveal.in-view .motion-tagline {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    .motion-scanline {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, transparent 50%, rgba(255, 255, 255, 0.03) 50%);
-      background-size: 100% 4px;
-      pointer-events: none;
-      z-index: 5;
     }
 
     .motion-grain {
@@ -3094,7 +3112,7 @@
     }
 
     #toolkit::before {
-      content: 'PACIFIC';
+      content: 'CAPABILITIES';
       position: absolute;
       top: 50%;
       left: 50%;
@@ -3112,11 +3130,13 @@
       grid-template-columns: repeat(4, 1fr);
       border-top: 1px solid var(--ink-08);
       border-left: 1px solid var(--ink-08);
+      max-width: 1180px;
+      margin: 0 auto 120px;
     }
 
     .tool-box {
       background: var(--cream);
-      padding: 60px 40px;
+      padding: 44px 34px;
       border-right: 1px solid var(--ink-08);
       border-bottom: 1px solid var(--ink-08);
       transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -3158,16 +3178,40 @@
 
     .tool-title {
       font-family: 'Syne', sans-serif;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 800;
-      align-items: center;
-      justify-content: center;
-      background: rgba(158, 66, 32, 0.05);
-      border-radius: 50%;
+      line-height: 1.1;
+      margin-bottom: 22px;
       position: relative;
     }
 
-    /* VOYAGER LEDGER */
+    .tool-list {
+      list-style: none;
+      display: grid;
+      gap: 11px;
+    }
+
+    .tool-list li {
+      color: var(--ink-70);
+      font-family: 'Montserrat', system-ui, sans-serif;
+      font-size: 13px;
+      line-height: 1.45;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .tool-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: .72em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    /* CAREER TIMELINE */
     #voyager-log {
       background:
         linear-gradient(135deg, rgba(0, 28, 45, 0.96), rgba(24, 48, 52, 0.94)),
@@ -3689,7 +3733,7 @@
     }
 
     #voyager-ship::after {
-      content: 'ETERNAL VOYAGE';
+      content: 'ROADMAP';
       position: absolute;
       left: 50%;
       top: 50%;
@@ -3850,6 +3894,1178 @@
         letter-spacing: .24em;
       }
     }
+
+    /* HAKARI SKY THEME OVERRIDES */
+    :root {
+      --sky-deep: #0d3a6e;
+      --sky: #1a5fa8;
+      --sky-mid: #2875d9;
+      --sky-light: #6fc8f5;
+      --sky-pale: #a8dcf5;
+      --sky-mist: #deeef9;
+      --cloud: #ffffff;
+      --cloud-soft: rgba(255, 255, 255, .88);
+      --cloud-dim: rgba(255, 255, 255, .55);
+      --cloud-ghost: rgba(255, 255, 255, .22);
+      --cloud-ultra: rgba(255, 255, 255, .08);
+      --ink: #1a4a78;
+      --ink-70: rgba(26, 74, 120, .72);
+      --ink-45: rgba(26, 74, 120, .50);
+      --ink-20: rgba(26, 74, 120, .22);
+      --ink-08: rgba(26, 74, 120, .08);
+      --bg-base: #eef6fc;
+      --bg-mid: #deeef9;
+      --bg-deep: #c5e8fb;
+      --bg-dark: #061f3d;
+      --gold: #2875d9;
+      --gold-lt: #a8dcf5;
+      --gold-pale: rgba(41, 128, 217, .08);
+      --rust: #0d3a6e;
+      --cream: #ffffff;
+      --shadow-xl: 0 40px 100px rgba(10, 35, 80, .18), 0 8px 24px rgba(10, 35, 80, .10);
+      --shadow-lg: 0 24px 80px rgba(10, 35, 80, .15), 0 5px 18px rgba(10, 35, 80, .08);
+      --shadow-md: 0 12px 38px rgba(10, 35, 80, .10);
+      --shadow-sm: 0 4px 18px rgba(10, 35, 80, .07);
+      --border: rgba(255, 255, 255, .18);
+      --border-hi: rgba(255, 255, 255, .38);
+    }
+
+    body {
+      background: linear-gradient(135deg, #061f3d 0%, #0d3a6e 25%, #1a5fa8 60%, #2875d9 100%);
+      color: var(--ink);
+      font-family: 'Montserrat', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #cd {
+      width: 6px;
+      height: 6px;
+      background: white;
+      box-shadow: 0 0 10px rgba(255, 255, 255, .8);
+    }
+
+    #cr {
+      width: 44px;
+      height: 44px;
+      border-color: rgba(255, 255, 255, .7);
+      backdrop-filter: invert(5%);
+    }
+
+    body.hov #cr {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border-color: white;
+      background: rgba(255, 255, 255, .06);
+    }
+
+    #sprog {
+      background: linear-gradient(90deg, white, var(--sky-pale), var(--sky-light));
+    }
+
+    #loader {
+      background: linear-gradient(175deg, #061f3d 0%, #0d3a6e 42%, #2875d9 100%);
+    }
+
+    .loader-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      color: white;
+      text-shadow: 0 8px 50px rgba(0, 0, 0, .12);
+    }
+
+    .loader-sub {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--cloud-dim);
+    }
+
+    .loader-line {
+      background: rgba(255, 255, 255, .14);
+    }
+
+    .loader-line::after {
+      background: linear-gradient(90deg, transparent, white, transparent);
+    }
+
+    nav,
+    nav.scrolled {
+      height: 68px;
+      background: rgba(13, 58, 110, .6);
+      border-bottom: 1px solid var(--border);
+      box-shadow: none;
+      backdrop-filter: blur(28px) saturate(1.8);
+    }
+
+    .nav-logo {
+      font-family: 'Montserrat', system-ui, sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      font-style: normal;
+      color: white;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .nav-logo em {
+      color: var(--sky-pale);
+    }
+
+    .nav-logo:hover,
+    nav ul li a:hover,
+    nav ul li a.active {
+      color: white;
+    }
+
+    nav ul {
+      gap: 18px;
+    }
+
+    nav ul li a {
+      height: 68px;
+      padding: 0 4px;
+      font-family: 'Montserrat', system-ui, sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--cloud-dim);
+      letter-spacing: .14em;
+    }
+
+    nav ul li a::after {
+      left: 0;
+      right: 0;
+      background: white;
+    }
+
+    .nav-toggle {
+      background: rgba(255, 255, 255, .08);
+      border-color: var(--border-hi);
+      color: white;
+    }
+
+    #hero {
+      min-height: 100vh;
+      background: linear-gradient(175deg, #061f3d 0%, #0d3a6e 25%, #1a5fa8 55%, #2875d9 80%, #6fc8f5 100%);
+      isolation: isolate;
+    }
+
+    #hero::before,
+    #hero::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    #hero::before {
+      inset: 0;
+      background:
+        radial-gradient(ellipse 120% 60% at 110% 85%, rgba(255, 255, 255, .25) 0%, transparent 55%),
+        radial-gradient(ellipse 80% 50% at -10% 90%, rgba(255, 255, 255, .18) 0%, transparent 55%),
+        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255, 255, 255, .018) 3px, rgba(255, 255, 255, .018) 4px);
+    }
+
+    #hero::after {
+      bottom: 0;
+      height: 24vh;
+      background: linear-gradient(to top, rgba(255, 255, 255, .72) 0%, rgba(255, 255, 255, .3) 40%, transparent 100%);
+    }
+
+    .hero-eyebrow,
+    .section-eyebrow,
+    .ct-eyebrow,
+    .showcase-label {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--sky);
+    }
+
+    #hero .hero-eyebrow {
+      color: var(--cloud-dim);
+    }
+
+    #hero .hero-eyebrow::before,
+    .ct-eyebrow::before,
+    .showcase-label::before,
+    .showcase-label::after {
+      background: var(--cloud-soft);
+    }
+
+    .hero-name,
+    .section-title,
+    .ct-title,
+    .motion-heading,
+    .lab-content h2,
+    .ship-title,
+    .visual-caption strong,
+    .philo-text h3,
+    .pcard-title,
+    .fp-title,
+    .experience-item h3,
+    .study-card h3,
+    .collab-panel h3,
+    .ac-title,
+    .cert-name,
+    .edu-degree,
+    .stamp-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .hero-name {
+      font-size: clamp(100px, 15.5vw, 210px);
+      font-weight: 300;
+      line-height: .82;
+      letter-spacing: -.035em;
+      color: white;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, .4), 0 8px 50px rgba(0, 0, 0, .1), 0 0 150px rgba(255, 255, 255, .2);
+    }
+
+    .hero-name em {
+      color: var(--cloud-soft);
+      font-weight: 300;
+    }
+
+    .hero-name .stroke {
+      -webkit-text-stroke: 1px rgba(255, 255, 255, .28);
+      color: transparent;
+    }
+
+    .hero-typing {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      color: var(--cloud-soft);
+      font-weight: 300;
+    }
+
+    .hero-typing .cur,
+    .hero-desc strong {
+      color: white;
+    }
+
+    .hero-desc {
+      color: var(--cloud-soft);
+      font-family: 'Montserrat', system-ui, sans-serif;
+      font-weight: 300;
+    }
+
+    .hero-main-art,
+    .lino-art img,
+    .philo-img:not(.vault-trigger) {
+      mix-blend-mode: screen;
+      filter: drop-shadow(0 24px 80px rgba(10, 35, 80, .20));
+    }
+
+    .hstat {
+      padding: 24px 26px;
+      border: 1px solid var(--border);
+      background: rgba(13, 58, 110, .38);
+      backdrop-filter: blur(18px);
+      min-width: 140px;
+    }
+
+    .hstat-n {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      color: white;
+      text-shadow: none;
+    }
+
+    .hstat-l,
+    .hero-scroll {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--cloud-dim);
+    }
+
+    .hstat:hover .hstat-n {
+      color: var(--sky-pale);
+    }
+
+    .hero-scroll::after {
+      background: linear-gradient(to bottom, white, transparent);
+    }
+
+    .btn-gold,
+    .btn-ghost,
+    .pcard-link,
+    .fp-link,
+    .fp-link-sec,
+    .ct-link {
+      font-family: 'Montserrat', system-ui, sans-serif;
+    }
+
+    .btn-gold {
+      background: white;
+      color: var(--sky-deep);
+      border: 1px solid white;
+      box-shadow: none;
+    }
+
+    .btn-gold::before {
+      background: rgba(13, 58, 110, .10);
+    }
+
+    .btn-ghost {
+      color: white;
+      border-color: var(--border-hi);
+      background: transparent;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, .15);
+      border-color: white;
+      color: white;
+    }
+
+    .forest-divider {
+      height: 0;
+      background: transparent;
+    }
+
+    .sec-wrap {
+      padding: 130px 5%;
+    }
+
+    #about,
+    #collaboration,
+    #achievements,
+    #education,
+    #eye-showcase,
+    footer {
+      background: linear-gradient(180deg, #deeef9 0%, #eef6fc 50%, #f5fbff 100%);
+    }
+
+    #methodology,
+    #projects,
+    #certifications,
+    #toolkit {
+      background: linear-gradient(180deg, #6fc8f5 0%, #9dd5f5 40%, #c5e8fb 80%, #e4f4fc 100%);
+    }
+
+    #experience,
+    #contact {
+      background: linear-gradient(180deg, #eef6fc 0%, #f5fbff 55%, #ffffff 100%);
+    }
+
+    #research-lab,
+    #case-studies,
+    #voyager-log,
+    #voyager-ship {
+      background:
+        linear-gradient(180deg, rgba(6, 31, 61, .95), rgba(13, 58, 110, .92), rgba(26, 95, 168, .90)),
+        var(--bg-dark);
+      color: white;
+    }
+
+    #motion-reveal {
+      background: var(--bg-dark);
+    }
+
+    .section-title,
+    .ct-title {
+      font-size: clamp(72px, 10vw, 128px);
+      font-weight: 300;
+      line-height: .84;
+      color: var(--ink);
+    }
+
+    .section-title em,
+    .ct-title em,
+    .philo-text h3 em,
+    .edu-degree em {
+      color: var(--sky);
+      font-weight: 300;
+    }
+
+    .section-title .out,
+    .ct-title .out {
+      -webkit-text-stroke: 1px rgba(26, 74, 120, .25);
+      color: transparent;
+    }
+
+    #research-lab .section-title,
+    #case-studies .section-title,
+    #voyager-log .section-title,
+    #voyager-ship .section-title {
+      color: white;
+    }
+
+    #research-lab .section-title em,
+    #case-studies .section-title em,
+    #voyager-log .section-title em,
+    #voyager-ship .section-title em,
+    .lab-content h2 em,
+    .ship-title em {
+      color: var(--cloud-soft) !important;
+    }
+
+    .section-eyebrow::after {
+      background: rgba(26, 74, 120, .12);
+    }
+
+    #research-lab .section-eyebrow,
+    #case-studies .section-eyebrow,
+    #voyager-log .section-eyebrow,
+    #voyager-ship .section-eyebrow,
+    #research-lab .section-eyebrow[style],
+    #case-studies .section-eyebrow[style],
+    #voyager-log .section-eyebrow[style] {
+      color: var(--cloud-dim) !important;
+      border-color: var(--border-hi) !important;
+    }
+
+    #research-lab .section-eyebrow::after,
+    #case-studies .section-eyebrow::after,
+    #voyager-log .section-eyebrow::after {
+      background: var(--border);
+    }
+
+    .about-text p,
+    .philo-text p,
+    .pcard-desc,
+    .pcard-bullets li,
+    .experience-item p,
+    .study-card p,
+    .collab-panel p,
+    .ac-body,
+    .cert-date,
+    .edu-detail,
+    .ct-sub,
+    .stamp-desc {
+      font-family: 'Montserrat', system-ui, sans-serif;
+      color: var(--ink-70);
+      font-weight: 300;
+    }
+
+    .about-text p:first-child,
+    .about-text strong,
+    .philo-text h3,
+    .experience-item h3,
+    .collab-panel h3,
+    .ac-title,
+    .cert-name,
+    .edu-degree {
+      color: var(--ink);
+    }
+
+    .about-text em,
+    .pull-quote cite,
+    .sg-label,
+    .proj-hint,
+    .pcard-tag,
+    .fp-tag,
+    .experience-kicker,
+    .study-kicker,
+    .collab-kicker,
+    .visual-caption span,
+    .cert-issuer,
+    .edu-year,
+    .ct-eyebrow,
+    .tool-cat,
+    .route-label,
+    .manifest-label,
+    .stamp-tag,
+    .stamp-code,
+    .ship-kicker,
+    .ship-ledger-row span {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--sky);
+    }
+
+    .pull-quote,
+    .skill-group,
+    .philo-img-wrap,
+    .pcard,
+    .feat-proj,
+    .collab-panel,
+    .acard,
+    .cert-card,
+    .edu-card,
+    .tool-box,
+    .route-panel,
+    .stamp-inner,
+    .ls-card,
+    .ct-link {
+      background: rgba(255, 255, 255, .86);
+      border-color: rgba(12, 45, 84, .08);
+      box-shadow: 0 4px 40px rgba(12, 45, 84, .06);
+      backdrop-filter: blur(12px);
+    }
+
+    .pcard,
+    .feat-proj,
+    .collab-panel,
+    .acard,
+    .cert-card,
+    .edu-card,
+    .tool-box {
+      border-radius: 0;
+    }
+
+    .pcard:hover,
+    .feat-proj:hover,
+    .collab-panel:hover,
+    .acard:hover,
+    .cert-card:hover,
+    .edu-card:hover,
+    .tool-box:hover {
+      background: #f0f8ff;
+      border-color: rgba(41, 128, 217, .35);
+      box-shadow: 0 24px 64px rgba(12, 45, 84, .12);
+    }
+
+    .pcard::before,
+    .cert-bar,
+    .fp-accent {
+      background: linear-gradient(90deg, var(--sky-deep), var(--sky-mid), var(--sky-light));
+    }
+
+    .pcard-num,
+    .fp-bg,
+    .edu-deco {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      color: rgba(13, 58, 110, .06);
+      font-weight: 300;
+    }
+
+    .pcard:hover .pcard-num,
+    .edu-card:hover .edu-deco {
+      color: rgba(13, 58, 110, .10);
+    }
+
+    .pcard-title,
+    .fp-title {
+      color: var(--ink);
+    }
+
+    .pcard:hover .pcard-title,
+    .cert-card:hover .cert-name,
+    .edu-card:hover .edu-degree {
+      color: var(--sky);
+    }
+
+    .pcard-tag,
+    .pcard-tag.sec,
+    .pcard-tag.ai,
+    .pcard-tag.fs,
+    .fp-tag,
+    .ac-tag,
+    .ptag,
+    .tag,
+    .study-tags span,
+    .sc-item,
+    .manifest-state {
+      color: var(--sky);
+      border-color: rgba(41, 128, 217, .24);
+      background: rgba(41, 128, 217, .06);
+    }
+
+    .ptag,
+    .tag,
+    .study-tags span {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .ptag:hover,
+    .pcard:hover .ptag,
+    .tag:hover,
+    .acard:hover .ac-tag {
+      background: rgba(41, 128, 217, .10);
+      color: var(--sky-deep);
+    }
+
+    .pcard-link,
+    .fp-link,
+    .fp-link-sec,
+    .ct-link {
+      color: var(--ink-70);
+    }
+
+    .pcard-link:hover,
+    .fp-link:hover,
+    .fp-link-sec:hover {
+      color: var(--sky);
+    }
+
+    .pull-quote {
+      border-left-color: var(--sky-mid);
+    }
+
+    .pull-quote::before {
+      color: rgba(41, 128, 217, .16);
+    }
+
+    .pull-quote p {
+      color: var(--ink);
+    }
+
+    .pull-quote .quote-translation {
+      color: var(--ink-70);
+    }
+
+    .experience-visual,
+    .collab-visual,
+    .study-card {
+      border-color: var(--border);
+      background: var(--bg-dark);
+      box-shadow: 0 24px 80px rgba(10, 35, 80, .18);
+    }
+
+    .visual-caption,
+    .study-card::after {
+      background: linear-gradient(to top, rgba(6, 31, 61, .90), rgba(6, 31, 61, .20));
+    }
+
+    .visual-caption strong,
+    .study-card h3,
+    .study-card p,
+    #case-studies .section-title,
+    .lab-content h2,
+    .lab-note,
+    .ship-copy,
+    .ship-text,
+    .voyager-intro,
+    .route-stop,
+    .manifest-item strong,
+    .ship-ledger-row strong {
+      color: white;
+    }
+
+    .study-card p,
+    .lab-note,
+    .ship-text,
+    .voyager-intro,
+    .route-stop {
+      color: var(--cloud-soft);
+    }
+
+    .acard.dark {
+      background: rgba(13, 58, 110, .88);
+      border-color: var(--border);
+    }
+
+    .acard.dark:hover {
+      background: rgba(26, 95, 168, .88);
+    }
+
+    .acard.dark .ac-title {
+      color: white;
+    }
+
+    .acard.dark .ac-body {
+      color: var(--cloud-dim);
+    }
+
+    .ac-icon-wrap {
+      background: rgba(41, 128, 217, .06);
+      border-color: rgba(12, 45, 84, .08);
+    }
+
+    .ac-icon-wrap svg {
+      stroke: var(--sky);
+    }
+
+    .terminal-window {
+      background: rgba(10, 35, 80, .88);
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 0;
+      box-shadow: 0 24px 80px rgba(10, 35, 80, .18), inset 0 1px 0 rgba(255, 255, 255, .1);
+    }
+
+    .terminal-header {
+      background: rgba(8, 28, 66, .85);
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .terminal-body {
+      color: #4a90e8;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .t-cmd::before,
+    .t-out,
+    .ls-n,
+    .ls-l {
+      color: var(--sky-pale);
+    }
+
+    #toolkit::before {
+      content: 'CAPABILITIES';
+      color: rgba(13, 58, 110, .05);
+      font-family: 'Syne', system-ui, sans-serif;
+      font-weight: 800;
+    }
+
+    .tool-box::before {
+      background: rgba(41, 128, 217, .08);
+    }
+
+    .ct-link:hover {
+      background: rgba(41, 128, 217, .08);
+      border-color: rgba(41, 128, 217, .24);
+    }
+
+    #contact::before {
+      opacity: .08;
+      mix-blend-mode: luminosity;
+    }
+
+    footer {
+      border-top-color: rgba(12, 45, 84, .08);
+    }
+
+    .foot-l,
+    .foot-r {
+      font-family: 'IBM Plex Mono', monospace;
+      color: var(--ink-45);
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-base);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(41, 128, 217, .45);
+    }
+
+    @media(max-width:1024px) {
+      nav ul {
+        top: 68px;
+        background: rgba(13, 58, 110, .96);
+        border-bottom: 1px solid var(--border);
+      }
+
+      nav ul li a {
+        justify-content: center;
+      }
+    }
+
+    @media(max-width:640px) {
+      .hero-name {
+        font-size: clamp(76px, 22vw, 112px);
+      }
+
+      .nav-toggle {
+        background: rgba(255, 255, 255, .08);
+        border-color: var(--border-hi);
+        color: white;
+      }
+    }
+  /* ========== HERO ========== */
+#hakari-hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  background: linear-gradient(175deg, #061f3d 0%, #0d3a6e 25%, #1a5fa8 55%, #2875d9 80%, #6fc8f5 100%);
+  position: relative; overflow: hidden;
+}
+
+/* Hero cloud layers */
+.h-cloud-back {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 120% 60% at 110% 85%, rgba(255,255,255,.25) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 50% at -10% 90%, rgba(255,255,255,.18) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 50% 95%, rgba(255,255,255,.3) 0%, transparent 50%);
+}
+.h-cloud-mid {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 45vh; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 200% 80% at 50% 120%, rgba(255,255,255,.55) 0%, rgba(255,255,255,.15) 40%, transparent 65%);
+  filter: blur(1px);
+}
+.h-cloud-fore {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 22vh; z-index: 2; pointer-events: none;
+  background: linear-gradient(to top, rgba(255,255,255,.72) 0%, rgba(255,255,255,.3) 40%, transparent 100%);
+}
+
+.h-scan {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,.018) 3px, rgba(255,255,255,.018) 4px);
+  animation: scanH 4s ease-in-out infinite;
+}
+
+.h-badge {
+  position: absolute; top: 84px; right: 5%; z-index: 5;
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--f-mono); font-size: 10px; color: var(--cloud-soft);
+  letter-spacing: .12em; text-transform: uppercase;
+  opacity: 0; animation: fadeIn .6s 2s forwards;
+}
+.h-badge-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: white; flex-shrink: 0;
+  box-shadow: 0 0 0 0 rgba(255,255,255,.6);
+  animation: ripple 2s infinite;
+}
+
+.hh-content {
+  position: relative; z-index: 4; flex: 1; display: flex;
+  flex-direction: column; justify-content: flex-end; padding: 120px 5% 0;
+}
+.h-eyebrow {
+  font-family: var(--f-mono); font-size: 10px; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--cloud-dim); margin-bottom: 28px;
+  opacity: 0; animation: slideR .7s .5s cubic-bezier(.25,.46,.45,.94) forwards;
+}
+.h-eyebrow span { color: rgba(255,255,255,.3); margin: 0 10px; }
+
+.hh-title-wrap {
+  opacity: 0; animation: fadeUp .9s .7s cubic-bezier(.16,1,.3,1) forwards;
+}
+.h-main {
+  display: block; font-family: 'Syne', 'Montserrat', system-ui, sans-serif;
+  font-size: clamp(40px, 8vw, 120px);
+  font-weight: 850; line-height: .84; letter-spacing: 0;
+  color: white;
+  text-transform: uppercase;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.4),
+    0 8px 50px rgba(0,0,0,.1),
+    0 0 150px rgba(255,255,255,.2);
+  animation: glow 3s ease-in-out infinite;
+}
+.h-ghost {
+  display: block; font-family: 'Syne', 'Montserrat', system-ui, sans-serif;
+  font-size: clamp(40px, 8vw, 120px);
+  font-weight: 850; line-height: .84; letter-spacing: 0;
+  color: rgba(255, 255, 255, .18); -webkit-text-stroke: 1px rgba(255,255,255,.58);
+  margin-left: 3vw;
+  text-transform: uppercase;
+}
+.h-ver {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em;
+  color: var(--cloud-soft); border: 1px solid var(--border-hi);
+  padding: 4px 14px; margin-left: 2rem; vertical-align: middle;
+  background: rgba(255,255,255,.08); backdrop-filter: blur(10px);
+}
+.h-ver-dot { width: 5px; height: 5px; border-radius: 50%; background: white; animation: blink 1.4s step-end infinite; }
+
+/* HERO GRID */
+.hh-grid {
+  position: relative; z-index: 4;
+  display: grid; grid-template-columns: 1fr 400px; gap: 0;
+  align-items: end;
+}
+.hh-desc-block {
+  padding: 48px 0 72px;
+  opacity: 0; animation: fadeUp .8s 1.1s cubic-bezier(.25,.46,.45,.94) forwards;
+}
+.hh-desc {
+  font-size: 16px; color: var(--cloud-soft); line-height: 1.85;
+  font-weight: 400; max-width: 680px; margin-bottom: 36px; letter-spacing: .01em;
+}
+.hh-desc strong { color: white; font-weight: 500; }
+.hh-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.hero-cred-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 12px;
+  width: min(760px, 100%);
+  margin-top: 30px;
+}
+
+.hero-cred {
+  padding: 16px 18px;
+  border: 1px solid rgba(255, 255, 255, .24);
+  background: rgba(255, 255, 255, .08);
+  backdrop-filter: blur(16px);
+  text-align: left;
+}
+
+.hero-cred strong {
+  display: block;
+  color: #fff;
+  font-family: 'Syne', system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.hero-cred span {
+  color: var(--cloud-dim);
+  font-family: var(--f-mono);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.hero-panel {
+  border-left: 1px solid var(--border);
+  padding: 48px 0 48px 52px;
+  opacity: 0; animation: fadeUp .8s 1.3s cubic-bezier(.25,.46,.45,.94) forwards;
+}
+.panel-label {
+  font-family: var(--f-mono); font-size: 9px; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--cloud-dim); margin-bottom: 18px;
+}
+.prow { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--cloud-ultra); transition: padding-left .2s; }
+.prow:hover { padding-left: 8px; }
+.prow:first-of-type { border-top: 1px solid var(--cloud-ultra); }
+.prow-k { font-family: var(--f-mono); font-size: 10px; color: var(--cloud-dim); }
+.prow-v { font-family: var(--f-mono); font-size: 10px; font-weight: 500; color: white; letter-spacing: .04em; }
+.prow-v.alert { color: var(--sky-pale); }
+.prow-v.soft  { color: var(--cloud-soft); }
+
+/* HERO STATS */
+.hero-stats {
+  position: relative; z-index: 4;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  background: rgba(13,58,110,.55); backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  opacity: 0; animation: fadeUp .7s 1.6s cubic-bezier(.25,.46,.45,.94) forwards;
+}
+.hst {
+  padding: 32px; border-right: 1px solid var(--border);
+  position: relative; transition: background .3s;
+}
+.hst:last-child { border-right: none; }
+.hst:hover { background: rgba(255,255,255,.06); }
+.hst-num {
+  font-family: var(--f-display); font-size: clamp(44px, 5.5vw, 68px);
+  font-weight: 300; color: white; line-height: 1; margin-bottom: 8px;
+  letter-spacing: -.02em;
+}
+.hst-label {
+  font-family: var(--f-head); font-size: 9px; font-weight: 500;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--cloud-dim); line-height: 1.6;
+}
+
+/* MARQUEE */
+.marquee {
+  overflow: hidden; padding: 14px 0;
+  background: rgba(255,255,255,.08); backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.mq-track { display: flex; animation: mq 44s linear infinite; width: max-content; }
+.mq-item {
+  font-family: var(--f-mono); font-size: 10px; color: var(--cloud-dim);
+  letter-spacing: .14em; text-transform: uppercase; padding: 0 36px; white-space: nowrap;
+  display: flex; align-items: center; gap: 20px;
+}
+.mq-item::after { content: '○'; font-size: 7px; color: rgba(255,255,255,.25); }
+.mq-item.hi { color: rgba(255,255,255,.8); }
+@keyframes mq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.marquee:hover .mq-track { animation-play-state: paused; }
+
+/* BUTTONS */
+.btn-prime {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 30px; background: white; color: var(--sky-deep);
+  font-family: var(--f-head); font-size: 10px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; text-decoration: none;
+  cursor: none; transition: all .3s; border: 1px solid white;
+}
+.btn-prime:hover {
+  background: transparent; color: white;
+  box-shadow: 0 12px 40px rgba(0,0,0,.15);
+  transform: translateY(-4px) scale(1.05);
+}
+.btn-sec {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 28px; background: transparent; color: white;
+  font-family: var(--f-head); font-size: 10px; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase; text-decoration: none;
+  cursor: none; border: 1px solid var(--border-hi);
+  transition: all .3s;
+}
+.btn-sec:hover { background: rgba(255,255,255,.15); border-color: white; transform: translateY(-4px) scale(1.05); }
+
+.btn-hire {
+  background: #061f3d;
+  border-color: rgba(255, 255, 255, .75);
+  color: white;
+}
+
+.btn-hire:hover {
+  background: white;
+  color: var(--sky-deep);
+}
+
+
+#hakari-hero {
+  position: relative;
+  z-index: 1000;
+  margin-top: -64px; /* offset nav */
+  padding-top: 64px;
+}
+
+.hakari-hero-content {
+  padding-bottom: 60px;
+}
+
+.hakari-hero-grid {
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
+  text-align: center;
+}
+
+.hakari-hero-left,
+.hakari-hero-desc-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hakari-hero-title,
+.hakari-hero-ghost {
+  font-size: clamp(32px, 7vw, 90px);
+}
+
+.hakari-hero-ghost {
+  margin-left: 0;
+}
+
+.hakari-hero-desc-block {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.hakari-hero-desc {
+  max-width: 720px;
+  text-align: center;
+}
+
+.hakari-hero-actions {
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.contact-system {
+  background: none;
+  border-top: 1px solid var(--ink-20);
+  border-bottom: 1px solid var(--ink-20);
+  padding: 80px 0;
+}
+
+.contact-system-inner {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink);
+}
+
+.contact-system-eyebrow {
+  color: var(--sky);
+  font-size: 11px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.contact-system-title {
+  margin-top: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.contact-system-title .out,
+.contact-system-icon {
+  color: var(--sky);
+}
+
+.contact-system-body {
+  margin-top: 40px;
+}
+
+.contact-system-sub {
+  color: var(--ink-70);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: .02em;
+  line-height: 1.6;
+}
+
+.contact-system-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.contact-system-link {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border: 1px solid var(--ink-20);
+  background: rgba(250, 247, 242, .5);
+  color: var(--ink);
+  font-size: 11px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all .2s;
+}
+
+.contact-system-link:hover {
+  background: rgba(255, 255, 255, .75);
+  border-color: var(--sky);
+  transform: translateY(-2px);
+}
+
+.gita-slogan {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 120px 20px;
+  background: #fff;
+  text-align: center;
+}
+
+.gita-text {
+  color: var(--ink);
+  font-family: 'Noto Serif Devanagari', serif;
+  font-size: clamp(24px, 3vw, 38px);
+  line-height: 1.8;
+  opacity: .92;
+}
+
+.gita-eye-spacer {
+  min-height: 180vh;
+  background: #fff;
+}
+
+.eye-showcase-tail {
+  background: #fff;
+  padding-bottom: 100px;
+}
+
+@media(max-width: 900px) {
+  .hero-cred-grid,
+  .toolkit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-cred {
+    text-align: center;
+  }
+
+  .experience-visual,
+  .collab-visual {
+    width: min(420px, 100%);
+    margin: 0 auto;
+  }
+}
+
+@media(max-width: 560px) {
+  .h-badge {
+    left: 5%;
+    right: 5%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hh-actions {
+    justify-content: center;
+  }
+
+  .btn-prime,
+  .btn-sec {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
   </style>
 
 </head>
@@ -3875,11 +5091,11 @@
     <a href="#" class="nav-logo" aria-label="Tejaswanth Surisetty home">T<em>ejaswanth</em></a>
     <ul id="primary-menu">
       <li><a href="#about">About</a></li>
-      <li><a href="#methodology">Methodology</a></li>
-      <li><a href="#projects">Work</a></li>
+      <li><a href="#methodology">Approach</a></li>
+      <li><a href="#projects">Projects</a></li>
       <li><a href="#experience">Experience</a></li>
-      <li><a href="#achievements">Wins</a></li>
-      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#certifications">Certifications</a></li>
       <li><a href="#contact">Contact</a></li>
       <li class="nav-mobile-hire"><a href="hire_me.html">Hire Me</a></li>
     </ul>
@@ -3890,67 +5106,61 @@
     </button>
   </nav>
 
-  <!-- HERO BG -->
-  <div id="hero-bg"></div>
-
   <main id="main">
 
-    <!-- HERO -->
-    <section id="hero">
-      <div class="lino-art" style="top: 15%; left: -5%; width: 400px; --rot: -15deg;">
-        <img src="assets/manta_ray.png" alt="" style="width: 100%; opacity: 0.12;">
+    <!-- HAKARI HERO -->
+    <section id="hakari-hero">
+      <div class="h-cloud-back"></div>
+      <div class="h-cloud-mid"></div>
+
+      <div class="h-badge">
+        <span class="h-badge-dot"></span>
+        Available for internships and project work
       </div>
 
-      <div class="hero-content">
-        <div class="hero-eyebrow">GITAM University · CSE · 3rd Year · Vizag</div>
-        <h1 class="hero-name">Tejas<em>wanth</em><br><span class="stroke">Surisetty</span></h1>
-
-
-        <div class="hero-typing-wrap">
-          <div class="hero-typing"><span id="typed"></span><span class="cur">|</span></div>
-        </div>
-
-
-        <div class="hero-bottom-alt">
-          <p class="hero-desc">
-            Building <strong>adaptive security systems</strong> and AI-driven tools. I research cloud identity attack
-            paths, run bug bounty programs, and push agentic AI toward real-world decision making.
-          </p>
-
-          <div class="hero-actions">
-            <a href="#projects" class="btn-gold"><span>View Work</span><svg width="11" height="11" fill="none"
-                stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12,5 19,12 12,19" />
-              </svg></a>
-            <a href="https://github.com/Tejaswanth2406" target="_blank" rel="noopener noreferrer"
-              class="btn-ghost">GitHub ↗</a>
-            <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank"
-              rel="noopener noreferrer" class="btn-ghost">LinkedIn ↗</a>
-          </div>
-
-          <div class="hero-stats-row" style="display: flex; gap: 40px; margin-top: 60px;">
-            <div class="hstat">
-              <div class="hstat-n" style="font-size: 32px;">SIH</div>
-              <div class="hstat-l">National 2024</div>
+      <div class="hh-content hakari-hero-content">
+        <div class="hh-grid hakari-hero-grid">
+          <div class="hh-left hakari-hero-left">
+            <p class="h-eyebrow">GITAM University<span>/</span>CSE<span>/</span>3rd Year<span>/</span>Vizag</p>
+            <div class="hh-title-wrap">
+              <span class="h-main hakari-hero-title">Tejaswanth</span>
+              <span class="h-ghost hakari-hero-ghost">Surisetty</span>
             </div>
-            <div class="hstat">
-              <div class="hstat-n" style="font-size: 32px;">10+</div>
-              <div class="hstat-l">Certifications</div>
-            </div>
-            <div class="hstat">
-              <div class="hstat-n" style="font-size: 32px;">4</div>
-              <div class="hstat-l">Research Projects</div>
+            <div class="hh-desc-block hakari-hero-desc-block">
+              <p class="hh-desc hakari-hero-desc">Security researcher and AI developer building <strong>cloud security tools, LLM systems, and production-ready web applications</strong>. I focus on clear evidence, usable interfaces, and reliable engineering.</p>
+              <div class="hh-actions hakari-hero-actions">
+                <a href="hire_me.html" class="btn-prime btn-hire">Hire Me</a>
+                <a href="#projects" class="btn-prime">View Projects</a>
+                <a href="https://github.com/Tejaswanth2406" target="_blank" rel="noopener noreferrer" class="btn-sec">GitHub ↗</a>
+                <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank" rel="noopener noreferrer" class="btn-sec">LinkedIn ↗</a>
+              </div>
+              <div class="hero-cred-grid" aria-label="Portfolio highlights">
+                <div class="hero-cred"><strong>SIH</strong><span>National finalist</span></div>
+                <div class="hero-cred"><strong>10+</strong><span>Verified certifications</span></div>
+                <div class="hero-cred"><strong>Cloud</strong><span>IAM security focus</span></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="hero-visual rv d2">
-        <img src="assets/grid_symbols.png" alt="System Symbols" class="hero-main-art">
+      <div class="marquee" aria-hidden="true">
+        <div class="mq-track">
+          <span class="mq-item hi">Security Research</span>
+          <span class="mq-item">Cloud Security</span>
+          <span class="mq-item hi">Agentic AI</span>
+          <span class="mq-item">Bug Bounty</span>
+          <span class="mq-item hi">Full-Stack Engineering</span>
+          <span class="mq-item">Hire Me</span>
+          <span class="mq-item hi">Security Research</span>
+          <span class="mq-item">Cloud Security</span>
+          <span class="mq-item hi">Agentic AI</span>
+          <span class="mq-item">Bug Bounty</span>
+          <span class="mq-item hi">Full-Stack Engineering</span>
+          <span class="mq-item">Hire Me</span>
+        </div>
       </div>
-
-      <div class="hero-scroll">Scroll</div>
+      <div class="h-cloud-fore"></div>
     </section>
 
     <div class="forest-divider"></div>
@@ -3965,14 +5175,13 @@
         </video>
       </div>
       <div class="motion-vignette"></div>
-      <div class="motion-scanline"></div>
       <div class="motion-grain"></div>
       <div class="motion-content-wrap">
         <div class="section-eyebrow"
-          style="color: var(--gold-lt); justify-content: center; margin-bottom: 40px; border: none; opacity: 0.6;">
-          Research Philosophy</div>
-        <h2 class="motion-heading">Verifiable<br><em>Integrity</em></h2>
-        <p class="motion-tagline">Evidence before assumption</p>
+          style="color: var(--gold-lt); justify-content: center; margin-bottom: 40px; border: none; opacity: 0.72;">
+          Research Output</div>
+        <h2 class="motion-heading">Research<br><em>Publications</em></h2>
+        <p class="motion-tagline">Technical writing, project reports, and evidence-backed security analysis</p>
       </div>
     </section>
 
@@ -3996,12 +5205,7 @@
               a
               research-grade adaptive cloud identity detection platform that models GCP IAM as live temporal graphs and
               surfaces multi-stage attack chains with sub-second latency.</p>
-            <div class="pull-quote rv d1">
-              <p>कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।<br>मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥</p>
-              <p class="quote-translation">Your claim is to the work alone, never to the fruits. Build with discipline;
-                let the outcome become evidence.</p>
-              <cite>Bhagavad Gita 2.47</cite>
-            </div>
+
             <p>Day-to-day: Arch Linux as my daily driver, Kali for offensive work, active bug hunting across Bugcrowd,
               HackerOne and Intigriti. I pull apart binaries, build AI systems that make real decisions, and led a team
               to
@@ -4010,19 +5214,26 @@
           </div>
           <div class="rv d2">
             <div class="skill-group">
-              <div class="sg-label">Languages</div>
+              <div class="sg-label">Programming Languages</div>
               <div class="tags"><span class="tag tag-a">Python</span><span class="tag tag-a">JavaScript</span><span
                   class="tag tag-a">TypeScript</span><span class="tag tag-a">Java</span><span
                   class="tag tag-a">Lua</span><span class="tag tag-a">HTML / CSS</span></div>
             </div>
             <div class="skill-group">
-              <div class="sg-label">Frameworks & UI</div>
-              <div class="tags"><span class="tag tag-d">React 18</span><span class="tag tag-d">Node.js</span><span
-                  class="tag tag-d">FastAPI</span><span class="tag tag-d">Vite</span><span class="tag tag-d">Tailwind
-                  CSS</span><span class="tag tag-d">Zustand</span><span class="tag tag-d">Framer Motion</span></div>
+              <div class="sg-label">Frontend & UI Engineering</div>
+              <div class="tags"><span class="tag tag-d">React 18</span><span class="tag tag-d">TypeScript</span><span
+                  class="tag tag-d">Vite</span><span class="tag tag-d">Tailwind CSS</span><span
+                  class="tag tag-d">Zustand</span><span class="tag tag-d">Framer Motion</span><span
+                  class="tag tag-d">Responsive UI</span></div>
             </div>
             <div class="skill-group">
-              <div class="sg-label">Security & Offensive</div>
+              <div class="sg-label">Backend & Frameworks</div>
+              <div class="tags"><span class="tag tag-d">Node.js</span><span class="tag tag-d">FastAPI</span><span
+                  class="tag tag-d">REST APIs</span><span class="tag tag-d">Microservices</span><span
+                  class="tag tag-d">Playwright</span><span class="tag tag-d">Vitest</span></div>
+            </div>
+            <div class="skill-group">
+              <div class="sg-label">Security Research</div>
               <div class="tags"><span class="tag tag-b">Bug Bounty</span><span class="tag tag-b">Reverse
                   Engineering</span><span class="tag tag-b">Purple Team</span><span class="tag tag-b">IAM
                   Security</span><span class="tag tag-b">Pen Testing</span><span
@@ -4030,7 +5241,7 @@
                   Correlation</span></div>
             </div>
             <div class="skill-group">
-              <div class="sg-label">Cloud · DevOps · AI</div>
+              <div class="sg-label">Cloud, DevOps & AI</div>
               <div class="tags"><span class="tag tag-c">GCP</span><span class="tag tag-c">OCI</span><span
                   class="tag tag-c">Docker</span><span class="tag tag-c">Kubernetes</span><span
                   class="tag tag-c">Terraform</span><span class="tag tag-c">LLMs</span><span class="tag tag-c">RAG
@@ -4056,8 +5267,8 @@
         <img src="assets/crab.png" alt="" style="width: 100%; opacity: 0.08;">
       </div>
       <div class="sec-wrap">
-        <div class="section-eyebrow rv">Methodology</div>
-        <h2 class="section-title rv">Digital<br><em>Bio-mimicry</em></h2>
+        <div class="section-eyebrow rv">Approach</div>
+        <h2 class="section-title rv">Engineering<br><em>Principles</em></h2>
 
         <div class="philo-grid">
           <!-- OCTOPUS -->
@@ -4066,11 +5277,10 @@
               <img src="assets/octopus.jpg" alt="Octopus Lino-cut" class="philo-img">
             </div>
             <div class="philo-text">
-              <h3>Distributed<br><em>Intelligence</em></h3>
-              <p>Much like the <strong>nine brains</strong> of an octopus, my approach to AI focuses on
-                <strong>distributed agentic orchestration</strong>. I build systems where specialized models operate
-                with local autonomy yet contribute to a unified cognitive goal, ensuring resilience and complex
-                problem-solving capabilities.
+              <h3>AI Systems<br><em>Architecture</em></h3>
+              <p>I build AI workflows with clear responsibilities, retrieval context, evaluation checkpoints, and
+                practical user interfaces. The goal is reliable decision support, not flashy demos that collapse under
+                real usage.
               </p>
             </div>
           </div>
@@ -4082,10 +5292,9 @@
                 style="cursor: pointer; transition: all 0.2s;">
             </div>
             <div class="philo-text">
-              <h3>Offensive<br><em>Velocity</em></h3>
-              <p>In security research, <strong>speed is a defensive necessity</strong>. The marlin represents my
-                philosophy of high-velocity offensive research — identifying and neutralizing threats before they can
-                settle. I prioritize precision-guided exploitation to surface critical vulnerabilities at scale.</p>
+              <h3>Security<br><em>Research</em></h3>
+              <p>My security work prioritizes reproducible findings, responsible disclosure, and fast validation. I
+                investigate attack paths, test assumptions, and document evidence so engineers can act with confidence.</p>
             </div>
           </div>
 
@@ -4095,10 +5304,9 @@
               <img src="assets/fish_school.png" alt="Fish School" class="philo-img">
             </div>
             <div class="philo-text">
-              <h3>Collective<br><em>Defense</em></h3>
-              <p>True security isn't found in a single wall, but in <strong>collective intelligence</strong>. By
-                leveraging RAG (Retrieval-Augmented Generation) and swarm-based detection, I create defensive ecosystems
-                that learn from every interaction, mimicking the coordinated movement of a school of fish.</p>
+              <h3>Detection<br><em>Engineering</em></h3>
+              <p>Strong defense depends on signal quality. I connect telemetry, graph modeling, and severity scoring to
+                turn noisy events into prioritized findings that security teams can review quickly.</p>
             </div>
           </div>
 
@@ -4108,31 +5316,29 @@
               <img src="assets/cipher_core.jpg" alt="Cipher Core Symbol" class="philo-img">
             </div>
             <div class="philo-text">
-              <h3>Verifiable<br><em>Integrity</em></h3>
-              <p>Security evidence should survive pressure. I design integrity around <strong>hash-chained events,
-                  replayable state, and clear audit trails</strong>, so every finding can be traced from signal to
-                source instead of depending on trust alone.</p>
+              <h3>Evidence<br><em>Integrity</em></h3>
+              <p>Security evidence should survive review. I design around <strong>hash-chained events, replayable
+                  state, and clear audit trails</strong>, so every finding can be traced from signal to source.</p>
             </div>
           </div>
 
           <!-- CLOUD OPS -->
           <div class="philo-block rv">
-            <div class="philo-img-wrap">
+            <div class="philo-img-wrap portrait-frame">
               <img src="assets/manta_ray.png" alt="Operational Art" class="philo-img"
                 style="transform: scale(1.1); rotate: -10deg;">
             </div>
             <div class="philo-text">
               <h3>Cloud Security<br><em>Operations</em></h3>
-              <p>Cloud infrastructure requires a highly adaptive, multi-layered defensive posture. I focus on
-                implementing robust IAM governance, continuous monitoring, and automated threat response across complex,
-                distributed environments to keep operations resilient and auditable.</p>
+              <p>I focus on IAM governance, event-driven monitoring, attack-path analysis, and response automation for
+                cloud environments where identity is the real perimeter.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- RESEARCH LABORATORY -->
+    <!-- CLOUD SECURITY LAB -->
     <section id="research-lab">
       <div class="lino-art" style="top: -10%; left: -5%; width: 500px; opacity: 0.03; filter: invert(1);">
         <img src="assets/whale.png" alt="" style="width: 100%;">
@@ -4168,11 +5374,11 @@
           </div>
           <div class="lab-content rv d2">
             <div class="section-eyebrow" style="color: var(--rust); margin-bottom: 24px; border-color: var(--rust);">
-              Research Hub</div>
-            <h2 style="color: #fff; text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">Verifiable<br><em
-                style="color: var(--rust);">Integrity</em></h2>
-            <p class="lab-note">A research console for systems that need proof: graph evidence, tamper-evident logs,
-              deterministic replay, and clean operator-facing signals.</p>
+              Cloud Security Lab</div>
+            <h2 style="color: #fff; text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);">Cloud IAM<br><em
+                style="color: var(--rust);">Detection</em></h2>
+            <p class="lab-note">A focused research environment for identity attack paths, graph evidence,
+              tamper-evident logs, deterministic replay, and clean operator-facing signals.</p>
             <div class="lab-stats">
               <div class="ls-card" style="border-bottom: 3px solid var(--rust);">
                 <span class="ls-n" style="color: var(--rust);">15+</span>
@@ -4333,13 +5539,13 @@
     <section id="experience">
       <div class="sec-wrap">
         <div class="section-eyebrow rv">Experience</div>
-        <h2 class="section-title rv">Professional<br><em>Signal</em></h2>
+        <h2 class="section-title rv">Professional<br><em>Focus</em></h2>
         <div class="experience-grid">
           <div class="experience-visual rv">
             <img src="assets/cloud_ops_sharks.jpg" alt="Cloud operations security artwork">
             <div class="visual-caption">
-              <span>Security operations mindset</span>
-              <strong>Research that turns risk into working systems.</strong>
+              <span>Cloud security research</span>
+              <strong>Practical detection work with clear evidence.</strong>
             </div>
           </div>
           <div class="experience-list">
@@ -4407,10 +5613,10 @@
           </article>
           <article class="study-card rv d2">
             <div class="study-media">
-              <img src="assets/call_of_the_sea.png" alt="Strategic product direction artwork">
+              <img src="assets/crab.png" alt="Red crab security product artwork">
             </div>
             <div class="study-content">
-              <span class="study-kicker">Product engineering</span>
+              <span class="study-kicker">Security product design</span>
               <h3>Security tools people can actually use.</h3>
               <p>Shape complex backend intelligence into calm, inspectable interfaces with clear states, strong
                 defaults, and direct paths from finding to action.</p>
@@ -4465,7 +5671,7 @@
       </div>
     </section>
 
-    <!-- STRATEGIC TOOLKIT -->
+    <!-- TECHNICAL TOOLKIT -->
     <section id="toolkit">
       <div class="lino-art" style="top: 0; right: 0; width: 300px; opacity: 0.05;">
         <img src="assets/seahorse.png" alt="" style="width: 100%; transform: rotate(15deg);">
@@ -4474,55 +5680,55 @@
         <img src="assets/crab.png" alt="" style="width: 100%;">
       </div>
       <div class="sec-wrap" style="position: relative; z-index: 2;">
-        <div class="section-eyebrow rv" style="color: var(--rust);">Arsenal</div>
-        <h2 class="section-title rv">The Strategic<br><em style="color: var(--rust);">Toolkit</em></h2>
+        <div class="section-eyebrow rv" style="color: var(--rust);">Technical Skills</div>
+        <h2 class="section-title rv">Technical<br><em style="color: var(--rust);">Toolkit</em></h2>
       </div>
       <div class="toolkit-grid rv">
         <div class="tool-box">
           <div class="tool-box-inner">
-            <span class="tool-cat">Offensive</span>
-            <h3 class="tool-title">Security</h3>
+            <span class="tool-cat">Security Engineering</span>
+            <h3 class="tool-title">Cloud & Offensive Security</h3>
             <ul class="tool-list">
-              <li>Bug Hunting</li>
-              <li>IAM Exploitation</li>
-              <li>Network Pivoting</li>
-              <li>Reverse Engineering</li>
+              <li>Bug bounty research and responsible disclosure</li>
+              <li>Cloud IAM attack-path analysis</li>
+              <li>Network scanning and exposure validation</li>
+              <li>Reverse engineering fundamentals</li>
             </ul>
           </div>
         </div>
         <div class="tool-box">
           <div class="tool-box-inner">
-            <span class="tool-cat">Intelligence</span>
-            <h3 class="tool-title">AI & LLMs</h3>
+            <span class="tool-cat">AI Engineering</span>
+            <h3 class="tool-title">LLM Systems</h3>
             <ul class="tool-list">
-              <li>Agentic Orchestration</li>
-              <li>RAG Architectures</li>
-              <li>Temporal Graphs</li>
-              <li>Prompt Engineering</li>
+              <li>RAG pipelines and source-grounded answers</li>
+              <li>Agentic workflow orchestration</li>
+              <li>Risk scoring and structured summaries</li>
+              <li>Prompt design, evaluation, and iteration</li>
             </ul>
           </div>
         </div>
         <div class="tool-box">
           <div class="tool-box-inner">
-            <span class="tool-cat">Infrastructure</span>
-            <h3 class="tool-title">Cloud</h3>
+            <span class="tool-cat">Cloud Platforms</span>
+            <h3 class="tool-title">Infrastructure</h3>
             <ul class="tool-list">
-              <li>GCP / OCI</li>
-              <li>Docker & K8s</li>
-              <li>Terraform (IaC)</li>
-              <li>Microservices</li>
+              <li>GCP and Oracle Cloud Infrastructure</li>
+              <li>Docker, Kubernetes, and service deployment</li>
+              <li>Terraform and infrastructure-as-code basics</li>
+              <li>Microservice architecture and APIs</li>
             </ul>
           </div>
         </div>
         <div class="tool-box">
           <div class="tool-box-inner">
-            <span class="tool-cat">Engineering</span>
-            <h3 class="tool-title">Development</h3>
+            <span class="tool-cat">Software Development</span>
+            <h3 class="tool-title">Full-Stack Delivery</h3>
             <ul class="tool-list">
-              <li>Python / FastAPI</li>
-              <li>React / TypeScript</li>
-              <li>Go / Systems</li>
-              <li>Node.js</li>
+              <li>Python, FastAPI, and backend services</li>
+              <li>React, TypeScript, and modern UI systems</li>
+              <li>Node.js integrations and automation</li>
+              <li>Testing, CI, and deployment hygiene</li>
             </ul>
           </div>
         </div>
@@ -4564,28 +5770,6 @@
           <div class="acard med rv d2">
             <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
                 stroke-linejoin="round">
-                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
-              </svg></div>
-            <div class="ac-title">Cloud Security Competitions</div>
-            <p class="ac-body">Active participant in IAM exploitation and offensive cloud threat hunting challenges.</p>
-            <div style="margin-top:14px;display:flex;flex-direction:column;gap:7px">
-              <a href="https://bigiamchallenge.com" target="_blank" rel="noopener noreferrer"
-                style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold);text-decoration:none;letter-spacing:.1em;transition:color .2s"
-                onmouseenter="this.style.color='var(--ink)'" onmouseleave="this.style.color='var(--gold)'">↗
-                bigiamchallenge.com</a>
-              <a href="https://cloudsecuritychampionship.com" target="_blank" rel="noopener noreferrer"
-                style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold);text-decoration:none;letter-spacing:.1em;transition:color .2s"
-                onmouseenter="this.style.color='var(--ink)'" onmouseleave="this.style.color='var(--gold)'">↗
-                cloudsecuritychampionship.com</a>
-              <a href="https://cloudhuntinggames.com" target="_blank" rel="noopener noreferrer"
-                style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--gold);text-decoration:none;letter-spacing:.1em;transition:color .2s"
-                onmouseenter="this.style.color='var(--ink)'" onmouseleave="this.style.color='var(--gold)'">↗
-                cloudhuntinggames.com</a>
-            </div>
-          </div>
-          <div class="acard med rv d3">
-            <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
-                stroke-linejoin="round">
                 <polyline points="4 17 10 11 4 5" />
                 <line x1="12" y1="19" x2="20" y2="19" />
               </svg></div>
@@ -4594,7 +5778,7 @@
               dissect techniques for defensive research and CTFs.</p>
             <span class="ac-tag">Ongoing</span>
           </div>
-          <div class="acard med rv d4">
+          <div class="acard med rv d3">
             <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
                 stroke-linejoin="round">
                 <polygon points="12 2 2 7 12 12 22 7 12 2" />
@@ -4606,7 +5790,7 @@
               overall security posture in real environments.</p>
             <span class="ac-tag">Security Research</span>
           </div>
-          <div class="acard med rv d5">
+          <div class="acard med rv d4">
             <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
                 stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10" />
@@ -4731,20 +5915,20 @@
       </div>
     </section>
 
-    <!-- VOYAGER LOG -->
+    <!-- CAREER TIMELINE -->
     <section id="voyager-log">
-      <div class="voyager-bg-text">PACIFIC</div>
+      <div class="voyager-bg-text">TIMELINE</div>
       <div class="sec-wrap voyager-head" style="padding-bottom: 0; position: relative; z-index: 2;">
         <div>
-          <div class="section-eyebrow rv" style="color: var(--rust); border-color: var(--rust);">Chronicle</div>
-          <h2 class="section-title rv" style="color: #fff; text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);">The
-            Voyager's<br><em style="color: var(--gold-lt);">Ledger</em></h2>
+          <div class="section-eyebrow rv" style="color: var(--rust); border-color: var(--rust);">Career Timeline</div>
+          <h2 class="section-title rv" style="color: #fff; text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);">Experience
+            <br><em style="color: var(--gold-lt);">Highlights</em></h2>
         </div>
         <div class="rv d1">
-          <p class="voyager-intro">A compact travel log for the work behind the portfolio: the campus chapter, security
-            systems, national-stage builds, and the research discipline that ties them together.</p>
-          <div class="voyager-stats" aria-label="Voyager ledger summary">
-            <div class="voyager-stat"><strong>04</strong><span>charted milestones</span></div>
+          <p class="voyager-intro">A compact professional timeline covering education, security research, AI builds,
+            certifications, and project milestones.</p>
+          <div class="voyager-stats" aria-label="Career timeline summary">
+            <div class="voyager-stat"><strong>04</strong><span>key milestones</span></div>
             <div class="voyager-stat"><strong>15+</strong><span>systems and services</span></div>
             <div class="voyager-stat"><strong>24-26</strong><span>active build window</span></div>
           </div>
@@ -4753,35 +5937,35 @@
 
       <div class="voyager-route rv d2">
         <div class="route-panel">
-          <div class="route-label">route map</div>
-          <div class="route-track" aria-label="Voyager route timeline">
+          <div class="route-label">focus map</div>
+          <div class="route-track" aria-label="Career focus timeline">
             <div class="route-stop"><strong>Foundation</strong><span>CSE, math, security basics.</span></div>
-            <div class="route-stop"><strong>Builds</strong><span>AI tools, cloud systems, scanners.</span></div>
+            <div class="route-stop"><strong>Projects</strong><span>AI tools, cloud systems, scanners.</span></div>
             <div class="route-stop"><strong>Proof</strong><span>finals, tests, disclosures, demos.</span></div>
             <div class="route-stop"><strong>Next</strong><span>internship-ready research work.</span></div>
           </div>
         </div>
         <div class="route-panel">
-          <div class="route-label">ship manifest</div>
+          <div class="route-label">capability summary</div>
           <div class="manifest-list">
             <div class="manifest-item">
               <div class="manifest-mark">AI</div>
               <div>
-                <div class="manifest-label">cargo</div><strong>LLMs, RAG, simulation engines</strong>
+                <div class="manifest-label">AI</div><strong>LLMs, RAG, simulation engines</strong>
               </div>
               <span class="manifest-state">active</span>
             </div>
             <div class="manifest-item">
               <div class="manifest-mark">SEC</div>
               <div>
-                <div class="manifest-label">watch</div><strong>IAM graphs, IoT scanning, bug hunting</strong>
+                <div class="manifest-label">Security</div><strong>IAM graphs, IoT scanning, bug hunting</strong>
               </div>
               <span class="manifest-state">live</span>
             </div>
             <div class="manifest-item">
               <div class="manifest-mark">UX</div>
               <div>
-                <div class="manifest-label">signal</div><strong>calm interfaces for technical evidence</strong>
+                <div class="manifest-label">UX</div><strong>clear interfaces for technical evidence</strong>
               </div>
               <span class="manifest-state">built</span>
             </div>
@@ -4797,10 +5981,10 @@
             <div class="stamp-art-wrap">
               <img src="assets/voyager_ledger_ammonite.png" alt="Ammonite Spiral">
             </div>
-            <span class="stamp-tag">Navigator</span>
+            <span class="stamp-tag">Education</span>
             <h3 class="stamp-name">GITAM<br>University</h3>
             <div class="stamp-meta"><span>CSE</span><span>2023-Present</span><span>Vizag</span></div>
-            <p class="stamp-desc">Charting the depths of Computer Science & Engineering in Vizag.</p>
+            <p class="stamp-desc">Computer Science foundation with a focus on AI, cloud platforms, and security.</p>
             <ul class="stamp-evidence">
               <li data-mark="01">Core CS foundation across AI, cloud platforms, software engineering, and security.</li>
               <li data-mark="02">Built portfolio work around research-grade systems instead of isolated demos.</li>
@@ -4816,10 +6000,10 @@
             <div class="stamp-art-wrap">
               <img src="assets/voyager_ledger_turtle.png" alt="Sea Turtle">
             </div>
-            <span class="stamp-tag">Expedition</span>
+            <span class="stamp-tag">Cloud Security</span>
             <h3 class="stamp-name">Hollow<br>Purple</h3>
             <div class="stamp-meta"><span>Cloud IAM</span><span>Merkle</span><span>Graph</span></div>
-            <p class="stamp-desc">Voyaging through GCP IAM and temporal identity graphs.</p>
+            <p class="stamp-desc">GCP IAM research using temporal identity graphs and evidence replay.</p>
             <ul class="stamp-evidence">
               <li data-mark="01">Temporal graph model for privilege paths, lateral movement, token abuse, and drift.
               </li>
@@ -4836,10 +6020,10 @@
             <div class="stamp-art-wrap">
               <img src="assets/voyager_ledger_jellyfish.png" alt="Jellyfish">
             </div>
-            <span class="stamp-tag">National</span>
+            <span class="stamp-tag">Achievement</span>
             <h3 class="stamp-name">SIH<br>Stage</h3>
             <div class="stamp-meta"><span>Team</span><span>Finals</span><span>Delivery</span></div>
-            <p class="stamp-desc">Leading distributed intelligence to the national finals.</p>
+            <p class="stamp-desc">Led a team through a national-stage product build and technical demo cycle.</p>
             <ul class="stamp-evidence">
               <li data-mark="01">Turned a problem statement into a working technical direction under competition
                 pressure.</li>
@@ -4857,10 +6041,10 @@
             <div class="stamp-art-wrap">
               <img src="assets/voyager_ledger_sardines.png" alt="Sardine Tin">
             </div>
-            <span class="stamp-tag">Guardian</span>
+            <span class="stamp-tag">Security Practice</span>
             <h3 class="stamp-name">Offensive<br>Research</h3>
             <div class="stamp-meta"><span>Bug bounty</span><span>Disclosure</span><span>Cloud</span></div>
-            <p class="stamp-desc">Responsible disclosure and bug hunting in global waters.</p>
+            <p class="stamp-desc">Responsible disclosure, vulnerability research, and offensive security practice.</p>
             <ul class="stamp-evidence">
               <li data-mark="01">Research practice focused on reproducible findings, scoped testing, and clean reports.
               </li>
@@ -4873,69 +6057,78 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contact">
-      <div class="contact-inner">
-        <div class="rv">
-          <div class="ct-eyebrow">Let's Connect</div>
-          <h2 class="ct-title">Let's<br>Build<br><em>Some</em><span class="out">thing.</span></h2>
+    <!-- PROFESSIONAL ROADMAP -->
+    <section id="voyager-ship">
+      <div class="ship-wrap rv">
+        <div class="ship-visual">
+          <img src="assets/voyager_ship.png" alt="Professional roadmap illustration">
+          <div class="ship-caption">Professional Roadmap</div>
         </div>
-        <div class="rv d2">
+        <div class="ship-copy">
+          <div class="ship-kicker">Current Direction</div>
+          <h2 class="ship-title">Professional<br><em>Roadmap</em></h2>
+          <p class="ship-text">The next phase is practical and focused: build security products that make cloud risk
+            visible, make AI outputs accountable, and turn research into interfaces teams can trust.</p>
+          <div class="ship-ledger" aria-label="Professional roadmap priorities">
+            <div class="ship-ledger-row"><span>Now</span><strong>Internship-ready portfolio across security, AI, and
+                full-stack delivery.</strong></div>
+            <div class="ship-ledger-row"><span>Next</span><strong>Cloud IAM detection, evidence integrity, and
+                operator-focused dashboards.</strong></div>
+            <div class="ship-ledger-row"><span>Goal</span><strong>Security research, AI engineering, and cloud
+                platform roles.</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact-system">
+      <div class="contact-inner contact-system-inner">
+        <div class="rv">
+          <div class="ct-eyebrow contact-system-eyebrow">Contact</div>
+          <h2 class="ct-title contact-system-title">Let's Work<br>Together<span class="out">.</span></h2>
+        </div>
+        <div class="rv d2 contact-system-body">
           <div class="ct-right">
-            <p class="ct-sub">Looking for internships in AI, security research, LLMs, RAG systems, and cloud security.
-              Open
-              to collaborations, research partnerships, and interesting problems.</p>
-            <div class="ct-links">
-              <a href="mailto:tejaswanthsurisetty@gmail.com"
-                class="ct-link"><span>✉&nbsp;&nbsp;tejaswanthsurisetty@gmail.com</span><span
-                  class="ct-link-icon">→</span></a>
-              <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank"
-                rel="noopener noreferrer" class="ct-link"><span>in&nbsp;&nbsp;LinkedIn Profile</span><span
-                  class="ct-link-icon">↗</span></a>
-              <a href="https://github.com/Tejaswanth2406" target="_blank" rel="noopener noreferrer"
-                class="ct-link"><span>{ }&nbsp;&nbsp;GitHub /
-                  Tejaswanth2406</span><span class="ct-link-icon">↗</span></a>
-              <a href="tel:7396244673" class="ct-link"><span>☏&nbsp;&nbsp;+91 7396244673</span><span
-                  class="ct-link-icon">→</span></a>
+            <p class="ct-sub contact-system-sub">Looking for internships and project work in AI, security research, LLM systems, and cloud security. Open to collaborations, research partnerships, and practical engineering problems.</p>
+            <div class="ct-links contact-system-links">
+              <a href="hire_me.html" class="ct-link contact-system-link">
+                <span>[HIRE] Open hire page</span><span class="ct-link-icon contact-system-icon">→</span>
+              </a>
+              <a href="mailto:tejaswanthsurisetty@gmail.com" class="ct-link contact-system-link">
+                <span>[MAIL] tejaswanthsurisetty@gmail.com</span><span class="ct-link-icon contact-system-icon">→</span>
+              </a>
+              <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank" rel="noopener noreferrer" class="ct-link contact-system-link">
+                <span>[LINKEDIN] Profile</span><span class="ct-link-icon contact-system-icon">↗</span>
+              </a>
+              <a href="https://github.com/Tejaswanth2406" target="_blank" rel="noopener noreferrer" class="ct-link contact-system-link">
+                <span>[GITHUB] Tejaswanth2406</span><span class="ct-link-icon contact-system-icon">↗</span>
+              </a>
+              <a href="tel:7396244673" class="ct-link contact-system-link">
+                <span>[TEL] +91 7396244673</span><span class="ct-link-icon contact-system-icon">→</span>
+              </a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- GITA SLOGAN -->
+    <section id="gita-slogan" class="gita-slogan">
+      <div class="rv d1 gita-text">
+        <p>कर्मण्येवाधिकारस्ते मा फलेषु कदाचन।<br>मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि॥</p>
+      </div>
+    </section>
+
+    <div class="gita-eye-spacer" aria-hidden="true"></div>
+
     <!-- EYE SHOWCASE -->
-    <section id="eye-showcase">
+    <section id="eye-showcase" class="eye-showcase-tail">
       <div class="showcase-wrap rv">
         <div class="showcase-label">The Observant Mind</div>
         <img src="assets/red_wavy_eye.png" alt="Eye Showcase">
       </div>
     </section>
-
-    <!-- SHIP SHOWCASE -->
-    <section id="voyager-ship">
-      <div class="ship-wrap rv">
-        <div class="ship-visual">
-          <img src="assets/voyager_ship.png" alt="Voyager Ship Illustration">
-          <div class="ship-caption">Eternal Voyage</div>
-        </div>
-        <div class="ship-copy">
-          <div class="ship-kicker">Closing bearing</div>
-          <h2 class="ship-title">Eternal<br><em>Voyage</em></h2>
-          <p class="ship-text">The portfolio closes like a captain's log: not with arrival, but with direction. Every
-            project is a coordinate toward stronger evidence, sharper systems, and work that can keep sailing after the
-            first demo.</p>
-          <div class="ship-ledger" aria-label="Eternal voyage principles">
-            <div class="ship-ledger-row"><span>North Star</span><strong>Build systems that explain themselves under
-                pressure.</strong></div>
-            <div class="ship-ledger-row"><span>Discipline</span><strong>Prefer repeatable evidence over theatrical
-                claims.</strong></div>
-            <div class="ship-ledger-row"><span>Horizon</span><strong>Security research, AI engineering, and cloud
-                platforms.</strong></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
   </main>
 
   <footer>
@@ -5199,3 +6392,6 @@
 </body>
 
 </html>
+
+
+

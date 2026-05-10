@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "validate": "node scripts/validate-site.js",
+    "crop:voyager": "node scripts/crop-voyager-symbols.js"
+  },
   "dependencies": {
     "jimp": "^1.6.1"
   }
