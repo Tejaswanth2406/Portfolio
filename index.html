@@ -2851,6 +2851,15 @@
       justify-content: center;
     }
 
+    .section-anchor {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 1px;
+      pointer-events: none;
+    }
+
     .motion-container {
       position: absolute;
       inset: 0;
@@ -5394,6 +5403,7 @@
 
     <!-- MOTION SHOWCASE -->
     <section id="motion-reveal">
+      <span id="research-publications" class="section-anchor" aria-hidden="true"></span>
       <div class="motion-container">
         <video autoplay muted loop playsinline>
           <source

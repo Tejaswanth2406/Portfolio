@@ -1,5 +1,6 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
+import process from 'node:process';
 
 const root = process.cwd();
 const htmlFiles = fs.readdirSync(root).filter((file) => file.endsWith('.html'));
@@ -45,11 +46,16 @@ function checkAnchors(file, source) {
 function checkInlineScripts(file, source) {
   let index = 0;
 
-  for (const match of source.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)) {
+  for (const match of source.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
     index += 1;
+    const attrs = match[1];
+    const scriptType = attrs.match(/\btype=["']([^"']+)["']/i)?.[1]?.toLowerCase();
+
+    if (/\bsrc=["'][^"']+["']/i.test(attrs)) continue;
+    if (scriptType && !['module', 'text/javascript', 'application/javascript'].includes(scriptType)) continue;
 
     try {
-      new Function(match[1]);
+      new Function(match[2]);
     } catch (error) {
       issues.push(`${file}: inline script ${index} has a syntax error: ${error.message}`);
     }

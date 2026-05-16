@@ -19,8 +19,9 @@
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
-            overflow: hidden;
+            min-height: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
             background-color: #050505;
             font-family: 'Plus Jakarta Sans', sans-serif;
             color: white;
@@ -39,12 +40,14 @@
             position: relative;
             z-index: 10;
             width: 100%;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: 100svh;
             pointer-events: none;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             padding: 3rem;
+            gap: 3rem;
         }
 
         .pointer-events-auto { pointer-events: auto; }
@@ -87,7 +90,7 @@
             opacity: 0.03;
             z-index: 2;
             pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3ExternalIcon%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
         .gradient-orb {
@@ -141,6 +144,39 @@
             transform: scale(1.05);
             box-shadow: 0 0 40px rgba(255,255,255,0.4);
         }
+
+        .publication-title {
+            font-size: clamp(3.35rem, 11vw, 6rem);
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .ui-overlay {
+                padding: 1.5rem;
+            }
+
+            nav {
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            main {
+                align-items: flex-start !important;
+                margin-bottom: 0 !important;
+            }
+
+            footer {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 0.75rem;
+                line-height: 1.7;
+            }
+        }
     </style>
 </head>
 <body>
@@ -154,14 +190,14 @@
     <div class="ui-overlay">
         <!-- Navigation -->
         <nav class="flex justify-between items-center pointer-events-auto">
-            <a href="index.html" class="text-2xl font-black tracking-tighter" style="text-decoration: none; color: inherit;">TEJASWANTH.RESEARCH</a>
+            <a href="index.html#research-publications" class="text-2xl font-black tracking-tighter" style="text-decoration: none; color: inherit;">TEJASWANTH.RESEARCH</a>
             <div class="hidden md:flex gap-8 text-sm font-medium uppercase tracking-widest opacity-70">
-                <a href="#" class="nav-link">Cloud IAM</a>
-                <a href="#" class="nav-link">AI Systems</a>
-                <a href="#" class="nav-link">Threat Models</a>
-                <a href="#" class="nav-link">Zero Days</a>
+                <a href="index.html#research-lab" class="nav-link">Cloud IAM</a>
+                <a href="index.html#projects" class="nav-link">AI Systems</a>
+                <a href="index.html#research-lab" class="nav-link">Threat Models</a>
+                <a href="index.html#achievements" class="nav-link">Zero Days</a>
             </div>
-            <a href="index.html#contact" style="text-decoration: none;">
+            <a href="index.html#research-publications" style="text-decoration: none;">
                 <button class="glass-panel px-6 py-2 text-sm font-bold pointer-events-auto border-white/20 hover:bg-white/10 transition-all uppercase tracking-widest text-white">Back to Main</button>
             </a>
         </nav>
@@ -173,15 +209,15 @@
                     <span class="w-1 h-1 bg-pink-500 rounded-full animate-pulse"></span>
                     Now Processing: Evidence-Backed Analysis
                 </div>
-                <h1 class="text-8xl font-extrabold leading-[0.9] tracking-tighter liquid-text mb-6">
+                <h1 class="publication-title font-extrabold leading-[0.9] tracking-tighter liquid-text mb-6">
                     RESEARCH<br>PUBLICATIONS
                 </h1>
                 <p class="text-lg text-white/50 max-w-md leading-relaxed mb-8">
                     An immersive directory showcasing research papers produced, peer-reviewed citations, and deeply technical threat analysis.
                 </p>
-                <div class="flex gap-4">
-                    <a href="#" class="cta-btn">Explore Directory</a>
-                    <button class="glass-panel px-8 py-4 font-bold border-white/10 hover:bg-white/5 transition-all text-white">View Top Paper</button>
+                <div class="hero-actions">
+                    <a href="index.html#research-publications" class="cta-btn">Explore Directory</a>
+                    <a href="hollowpurple.html" class="glass-panel px-8 py-4 font-bold border-white/10 hover:bg-white/5 transition-all text-white" style="text-decoration: none;">View Top Paper</a>
                 </div>
             </div>
 
@@ -202,9 +238,9 @@
 
         <!-- Footer UI -->
         <footer class="flex justify-between items-center text-[10px] uppercase tracking-[0.3em] opacity-30 text-white">
-            <div>©2026 DESIGNED BY TEJASWANTH SURISETTY</div>
+            <div>&copy;2026 DESIGNED BY TEJASWANTH SURISETTY</div>
             <div class="flex gap-8">
-                <span>17.6868° N, 83.2185° E</span>
+                <span>17.6868&deg; N, 83.2185&deg; E</span>
                 <span>Latency: 14ms</span>
             </div>
         </footer>
@@ -312,6 +348,9 @@
         let mouseX = 0, mouseY = 0;
 
         function init() {
+            const container = document.getElementById('canvas-container');
+            if (!container || !window.THREE) return;
+
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             camera.position.z = 5;
@@ -319,7 +358,7 @@
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
+            container.appendChild(renderer.domElement);
 
             // Create Liquid Geometry
             const geometry = new THREE.SphereGeometry(2, 128, 128);
@@ -350,13 +389,15 @@
             animate();
             
             // Entrance animation
-            gsap.from(".ui-overlay > *", {
-                y: 50,
-                opacity: 0,
-                duration: 1.5,
-                stagger: 0.2,
-                ease: "power4.out"
-            });
+            if (window.gsap) {
+                gsap.from(".ui-overlay > *", {
+                    y: 50,
+                    opacity: 0,
+                    duration: 1.5,
+                    stagger: 0.2,
+                    ease: "power4.out"
+                });
+            }
         }
 
         function onMouseMove(event) {
