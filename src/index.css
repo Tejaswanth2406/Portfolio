@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-serif text-ink min-h-screen overflow-x-hidden flex flex-col;
+    background-color: theme('colors.paper');
+  }
+}
+
+@keyframes rotateStar {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.deco-star {
+  display: inline-block;
+  animation: rotateStar 8s linear infinite;
+}
+
+@layer utilities {
+  .translate-z-12 {
+    transform: translateZ(12px);
+  }
+}
