@@ -4,14 +4,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Tejaswanth Surisetty — Security Researcher & AI Developer</title>
+  <title>Tejaswanth Surisetty - AI, Security & Creative Portfolio</title>
   <meta name="description"
-    content="Portfolio of Tejaswanth Surisetty, a Computer Science student focused on security research, AI systems, cloud IAM, bug bounty research, and LLM/RAG engineering." />
+    content="Portfolio of Tejaswanth Surisetty, a Computer Science student focused on security research, AI systems, cloud IAM, vulnerability research, and LLM/RAG engineering." />
   <meta name="theme-color" content="#f4f1ea" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Tejaswanth Surisetty — Security Researcher & AI Developer" />
+  <meta property="og:title" content="Tejaswanth Surisetty - AI, Security & Creative Portfolio" />
   <meta property="og:description"
-    content="Security research, AI systems, cloud IAM detection, bug bounty work, and research-grade engineering projects." />
+    content="Security research, AI systems, cloud IAM detection, vulnerability research, and research-grade engineering projects." />
   <meta property="og:image" content="assets/red_wavy_eye.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -21,6 +21,12 @@
     rel="stylesheet" />
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@200;300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&display=swap"
     rel="stylesheet" />
   <style>
     *,
@@ -1631,6 +1637,785 @@
       object-fit: contain;
     }
 
+    .philo-img.asset-cover {
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      object-position: center;
+      filter: saturate(.9) contrast(1.08);
+    }
+
+    /* Affiliation / editorial block */
+    #manifesto {
+      background:
+        linear-gradient(135deg, rgba(107, 158, 187, 0.1), transparent 42%),
+        linear-gradient(315deg, rgba(158, 66, 32, 0.08), transparent 48%),
+        var(--bg-base);
+      padding: 96px 5%;
+      overflow: hidden;
+    }
+
+    .manifesto-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      max-width: 1180px;
+      margin: 0 auto;
+      align-items: stretch;
+    }
+
+    .manifesto-card {
+      background: rgba(250, 250, 247, 0.74);
+      padding: 28px 22px;
+      border: 1px solid var(--ink-08);
+      box-shadow: var(--shadow-sm);
+      min-height: 210px;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .manifesto-card::before {
+      content: '';
+      position: absolute;
+      inset: auto 18px 18px auto;
+      width: 64px;
+      height: 64px;
+      border: 1px solid rgba(26, 60, 94, .16);
+      transform: rotate(10deg);
+      z-index: -1;
+    }
+
+    .manifesto-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(107, 158, 187, .32);
+      box-shadow: var(--shadow-md);
+    }
+
+    .manifesto-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 900;
+      color: var(--sky);
+      line-height: 1;
+      margin-bottom: 24px;
+      letter-spacing: .22em;
+    }
+
+    .manifesto-head {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(24px, 2.8vw, 34px);
+      font-weight: 800;
+      letter-spacing: 0;
+      color: var(--lino-blue);
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+
+    .manifesto-body {
+      font-family: 'Crimson Pro', serif;
+      color: var(--ink-70);
+      font-size: 16px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .affiliation-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .affiliation-list li {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--ink);
+      padding-left: 6px;
+      position: relative;
+    }
+
+    .affiliation-list li::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--sky);
+      color: var(--sky);
+      position: absolute;
+      left: -9px;
+      top: .62em;
+    }
+
+    .manifesto-quote {
+      font-style: italic;
+      font-family: 'Crimson Pro', serif;
+      font-size: 18px;
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    .quote-author {
+      display: block;
+      margin-top: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-45);
+      text-transform: none;
+    }
+
+    /* EDITORIAL / MAGAZINE STYLE */
+    #editorial {
+      background: #fff;
+      color: #050505;
+      position: relative;
+      padding: 96px 4%;
+      overflow: hidden;
+    }
+
+    .editorial-wrap {
+      max-width: 1320px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: minmax(280px, 0.46fr) minmax(0, 1fr);
+      gap: 44px;
+      align-items: center;
+    }
+
+    .editorial-graphic {
+      position: absolute;
+      right: -20%;
+      top: -8%;
+      width: 120vmax;
+      height: 120vmax;
+      background: #050505;
+      border-radius: 50%;
+      transform: translate3d(0,0,0);
+      transition: transform .9s cubic-bezier(.2,.9,.22,1), opacity .6s;
+      box-shadow: 0 40px 120px rgba(0,0,0,.18);
+      will-change: transform;
+    }
+
+    .editorial-copy {
+      position: relative;
+      z-index: 3;
+      padding: 28px 8px;
+    }
+
+    #editorial .section-eyebrow {
+      color: #050505;
+      border-color: rgba(5, 5, 5, .18);
+    }
+
+    #editorial .section-eyebrow::after {
+      background: rgba(5, 5, 5, .16);
+    }
+
+    .editorial-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(34px, 5vw, 82px);
+      line-height: .98;
+      font-weight: 700;
+      color: #050505;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+      transform-origin: left top;
+    }
+
+    .editorial-sub {
+      font-family: 'Crimson Pro', serif;
+      color: rgba(5, 5, 5, .72);
+      font-size: clamp(18px, 2vw, 28px);
+      max-width: 480px;
+      line-height: 1.8;
+      margin-top: 6px;
+    }
+
+    .editorial-quote-panel {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(32px, 5vw, 72px);
+      color: #fff;
+    }
+
+    .editorial-quote-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(34px, 5vw, 76px);
+      line-height: 1.08;
+      letter-spacing: 0;
+      max-width: 760px;
+    }
+
+    .editorial-quote-panel .quote-author {
+      color: rgba(255, 255, 255, .68);
+      margin-top: 28px;
+    }
+
+    .resume-section {
+      --resume-navy: #14213f;
+      --resume-paper: #f5f0e8;
+      --resume-rule: rgba(20, 33, 63, .16);
+      width: 100%;
+      min-height: 200vh;
+      display: grid;
+      grid-template-columns: minmax(210px, .92fr) minmax(220px, 1fr) minmax(220px, 1fr) minmax(240px, 1fr);
+      grid-template-rows: 1fr auto;
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+      background: var(--resume-paper);
+      color: var(--resume-navy);
+      font-family: 'EB Garamond', 'Libre Baskerville', Georgia, serif;
+      border-top: 1px solid rgba(20, 33, 63, .18);
+      border-bottom: 1px solid rgba(20, 33, 63, .18);
+    }
+
+    .resume-section * {
+      color: inherit;
+      letter-spacing: 0;
+    }
+
+    .resume-col-deco,
+    .resume-col-intro,
+    .resume-col-exp,
+    .resume-col-projects {
+      min-width: 0;
+      grid-row: 1;
+      position: relative;
+    }
+
+    .resume-col-deco {
+      grid-column: 1;
+      padding: 28px 0 28px 28px;
+      border-right: .5px solid var(--resume-rule);
+    }
+
+    .resume-logo-ts {
+      position: absolute;
+      top: 22px;
+      left: 22px;
+      z-index: 2;
+      font-family: 'Playfair Display', serif;
+      font-size: 13px;
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: .02em;
+    }
+
+    .resume-deco-letters {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .resume-deco-i1,
+    .resume-deco-i2,
+    .resume-deco-f,
+    .resume-intro-deco-g {
+      position: absolute;
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      line-height: 1;
+      user-select: none;
+      color: var(--resume-navy);
+    }
+
+    .resume-deco-i1,
+    .resume-deco-i2 {
+      font-size: clamp(420px, 39vw, 690px);
+      font-style: italic;
+      transform: skewX(-8deg);
+      transform-origin: center;
+    }
+
+    .resume-deco-i1 {
+      top: -7%;
+      left: -10%;
+      z-index: 1;
+    }
+
+    .resume-deco-i2 {
+      bottom: -14%;
+      left: 2%;
+      z-index: 2;
+    }
+
+    .resume-deco-f {
+      top: 50%;
+      left: 54%;
+      z-index: 3;
+      font-size: clamp(300px, 28vw, 450px);
+      font-style: italic;
+      transform: translateY(-50%);
+    }
+
+    .resume-bottom-tagline {
+      position: absolute;
+      left: 22px;
+      bottom: 24px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .resume-bottom-asterisk,
+    .resume-footer-asterisk {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .resume-bottom-tagline p {
+      max-width: 130px;
+      font-size: 10px;
+      line-height: 1.5;
+      letter-spacing: .01em;
+    }
+
+    .resume-col-intro {
+      grid-column: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10vh 32px 10vh 36px;
+      border-right: .5px solid var(--resume-rule);
+      overflow: visible;
+    }
+
+    .resume-col-intro > div {
+      position: relative;
+      z-index: 1;
+    }
+
+    .resume-intro-label,
+    .resume-section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .resume-intro-label {
+      margin-bottom: 18px;
+    }
+
+    .resume-intro-headline {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(58px, 5.35vw, 88px);
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -.02em;
+    }
+
+    .resume-intro-headline em {
+      font-style: italic;
+      font-weight: 600;
+    }
+
+    .resume-intro-divider {
+      width: 48px;
+      height: .5px;
+      margin: 24px 0;
+      background: var(--resume-navy);
+    }
+
+    .resume-intro-bio {
+      position: relative;
+      z-index: 2;
+      max-width: 330px;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .resume-intro-deco-g {
+      right: 18px;
+      bottom: 5vh;
+      z-index: 0;
+      font-size: clamp(220px, 19vw, 340px);
+      font-style: italic;
+      opacity: .98;
+      pointer-events: none;
+    }
+
+    .resume-col-exp {
+      grid-column: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10vh 24px 10vh 28px;
+      border-right: .5px solid var(--resume-rule);
+    }
+
+    .resume-col-projects {
+      grid-column: 4;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10vh 28px 10vh 24px;
+    }
+
+    .resume-block {
+      margin-bottom: clamp(34px, 5vh, 72px);
+    }
+
+    .resume-section-label {
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: .75px solid var(--resume-navy);
+    }
+
+    .resume-exp-item,
+    .resume-proj-item {
+      margin-bottom: clamp(22px, 3.5vh, 42px);
+    }
+
+    .resume-edu-item {
+      margin-bottom: 14px;
+    }
+
+    .resume-ach-item {
+      margin-bottom: 10px;
+    }
+
+    .resume-exp-title,
+    .resume-edu-title,
+    .resume-proj-title,
+    .resume-ach-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .resume-exp-title {
+      margin-bottom: 2px;
+      font-size: 18px;
+    }
+
+    .resume-edu-title {
+      margin-bottom: 1px;
+      font-size: 16px;
+    }
+
+    .resume-proj-title {
+      margin-bottom: 2px;
+      font-size: 17px;
+    }
+
+    .resume-ach-title {
+      margin-bottom: 1px;
+      font-size: 15px;
+    }
+
+    .resume-exp-date,
+    .resume-proj-stack {
+      margin-bottom: 6px;
+      font-size: 10px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      opacity: .68;
+    }
+
+    .resume-proj-stack {
+      margin-bottom: 5px;
+    }
+
+    .resume-exp-desc,
+    .resume-proj-desc,
+    .resume-skills-block p {
+      font-size: 13px;
+      line-height: 1.72;
+      opacity: .9;
+    }
+
+    .resume-skills-block p {
+      margin-bottom: 4px;
+      line-height: 1.7;
+    }
+
+    .resume-skills-block strong {
+      font-weight: 700;
+      opacity: 1;
+    }
+
+    .resume-edu-inst,
+    .resume-edu-year,
+    .resume-ach-desc {
+      font-size: 12px;
+      line-height: 1.55;
+      opacity: .75;
+    }
+
+    .resume-edu-year {
+      font-size: 11px;
+      letter-spacing: .05em;
+      opacity: .62;
+    }
+
+    .resume-certs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 3px 10px;
+      margin-top: 4px;
+    }
+
+    .resume-cert-item {
+      padding: 2px 0;
+      border-top: .5px solid rgba(20, 33, 63, .25);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .resume-footer-bar {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 28px;
+      border-top: .75px solid var(--resume-navy);
+      background: var(--resume-paper);
+    }
+
+    .resume-footer-bar span {
+      font-size: 9px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      opacity: .72;
+      white-space: nowrap;
+    }
+
+    .resume-footer-bar .resume-footer-asterisk {
+      font-size: 12px;
+      letter-spacing: 0;
+      opacity: .86;
+    }
+
+    /* Motion states */
+    #editorial.rv { opacity: 0; transform: translateY(24px); }
+    #editorial.in { opacity: 1; transform: none; transition: opacity .9s, transform .9s; }
+
+    @media (max-width: 1024px) {
+      .editorial-wrap { grid-template-columns: 1fr; text-align: center; }
+      .editorial-graphic { right: -40%; top: -30%; width: 220vmax; height: 220vmax; }
+      .editorial-title { font-size: clamp(28px, 10vw, 72px); }
+      .manifesto-grid { grid-template-columns: 1fr; }
+      .resume-section {
+        grid-template-columns: 220px 1fr;
+        min-height: 0;
+      }
+      .resume-col-deco { grid-column: 1; grid-row: 1 / 4; }
+      .resume-col-intro { grid-column: 2; grid-row: 1; border-right: 0; border-bottom: .5px solid var(--resume-rule); }
+      .resume-col-exp { grid-column: 2; grid-row: 2; border-right: 0; border-bottom: .5px solid var(--resume-rule); }
+      .resume-col-projects { grid-column: 2; grid-row: 3; }
+      .resume-footer-bar { grid-row: 4; }
+    }
+
+    @media (max-width: 640px) {
+      #editorial { padding: 56px 4% 48px; }
+      .editorial-graphic { right: -60%; top: -50%; width: 300vmax; height: 300vmax; opacity: .98; }
+      .editorial-title { font-size: clamp(22px, 12vw, 42px); }
+      .editorial-sub { max-width: 100%; font-size: 13px; }
+      .editorial-quote-panel { min-height: 360px; padding: 28px; }
+      .editorial-quote-text { font-size: clamp(28px, 11vw, 44px); }
+      .resume-section {
+        display: block;
+        min-height: 0;
+      }
+      .resume-col-deco {
+        min-height: 360px;
+        padding: 24px;
+        border-right: 0;
+        border-bottom: .5px solid var(--resume-rule);
+      }
+      .resume-col-intro,
+      .resume-col-exp,
+      .resume-col-projects {
+        padding: 40px 24px;
+        border-right: 0;
+        border-bottom: .5px solid var(--resume-rule);
+      }
+      .resume-bottom-tagline p {
+        max-width: 92px;
+        font-size: 6.5px;
+      }
+      .resume-intro-headline { font-size: clamp(44px, 15vw, 64px); }
+      .resume-intro-bio,
+      .resume-exp-desc,
+      .resume-proj-desc,
+      .resume-skills-block p {
+        font-size: 13px;
+      }
+      .resume-exp-title,
+      .resume-proj-title { font-size: 18px; }
+      .resume-edu-title { font-size: 17px; }
+      .resume-ach-title { font-size: 15px; }
+      .resume-exp-date,
+      .resume-proj-stack,
+      .resume-intro-label,
+      .resume-section-label,
+      .resume-edu-year,
+      .resume-cert-item { font-size: 10px; }
+      .resume-edu-inst,
+      .resume-ach-desc { font-size: 12px; }
+      .resume-certs-grid { grid-template-columns: 1fr; }
+      .resume-footer-bar {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        padding: 14px 24px;
+      }
+      .resume-footer-bar span { font-size: 9px; }
+      .identity-wrap { grid-template-columns: 1fr; text-align: center; gap: 28px; }
+      .identity-copy { padding: 0 2px; }
+      .identity-art { min-height: 320px; }
+      .identity-art-copy { bottom: 20px; left: 20px; right: 20px; }
+      .identity-mark { font-size: clamp(120px, 25vw, 180px); }
+    }
+
+    .identity-wrap {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 3.5rem;
+      align-items: center;
+      padding: 80px 4%;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .identity-art {
+      position: relative;
+      min-height: 620px;
+      border: 1px solid rgba(11, 23, 36, .08);
+      background: linear-gradient(180deg, #f9fafb 0%, #ffffff 42%, #f7f6f4 100%);
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      padding: 32px;
+    }
+
+    .identity-art-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(14, 69, 110, .12), transparent 34%),
+                  radial-gradient(circle at 80% 30%, rgba(187, 134, 252, .16), transparent 28%),
+                  radial-gradient(circle at 50% 75%, rgba(203, 213, 225, .18), transparent 22%);
+      pointer-events: none;
+      opacity: .95;
+    }
+
+    .identity-mark-group {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      gap: 0.3rem;
+      z-index: 1;
+    }
+
+    .identity-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(180px, 18vw, 300px);
+      line-height: .85;
+      color: #0b1724;
+      letter-spacing: -0.04em;
+      font-weight: 900;
+    }
+
+    .identity-mark-sm {
+      font-size: clamp(88px, 10vw, 140px);
+      opacity: .48;
+    }
+
+    .identity-art-copy {
+      position: absolute;
+      left: 40px;
+      right: 40px;
+      bottom: 40px;
+      padding: 24px 28px;
+      background: rgba(255, 255, 255, .82);
+      border: 1px solid rgba(11, 23, 36, .07);
+      border-radius: 24px;
+      backdrop-filter: blur(12px);
+      color: #102039;
+      font-family: 'Crimson Pro', serif;
+      font-size: 18px;
+      line-height: 1.75;
+      z-index: 1;
+    }
+
+    .identity-copy {
+      display: grid;
+      gap: 24px;
+      max-width: 520px;
+    }
+
+    .identity-text,
+    .identity-note {
+      color: var(--ink-70);
+      line-height: 1.8;
+      font-size: 16px;
+      font-weight: 300;
+    }
+
+    .identity-note {
+      font-size: 14px;
+      opacity: .82;
+    }
+
+    .identity-copy .section-eyebrow {
+      font-size: 11px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--sky);
+    }
+
+    .identity-copy .section-title {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(44px, 7vw, 64px);
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      color: var(--ink);
+    }
+
+    .identity-copy .section-title em {
+      color: var(--sky);
+      font-style: normal;
+    }
+
+    .identity-art .identity-art-copy p {
+      margin: 0;
+    }
+
+    .identity-art:after {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      border-radius: 36px;
+      box-shadow: 0 40px 80px rgba(15, 23, 42, .08);
+      pointer-events: none;
+    }
+
+    .identity-raw-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 12px;
+      z-index: 0;
+      position: relative;
+    }
+
     .philo-text h3 {
       font-family: 'Playfair Display', serif;
       font-size: clamp(32px, 4vw, 52px);
@@ -1825,6 +2610,10 @@
       background: var(--ink);
       border-radius: 10px;
       box-shadow: var(--shadow-lg);
+    }
+
+    .collab-visual {
+      background: #fff;
     }
 
     .experience-visual img,
@@ -2441,8 +3230,9 @@
       right: 50px;
       width: 250px;
       height: 350px;
-      background: url('assets/jellyfish.png') center/contain no-repeat;
-      opacity: 0.08;
+      /* decorative jellyfish removed to declutter visual layout */
+      background: none;
+      opacity: 0;
       pointer-events: none;
     }
 
@@ -3904,32 +4694,32 @@
       }
     }
 
-    /* HAKARI SKY THEME OVERRIDES */
+    /* HAKARI NAVY THEME OVERRIDES */
     :root {
-      --sky-deep: #0d3a6e;
-      --sky: #1a5fa8;
-      --sky-mid: #2875d9;
-      --sky-light: #6fc8f5;
-      --sky-pale: #a8dcf5;
-      --sky-mist: #deeef9;
+      --sky-deep: #050e1a; /* Very dark rich navy */
+      --sky: #0a1e36; /* Dark slate navy */
+      --sky-mid: #15325b; /* Medium slate navy */
+      --sky-light: #305c91; /* Premium muted steel navy */
+      --sky-pale: #b0c9e0; /* Clean ice grey/blue */
+      --sky-mist: #f0f4f8; /* Soft warm grey */
       --cloud: #ffffff;
       --cloud-soft: rgba(255, 255, 255, .88);
       --cloud-dim: rgba(255, 255, 255, .55);
       --cloud-ghost: rgba(255, 255, 255, .22);
       --cloud-ultra: rgba(255, 255, 255, .08);
-      --ink: #1a4a78;
-      --ink-70: rgba(26, 74, 120, .72);
-      --ink-45: rgba(26, 74, 120, .50);
-      --ink-20: rgba(26, 74, 120, .22);
-      --ink-08: rgba(26, 74, 120, .08);
-      --bg-base: #eef6fc;
-      --bg-mid: #deeef9;
-      --bg-deep: #c5e8fb;
-      --bg-dark: #061f3d;
-      --gold: #2875d9;
-      --gold-lt: #a8dcf5;
-      --gold-pale: rgba(41, 128, 217, .08);
-      --rust: #0d3a6e;
+      --ink: #0d233a;
+      --ink-70: rgba(13, 35, 58, .72);
+      --ink-45: rgba(13, 35, 58, .50);
+      --ink-20: rgba(13, 35, 58, .22);
+      --ink-08: rgba(13, 35, 58, .08);
+      --bg-base: #f5f8fa; /* Soft off-white with hint of navy */
+      --bg-mid: #e1ebf2;
+      --bg-deep: #cedbe6;
+      --bg-dark: #050e1a;
+      --gold: #a38153; /* Premium Champagne Gold */
+      --gold-lt: #d0beaa; /* Soft light gold */
+      --gold-pale: rgba(163, 129, 83, .08);
+      --rust: #15325b;
       --cream: #ffffff;
       --shadow-xl: 0 40px 100px rgba(10, 35, 80, .18), 0 8px 24px rgba(10, 35, 80, .10);
       --shadow-lg: 0 24px 80px rgba(10, 35, 80, .15), 0 5px 18px rgba(10, 35, 80, .08);
@@ -4941,74 +5731,206 @@
 }
 
 .contact-system {
-  background: none;
-  border-top: 1px solid var(--ink-20);
-  border-bottom: 1px solid var(--ink-20);
-  padding: 80px 0;
+  min-height: 430px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 64px 5%;
+  background: radial-gradient(ellipse 140% 140% at 50% 50%, #f0eee9 0%, #d8d3ca 100%);
+  border-top: 1px solid rgba(17, 17, 17, .12);
+  border-bottom: 1px solid rgba(17, 17, 17, .12);
 }
 
-.contact-system-inner {
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--ink);
+.contact-system::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.038'/%3E%3C/svg%3E");
+  background-size: 180px;
+  mix-blend-mode: multiply;
+  pointer-events: none;
 }
 
-.contact-system-eyebrow {
-  color: var(--sky);
-  font-size: 11px;
-  letter-spacing: .15em;
+.contact-banner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(270px, auto) 1px minmax(270px, 320px);
+  align-items: center;
+  justify-content: center;
+  gap: clamp(28px, 4vw, 56px);
+  width: min(920px, 100%);
+  margin: 0 auto;
+}
+
+.contact-banner-title {
+  display: grid;
+  justify-items: start;
+  color: #111;
+}
+
+.contact-banner-star {
+  margin-bottom: 6px;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.contact-banner-script {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 5vw, 64px);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -.01em;
+  line-height: .94;
+}
+
+.contact-banner-bold {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(66px, 6.7vw, 92px);
+  font-weight: 900;
+  letter-spacing: .04em;
+  line-height: .84;
   text-transform: uppercase;
 }
 
-.contact-system-title {
-  margin-top: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: clamp(32px, 5vw, 48px);
-  font-weight: 700;
-  letter-spacing: 0;
+.contact-banner-role {
+  margin-top: 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .46em;
   text-transform: uppercase;
+  color: rgba(17, 17, 17, .62);
 }
 
-.contact-system-title .out,
-.contact-system-icon {
-  color: var(--sky);
+.contact-banner-divider {
+  width: 1px;
+  height: 172px;
+  background: rgba(0, 0, 0, .12);
 }
 
-.contact-system-body {
-  margin-top: 40px;
+.contact-banner-pills {
+  display: grid;
+  gap: 7px;
+  width: 100%;
 }
 
-.contact-system-sub {
-  color: var(--ink-70);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  letter-spacing: .02em;
-  line-height: 1.6;
-}
-
-.contact-system-links {
+.contact-pill {
+  position: relative;
+  z-index: 1;
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 30px;
-}
-
-.contact-system-link {
-  display: flex;
-  justify-content: space-between;
-  padding: 16px 20px;
-  border: 1px solid var(--ink-20);
-  background: rgba(250, 247, 242, .5);
-  color: var(--ink);
-  font-size: 11px;
+  align-items: center;
+  gap: 9px;
+  min-height: 38px;
+  padding: 0 15px;
+  border-radius: 999px;
+  color: #111;
   text-decoration: none;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .14em;
   text-transform: uppercase;
-  transition: all .2s;
+  white-space: nowrap;
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease;
 }
 
-.contact-system-link:hover {
-  background: rgba(255, 255, 255, .75);
-  border-color: var(--sky);
-  transform: translateY(-2px);
+.contact-pill:nth-child(2n) {
+  transform: translateX(-8px);
+}
+
+.contact-pill:nth-child(3n) {
+  transform: translateX(8px);
+}
+
+.contact-pill:hover {
+  z-index: 5;
+  transform: translateY(-2px) translateX(0);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .16);
+}
+
+.contact-pill-ghost {
+  background: rgba(255, 255, 255, .54);
+  border: 1px solid rgba(0, 0, 0, .18);
+}
+
+.contact-pill-dark,
+.contact-pill-black {
+  color: #f2ede4;
+  background: #161616;
+  border: 1px solid #161616;
+}
+
+.contact-pill-cream {
+  background: #f2ede4;
+  border: 1px solid rgba(0, 0, 0, .1);
+}
+
+.contact-pill-black {
+  justify-content: center;
+  letter-spacing: .22em;
+  background: #070707;
+}
+
+.contact-pill-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.contact-pill-icon svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+}
+
+.contact-pill-text {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.contact-pill-arrow {
+  flex: 0 0 auto;
+  opacity: .36;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+}
+
+@media(max-width: 760px) {
+  .contact-system {
+    padding: 58px 22px;
+  }
+
+  .contact-banner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .contact-banner-title {
+    justify-items: center;
+  }
+
+  .contact-banner-divider {
+    width: min(280px, 72vw);
+    height: 1px;
+  }
+
+  .contact-banner-pills {
+    max-width: 340px;
+    margin: 0 auto;
+  }
+
+  .contact-pill,
+  .contact-pill:nth-child(2n),
+  .contact-pill:nth-child(3n) {
+    transform: none;
+  }
 }
 
 .gita-slogan {
@@ -5357,7 +6279,7 @@
       <div class="hh-content hakari-hero-content">
         <div class="hh-grid hakari-hero-grid">
           <div class="hh-left hakari-hero-left">
-            <p class="h-eyebrow">GITAM University<span>/</span>CSE<span>/</span>3rd Year<span>/</span>Vizag</p>
+            <p class="h-eyebrow">GITAM University<span>/</span>CSE<span>/</span>4th Year<span>/</span>Vizag</p>
             <div class="hh-title-wrap">
               <span class="h-main hakari-hero-title">Tejaswanth</span>
               <span class="h-ghost hakari-hero-ghost">Surisetty</span>
@@ -5371,7 +6293,7 @@
                 <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank" rel="noopener noreferrer" class="btn-sec">LinkedIn ↗</a>
               </div>
               <div class="hero-cred-grid" aria-label="Portfolio highlights">
-                <div class="hero-cred"><strong>SIH</strong><span>National finalist</span></div>
+                <div class="hero-cred"><strong>AI Milan</strong><span>Hackathon finalist</span></div>
                 <div class="hero-cred"><strong>10+</strong><span>Verified certifications</span></div>
                 <div class="hero-cred"><strong>Cloud</strong><span>IAM security focus</span></div>
               </div>
@@ -5379,19 +6301,18 @@
           </div>
         </div>
       </div>
-
       <div class="marquee" aria-hidden="true">
         <div class="mq-track">
           <span class="mq-item hi">Security Research</span>
           <span class="mq-item">Cloud Security</span>
           <span class="mq-item hi">Agentic AI</span>
-          <span class="mq-item">Bug Bounty</span>
+          <span class="mq-item">Responsible Disclosure</span>
           <span class="mq-item hi">Full-Stack Engineering</span>
           <span class="mq-item">Hire Me</span>
           <span class="mq-item hi">Security Research</span>
           <span class="mq-item">Cloud Security</span>
           <span class="mq-item hi">Agentic AI</span>
-          <span class="mq-item">Bug Bounty</span>
+          <span class="mq-item">Responsible Disclosure</span>
           <span class="mq-item hi">Full-Stack Engineering</span>
           <span class="mq-item">Hire Me</span>
         </div>
@@ -5420,103 +6341,194 @@
         <h2 class="motion-heading">Research<br><em>Publications</em></h2>
         <p class="motion-tagline">Technical writing, project reports, and evidence-backed security analysis</p>
         <div style="margin-top: 30px; display: flex; justify-content: center;">
-          <a href="publications.html" style="text-decoration: none;">
-            <button class="sparkle-button">
-              <span class="spark"></span>
-              <span class="backdrop"></span>
-              <svg class="sparkle" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14.187 8.096L15 5.25L15.813 8.096C16.0231 8.83114 16.4171 9.50068 16.9613 10.0449C17.5056 10.5891 18.175 10.9832 18.9101 11.1933L21.75 12L18.9101 12.8067C18.175 13.0168 17.5056 13.4109 16.9613 13.9551C16.4171 14.4993 16.0231 15.1689 15.813 15.904L15 18.75L14.187 15.904C13.9769 15.1689 13.5829 14.4993 13.0387 13.9551C12.4944 13.4109 11.825 13.0168 11.0899 12.8067L8.25 12L11.0899 11.1933C11.825 10.9832 12.4944 10.5891 13.0387 10.0449C13.5829 9.50068 13.9769 8.83114 14.187 8.096Z" fill="black" stroke="black" stroke-linejoin="round"/>
-                <path d="M6 14.625L6.375 13.5L7.5 13.125L6.375 12.75L6 11.625L5.625 12.75L4.5 13.125L5.625 13.5L6 14.625Z" fill="black" stroke="black" stroke-linejoin="round"/>
-                <path d="M6.75 4.5L7.125 3.375L8.25 3L7.125 2.625L6.75 1.5L6.375 2.625L5.25 3L6.375 3.375L6.75 4.5Z" fill="black" stroke="black" stroke-linejoin="round"/>
-              </svg>
-              <span class="text">Open Page</span>
-            </button>
+          <a href="publications.html" class="btn-prime" style="display: inline-flex; align-items: center; justify-content: center; text-decoration: none; border-radius: 4px; box-shadow: var(--shadow-md); color: var(--sky-deep) !important; background: white !important; border-color: white !important;">
+            <span>Open Page</span>
+            <svg class="sparkle" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 14px; height: 14px; margin-left: 8px;">
+              <path d="M14.187 8.096L15 5.25L15.813 8.096C16.0231 8.83114 16.4171 9.50068 16.9613 10.0449C17.5056 10.5891 18.175 10.9832 18.9101 11.1933L21.75 12L18.9101 12.8067C18.175 13.0168 17.5056 13.4109 16.9613 13.9551C16.4171 14.4993 16.0231 15.1689 15.813 15.904L15 18.75L14.187 15.904C13.9769 15.1689 13.5829 14.4993 13.0387 13.9551C12.4944 13.4109 11.825 13.0168 11.0899 12.8067L8.25 12L11.0899 11.1933C11.825 10.9832 12.4944 10.5891 13.0387 10.0449C13.5829 9.50068 13.9769 8.83114 14.187 8.096Z" fill="currentColor" stroke="currentColor" stroke-linejoin="round"/>
+            </svg>
           </a>
         </div>
       </div>
     </section>
 
-    <!-- ABOUT -->
-    <section id="about">
-      <div class="sec-wrap">
-        <div class="lino-art" style="bottom: 5%; left: 0; width: 180px; --rot: -10deg;">
-          <img src="assets/seahorse.png" alt="" style="width: 100%; opacity: 0.1;">
-        </div>
-        <div class="section-eyebrow rv">About</div>
-        <h2 class="section-title rv">Who<br>I <em>Am</em></h2>
-        <div class="about-layout">
-          <div class="about-text rv">
-            <p>I'm a <strong>3rd year Computer Science student at GITAM University, Visakhapatnam</strong> — Core CSE,
-              working at the intersection of offensive security and applied AI. I don't just study how systems behave. I
-              study how they break, why they break, and what it takes to make them impossible to break the same way
-              twice.
-            </p>
-            <p>My interests span <em>cybersecurity</em>, <em>AI &amp; LLMs</em>, <em>RAG systems</em>, <em>security
-                research</em>, and <em>cloud security</em>. My current flagship work is <strong>Hollow Purple</strong> —
-              a
-              research-grade adaptive cloud identity detection platform that models GCP IAM as live temporal graphs and
-              surfaces multi-stage attack chains with sub-second latency.</p>
+    <!-- RESUME -->
+    <section id="about" class="resume-section" aria-label="Tejaswanth Surisetty resume">
+      <div class="resume-col-deco" aria-hidden="true">
+        <span class="resume-logo-ts">ts.</span>
 
-            <p>Day-to-day: Arch Linux as my daily driver, Kali for offensive work, active bug hunting across Bugcrowd,
-              HackerOne and Intigriti. I pull apart binaries, build AI systems that make real decisions, and led a team
-              to
-              <strong>national stage at Smart India Hackathon 2024</strong>.
+        <div class="resume-deco-letters">
+          <span class="resume-deco-i1">I</span>
+          <span class="resume-deco-i2">I</span>
+          <span class="resume-deco-f">F</span>
+        </div>
+
+        <div class="resume-bottom-tagline">
+          <span class="resume-bottom-asterisk">&#10035;</span>
+          <p>Building intelligent<br>systems that secure<br>the future.</p>
+        </div>
+      </div>
+
+      <div class="resume-col-intro">
+        <div>
+          <p class="resume-intro-label">Introduction</p>
+          <h2 class="resume-intro-headline">
+            I build<br>
+            intelligent<br>
+            systems<br>
+            <em>that secure<br>the future.</em>
+          </h2>
+          <div class="resume-intro-divider"></div>
+          <p class="resume-intro-bio">
+            I'm a Computer Science undergraduate passionate about AI, cybersecurity,
+            and building impactful real-world solutions. I love turning complex
+            problems into elegant systems that create meaningful impact.
+          </p>
+        </div>
+        <span class="resume-intro-deco-g" aria-hidden="true">g</span>
+      </div>
+
+      <div class="resume-col-exp">
+        <div class="resume-block">
+          <div class="resume-section-label">Experience</div>
+
+          <div class="resume-exp-item">
+            <div class="resume-exp-title">MACSOF &mdash; AI/ML Intern</div>
+            <div class="resume-exp-date">May 2026 &ndash; July 2026</div>
+            <p class="resume-exp-desc">
+              Worked on advanced AI systems involving multimodal orchestration,
+              Retrieval-Augmented Generation (RAG), and MCP-based intelligent workflows.
+              Contributing to cognitive simulation research and development of
+              context-aware AI agent architectures using modern LLM technologies.
             </p>
           </div>
-          <div class="rv d2">
-            <div class="skill-group">
-              <div class="sg-label">Programming Languages</div>
-              <div class="tags"><span class="tag tag-a">Python</span><span class="tag tag-a">JavaScript</span><span
-                  class="tag tag-a">TypeScript</span><span class="tag tag-a">Java</span><span
-                  class="tag tag-a">Lua</span><span class="tag tag-a">HTML / CSS</span></div>
-            </div>
-            <div class="skill-group">
-              <div class="sg-label">Frontend & UI Engineering</div>
-              <div class="tags"><span class="tag tag-d">React 18</span><span class="tag tag-d">TypeScript</span><span
-                  class="tag tag-d">Vite</span><span class="tag tag-d">Tailwind CSS</span><span
-                  class="tag tag-d">Zustand</span><span class="tag tag-d">Framer Motion</span><span
-                  class="tag tag-d">Responsive UI</span></div>
-            </div>
-            <div class="skill-group">
-              <div class="sg-label">Backend & Frameworks</div>
-              <div class="tags"><span class="tag tag-d">Node.js</span><span class="tag tag-d">FastAPI</span><span
-                  class="tag tag-d">REST APIs</span><span class="tag tag-d">Microservices</span><span
-                  class="tag tag-d">Playwright</span><span class="tag tag-d">Vitest</span></div>
-            </div>
-            <div class="skill-group">
-              <div class="sg-label">Security Research</div>
-              <div class="tags"><span class="tag tag-b">Bug Bounty</span><span class="tag tag-b">Reverse
-                  Engineering</span><span class="tag tag-b">Purple Team</span><span class="tag tag-b">IAM
-                  Security</span><span class="tag tag-b">Pen Testing</span><span
-                  class="tag tag-b">Metasploit</span><span class="tag tag-b">Wireshark</span><span class="tag tag-b">CVE
-                  Correlation</span></div>
-            </div>
-            <div class="skill-group">
-              <div class="sg-label">Cloud, DevOps & AI</div>
-              <div class="tags"><span class="tag tag-c">GCP</span><span class="tag tag-c">OCI</span><span
-                  class="tag tag-c">Docker</span><span class="tag tag-c">Kubernetes</span><span
-                  class="tag tag-c">Terraform</span><span class="tag tag-c">LLMs</span><span class="tag tag-c">RAG
-                  Systems</span><span class="tag tag-c">Anthropic API</span><span class="tag tag-c">MCP</span></div>
-            </div>
-            <div class="extra-strip rv d3">
-              <div class="extra-label">beyond engineering</div>
-              <div class="extra-items">
-                <span class="extra-item">Game Development</span>
-                <span class="extra-item">Writer</span>
-                <span class="extra-item">Visual Artist</span>
-                <span class="extra-item">Spotify Artist</span>
-              </div>
-            </div>
+
+          <div class="resume-exp-item">
+            <div class="resume-exp-title">AISECT &mdash; Cybersecurity Intern</div>
+            <div class="resume-exp-date">June 2025 &ndash; Oct 2025</div>
+            <p class="resume-exp-desc">
+              Focused on network security and vulnerability assessment to support
+              organizational cybersecurity. Monitored security systems, analyzed threats,
+              and assisted with incident response.
+            </p>
           </div>
         </div>
+
+        <div class="resume-block">
+          <div class="resume-section-label">Education</div>
+
+          <div class="resume-edu-item">
+            <div class="resume-edu-title">B.Tech &mdash; Computer Science and Engineering</div>
+            <div class="resume-edu-inst">GITAM University</div>
+            <div class="resume-edu-year">2023 &ndash; Present &nbsp;&middot;&nbsp; 4th Year</div>
+          </div>
+
+          <div class="resume-edu-item">
+            <div class="resume-edu-title">Intermediate &mdash; MPC</div>
+            <div class="resume-edu-inst">ASCENT Junior College</div>
+            <div class="resume-edu-year">Completed 2023</div>
+          </div>
+        </div>
+
+        <div class="resume-block resume-skills-block">
+          <div class="resume-section-label">Skill Set</div>
+
+          <p><strong>Programming:</strong> Python, Java, JavaScript, TypeScript, HTML, CSS, Lua</p>
+          <p><strong>Frameworks:</strong> React 18, Node.js, FastAPI, Vite, Tailwind, Zustand, Framer Motion</p>
+          <p><strong>Security &amp; Cloud:</strong> Penetration Testing, IAM, Cloud Security, CVE, BurpSuite, Nmap, Metasploit, beEF</p>
+          <p><strong>DevOps &amp; Tools:</strong> Git, GitHub Actions, Docker, Kubernetes, Terraform, Vercel, Playwright, Vitest</p>
+          <p><strong>Languages:</strong> Telugu Native &nbsp;&middot;&nbsp; Hindi Passive fluency</p>
+        </div>
+      </div>
+
+      <div class="resume-col-projects">
+        <div class="resume-block">
+          <div class="resume-section-label">Projects</div>
+
+          <div class="resume-proj-item">
+            <div class="resume-proj-title">Hollow Purple &mdash; Adaptive Cloud Identity Attack Detection</div>
+            <div class="resume-proj-stack">Python &nbsp;&middot;&nbsp; JavaScript &nbsp;&middot;&nbsp; HTML</div>
+            <p class="resume-proj-desc">
+              Designed adaptive threat detection using live temporal identity graphs to
+              identify multi-stage cloud attacks: privilege escalation, lateral movement
+              and token abuse at sub-second latency.
+            </p>
+            <p class="resume-proj-desc">
+              Engineered a Merkle-tree subsystem producing cryptographically verifiable
+              audit chains; evidence-built deterministic event replay across microservices.
+            </p>
+          </div>
+
+          <div class="resume-proj-item">
+            <div class="resume-proj-title">HAKARI &mdash; Cognitive Simulation Engine</div>
+            <div class="resume-proj-stack">JavaScript &nbsp;&middot;&nbsp; Node.js</div>
+            <p class="resume-proj-desc">
+              Simulation engine grounded in entropy physics, Bayesian inference, and
+              information theory to model how knowledge evolves, spreads, and decays over time.
+            </p>
+            <p class="resume-proj-desc">
+              Node.js REST API for real-time hot-patching live cognitive states; runtime
+              extension without simulation restart.
+            </p>
+          </div>
+
+          <div class="resume-proj-item">
+            <div class="resume-proj-title">IoT Sentinel &mdash; Network Security Scanner</div>
+            <div class="resume-proj-stack">Python &nbsp;&middot;&nbsp; Lua &nbsp;&middot;&nbsp; FastAPI &nbsp;&middot;&nbsp; Docker &nbsp;&middot;&nbsp; Kubernetes</div>
+            <p class="resume-proj-desc">
+              Unified Wireshark, Nmap, RustScan, Nabuu, and Masscan into a 6-phase
+              automated pipeline, from wide-area discovery at 10K pps through deep
+              OS/service fingerprinting in a single command.
+            </p>
+            <p class="resume-proj-desc">
+              CVE correlation against IoT firmware and industrial protocol exposure
+              detection for Modbus, BACnet, and DNP3, with HTML/JSON/PDF reporting via FastAPI.
+            </p>
+          </div>
+        </div>
+
+        <div class="resume-block">
+          <div class="resume-section-label">Certifications</div>
+          <div class="resume-certs-grid">
+            <div class="resume-cert-item">Fortinet Certified Associate</div>
+            <div class="resume-cert-item">Oracle Certified Infrastructure</div>
+            <div class="resume-cert-item">Advanced Topics &ndash; Anthropic</div>
+            <div class="resume-cert-item">Architect Associate &ndash; Oracle</div>
+            <div class="resume-cert-item">Machine Learning &ndash; Polimi</div>
+            <div class="resume-cert-item">Ethical Hacker &ndash; Cisco</div>
+          </div>
+        </div>
+
+        <div class="resume-block">
+          <div class="resume-section-label">Achievements &amp; Competitions</div>
+
+          <div class="resume-ach-item">
+            <div class="resume-ach-title">SIH 2024 &mdash; National Level Qualifier</div>
+            <p class="resume-ach-desc">Cleared regional rounds at India's largest student innovation challenge.</p>
+          </div>
+
+          <div class="resume-ach-item">
+            <div class="resume-ach-title">AI Agent Olympics Hackathon Milan 2026</div>
+            <p class="resume-ach-desc">Qualifier and pitched our idea.</p>
+          </div>
+
+          <div class="resume-ach-item">
+            <div class="resume-ach-title">Cloud Security Competitions</div>
+            <p class="resume-ach-desc">IAM Challenge &amp; Cloud Hunting Games. 63rd position and 40th in global ranking.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="resume-footer-bar" aria-hidden="true">
+        <span class="resume-footer-asterisk">&#10035;</span>
+        <span>Securing Systems.</span>
+        <span>Building Intelligence.</span>
+        <span>Creating Impact.</span>
+        <span>2026</span>
       </div>
     </section>
 
     <!-- METHODOLOGY -->
     <section id="methodology">
-      <div class="lino-art" style="top: 50%; right: 0; width: 220px; --rot: 20deg;">
-        <img src="assets/crab.png" alt="" style="width: 100%; opacity: 0.08;">
-      </div>
       <div class="sec-wrap">
         <div class="section-eyebrow rv">Approach</div>
         <h2 class="section-title rv">Engineering<br><em>Principles</em></h2>
@@ -5539,8 +6551,7 @@
           <!-- MARLIN -->
           <div class="philo-block rev rv">
             <div class="philo-img-wrap vault-trigger-wrap">
-              <img src="assets/marlin.png" alt="Marlin Art" class="philo-img vault-trigger"
-                style="cursor: pointer; transition: all 0.2s;">
+              <img src="assets/resume-big-ben.jpg" alt="Navy architectural clocktower illustration" class="philo-img asset-cover">
             </div>
             <div class="philo-text">
               <h3>Security<br><em>Research</em></h3>
@@ -5552,7 +6563,7 @@
           <!-- FISH SCHOOL -->
           <div class="philo-block rv">
             <div class="philo-img-wrap">
-              <img src="assets/fish_school.png" alt="Fish School" class="philo-img">
+              <img src="assets/resume-visual-02.jpg" alt="Navy editorial security visual" class="philo-img asset-cover">
             </div>
             <div class="philo-text">
               <h3>Detection<br><em>Engineering</em></h3>
@@ -5573,30 +6584,62 @@
             </div>
           </div>
 
-          <!-- CLOUD OPS -->
-          <div class="philo-block rv">
-            <div class="philo-img-wrap portrait-frame">
-              <img src="assets/manta_ray.png" alt="Operational Art" class="philo-img"
-                style="transform: scale(1.1); rotate: -10deg;">
-            </div>
-            <div class="philo-text">
-              <h3>Cloud Security<br><em>Operations</em></h3>
-              <p>I focus on IAM governance, event-driven monitoring, attack-path analysis, and response automation for
-                cloud environments where identity is the real perimeter.</p>
-            </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AFFILIATION -->
+    <section id="manifesto">
+      <div class="sec-wrap">
+        <div class="section-eyebrow rv">Affiliation</div>
+        <h2 class="section-title rv">AFFILIATION</h2>
+
+        <div class="manifesto-grid rv d2">
+          <div class="manifesto-card">
+            <div class="manifesto-num">01.</div>
+            <div class="manifesto-head">PoetrySoup</div>
+            <div class="manifesto-body">Member of PoetrySoup.</div>
           </div>
+
+          <div class="manifesto-card">
+            <div class="manifesto-num">02.</div>
+            <div class="manifesto-head">iNaturalist</div>
+            <div class="manifesto-body">Member in iNaturalist.</div>
+          </div>
+
+          <div class="manifesto-card">
+            <div class="manifesto-num">03.</div>
+            <div class="manifesto-head">Myma</div>
+            <div class="manifesto-body">Visual Artist.</div>
+          </div>
+
+          <div class="manifesto-card">
+            <div class="manifesto-num">04.</div>
+            <div class="manifesto-head">loopgarden</div>
+            <div class="manifesto-body">Music Artist - loopgarden.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDITORIAL QUOTE -->
+    <section id="editorial" class="rv">
+      <div class="editorial-graphic" aria-hidden="true"></div>
+      <div class="editorial-wrap">
+        <div class="editorial-copy">
+          <div class="section-eyebrow">Seneca</div>
+          <h2 class="editorial-title">A Clear<br>Mind</h2>
+          <p class="editorial-sub">A quiet note for the work: less fear, less old weight, more presence.</p>
+        </div>
+        <div class="editorial-quote-panel">
+          <p class="editorial-quote-text">"To be happy you must eliminate two things: the fear of a bad future and the memory of a bad past."</p>
+          <span class="quote-author">- Seneca</span>
         </div>
       </div>
     </section>
 
     <!-- CLOUD SECURITY LAB -->
     <section id="research-lab">
-      <div class="lino-art" style="top: -10%; left: -5%; width: 500px; opacity: 0.03; filter: invert(1);">
-        <img src="assets/whale.png" alt="" style="width: 100%;">
-      </div>
-      <div class="lino-art" style="bottom: 0; right: 5%; width: 250px; opacity: 0.08; filter: invert(1) brightness(2);">
-        <img src="assets/marlin.png" alt="" style="width: 100%; transform: rotate(-20deg);">
-      </div>
       <div class="lab-wrap">
         <div class="lab-grid">
           <div class="rv d1">
@@ -5647,9 +6690,6 @@
 
     <!-- PROJECTS -->
     <section id="projects">
-      <div class="lino-art" style="top: 5%; right: -5%; width: 400px; --rot: -10deg;">
-        <img src="assets/red_wavy_eye.png" alt="" style="width: 100%; opacity: 0.08;">
-      </div>
       <div class="sec-wrap">
         <div class="section-eyebrow rv">Projects</div>
         <h2 class="section-title rv"><span class="out">What</span><br>I <em>Build</em></h2>
@@ -5683,8 +6723,6 @@
           <div class="fp-right">
             <img src="assets/sun_waves.png" alt=""
               style="position: absolute; top: -50px; right: -50px; width: 200px; opacity: 0.15; pointer-events: none; mix-blend-mode: multiply;">
-            <img src="assets/fish_bone.png" alt=""
-              style="position: absolute; bottom: 10px; left: 10px; width: 80px; opacity: 0.2; mix-blend-mode: multiply; transform: rotate(45deg);">
             <div class="fp-meta-title">system_status</div>
             <div class="fp-row"><span class="fp-k">project</span><span class="fp-v">hollow_purple_v1</span></div>
             <div class="fp-row"><span class="fp-k">cloud</span><span class="fp-v cy">GCP</span></div>
@@ -5725,16 +6763,12 @@
 
         <div class="proj-grid">
           <div class="pcard rv" onclick="location.href='hakari.html'">
-            <img src="assets/yin_yang_fish.png" alt=""
-              style="position: absolute; top: 20px; right: 20px; width: 100px; opacity: 0.2; mix-blend-mode: multiply;">
-
             <div class="pcard-tag ai">AI Research</div>
             <div class="pcard-title">HAKARI</div>
-            <p class="pcard-desc">Cognitive simulation engine grounded in entropy physics, Bayesian inference, and
-              information theory.</p>
+            <p class="pcard-desc">Simulation engine grounded in entropy physics, Bayesian inference, and information theory to model how knowledge evolves, spreads, and decays over time.</p>
             <ul class="pcard-bullets">
-              <li>9 mathematically distinct BLOCKs spanning entropy dynamics, intelligence & decision systems.</li>
-              <li>Modular upgrade system enabling runtime extension without simulation restart.</li>
+              <li>Node.js REST API for real-time hot-patching live cognitive states.</li>
+              <li>Runtime extension without simulation restart.</li>
             </ul>
             <div class="pcard-tech"><span class="ptag">JavaScript</span><span class="ptag">Node.js</span><span
                 class="ptag">Bayesian Inference</span><span class="ptag">Entropy Physics</span></div>
@@ -5743,18 +6777,12 @@
                 rel="noopener noreferrer" class="pcard-link gh" onclick="event.stopPropagation()">GitHub ↗</a></div>
           </div>
           <div class="pcard sec rv d1" onclick="location.href='iot_sentinal.html'">
-            <img src="assets/circle_fish.jpg" alt=""
-              style="position: absolute; top: 20px; right: 20px; width: 100px; opacity: 0.2; mix-blend-mode: multiply;">
-
             <div class="pcard-tag sec">Security</div>
             <div class="pcard-title">IOT Sentinel</div>
-            <p class="pcard-desc">Unified IoT security scanner — 6-phase pipeline reducing manual toolchain
-              orchestration
-              to a single command.</p>
+            <p class="pcard-desc">Unified Wireshark, Nmap, RustScan, Naabu, and Masscan into a 6-phase automated pipeline wide-area discovery at 10K pps through deep OS/service fingerprinting.</p>
             <ul class="pcard-bullets">
-              <li>Wide-area discovery at 10K pps through deep OS fingerprinting. CVE correlation against major vendors.
-              </li>
-              <li>Industrial protocol exposure detection: Modbus, BACnet, DNP3.</li>
+              <li>CVE correlation against IoT firmware (Hikvision, D-Link, Netgear) and industrial protocol exposure detection (Modbus, BACnet, DNP3).</li>
+              <li>HTML/JSON/PDF reporting via FastAPI REST server.</li>
             </ul>
             <div class="pcard-tech"><span class="ptag">Python</span><span class="ptag">Lua</span><span
                 class="ptag">FastAPI</span><span class="ptag">Docker</span><span class="ptag">Kubernetes</span></div>
@@ -5763,10 +6791,18 @@
                 Project →</a><a href="https://github.com/Tejaswanth2406/iot-sentinal" target="_blank"
                 rel="noopener noreferrer" class="pcard-link gh" onclick="event.stopPropagation()">GitHub ↗</a></div>
           </div>
-          <div class="pcard rv d2" onclick="location.href='clu.html'">
-            <img src="assets/shell_core.png" alt=""
-              style="position: absolute; top: 20px; right: 20px; width: 100px; opacity: 0.2; mix-blend-mode: multiply;">
-
+          <div class="pcard rv d2">
+            <div class="pcard-tag ai">AI Agents</div>
+            <div class="pcard-title">AI Agent Olympics Milan</div>
+            <p class="pcard-desc">Qualifier and pitch project for a context-aware AI agent workflow focused on multimodal orchestration, retrieval, scoring, and practical human-in-the-loop checks.</p>
+            <ul class="pcard-bullets">
+              <li>Designed a prototype agent direction for RAG-backed task planning and MCP-style tool orchestration.</li>
+              <li>Prepared a technical pitch and demo narrative for judges, collaborators, and investor review.</li>
+            </ul>
+            <div class="pcard-tech"><span class="ptag">AI Agents</span><span class="ptag">RAG</span><span
+                class="ptag">MCP</span><span class="ptag">Multimodal</span><span class="ptag">Pitch</span></div>
+          </div>
+          <div class="pcard rv d3" onclick="location.href='clu.html'">
             <div class="pcard-tag fs">Full Stack · AI</div>
             <div class="pcard-title">CLU</div>
             <p class="pcard-desc">AI-powered legal document analyzer — parses ToS, Privacy Policies, EULAs and surfaces
@@ -5782,6 +6818,36 @@
                 →</a><a href="https://github.com/Tejaswanth2406/CLU" target="_blank" rel="noopener noreferrer"
                 class="pcard-link gh" onclick="event.stopPropagation()">GitHub ↗</a></div>
           </div>
+          <div class="pcard rv d4" onclick="location.href='piria.html'">
+            <div class="pcard-tag ai">AI Architecture</div>
+            <div class="pcard-title">PIRIA</div>
+            <p class="pcard-desc">Physics-Inspired Relational Intelligence Architecture: an MVP runtime for persistent cognitive graphs, immutable event logs, and attention-bounded traversal.</p>
+            <ul class="pcard-bullets">
+              <li>ORB graph state snapshots with hash-verified WAL reconstruction on boot.</li>
+              <li>Runtime modules for graph traversal, entropy observation, CRDT state, and persistence.</li>
+            </ul>
+            <div class="pcard-tech"><span class="ptag">Rust</span><span class="ptag">Graph Runtime</span><span
+                class="ptag">WAL</span><span class="ptag">CRDT</span><span class="ptag">Entropy</span></div>
+            <div class="pcard-links"><a href="piria.html" class="pcard-link" onclick="event.stopPropagation()">Open
+                Project
+                →</a><a href="https://github.com/Tejaswanth2406/PIRIA" target="_blank" rel="noopener noreferrer"
+                class="pcard-link gh" onclick="event.stopPropagation()">GitHub ↗</a></div>
+          </div>
+          <div class="pcard rv d5" onclick="location.href='mumcare.html'">
+            <div class="pcard-tag fs">Health AI</div>
+            <div class="pcard-title">Mumcare AI</div>
+            <p class="pcard-desc">AI-native decision engine for mothers and caregivers, combining empathetic intent handling with grounded retrieval and structured recommendations.</p>
+            <ul class="pcard-bullets">
+              <li>Comfort-first natural language responses with bilingual EN + AR support.</li>
+              <li>RAG-lite product retrieval, safety contracts, confidence scoring, and validated JSON output.</li>
+            </ul>
+            <div class="pcard-tech"><span class="ptag">FastAPI</span><span class="ptag">Claude 3</span><span
+                class="ptag">RAG</span><span class="ptag">Pydantic</span><span class="ptag">Bilingual</span></div>
+            <div class="pcard-links"><a href="mumcare.html" class="pcard-link" onclick="event.stopPropagation()">Open
+                Project
+                →</a><a href="https://github.com/Tejaswanth2406/Mumcare-AI-" target="_blank" rel="noopener noreferrer"
+                class="pcard-link gh" onclick="event.stopPropagation()">GitHub ↗</a></div>
+          </div>
         </div>
       </div>
     </section>
@@ -5790,41 +6856,38 @@
     <section id="experience">
       <div class="sec-wrap">
         <div class="section-eyebrow rv">Experience</div>
-        <h2 class="section-title rv">Professional<br><em>Focus</em></h2>
+        <h2 class="section-title rv">Professional<br><em>Experience</em></h2>
         <div class="experience-grid">
           <div class="experience-visual rv">
-            <img src="assets/cloud_ops_sharks.jpg" alt="Cloud operations security artwork">
+            <img src="assets/blue-birds.jpg" alt="Blue birds in flight illustration">
             <div class="visual-caption">
-              <span>Cloud security research</span>
-              <strong>Practical detection work with clear evidence.</strong>
+              <span>AI & Cybersecurity Research</span>
+              <strong>Multimodal orchestration, threat intelligence, and RAG systems.</strong>
             </div>
           </div>
           <div class="experience-list">
             <article class="experience-item rv d1">
               <div class="experience-year">2026</div>
               <div>
-                <span class="experience-kicker">Cloud IAM research</span>
-                <h3>Adaptive detection architecture for modern cloud identity.</h3>
-                <p>Designed Hollow Purple around temporal identity graphs, deterministic replay, and tamper-evident
-                  audit chains so cloud privilege movement can be investigated as a timeline, not a pile of logs.</p>
+                <span class="experience-kicker">MACSOF · AI/ML Intern</span>
+                <h3>Multimodal Orchestration & Agent Architectures</h3>
+                <p>Worked on advanced AI systems involving multimodal orchestration, Retrieval-Augmented Generation (RAG), and MCP-based intelligent workflows. Contributing to cognitive simulation research and development of context-aware AI agent architectures using modern LLM technologies.</p>
               </div>
             </article>
             <article class="experience-item rv d2">
-              <div class="experience-year">2024-26</div>
+              <div class="experience-year">2025</div>
               <div>
-                <span class="experience-kicker">Applied AI engineering</span>
-                <h3>LLM systems built for decisions, not demos.</h3>
-                <p>Built AI assistants, RAG pipelines, document analyzers, and agent-style workflows with strong
-                  emphasis on traceability, severity scoring, user clarity, and production-minded testing.</p>
+                <span class="experience-kicker">AISECT · Cybersecurity Intern</span>
+                <h3>Network Security & Vulnerability Assessment</h3>
+                <p>Focused on network security and vulnerability assessment to support organizational cybersecurity. Monitored security systems, analyzed threats, and assisted with incident response.</p>
               </div>
             </article>
             <article class="experience-item rv d3">
               <div class="experience-year">Ongoing</div>
               <div>
-                <span class="experience-kicker">Offensive security</span>
-                <h3>Bug bounty practice with responsible disclosure discipline.</h3>
-                <p>Active across vulnerability research, reverse engineering practice, IAM challenge environments, and
-                  security tooling, with a bias toward clear evidence and reproducible findings.</p>
+                <span class="experience-kicker">Vulnerability Research</span>
+                <h3>Offensive Security & Responsible Disclosure</h3>
+                <p>Active across vulnerability research, reverse engineering practice, IAM challenge environments, and security tooling, with a bias toward clear evidence and reproducible findings.</p>
               </div>
             </article>
           </div>
@@ -5840,7 +6903,7 @@
         <div class="study-grid">
           <article class="study-card rv">
             <div class="study-media">
-              <img src="assets/lobster.jpg" alt="Detailed defensive systems artwork">
+              <img src="assets/resume-big-ben.jpg" alt="Navy clocktower visual for detection engineering">
             </div>
             <div class="study-content">
               <span class="study-kicker">Detection engineering</span>
@@ -5852,7 +6915,7 @@
           </article>
           <article class="study-card rv d1">
             <div class="study-media">
-              <img src="assets/pufferfish.png" alt="Risk scoring visual artwork">
+              <img src="assets/blue-opera-house.jpg" alt="Blue opera house line illustration">
             </div>
             <div class="study-content">
               <span class="study-kicker">AI risk analysis</span>
@@ -5864,7 +6927,7 @@
           </article>
           <article class="study-card rv d2">
             <div class="study-media">
-              <img src="assets/crab.png" alt="Red crab security product artwork">
+              <img src="assets/blue-courthouse.jpg" alt="Blue courthouse line illustration">
             </div>
             <div class="study-content">
               <span class="study-kicker">Security product design</span>
@@ -5912,7 +6975,7 @@
             </article>
           </div>
           <div class="collab-visual rv d2">
-            <img src="assets/image.png" alt="Portfolio collaboration artwork">
+            <img src="assets/blue-rider.jpg" alt="Blue rider collaboration illustration">
             <div class="visual-caption">
               <span>Ready for professional work</span>
               <strong>Security, AI, and cloud engineering with range.</strong>
@@ -5924,12 +6987,6 @@
 
     <!-- TECHNICAL TOOLKIT -->
     <section id="toolkit">
-      <div class="lino-art" style="top: 0; right: 0; width: 300px; opacity: 0.05;">
-        <img src="assets/seahorse.png" alt="" style="width: 100%; transform: rotate(15deg);">
-      </div>
-      <div class="lino-art" style="bottom: -50px; left: 10%; width: 200px; opacity: 0.05;">
-        <img src="assets/crab.png" alt="" style="width: 100%;">
-      </div>
       <div class="sec-wrap" style="position: relative; z-index: 2;">
         <div class="section-eyebrow rv" style="color: var(--rust);">Technical Skills</div>
         <h2 class="section-title rv">Technical<br><em style="color: var(--rust);">Toolkit</em></h2>
@@ -5940,7 +6997,7 @@
             <span class="tool-cat">Security Engineering</span>
             <h3 class="tool-title">Cloud & Offensive Security</h3>
             <ul class="tool-list">
-              <li>Bug bounty research and responsible disclosure</li>
+              <li>Vulnerability research and responsible disclosure</li>
               <li>Cloud IAM attack-path analysis</li>
               <li>Network scanning and exposure validation</li>
               <li>Reverse engineering fundamentals</li>
@@ -5988,69 +7045,60 @@
 
     <!-- ACHIEVEMENTS -->
     <section id="achievements">
-      <div class="lino-art" style="top: 10%; right: 0; width: 300px; --rot: -20deg;">
-        <img src="assets/manta_ray.png" alt="" style="width: 100%; opacity: 0.1;">
-      </div>
       <div class="sec-wrap">
         <div class="section-eyebrow rv">Achievements</div>
         <h2 class="section-title rv">Key<br><em>Wins</em></h2>
         <div class="ach-bento">
-          <div class="acard wide dark rv">
+          <div class="acard wide rv d1">
             <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
                 stroke-linejoin="round">
                 <path
                   d="M8 21h8M12 17v4M7 4H4a1 1 0 0 0-1 1v2a4 4 0 0 0 4 4h1M17 4h3a1 1 0 0 1 1 1v2a4 4 0 0 1-4 4h-1M7 4h10v6a5 5 0 0 1-10 0V4z" />
               </svg></div>
-            <div class="ac-title">SIH 2024 — National Level</div>
-            <p class="ac-body">Led team through regional selection to compete at the national stage of Smart India
-              Hackathon 2024. Handled full solution design and team leadership.</p>
-            <span class="ac-tag">Smart India Hackathon</span>
+            <div class="ac-title">AI Agent Olympics Milan 2026</div>
+            <p class="ac-body">Qualifier at Milan 2026. Built and pitched our context-aware AI agent idea to a panel of expert judges and investors, demonstrating multimodal orchestration and intelligence.</p>
+            <span class="ac-tag">Hackathon Pitch Qualifier</span>
           </div>
-          <div class="acard wide rv d1">
+          <div class="acard wide dark rv">
             <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
                 stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                <path d="M9 12l2 2 4-4" />
+                <path d="M12 2s8 3 8 8-8 10-8 10-8-5-8-10 8-8 8-8z" />
+                <circle cx="12" cy="10" r="3" />
               </svg></div>
-            <div class="ac-title">Bug Bounty Researcher</div>
-            <p class="ac-body">Actively identifying and responsibly disclosing security vulnerabilities in live
-              production
-              systems across public and private programs on Bugcrowd, HackerOne, and Intigriti.</p>
-            <span class="ac-tag">Ongoing · Bugcrowd · HackerOne · Intigriti</span>
+            <div class="ac-title">SIH 2024 — National Stage</div>
+            <p class="ac-body">Cleared regional rounds and led team through regional selection to compete at the national stage of Smart India Hackathon 2024. Handled full solution design and team leadership.</p>
+            <span class="ac-tag">National Level Qualifier</span>
           </div>
           <div class="acard med rv d2">
-            <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
-                stroke-linejoin="round">
-                <polyline points="4 17 10 11 4 5" />
-                <line x1="12" y1="19" x2="20" y2="19" />
-              </svg></div>
-            <div class="ac-title">Reverse Engineering</div>
-            <p class="ac-body">Binary analysis and RE practice — studying compiled code to identify vulnerabilities and
-              dissect techniques for defensive research and CTFs.</p>
-            <span class="ac-tag">Ongoing</span>
-          </div>
-          <div class="acard med rv d3">
             <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
                 stroke-linejoin="round">
                 <polygon points="12 2 2 7 12 12 22 7 12 2" />
                 <polyline points="2 17 12 22 22 17" />
                 <polyline points="2 12 12 17 22 12" />
               </svg></div>
-            <div class="ac-title">Purple Team Ops</div>
-            <p class="ac-body">Combining red team offensive tactics with blue team detection engineering to improve
-              overall security posture in real environments.</p>
-            <span class="ac-tag">Security Research</span>
+            <div class="ac-title">Cloud Security Competitions</div>
+            <p class="ac-body">Secured 63rd position in the global IAM Challenge and 40th in the global ranking at the Cloud Hunting Games, validating deep threat identification skills.</p>
+            <span class="ac-tag">IAM Challenge & Cloud Hunting</span>
+          </div>
+          <div class="acard med rv d3">
+            <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <path d="M9 12l2 2 4-4" />
+              </svg></div>
+            <div class="ac-title">Vulnerability Researcher</div>
+            <p class="ac-body">Actively identifying and responsibly disclosing security vulnerabilities in live production systems across public and private programs on Bugcrowd, HackerOne, and Intigriti.</p>
+            <span class="ac-tag">Ongoing · Bugcrowd · HackerOne · Intigriti</span>
           </div>
           <div class="acard med rv d4">
             <div class="ac-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round"
                 stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 8v4l3 3" />
+                <polyline points="4 17 10 11 4 5" />
+                <line x1="12" y1="19" x2="20" y2="19" />
               </svg></div>
-            <div class="ac-title">Cross-Domain Learning</div>
-            <p class="ac-body">Deliberately study outside CS — finance, international economics, ML, animation, MCP.
-              Building context that pure engineers miss.</p>
-            <span class="ac-tag">Ongoing</span>
+            <div class="ac-title">Offensive Security & RE</div>
+            <p class="ac-body">Binary analysis and reverse engineering study to identify vulnerabilities and dissect techniques for CTFs, defensive research, and secure software development.</p>
+            <span class="ac-tag">Ongoing · Security Research</span>
           </div>
         </div>
       </div>
@@ -6058,12 +7106,6 @@
 
     <!-- CERTIFICATIONS -->
     <section id="certifications">
-      <div class="lino-art" style="top: 20%; right: 0; width: 300px; --rot: 10deg;">
-        <img src="assets/shell_black.png" alt="" style="width: 100%; opacity: 0.06;">
-      </div>
-      <div class="lino-art" style="bottom: 0; left: 10%; width: 280px; --rot: -15deg;">
-        <img src="assets/manta_ray.png" alt="" style="width: 100%; opacity: 0.07;">
-      </div>
       <div class="sec-wrap">
         <div class="section-eyebrow rv">Certifications</div>
         <h2 class="section-title rv">Verified<br><em>Skills</em></h2>
@@ -6142,9 +7184,6 @@
     <!-- EDUCATION -->
     <section id="education">
       <div class="sec-wrap">
-        <div class="lino-art" style="top: -10%; right: -5%; width: 450px; --rot: 15deg; opacity: 0.15;">
-          <img src="assets/sardines.png" alt="Sardines lino-cut" style="width: 100%;">
-        </div>
         <div class="section-eyebrow rv">Education</div>
         <h2 class="section-title rv">Academic<br><em>Path</em></h2>
         <div class="edu-grid">
@@ -6152,7 +7191,7 @@
             <div class="edu-year">2023 — Present</div>
             <div class="edu-degree">B.Tech — <em>Computer Science</em></div>
             <div class="edu-school">GITAM University · Visakhapatnam</div>
-            <div class="edu-detail">3rd Year · Core CSE · AI, LLMs, Cybersecurity & Cloud Security</div>
+            <div class="edu-detail">4th Year · Core CSE · AI, LLMs, Cybersecurity & Cloud Security</div>
             <div class="edu-deco">CSE</div>
           </div>
           <div class="edu-card rv d2">
@@ -6264,24 +7303,22 @@
           </div>
         </div>
 
-        <!-- STAMP 3 -->
+        <!-- STAMP 3: AI Milan Hackathon (replaces SIH emphasis) -->
         <div class="stamp">
-          <div class="stamp-price">2024</div>
+          <div class="stamp-price">2026</div>
           <div class="stamp-inner">
             <div class="stamp-art-wrap">
               <img src="assets/voyager_ledger_jellyfish.png" alt="Jellyfish">
             </div>
-            <span class="stamp-tag">Achievement</span>
-            <h3 class="stamp-name">SIH<br>Stage</h3>
-            <div class="stamp-meta"><span>Team</span><span>Finals</span><span>Delivery</span></div>
-            <p class="stamp-desc">Led a team through a national-stage product build and technical demo cycle.</p>
+            <span class="stamp-tag">Hackathon</span>
+            <h3 class="stamp-name">AI Milan<br>Hackathon</h3>
+            <div class="stamp-meta"><span>Team</span><span>Finalist</span><span>Pitch</span></div>
+            <p class="stamp-desc">Finalist & pitch presentation at AI Milan Hackathon — delivered a multimodal agent demo and technical roadmap focused on RAG and real-world orchestration.</p>
             <ul class="stamp-evidence">
-              <li data-mark="01">Turned a problem statement into a working technical direction under competition
-                pressure.</li>
-              <li data-mark="02">Practiced the useful parts of leadership: clarity, delegation, demo readiness, and
-                evidence.</li>
+              <li data-mark="01">Built a prototype agent that demonstrates retrieval, scoring, and human-in-the-loop checks.</li>
+              <li data-mark="02">Prepared a pitch and technical demo for judges and collaborators at Milan.</li>
             </ul>
-            <div class="stamp-code">ledger.ref / national-stage</div>
+            <div class="stamp-code">ledger.ref / ai-milan-2026</div>
           </div>
         </div>
 
@@ -6292,41 +7329,15 @@
             <div class="stamp-art-wrap">
               <img src="assets/voyager_ledger_sardines.png" alt="Sardine Tin">
             </div>
-            <span class="stamp-tag">Security Practice</span>
-            <h3 class="stamp-name">Offensive<br>Research</h3>
-            <div class="stamp-meta"><span>Bug bounty</span><span>Disclosure</span><span>Cloud</span></div>
-            <p class="stamp-desc">Responsible disclosure, vulnerability research, and offensive security practice.</p>
+            <span class="stamp-tag">AI Internship</span>
+            <h3 class="stamp-name">MACSOF<br>Intern</h3>
+            <div class="stamp-meta"><span>Multimodal</span><span>RAG</span><span>LLMs</span></div>
+            <p class="stamp-desc">Working on advanced AI systems, cognitive simulation, and context-aware LLM agent architectures.</p>
             <ul class="stamp-evidence">
-              <li data-mark="01">Research practice focused on reproducible findings, scoped testing, and clean reports.
-              </li>
-              <li data-mark="02">Security interests spanning IAM abuse, IoT exposure, reverse engineering, and tooling.
-              </li>
+              <li data-mark="01">Worked on advanced AI orchestration, context-aware agent architectures, and LLM intelligence.</li>
+              <li data-mark="02">Contributed to cognitive simulation research, building robust production-minded systems.</li>
             </ul>
-            <div class="stamp-code">ledger.ref / offensive-research</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PROFESSIONAL ROADMAP -->
-    <section id="voyager-ship">
-      <div class="ship-wrap rv">
-        <div class="ship-visual">
-          <img src="assets/voyager_ship.png" alt="Professional roadmap illustration">
-          <div class="ship-caption">Professional Roadmap</div>
-        </div>
-        <div class="ship-copy">
-          <div class="ship-kicker">Current Direction</div>
-          <h2 class="ship-title">Professional<br><em>Roadmap</em></h2>
-          <p class="ship-text">The next phase is practical and focused: build security products that make cloud risk
-            visible, make AI outputs accountable, and turn research into interfaces teams can trust.</p>
-          <div class="ship-ledger" aria-label="Professional roadmap priorities">
-            <div class="ship-ledger-row"><span>Now</span><strong>Internship-ready portfolio across security, AI, and
-                full-stack delivery.</strong></div>
-            <div class="ship-ledger-row"><span>Next</span><strong>Cloud IAM detection, evidence integrity, and
-                operator-focused dashboards.</strong></div>
-            <div class="ship-ledger-row"><span>Goal</span><strong>Security research, AI engineering, and cloud
-                platform roles.</strong></div>
+            <div class="stamp-code">ledger.ref / macsof-intern</div>
           </div>
         </div>
       </div>
@@ -6334,32 +7345,63 @@
 
     <!-- CONTACT -->
     <section id="contact" class="contact-system">
-      <div class="contact-inner contact-system-inner">
-        <div class="rv">
-          <div class="ct-eyebrow contact-system-eyebrow">Contact</div>
-          <h2 class="ct-title contact-system-title">Let's Work<br>Together<span class="out">.</span></h2>
+      <div class="contact-banner rv">
+        <div class="contact-banner-title">
+          <span class="contact-banner-star" aria-hidden="true">✦</span>
+          <div class="contact-banner-script">Let's work</div>
+          <div class="contact-banner-bold">Together.</div>
+          <div class="contact-banner-role">Security AI Cloud</div>
         </div>
-        <div class="rv d2 contact-system-body">
-          <div class="ct-right">
-            <p class="ct-sub contact-system-sub">Looking for internships and project work in AI, security research, LLM systems, and cloud security. Open to collaborations, research partnerships, and practical engineering problems.</p>
-            <div class="ct-links contact-system-links">
-              <a href="hire_me.html" class="ct-link contact-system-link">
-                <span>[HIRE] Open hire page</span><span class="ct-link-icon contact-system-icon">→</span>
-              </a>
-              <a href="mailto:tejaswanthsurisetty@gmail.com" class="ct-link contact-system-link">
-                <span>[MAIL] tejaswanthsurisetty@gmail.com</span><span class="ct-link-icon contact-system-icon">→</span>
-              </a>
-              <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank" rel="noopener noreferrer" class="ct-link contact-system-link">
-                <span>[LINKEDIN] Profile</span><span class="ct-link-icon contact-system-icon">↗</span>
-              </a>
-              <a href="https://github.com/Tejaswanth2406" target="_blank" rel="noopener noreferrer" class="ct-link contact-system-link">
-                <span>[GITHUB] Tejaswanth2406</span><span class="ct-link-icon contact-system-icon">↗</span>
-              </a>
-              <a href="tel:7396244673" class="ct-link contact-system-link">
-                <span>[TEL] +91 7396244673</span><span class="ct-link-icon contact-system-icon">→</span>
-              </a>
-            </div>
-          </div>
+
+        <div class="contact-banner-divider" aria-hidden="true"></div>
+
+        <div class="contact-banner-pills" aria-label="Contact links">
+          <a href="hire_me.html" class="contact-pill contact-pill-ghost">
+            <span class="contact-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
+            <span class="contact-pill-text">Open Hire Page</span>
+            <span class="contact-pill-arrow">↗</span>
+          </a>
+
+          <a href="mailto:tejaswanthsurisetty@gmail.com" class="contact-pill contact-pill-dark">
+            <span class="contact-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg></span>
+            <span class="contact-pill-text">tejaswanthsurisetty@gmail.com</span>
+            <span class="contact-pill-arrow">-</span>
+          </a>
+
+          <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank" rel="noopener noreferrer" class="contact-pill contact-pill-cream">
+            <span class="contact-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></span>
+            <span class="contact-pill-text">LinkedIn Profile</span>
+            <span class="contact-pill-arrow">↗</span>
+          </a>
+
+          <a href="https://www.twitch.tv/thisistejjjjjj" target="_blank" rel="noopener noreferrer" class="contact-pill contact-pill-dark">
+            <span class="contact-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2H3v16h5v4l4-4h5l4-4V2z"/><line x1="11" y1="7" x2="11" y2="11"/><line x1="16" y1="7" x2="16" y2="11"/></svg></span>
+            <span class="contact-pill-text">thisistejjjjjj</span>
+            <span class="contact-pill-arrow">↗</span>
+          </a>
+
+          <a href="https://www.reddit.com/user/Natural_Ask4201/" target="_blank" rel="noopener noreferrer" class="contact-pill contact-pill-ghost">
+            <span class="contact-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M6.5 10.5C8 9 10 8 12 8s4 1 5.5 2.5"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/><path d="M9 16s1 1.5 3 1.5 3-1.5 3-1.5"/><path d="M15.5 6.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/><line x1="12" y1="8" x2="15.5" y2="5.5"/></svg></span>
+            <span class="contact-pill-text">Natural_Ask4201</span>
+            <span class="contact-pill-arrow">↗</span>
+          </a>
+
+          <a href="https://bsky.app/profile/tejjjj.bsky.social" target="_blank" rel="noopener noreferrer" class="contact-pill contact-pill-cream">
+            <span class="contact-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12c0-2 1.5-4 4-4s4 2 4 4-1.5 4-4 4"/><path d="M12 8v8"/></svg></span>
+            <span class="contact-pill-text">tejjjj.bsky.social</span>
+            <span class="contact-pill-arrow">↗</span>
+          </a>
+
+          <a href="https://github.com/Tejaswanth2406" target="_blank" rel="noopener noreferrer" class="contact-pill contact-pill-dark">
+            <span class="contact-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.44 5.44 0 0 0 3.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></span>
+            <span class="contact-pill-text">Tejaswanth2406</span>
+            <span class="contact-pill-arrow">↗</span>
+          </a>
+
+          <a href="tel:+917396244673" class="contact-pill contact-pill-black">
+            <span class="contact-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+            <span>+91 7396244673</span>
+          </a>
         </div>
       </div>
     </section>
@@ -6515,7 +7557,7 @@
         requestAnimationFrame(animateCursor);
       })();
 
-      document.querySelectorAll('a,button,.pcard,.feat-proj,.acard,.cert-card,.tag,.hstat,.edu-card,.extra-item,.experience-item,.study-card,.collab-panel').forEach((el) => {
+      document.querySelectorAll('a,button,.pcard,.feat-proj,.acard,.cert-card,.tag,.hstat,.edu-card,.extra-item,.experience-item,.study-card,.collab-panel,.contact-pill').forEach((el) => {
         el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
         el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
       });
@@ -6575,12 +7617,33 @@
       }, { threshold: 0.4 });
       const mSection = document.getElementById('motion-reveal');
       if (mSection) motionObs.observe(mSection);
+      // observe manifesto/editorial for entrance
+      const manifesto = document.getElementById('manifesto');
+      if (manifesto) motionObs.observe(manifesto);
+      const editorial = document.getElementById('editorial');
+      if (editorial) {
+        motionObs.observe(editorial);
+        // subtle parallax for the large white circle when pointer is fine
+        if (finePointer && !prefersReducedMotion) {
+          editorial.addEventListener('mousemove', (e) => {
+            const rect = editorial.getBoundingClientRect();
+            const cx = (e.clientX - rect.left) / rect.width - 0.5;
+            const cy = (e.clientY - rect.top) / rect.height - 0.5;
+            const g = editorial.querySelector('.editorial-graphic');
+            if (g) g.style.transform = `translate3d(${cx * -6}px, ${cy * -6}px, 0) scale(1)`;
+          });
+          editorial.addEventListener('mouseleave', () => {
+            const g = editorial.querySelector('.editorial-graphic');
+            if (g) g.style.transform = '';
+          });
+        }
+      }
     } else {
       document.querySelectorAll('.rv').forEach((el) => el.classList.add('in'));
       document.getElementById('motion-reveal')?.classList.add('in-view');
     }
 
-    const roles = ['Security Researcher', 'AI Developer', 'Purple Teamer', 'Bug Bounty Hunter', 'Cloud IAM Researcher', 'Reverse Engineer', 'MCP Developer'];
+    const roles = ['Security Researcher', 'AI Developer', 'Purple Teamer', 'Vulnerability Researcher', 'Cloud IAM Researcher', 'Reverse Engineer', 'MCP Developer'];
     let ri = 0, ci = 0, del = false;
     const tel = document.getElementById('typed');
 
