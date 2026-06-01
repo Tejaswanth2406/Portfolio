@@ -5823,9 +5823,9 @@
   z-index: 1;
   display: flex;
   align-items: center;
-  gap: 9px;
-  min-height: 38px;
-  padding: 0 15px;
+  gap: 12px;
+  min-height: 48px;
+  padding: 0 18px;
   border-radius: 999px;
   color: #111;
   text-decoration: none;
@@ -5870,14 +5870,15 @@
 }
 
 .contact-pill-black {
-  justify-content: center;
+  /* Keep layout consistent with other pills (icon at left, text centered vertically) */
+  justify-content: flex-start;
   letter-spacing: .22em;
   background: #070707;
 }
 
 .contact-pill-icon {
-  width: 16px;
-  height: 16px;
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -5885,10 +5886,17 @@
 }
 
 .contact-pill-icon svg {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   fill: none;
   stroke: currentColor;
+}
+
+.contact-pill-icon img {
+  width: 18px;
+  height: 18px;
+  display: block;
+  object-fit: contain;
 }
 
 .contact-pill-text {
@@ -7384,13 +7392,13 @@
           </a>
 
           <a href="https://www.reddit.com/user/Natural_Ask4201/" target="_blank" rel="noopener noreferrer" class="contact-pill contact-pill-ghost">
-            <span class="contact-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6"/><circle cx="9.5" cy="11" r="0.9" fill="currentColor"/><circle cx="14.5" cy="11" r="0.9" fill="currentColor"/><path d="M8.6 14.2c1 0.7 2.8 0.7 3.8 0" stroke="currentColor"/><circle cx="17" cy="6" r="1" fill="currentColor"/><line x1="14.6" y1="7.4" x2="16.2" y2="6.2" stroke="currentColor"/></svg></span>
+            <span class="contact-pill-icon" aria-hidden="true"><img src="assets/Reddit_Logo_Icon.svg.png" alt="Reddit logo" loading="lazy" decoding="async"></span>
             <span class="contact-pill-text">Natural_Ask4201</span>
             <span class="contact-pill-arrow">↗</span>
           </a>
 
           <a href="https://bsky.app/profile/tejjjj.bsky.social" target="_blank" rel="noopener noreferrer" class="contact-pill contact-pill-cream">
-            <span class="contact-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M7 13c0-3 5-5 9-5" stroke="currentColor"/><path d="M12 8v8" stroke="currentColor"/></svg></span>
+            <span class="contact-pill-icon" aria-hidden="true"><img src="assets/bluesky-lp8y5pdi2ob29youg4ycf.webp" alt="Bluesky logo" loading="lazy" decoding="async"></span>
             <span class="contact-pill-text">tejjjj.bsky.social</span>
             <span class="contact-pill-arrow">↗</span>
           </a>
@@ -7402,7 +7410,7 @@
           </a>
 
           <a href="https://x.com/tejaswanthh" target="_blank" rel="noopener noreferrer" class="contact-pill contact-pill-black">
-            <span class="contact-pill-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg></span>
+            <span class="contact-pill-icon" aria-hidden="true"><img src="assets/new-2023-twitter-logo-x-icon-design_1017-45418.avif" alt="X logo" loading="lazy" decoding="async"></span>
             <span class="contact-pill-text">x.com/tejaswanthh</span>
             <span class="contact-pill-arrow">↗</span>
           </a>
