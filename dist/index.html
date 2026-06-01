@@ -1677,12 +1677,26 @@
     .manifesto-card::before {
       content: '';
       position: absolute;
-      inset: auto 18px 18px auto;
+      inset: auto 22px 22px auto;
       width: 64px;
       height: 64px;
-      border: 1px solid rgba(26, 60, 94, .16);
-      transform: rotate(10deg);
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(107,158,187,0.08));
+      box-shadow: 0 6px 18px rgba(26,60,94,0.06);
       z-index: -1;
+      transform: translateZ(0);
+    }
+
+    .manifesto-card::after {
+      content: '✦';
+      position: absolute;
+      inset: auto 36px 36px auto;
+      font-size: 14px;
+      color: rgba(17,85,115,0.9);
+      z-index: 2;
+      opacity: 0.95;
+      transform: rotate(-10deg);
+      pointer-events: none;
     }
 
     .manifesto-card:hover {
