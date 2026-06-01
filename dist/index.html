@@ -1672,6 +1672,8 @@
       overflow: hidden;
       isolation: isolate;
       transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+      text-decoration: none;
+      color: inherit;
     }
 
     .manifesto-card::before {
@@ -1697,16 +1699,16 @@
       opacity: 0.95;
       transform: rotate(-10deg);
       pointer-events: none;
-    }
-
-    .manifesto-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(107, 158, 187, .32);
-      box-shadow: var(--shadow-md);
-    }
-
-    .manifesto-num {
-      font-family: 'JetBrains Mono', monospace;
+      .manifesto-card::before {
+        content: '';
+        position: absolute;
+        inset: auto 18px 18px auto;
+        width: 64px;
+        height: 64px;
+        border: 1px solid rgba(26, 60, 94, .16);
+        transform: rotate(10deg);
+        z-index: -1;
+      }
       font-size: 11px;
       font-weight: 900;
       color: var(--sky);
@@ -5932,29 +5934,29 @@
         <h2 class="section-title rv">AFFILIATION</h2>
 
         <div class="manifesto-grid rv d2">
-          <div class="manifesto-card">
+          <a href="https://www.poetrysoup.com/poems_poets/poems_by_poet.aspx?ID=194817" target="_blank" rel="noopener noreferrer" class="manifesto-card">
             <div class="manifesto-num">01.</div>
             <div class="manifesto-head">PoetrySoup</div>
             <div class="manifesto-body">Member of PoetrySoup.</div>
-          </div>
+          </a>
 
-          <div class="manifesto-card">
+          <a href="https://www.inaturalist.org/people/tejaswanthsurisetty" target="_blank" rel="noopener noreferrer" class="manifesto-card">
             <div class="manifesto-num">02.</div>
             <div class="manifesto-head">iNaturalist</div>
             <div class="manifesto-body">Member in iNaturalist.</div>
-          </div>
+          </a>
 
-          <div class="manifesto-card">
+          <a href="https://www.myma.art/artwork/cmpuu7f6p000lad2i7fbufalh" target="_blank" rel="noopener noreferrer" class="manifesto-card">
             <div class="manifesto-num">03.</div>
             <div class="manifesto-head">Myma</div>
             <div class="manifesto-body">Visual Artist.</div>
-          </div>
+          </a>
 
-          <div class="manifesto-card">
+          <a href="https://loopgarden.example/" target="_blank" rel="noopener noreferrer" class="manifesto-card">
             <div class="manifesto-num">04.</div>
             <div class="manifesto-head">loopgarden</div>
             <div class="manifesto-body">Music Artist - loopgarden.</div>
-          </div>
+          </a>
         </div>
       </div>
     </section>
