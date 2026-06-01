@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIRIA // Physics-Inspired Relational Intelligence Architecture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=Bebas+Neue&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:       #0a0a0b;
+            --paper:    #e8e2d4;
+            --ink:      #0a0a0b;
+            --accent:   #e85d00;
+            --dim:      #2a2a2e;
+            --muted:    rgba(232, 226, 212, 0.35);
+            --grid:     rgba(232, 93, 0, 0.12);
+            --mono:     'IBM Plex Mono', monospace;
+            --display:  'Bebas Neue', sans-serif;
+            --body:     'IBM Plex Sans', sans-serif;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg);
+            color: var(--paper);
+            font-family: var(--mono);
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        /* ─── GRAIN ─────────────────────────────── */
+        #grain {
+            position: fixed; inset: 0; z-index: 9999;
+            pointer-events: none; opacity: 0.07;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+            background-size: 128px 128px;
+        }
+
+        /* ─── ORB CANVAS ─────────────────────────── */
+        #orb-canvas {
+            position: fixed; inset: 0; z-index: 0;
+            pointer-events: none; opacity: 0.55;
+        }
+
+        /* ─── LAYOUT ─────────────────────────────── */
+        .shell {
+            display: grid;
+            grid-template-columns: 72px 1fr 300px;
+            grid-template-rows: auto 1fr auto;
+            min-height: 100vh;
+            border: 3px solid var(--paper);
+            margin: 8px;
+            position: relative;
+            z-index: 1;
+            background:
+                linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 40px 40px,
+                linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 40px 40px;
+        }
+
+        /* ─── SIDEBAR ────────────────────────────── */
+        .rail {
+            grid-row: 1 / -1;
+            border-right: 3px solid var(--paper);
+            display: flex; flex-direction: column;
+            justify-content: space-between;
+            align-items: center; padding: 24px 0;
+            background: var(--bg);
+        }
+
+        .vtext {
+            writing-mode: vertical-rl;
+            text-transform: uppercase;
+            font-size: 11px; letter-spacing: 0.25em;
+            font-weight: 700; white-space: nowrap;
+        }
+
+        .vtext.accent { color: var(--accent); }
+        .vtext.muted  { color: var(--muted); }
+
+        .rail-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.4; transform: scale(0.6); }
+        }
+
+        /* ─── TOPBAR ─────────────────────────────── */
+        .topbar {
+            grid-column: 2 / 4;
+            border-bottom: 3px solid var(--paper);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 28px;
+            background: var(--bg);
+        }
+
+        .topbar-left { display: flex; align-items: center; gap: 16px; font-size: 12px; }
+        .live-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .topbar-nav { display: flex; gap: 32px; font-size: 11px; }
+        .topbar-nav span { text-transform: uppercase; letter-spacing: 0.15em; cursor: pointer; }
+        .topbar-nav span:hover { color: var(--accent); }
+
+        .tag {
+            background: var(--accent); color: var(--ink);
+            padding: 3px 10px; font-size: 11px;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ─── HERO ───────────────────────────────── */
+        .hero {
+            grid-column: 2 / 3;
+            padding: 56px 56px 40px;
+            display: flex; flex-direction: column; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+
+        .hero-eyebrow {
+            font-size: 11px; letter-spacing: 0.3em;
+            text-transform: uppercase; color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .hero-title {
+            font-family: var(--display);
+            font-size: clamp(6rem, 14vw, 11rem);
+            line-height: 0.88; letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--paper);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-title .ghost {
+            position: absolute; inset: 0;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--accent);
+            transform: translate(5px, 5px);
+            z-index: -1; opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .hero-sub {
+            font-family: var(--body);
+            font-size: 14px; font-weight: 300;
+            color: var(--muted); max-width: 460px;
+            margin-top: 28px; line-height: 1.7;
+            border-left: 6px solid var(--accent);
+            padding-left: 16px;
+        }
+
+        .hero-sub strong { color: var(--paper); font-weight: 600; }
+
+        /* ─── STRUCTURE GRID ─────────────────────── */
+        .structure {
+            margin-top: 48px;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+        }
+
+        .mod-card {
+            border: 2px solid rgba(232, 226, 212, 0.2);
+            padding: 16px; position: relative;
+            transition: all 0.15s steps(3);
+            background: transparent; text-align: left;
+            color: var(--paper); cursor: crosshair;
+            font-family: var(--mono);
+        }
+
+        .mod-card:hover {
+            border-color: var(--paper);
+            background: rgba(232, 226, 212, 0.04);
+            transform: translate(-3px, -3px);
+            box-shadow: 6px 6px 0 var(--accent);
+        }
+
+        .mod-card .mod-file {
+            font-size: 11px; color: var(--accent);
+            font-weight: 700; margin-bottom: 6px;
+            letter-spacing: 0.05em;
+        }
+
+        .mod-card .mod-desc {
+            font-size: 11px; color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .mod-card .mod-arrow {
+            position: absolute; bottom: 12px; right: 14px;
+            font-size: 14px; color: var(--accent); opacity: 0;
+            transition: opacity 0.1s;
+        }
+
+        .mod-card:hover .mod-arrow { opacity: 1; }
+
+        /* ─── STAMP ──────────────────────────────── */
+        .stamp-wrap { margin-top: 40px; }
+
+        .stamp {
+            display: inline-block;
+            background: var(--accent); color: var(--ink);
+            font-family: var(--display);
+            font-size: 22px; letter-spacing: 0.1em;
+            padding: 8px 20px;
+            transform: rotate(-1.5deg);
+        }
+
+        /* ─── DATA PANEL ─────────────────────────── */
+        .data-panel {
+            grid-column: 3 / 4;
+            border-left: 3px solid var(--paper);
+            background: var(--paper); color: var(--ink);
+            padding: 28px; overflow: hidden;
+        }
+
+        .panel-head {
+            font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.2em;
+            border-bottom: 2px solid var(--ink);
+            padding-bottom: 10px; margin-bottom: 20px;
+            display: flex; justify-content: space-between;
+        }
+
+        .stat-row {
+            display: flex; justify-content: space-between;
+            margin-bottom: 10px; font-size: 12px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding-bottom: 6px; align-items: baseline;
+        }
+        .stat-row .label { color: rgba(10,10,11,0.55); }
+        .stat-row .val { font-weight: 700; font-size: 13px; }
+
+        /* ─── ORB MINI GRAPH ─────────────────────── */
+        .orb-graph-wrap {
+            margin-top: 24px; border: 2px solid var(--ink); padding: 14px;
+        }
+
+        .orb-graph-title {
+            font-size: 10px; font-weight: 700;
+            letter-spacing: 0.15em; margin-bottom: 10px;
+        }
+
+        #mini-canvas { display: block; width: 100%; }
+
+        /* ─── LOG FEED ───────────────────────────── */
+        .log-wrap {
+            margin-top: 24px; border: 2px solid var(--ink); padding: 14px;
+        }
+
+        .log-title {
+            font-size: 10px; font-weight: 700;
+            letter-spacing: 0.15em; margin-bottom: 10px;
+        }
+
+        .log-feed {
+            height: 160px; overflow: hidden;
+            font-size: 10px; line-height: 1.8;
+            color: rgba(10,10,11,0.7);
+        }
+
+        /* ─── MILESTONE BADGE ────────────────────── */
+        .milestone {
+            margin-top: 24px; background: var(--ink);
+            color: var(--paper); padding: 14px;
+        }
+
+        .milestone-head {
+            font-size: 10px; letter-spacing: 0.2em;
+            color: var(--accent); font-weight: 700; margin-bottom: 8px;
+        }
+
+        .milestone ul {
+            list-style: none; font-size: 10px;
+            line-height: 1.9; color: rgba(232,226,212,0.7);
+        }
+
+        .milestone ul li::before { content: '→ '; color: var(--accent); }
+
+        /* ─── FOOTER ─────────────────────────────── */
+        .footer {
+            grid-column: 2 / 4;
+            border-top: 3px solid var(--paper);
+            padding: 10px 28px;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 10px; background: var(--bg); letter-spacing: 0.1em;
+        }
+
+        .footer .dim { color: var(--muted); }
+
+        /* ─── MILESTONE SECTION (below hero) ─────── */
+        .milestone-section {
+            margin-top: 40px;
+            border: 2px solid rgba(232, 93, 0, 0.4);
+            padding: 20px; position: relative;
+        }
+
+        .milestone-section::before {
+            content: 'CURRENT MILESTONE';
+            position: absolute; top: -11px; left: 16px;
+            background: var(--bg);
+            color: var(--accent);
+            font-size: 10px; font-weight: 700;
+            letter-spacing: 0.2em; padding: 0 8px;
+        }
+
+        .milestone-section ul {
+            list-style: none; font-size: 12px; line-height: 2;
+            color: var(--muted);
+        }
+
+        .milestone-section ul li::before { content: '⬡ '; color: var(--accent); }
+        .milestone-section ul li strong { color: var(--paper); }
+
+        /* ─── REVEAL ANIMATION ───────────────────── */
+        @keyframes reveal-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal { animation: reveal-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .reveal-1 { animation-delay: 0.05s; }
+        .reveal-2 { animation-delay: 0.15s; }
+        .reveal-3 { animation-delay: 0.28s; }
+        .reveal-4 { animation-delay: 0.42s; }
+
+        /* ─── BLINKING CURSOR ────────────────────── */
+        .cursor {
+            display: inline-block; width: 8px; height: 14px;
+            background: var(--accent); vertical-align: middle;
+            animation: pulse 0.7s steps(1) infinite;
+        }
+
+        /* ─── SCROLLBAR ──────────────────────────── */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); }
+    </style>
+</head>
+<body>
+
+<div id="grain"></div>
+<canvas id="orb-canvas"></canvas>
+
+<div class="shell">
+
+    <!-- Rail -->
+    <aside class="rail">
+        <div class="vtext accent">PIRIA_MVP</div>
+        <div class="rail-dot"></div>
+        <div class="vtext">RUNTIME_v0.1</div>
+        <div class="rail-dot" style="animation-delay:0.4s"></div>
+        <div class="vtext muted">SINGLE_NODE</div>
+    </aside>
+
+    <!-- Topbar -->
+    <nav class="topbar">
+        <div class="topbar-left">
+            <div class="live-dot"></div>
+            <span>RUNTIME ONLINE</span>
+        </div>
+        <div class="topbar-nav">
+            <span>01_ARCH</span>
+            <span>02_MODULES</span>
+            <span>03_TELEMETRY</span>
+            <span>04_WAL</span>
+        </div>
+        <a class="tag" href="https://github.com/Tejaswanth2406/PIRIA" target="_blank" rel="noopener noreferrer">GitHub â†—</a>
+    </nav>
+
+    <!-- Hero -->
+    <main class="hero">
+        <div class="hero-eyebrow reveal reveal-1">Physics-Inspired Relational Intelligence Architecture</div>
+
+        <div class="hero-title reveal reveal-2">
+            <span class="ghost">PIRIA</span>
+            PIRIA
+        </div>
+
+        <p class="hero-sub reveal reveal-3">
+            <strong>MVP runtime core.</strong> ORB graph state snapshotted, immutable events appended to WAL, hash-verified on boot. Single-node persistent cognitive graph with attention-bounded traversal.
+        </p>
+
+        <div class="structure reveal reveal-4">
+            <div class="mod-card">
+                <div class="mod-file">src/orb.rs</div>
+                <div class="mod-desc">ORB model and integrity semantics</div>
+                <div class="mod-arrow">→</div>
+            </div>
+            <div class="mod-card">
+                <div class="mod-file">src/clock.rs</div>
+                <div class="mod-desc">HLC and vector clock utilities</div>
+                <div class="mod-arrow">→</div>
+            </div>
+            <div class="mod-card">
+                <div class="mod-file">src/traversal.rs</div>
+                <div class="mod-desc">Attention-bounded graph traversal engine</div>
+                <div class="mod-arrow">→</div>
+            </div>
+            <div class="mod-card">
+                <div class="mod-file">src/entropy.rs</div>
+                <div class="mod-desc">Entropy monitoring skeleton</div>
+                <div class="mod-arrow">→</div>
+            </div>
+            <div class="mod-card">
+                <div class="mod-file">src/runtime.rs</div>
+                <div class="mod-desc">Single-node runtime wiring ORBs, events, traversal</div>
+                <div class="mod-arrow">→</div>
+            </div>
+            <div class="mod-card">
+                <div class="mod-file">src/storage.rs</div>
+                <div class="mod-desc">JSON snapshot + JSONL event WAL persistence</div>
+                <div class="mod-arrow">→</div>
+            </div>
+            <div class="mod-card">
+                <div class="mod-file">src/crdt.rs</div>
+                <div class="mod-desc">CRDT merge state skeleton</div>
+                <div class="mod-arrow">→</div>
+            </div>
+            <div class="mod-card">
+                <div class="mod-file">src/event.rs + error.rs</div>
+                <div class="mod-desc">Event model, ORB event log, shared error types</div>
+                <div class="mod-arrow">→</div>
+            </div>
+        </div>
+
+        <div class="milestone-section reveal">
+            <ul>
+                <li>Graph state snapshotted to <strong>.piria/graph_snapshot.json</strong></li>
+                <li>Immutable events appended to <strong>.piria/events.jsonl</strong></li>
+                <li>WAL events are <strong>hash-verified</strong> and reconstructed on boot</li>
+                <li>Runtime can create ORBs, add relations, <strong>update belief fields</strong></li>
+                <li>Traverse the graph and <strong>observe entropy</strong></li>
+            </ul>
+        </div>
+
+        <div class="stamp-wrap">
+            <div class="stamp">CONFIDENTIAL BUILD v.01</div>
+        </div>
+    </main>
+
+    <!-- Data Panel -->
+    <section class="data-panel">
+        <div class="panel-head">
+            <span>RUNTIME_TELEMETRY</span>
+            <span>[0x]</span>
+        </div>
+
+        <div class="stat-row">
+            <span class="label">ORBS_ACTIVE</span>
+            <span class="val" id="stat-orbs">—</span>
+        </div>
+        <div class="stat-row">
+            <span class="label">EVENT_LOG_LEN</span>
+            <span class="val" id="stat-events">—</span>
+        </div>
+        <div class="stat-row">
+            <span class="label">ENTROPY_INDEX</span>
+            <span class="val" id="stat-entropy">—</span>
+        </div>
+        <div class="stat-row">
+            <span class="label">TRAVERSAL_DEPTH</span>
+            <span class="val" id="stat-depth">—</span>
+        </div>
+        <div class="stat-row">
+            <span class="label">SNAPSHOT_SIZE</span>
+            <span class="val" id="stat-snap">—</span>
+        </div>
+        <div class="stat-row">
+            <span class="label">CLOCK_DRIFT</span>
+            <span class="val" id="stat-drift">—</span>
+        </div>
+
+        <div class="orb-graph-wrap">
+            <div class="orb-graph-title">ORB_RELATION_MAP</div>
+            <canvas id="mini-canvas" height="120"></canvas>
+        </div>
+
+        <div class="log-wrap">
+            <div class="log-title">LIVE_WAL_FEED</div>
+            <div class="log-feed" id="log-feed">
+                &gt; Booting runtime...<br>
+                &gt; Mounting .piria/graph_snapshot.json<br>
+                &gt; Verifying WAL hashes...<br>
+                &gt; Hash check: PASS<br>
+                &gt; ORB graph loaded.<br>
+                &gt; Entropy baseline set.<br>
+                &gt; <span class="cursor"></span>
+            </div>
+        </div>
+
+        <div class="milestone">
+            <div class="milestone-head">ARCH_MODULES</div>
+            <ul>
+                <li>Cargo.toml manifest</li>
+                <li>main.rs entrypoint</li>
+                <li>lib.rs core modules</li>
+                <li>orb.rs + clock.rs</li>
+                <li>event.rs + storage.rs</li>
+                <li>runtime.rs + traversal.rs</li>
+                <li>crdt.rs + entropy.rs</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <span>&copy; PIRIA SYSTEMS // MVP RUNTIME</span>
+        <span class="dim">PHYSICS-INSPIRED RELATIONAL INTELLIGENCE</span>
+        <span id="ts">TS_00:00:00</span>
+    </footer>
+
+</div>
+
+<script>
+// ── ORB BACKGROUND CANVAS ───────────────────────────────────────────────
+const bg = document.getElementById('orb-canvas');
+const bgCtx = bg.getContext('2d');
+
+function resizeBg() {
+    bg.width = window.innerWidth;
+    bg.height = window.innerHeight;
+}
+resizeBg();
+window.addEventListener('resize', resizeBg);
+
+const BG_ORBS = Array.from({ length: 28 }, (_, i) => ({
+    x: Math.random() * window.innerWidth,
+    y: Math.random() * window.innerHeight,
+    vx: (Math.random() - 0.5) * 0.35,
+    vy: (Math.random() - 0.5) * 0.35,
+    r: 4 + Math.random() * 6,
+    phase: Math.random() * Math.PI * 2,
+}));
+
+const CONNECT_DIST = 160;
+
+function drawBg(t) {
+    bgCtx.clearRect(0, 0, bg.width, bg.height);
+
+    BG_ORBS.forEach(o => {
+        o.x += o.vx;
+        o.y += o.vy;
+        if (o.x < 0 || o.x > bg.width)  o.vx *= -1;
+        if (o.y < 0 || o.y > bg.height) o.vy *= -1;
+        o.phase += 0.012;
+    });
+
+    // Edges
+    for (let i = 0; i < BG_ORBS.length; i++) {
+        for (let j = i + 1; j < BG_ORBS.length; j++) {
+            const dx = BG_ORBS[i].x - BG_ORBS[j].x;
+            const dy = BG_ORBS[i].y - BG_ORBS[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < CONNECT_DIST) {
+                const alpha = (1 - dist / CONNECT_DIST) * 0.4;
+                bgCtx.beginPath();
+                bgCtx.moveTo(BG_ORBS[i].x, BG_ORBS[i].y);
+                bgCtx.lineTo(BG_ORBS[j].x, BG_ORBS[j].y);
+                bgCtx.strokeStyle = `rgba(232, 93, 0, ${alpha})`;
+                bgCtx.lineWidth = 1;
+                bgCtx.stroke();
+            }
+        }
+    }
+
+    // Nodes
+    BG_ORBS.forEach(o => {
+        const glow = bgCtx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r * 3);
+        glow.addColorStop(0, 'rgba(232, 93, 0, 0.7)');
+        glow.addColorStop(1, 'rgba(232, 93, 0, 0)');
+        bgCtx.beginPath();
+        bgCtx.arc(o.x, o.y, o.r * 3, 0, Math.PI * 2);
+        bgCtx.fillStyle = glow;
+        bgCtx.fill();
+
+        bgCtx.beginPath();
+        bgCtx.arc(o.x, o.y, o.r * (0.9 + 0.1 * Math.sin(o.phase)), 0, Math.PI * 2);
+        bgCtx.fillStyle = 'rgba(232, 226, 212, 0.85)';
+        bgCtx.fill();
+    });
+
+    requestAnimationFrame(drawBg);
+}
+requestAnimationFrame(drawBg);
+
+// ── MINI CANVAS ─────────────────────────────────────────────────────────
+const mc = document.getElementById('mini-canvas');
+const mCtx = mc.getContext('2d');
+
+function resizeMini() {
+    mc.width = mc.offsetWidth;
+    mc.height = 120;
+}
+resizeMini();
+
+const MINI_NODES = [
+    { x:0.5,  y:0.5,  label:'ROOT' },
+    { x:0.15, y:0.25, label:'ORB_A' },
+    { x:0.85, y:0.2,  label:'ORB_B' },
+    { x:0.2,  y:0.75, label:'ORB_C' },
+    { x:0.8,  y:0.75, label:'ORB_D' },
+    { x:0.5,  y:0.15, label:'ORB_E' },
+];
+
+const MINI_EDGES = [[0,1],[0,2],[0,3],[0,4],[0,5],[1,3],[2,5],[3,4]];
+
+let miniPhase = 0;
+function drawMini() {
+    mCtx.clearRect(0, 0, mc.width, mc.height);
+    const W = mc.width, H = mc.height;
+    miniPhase += 0.03;
+
+    MINI_EDGES.forEach(([a, b]) => {
+        const ax = MINI_NODES[a].x * W, ay = MINI_NODES[a].y * H;
+        const bx = MINI_NODES[b].x * W, by = MINI_NODES[b].y * H;
+        mCtx.beginPath();
+        mCtx.moveTo(ax, ay);
+        mCtx.lineTo(bx, by);
+        mCtx.strokeStyle = 'rgba(10,10,11,0.3)';
+        mCtx.lineWidth = 1.5;
+        mCtx.stroke();
+    });
+
+    MINI_NODES.forEach((n, i) => {
+        const pulse = 1 + 0.15 * Math.sin(miniPhase + i * 0.9);
+        const nx = n.x * W, ny = n.y * H;
+        mCtx.beginPath();
+        mCtx.arc(nx, ny, (i === 0 ? 7 : 4) * pulse, 0, Math.PI * 2);
+        mCtx.fillStyle = i === 0 ? '#e85d00' : '#0a0a0b';
+        mCtx.fill();
+        mCtx.strokeStyle = '#0a0a0b';
+        mCtx.lineWidth = 1.5;
+        mCtx.stroke();
+    });
+
+    requestAnimationFrame(drawMini);
+}
+drawMini();
+
+// ── CLOCK ────────────────────────────────────────────────────────────────
+function tick() {
+    const n = new Date();
+    const t = [n.getHours(), n.getMinutes(), n.getSeconds()]
+        .map(v => String(v).padStart(2,'0')).join(':');
+    document.getElementById('ts').textContent = 'TS_' + t;
+}
+setInterval(tick, 1000); tick();
+
+// ── LIVE STATS ───────────────────────────────────────────────────────────
+const stats = {
+    orbs:    [12, 13, 14, 12, 15],
+    events:  [840, 841, 843, 846, 849],
+    entropy: ['0.0041','0.0039','0.0042','0.0044','0.0040'],
+    depth:   [4, 5, 4, 6, 4],
+    snap:    ['14.2KB','14.3KB','14.5KB','14.5KB','14.6KB'],
+    drift:   ['0ms','1ms','0ms','2ms','0ms'],
+};
+
+let si = 0;
+function updateStats() {
+    const i = si % stats.orbs.length;
+    document.getElementById('stat-orbs').textContent    = stats.orbs[i];
+    document.getElementById('stat-events').textContent  = stats.events[i];
+    document.getElementById('stat-entropy').textContent = stats.entropy[i];
+    document.getElementById('stat-depth').textContent   = stats.depth[i];
+    document.getElementById('stat-snap').textContent    = stats.snap[i];
+    document.getElementById('stat-drift').textContent   = stats.drift[i];
+    si++;
+}
+setInterval(updateStats, 2400); updateStats();
+
+// ── LOG FEED ─────────────────────────────────────────────────────────────
+const LOG_LINES = [
+    'Appending event to WAL...',
+    'ORB belief field updated.',
+    'Traversal depth: 4 hops.',
+    'Entropy reading: 0.0041',
+    'Checksum verified OK.',
+    'Snapshot written.',
+    'Relation added: ORB_C → ORB_D',
+    'CRDT merge: no conflict.',
+    'HLC tick: +1',
+    'Attention window: 3 ORBs.',
+    'WAL replay complete.',
+    'Graph stable.',
+    'Vector clock advanced.',
+    'New ORB instantiated.',
+];
+
+const feed = document.getElementById('log-feed');
+setInterval(() => {
+    const line = document.createElement('div');
+    line.textContent = '> ' + LOG_LINES[Math.floor(Math.random() * LOG_LINES.length)];
+    feed.prepend(line);
+    while (feed.children.length > 20) feed.lastElementChild.remove();
+}, 2800);
+
+// ── PARALLAX GHOST ───────────────────────────────────────────────────────
+document.addEventListener('mousemove', e => {
+    const ghost = document.querySelector('.hero-title .ghost');
+    if (!ghost) return;
+    const ox = (window.innerWidth / 2 - e.clientX) / 60;
+    const oy = (window.innerHeight / 2 - e.clientY) / 60;
+    ghost.style.transform = `translate(${5 + ox}px, ${5 + oy}px)`;
+});
+</script>
+</body>
+</html>
