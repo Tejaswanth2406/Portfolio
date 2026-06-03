@@ -4,14 +4,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Tejaswanth Surisetty - AI, Security & Creative Portfolio</title>
+  <title>Tejaswanth Surisetty | Security Architect & AI Engineer</title>
   <meta name="description"
-    content="Portfolio of Tejaswanth Surisetty, a Computer Science student focused on security research, AI systems, cloud IAM, vulnerability research, and LLM/RAG engineering." />
-  <meta name="theme-color" content="#f4f1ea" />
+    content="Security researcher & AI engineer. Building intelligent defense systems, cloud security tooling, and LLM-driven applications. Based in India, focused on impact." />
+  <meta name="theme-color" content="#0f0f1a" />
+  <link rel="icon" type="image/png" href="assets/red_wavy_eye.png">
+  <link rel="apple-touch-icon" href="assets/red_wavy_eye.png">
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Tejaswanth Surisetty - AI, Security & Creative Portfolio" />
+  <meta property="og:title" content="Tejaswanth Surisetty | Security Architect & AI Engineer" />
   <meta property="og:description"
-    content="Security research, AI systems, cloud IAM detection, vulnerability research, and research-grade engineering projects." />
+    content="Crafting intelligent systems that defend. Security research, AI systems, cloud architecture." />
   <meta property="og:image" content="assets/red_wavy_eye.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -38,45 +40,35 @@
     }
 
     :root {
-      --bg-base: #f4f1ea;
-      --bg-mid: #ede9e0;
-      --bg-deep: #e5e0d5;
-      --bg-dark: #1a1510;
-      --ink: #1a1510;
-      --ink-70: rgba(26, 21, 16, .70);
-      --ink-45: rgba(26, 21, 16, .45);
-      --ink-20: rgba(26, 21, 16, .20);
-      --ink-08: rgba(26, 21, 16, .08);
-      --gold: #6b9ebb;
-      --gold-lt: #a5c8dd;
-      --gold-pale: rgba(107, 158, 187, .12);
-      --rust: #9e4220;
-      --cream: #fafaf7;
-      --sky: #2C9FC7;
-
-      /* Mesh Colors (Soft Aurora) */
-      --m-pink: rgba(224, 247, 247, 0.45);
-      --m-cream: rgba(250, 247, 242, 0.4);
-      --m-cyan: rgba(224, 247, 247, 0.45);
-
-      --shadow-xl: 0 40px 100px rgba(26, 21, 16, .18), 0 8px 24px rgba(26, 21, 16, .10);
-      --shadow-lg: 0 20px 60px rgba(26, 21, 16, .13), 0 4px 12px rgba(26, 21, 16, .07);
-      --shadow-md: 0 8px 30px rgba(26, 21, 16, .09);
-      --shadow-sm: 0 2px 10px rgba(26, 21, 16, .07);
-
-      /* Lino-cut specific */
-      --lino-blue: #1A3C5E;
-      --lino-cream: #F4F1EA;
-      --lino-texture: rgba(26, 60, 94, 0.05);
+      --bg-base: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --bg-hover: #16213e;
+      --accent-primary: #00d9ff;
+      --accent-secondary: #ff006e;
+      --accent-tertiary: #8338ec;
+      --text-primary: #f0f0f5;
+      --text-secondary: #b0b0c0;
+      --text-tertiary: rgba(240, 240, 245, 0.6);
+      --border-color: rgba(0, 217, 255, 0.15);
+      --gold: #ffd60a;
+      --gold-lt: #00d9ff;
+      --gold-pale: rgba(0, 217, 255, 0.08);
+      --rust: #ff006e;
+      --cream: #f0f0f5;
+      --sky: #00d9ff;
+      --shadow-xl: 0 40px 100px rgba(0, 217, 255, .15), 0 8px 24px rgba(0, 217, 255, .08);
+      --shadow-lg: 0 20px 60px rgba(0, 217, 255, .1), 0 4px 12px rgba(0, 217, 255, .05);
+      --shadow-md: 0 8px 30px rgba(0, 217, 255, .08);
+      --shadow-sm: 0 2px 10px rgba(0, 217, 255, .05);
     }
 
     html {
-      scroll-behavior: smooth
+      scroll-behavior: smooth;
     }
 
     body {
       background: var(--bg-base);
-      color: var(--ink);
+      color: var(--text-primary);
       font-family: 'Crimson Pro', serif;
       overflow-x: hidden;
       cursor: auto;
@@ -84,13 +76,13 @@
 
     a,
     button {
-      cursor: pointer
+      cursor: pointer;
     }
 
     a:focus-visible,
     button:focus-visible,
     [tabindex]:focus-visible {
-      outline: 2px solid var(--sky);
+      outline: 2px solid var(--accent-primary);
       outline-offset: 4px;
     }
 
@@ -688,6 +680,8 @@
       color: var(--ink);
       background: rgba(138, 108, 46, .06)
     }
+
+    
 
     .hero-stats-col {
       display: flex;
@@ -5603,6 +5597,33 @@
   text-transform: uppercase;
 }
 
+/* Certificate badge (hero) */
+.cert-badge { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; padding: 8px 12px; border-radius: 10px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); transition: transform .18s ease, box-shadow .18s; }
+.cert-badge img{ width:72px; height:48px; object-fit:cover; border-radius:6px; display:block; box-shadow: 0 10px 30px rgba(0,0,0,.28); }
+.cert-badge span{ color: white; font-family: 'Montserrat', system-ui, sans-serif; font-weight:600; font-size:13px; }
+.cert-badge:hover,.cert-badge:focus{ transform: translateY(-6px) scale(1.02); box-shadow: 0 18px 60px rgba(0,0,0,.28); }
+
+/* Lightbox modal */
+.cert-modal{ position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 99999; }
+.cert-modal[aria-hidden="false"]{ display:flex; }
+.cert-modal__backdrop{ position:absolute; inset:0; background:rgba(6,12,28,.7); }
+.cert-modal__inner{ position:relative; max-width:92%; max-height:92%; z-index:2; display:flex; flex-direction:column; align-items:flex-end; }
+.cert-modal__img{ width: auto; max-width:1200px; max-height:80vh; border-radius:6px; box-shadow: 0 40px 120px rgba(0,0,0,.6); display:block; }
+.cert-modal__close{ position:absolute; top:-12px; right:-12px; background:#111; color:white; border:0; width:40px; height:40px; border-radius:20px; font-size:20px; cursor:pointer; }
+.cert-modal__footer{ margin-top:10px; align-self:stretch; display:flex; justify-content:center; }
+.cert-modal__footer a{ color:var(--cloud-soft); text-decoration:underline; }
+
+/* Gallery inside verified certifications */
+.cert-gallery{ display:flex; gap:8px; margin-top:10px; }
+.cert-thumb{ width:64px; height:44px; object-fit:cover; border-radius:6px; border:1px solid rgba(255,255,255,.06); box-shadow:0 8px 28px rgba(0,0,0,.25); cursor:pointer; transition:transform .16s ease, box-shadow .16s; }
+.cert-thumb:hover,.cert-thumb:focus{ transform:translateY(-4px) scale(1.04); box-shadow:0 18px 48px rgba(0,0,0,.32); }
+
+/* Certifications showcase (larger thumbnails in the certifications section) */
+.cert-showcase-wrap{ display:flex; justify-content:flex-end; }
+.cert-showcase{ display:flex; gap:12px; align-items:center; overflow:auto; padding:8px 0 18px; }
+.cert-showcase-thumb{ width:140px; height:88px; border-radius:8px; border:1px solid rgba(12,45,84,.06); box-shadow:0 12px 40px rgba(12,45,84,.12); }
+.cert-showcase-thumb:hover{ transform:translateY(-6px) scale(1.02); }
+
 .hero-panel {
   border-left: 1px solid var(--border);
   padding: 48px 0 48px 52px;
@@ -6314,10 +6335,14 @@
                 <a href="#projects" class="btn-prime">View Projects</a>
                 <a href="https://github.com/Tejaswanth2406" target="_blank" rel="noopener noreferrer" class="btn-sec">GitHub ↗</a>
                 <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" target="_blank" rel="noopener noreferrer" class="btn-sec">LinkedIn ↗</a>
+                
               </div>
               <div class="hero-cred-grid" aria-label="Portfolio highlights">
                 <div class="hero-cred"><strong>AI Milan</strong><span>Hackathon finalist</span></div>
-                <div class="hero-cred"><strong>10+</strong><span>Verified certifications</span></div>
+                <div class="hero-cred cert-verified">
+                  <strong>10+</strong><span>Verified certifications</span>
+                  <!-- thumbnails removed from hero; moved to certifications section -->
+                </div>
                 <div class="hero-cred"><strong>Cloud</strong><span>IAM security focus</span></div>
               </div>
             </div>
@@ -7137,6 +7162,21 @@
       <div class="sec-wrap">
         <div class="section-eyebrow rv">Certifications</div>
         <h2 class="section-title rv">Verified<br><em>Skills</em></h2>
+        <div class="cert-showcase-wrap">
+          <div class="cert-showcase" aria-hidden="false">
+            <a href="#" class="cert-thumb-link"><img class="cert-thumb cert-showcase-thumb" src="Screenshot%202026-06-02%20232923.png" data-full="Screenshot%202026-06-02%20232923.png" alt="Screenshot 2026-06-02 232923" loading="lazy" decoding="async"></a>
+            <a href="#" class="cert-thumb-link"><img class="cert-thumb cert-showcase-thumb" src="Screenshot%202026-06-03%20103743.png" data-full="Screenshot%202026-06-03%20103743.png" alt="Screenshot 2026-06-03 103743" loading="lazy" decoding="async"></a>
+            <a href="#" class="cert-thumb-link"><img class="cert-thumb cert-showcase-thumb" src="Screenshot%202026-06-03%20103916.png" data-full="Screenshot%202026-06-03%20103916.png" alt="Screenshot 2026-06-03 103916" loading="lazy" decoding="async"></a>
+            <a href="#" class="cert-thumb-link"><img class="cert-thumb cert-showcase-thumb" src="Screenshot%202026-06-03%20104020.png" data-full="Screenshot%202026-06-03%20104020.png" alt="Screenshot 2026-06-03 104020" loading="lazy" decoding="async"></a>
+            <a href="#" class="cert-thumb-link"><img class="cert-thumb cert-showcase-thumb" src="Screenshot%202026-06-03%20104120.png" data-full="Screenshot%202026-06-03%20104120.png" alt="Screenshot 2026-06-03 104120" loading="lazy" decoding="async"></a>
+            <a href="#" class="cert-thumb-link"><img class="cert-thumb cert-showcase-thumb" src="Screenshot%202026-06-03%20104220.png" data-full="Screenshot%202026-06-03%20104220.png" alt="Screenshot 2026-06-03 104220" loading="lazy" decoding="async"></a>
+            <a href="#" class="cert-thumb-link"><img class="cert-thumb cert-showcase-thumb" src="Screenshot%202026-06-03%20104248.png" data-full="Screenshot%202026-06-03%20104248.png" alt="Screenshot 2026-06-03 104248" loading="lazy" decoding="async"></a>
+            <a href="#" class="cert-thumb-link"><img class="cert-thumb cert-showcase-thumb" src="Screenshot%202026-06-03%20104507.png" data-full="Screenshot%202026-06-03%20104507.png" alt="Screenshot 2026-06-03 104507" loading="lazy" decoding="async"></a>
+            <a href="#" class="cert-thumb-link"><img class="cert-thumb cert-showcase-thumb" src="Screenshot%202026-06-03%20104542.png" data-full="Screenshot%202026-06-03%20104542.png" alt="Screenshot 2026-06-03 104542" loading="lazy" decoding="async"></a>
+            <a href="#" class="cert-thumb-link"><img class="cert-thumb cert-showcase-thumb" src="Screenshot%202026-06-03%20104955.png" data-full="Screenshot%202026-06-03%20104955.png" alt="Screenshot 2026-06-03 104955" loading="lazy" decoding="async"></a>
+          </div>
+        </div>
+
         <div class="cert-grid">
           <div class="cert-card rv">
             <div class="cert-new">New</div>
@@ -7485,6 +7525,16 @@
         </svg>
       </div>
     </section>
+    <!-- CERT LIGHTBOX -->
+    <div id="cert-modal" class="cert-modal" aria-hidden="true" role="dialog" aria-label="Certificate preview">
+      <div class="cert-modal__backdrop" id="cert-modal-backdrop"></div>
+      <div class="cert-modal__inner" role="document">
+        <button class="cert-modal__close" id="cert-modal-close" aria-label="Close">×</button>
+        <img id="cert-modal-img" class="cert-modal__img" src="assets/resume-visual-02.jpg" alt="Certificate preview">
+        <div class="cert-modal__footer"><a id="cert-modal-open-new" href="assets/resume-visual-02.jpg" target="_blank" rel="noopener">Open in new tab</a></div>
+      </div>
+    </div>
+
   </main>
 
   <footer>
@@ -7765,6 +7815,32 @@
         project.addEventListener('mouseleave', () => { title.style.transform = ''; });
       });
     }
+
+    // Certificate lightbox handlers — thumbnails inside verified box
+    (function(){
+      const modal = document.getElementById('cert-modal');
+      const backdrop = document.getElementById('cert-modal-backdrop');
+      const closeBtn = document.getElementById('cert-modal-close');
+      const img = document.getElementById('cert-modal-img');
+      const openNew = document.getElementById('cert-modal-open-new');
+      if (!modal) return;
+
+      document.querySelectorAll('.cert-thumb').forEach((thumb)=>{
+        thumb.addEventListener('click', (e)=>{
+          e.preventDefault();
+          const src = thumb.dataset.full || thumb.src;
+          img.src = src;
+          openNew.href = src;
+          modal.setAttribute('aria-hidden','false');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      const close = ()=>{ modal.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; };
+      closeBtn?.addEventListener('click', close);
+      backdrop?.addEventListener('click', close);
+      document.addEventListener('keydown', (ev)=>{ if (ev.key === 'Escape') close(); });
+    })();
   </script>
 </body>
 
