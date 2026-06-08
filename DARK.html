@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tejaswanth Surisetty | Master Edition Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Space+Mono&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #050505; --accent: #ffffff; }
+        body { background-color: var(--bg); color: var(--accent); font-family: 'Inter', sans-serif; overflow-x: hidden; cursor: none; }
+        .playfair { font-family: 'Playfair Display', serif; }
+        .space-mono { font-family: 'Space Mono', monospace; }
+        #cursor { position: fixed; width: 8px; height: 8px; background: white; border-radius: 50%; pointer-events: none; z-index: 9999; mix-blend-mode: difference; }
+        #cursor-follower { position: fixed; width: 30px; height: 30px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 50%; pointer-events: none; z-index: 9998; }
+        #canvas-bg { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.2; }
+        section { min-height: 100vh; width: 100%; position: relative; padding: 10vw 5vw; display: flex; flex-direction: column; justify-content: center; }
+        .horizontal-container { display: flex; width: 800%; height: 100vh; will-change: transform; }
+        .horizontal-panel { width: 100vw; height: 100vh; flex-shrink: 0; display: flex; align-items: center; justify-content: center; padding: 5vw; }
+        .project-card { width: 80vw; max-width: 1200px; height: 70vh; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 40px; display: flex; overflow: hidden; position: relative; backdrop-filter: blur(20px); }
+        #loader { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; }
+        .skill-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; }
+        .social-link { transition: all 0.3s ease; opacity: 0.3; }
+        .social-link:hover { opacity: 1; transform: translateY(-5px); }
+    </style>
+</head>
+<body>
+    <div id="loader"><div class="text-white space-mono text-[10px] tracking-[1.5em] animate-pulse uppercase">Syncing Digital Persona</div></div>
+    <div id="cursor"></div><div id="cursor-follower"></div><div id="canvas-bg"></div>
+
+    <nav class="fixed top-0 w-full p-10 flex justify-between items-center z-50 mix-blend-difference">
+        <div class="text-2xl font-black tracking-tighter">TJS.</div>
+        <div class="space-mono text-[8px] tracking-[0.4em] uppercase opacity-30 flex gap-10">
+            <a href="#hero">Home</a>
+            <a href="#expertise">Stats</a>
+            <a href="#projects">Vault</a>
+            <a href="#research-lab">Lab</a>
+            <a href="#path">Path</a>
+            <a href="#achievements">Wins</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
+            <!-- Hero -->
+            <section id="hero" class="items-center">
+                <div class="text-center">
+                    <p class="hero-sub space-mono text-[9px] tracking-[0.6em] uppercase opacity-20 mb-8">Researcher · Security Engineer · AI Developer</p>
+                    <h1 class="hero-title text-[15vw] font-black leading-[0.75] tracking-tighter playfair italic">TEJASWANTH</h1>
+                    <div class="mt-20 flex flex-col items-center">
+                        <div class="w-[1px] h-40 bg-white/10 origin-top scale-y-0 hero-line"></div>
+                        <p class="mt-10 space-mono text-[8px] tracking-[0.5em] opacity-20 uppercase max-w-xs leading-relaxed">Securing systems. Building intelligence. Creating impact.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Expertise Stats -->
+            <section id="expertise">
+                <div class="max-w-6xl mx-auto w-full">
+                    <h2 class="text-6xl font-black mb-24 tracking-tighter italic playfair">EXPERTISE</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                        <div class="p-10 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <div class="text-5xl font-black mb-4">20+</div>
+                            <p class="space-mono text-xs opacity-50 mb-2">PROJECTS</p>
+                            <p class="text-white/40 text-sm leading-relaxed">Production-grade systems in security, AI, and cloud.</p>
+                        </div>
+                        <div class="p-10 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <div class="text-5xl font-black mb-4">5+</div>
+                            <p class="space-mono text-xs opacity-50 mb-2">SECURITY AREAS</p>
+                            <p class="text-white/40 text-sm leading-relaxed">IAM, cloud, vulnerability research, detection.</p>
+                        </div>
+                        <div class="p-10 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <div class="text-5xl font-black mb-4">3</div>
+                            <p class="space-mono text-xs opacity-50 mb-2">PUBLICATIONS</p>
+                            <p class="text-white/40 text-sm leading-relaxed">Technical research and security findings.</p>
+                        </div>
+                        <div class="p-10 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <div class="text-5xl font-black mb-4">AI</div>
+                            <p class="space-mono text-xs opacity-50 mb-2">FOCUS</p>
+                            <p class="text-white/40 text-sm leading-relaxed">LLMs, RAG, agentic systems, multimodal.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Social Nexus -->
+            <section id="social" class="bg-[#030303]">
+                <div class="max-w-6xl mx-auto w-full">
+                    <h2 class="text-7xl font-black mb-24 tracking-tighter italic playfair">THE NEXUS</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-6 gap-12">
+                        <a href="https://github.com/Tejaswanth2406" class="social-link flex flex-col items-center gap-4">
+                            <span class="text-4xl">GH</span><span class="space-mono text-[10px]">GITHUB</span>
+                        </a>
+                        <a href="https://linkedin.com/in/tejaswanth-surisetty-590322312" class="social-link flex flex-col items-center gap-4">
+                            <span class="text-4xl">LI</span><span class="space-mono text-[10px]">LINKEDIN</span>
+                        </a>
+                        <a href="https://x.com/tejaswanthh" class="social-link flex flex-col items-center gap-4">
+                            <span class="text-4xl">X</span><span class="space-mono text-[10px]">TWITTER</span>
+                        </a>
+                        <a href="https://bsky.app/profile/tejjjj.bsky.social" class="social-link flex flex-col items-center gap-4">
+                            <span class="text-4xl">BS</span><span class="space-mono text-[10px]">BLUESKY</span>
+                        </a>
+                        <a href="https://www.twitch.tv/thisistejjjjjj" class="social-link flex flex-col items-center gap-4">
+                            <span class="text-4xl">TW</span><span class="space-mono text-[10px]">TWITCH</span>
+                        </a>
+                        <a href="https://www.reddit.com/user/Natural_Ask4201/" class="social-link flex flex-col items-center gap-4">
+                            <span class="text-4xl">RD</span><span class="space-mono text-[10px]">REDDIT</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills Matrix -->
+            <section id="skills">
+                <div class="max-w-6xl mx-auto w-full">
+                    <h2 class="text-6xl font-black mb-24 tracking-tighter italic playfair text-right">TOOLKIT</h2>
+                    <div class="skill-matrix">
+                        <div class="p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <h3 class="space-mono text-xs opacity-20 mb-6">SECURITY</h3>
+                            <ul class="space-y-4 text-lg font-bold">
+                                <li>Cloud IAM Analysis</li>
+                                <li>Vuln Research</li>
+                                <li>Offensive Security</li>
+                                <li>Network Scanning</li>
+                                <li>Penetration Testing</li>
+                                <li>BurpSuite / Nmap</li>
+                            </ul>
+                        </div>
+                        <div class="p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <h3 class="space-mono text-xs opacity-20 mb-6">AI/ML</h3>
+                            <ul class="space-y-4 text-lg font-bold">
+                                <li>LLM Systems</li>
+                                <li>RAG Pipelines</li>
+                                <li>Agentic Workflows</li>
+                                <li>Multimodal AI</li>
+                                <li>Prompt Engineering</li>
+                                <li>Claude / OpenAI APIs</li>
+                            </ul>
+                        </div>
+                        <div class="p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <h3 class="space-mono text-xs opacity-20 mb-6">ENGINEERING</h3>
+                            <ul class="space-y-4 text-lg font-bold">
+                                <li>Python / FastAPI</li>
+                                <li>React / TypeScript</li>
+                                <li>Docker / K8s</li>
+                                <li>Terraform</li>
+                                <li>Node.js / Express</li>
+                                <li>Git & CI/CD</li>
+                            </ul>
+                        </div>
+                        <div class="p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <h3 class="space-mono text-xs opacity-20 mb-6">CLOUD</h3>
+                            <ul class="space-y-4 text-lg font-bold">
+                                <li>GCP & Oracle OCI</li>
+                                <li>IAM Policies</li>
+                                <li>Infrastructure Code</li>
+                                <li>Microservices</li>
+                                <li>API Design</li>
+                                <li>Security Compliance</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects Pin -->
+            <div id="projects-pin">
+                <div class="horizontal-container">
+                    <div class="horizontal-panel bg-black"><h2 class="text-[14vw] font-black tracking-tighter playfair italic">THE VAULT</h2></div>
+                    <!-- Hollow Purple -->
+                    <div class="horizontal-panel">
+                        <div class="project-card">
+                            <div class="w-1/2 p-20 flex flex-col justify-between">
+                                <div>
+                                    <span class="space-mono text-xs opacity-20 mb-8 block">SECURITY / CLOUD</span>
+                                    <h3 class="text-7xl font-black mb-10 leading-none">Hollow Purple</h3>
+                                    <p class="text-white/40 text-xl leading-relaxed">Adaptive cloud identity attack detection. Constructs live temporal interaction graphs to identify lateral movement at 45ms latency.</p>
+                                </div>
+                                <div class="flex gap-4 flex-wrap"><span class="px-5 py-2 border border-white/10 rounded-full text-[10px] space-mono opacity-30 uppercase">Merkle-Chain</span><span class="px-5 py-2 border border-white/10 rounded-full text-[10px] space-mono opacity-30 uppercase">GCP IAM</span></div>
+                            </div>
+                            <div class="w-1/2 bg-white/[0.02] flex items-center justify-center"><div class="text-[18vw] font-black opacity-[0.02]">PURPLE</div></div>
+                        </div>
+                    </div>
+                    <!-- HAKARI -->
+                    <div class="horizontal-panel">
+                        <div class="project-card">
+                            <div class="w-1/2 p-20 flex flex-col justify-between">
+                                <div>
+                                    <span class="space-mono text-xs opacity-20 mb-8 block">AI / SIMULATION</span>
+                                    <h3 class="text-7xl font-black mb-10 leading-none">HAKARI</h3>
+                                    <p class="text-white/40 text-xl leading-relaxed">Simulation engine grounded in entropy physics and Bayesian inference to model knowledge evolution and decay.</p>
+                                </div>
+                                <div class="flex gap-4 flex-wrap"><span class="px-5 py-2 border border-white/10 rounded-full text-[10px] space-mono opacity-30 uppercase">Node.js</span><span class="px-5 py-2 border border-white/10 rounded-full text-[10px] space-mono opacity-30 uppercase">Entropy</span></div>
+                            </div>
+                            <div class="w-1/2 bg-white/[0.02] flex items-center justify-center"><div class="text-[18vw] font-black opacity-[0.02]">HAKARI</div></div>
+                        </div>
+                    </div>
+                    <!-- IoT Sentinel -->
+                    <div class="horizontal-panel">
+                        <div class="project-card">
+                            <div class="w-1/2 p-20 flex flex-col justify-between">
+                                <div>
+                                    <span class="space-mono text-xs opacity-20 mb-8 block">NETWORK / SCANNER</span>
+                                    <h3 class="text-7xl font-black mb-10 leading-none">IoT Sentinel</h3>
+                                    <p class="text-white/40 text-xl leading-relaxed">Unified 6-phase automated pipeline for discovery and CVE correlation at 10K pps through deep service fingerprinting.</p>
+                                </div>
+                                <div class="flex gap-4 flex-wrap"><span class="px-5 py-2 border border-white/10 rounded-full text-[10px] space-mono opacity-30 uppercase">Python</span><span class="px-5 py-2 border border-white/10 rounded-full text-[10px] space-mono opacity-30 uppercase">K8s</span></div>
+                            </div>
+                            <div class="w-1/2 bg-white/[0.02] flex items-center justify-center"><div class="text-[18vw] font-black opacity-[0.02]">SENTINEL</div></div>
+                        </div>
+                    </div>
+                    <!-- CLU -->
+                    <div class="horizontal-panel">
+                        <div class="project-card">
+                            <div class="w-1/2 p-20 flex flex-col justify-between">
+                                <div>
+                                    <span class="space-mono text-xs opacity-20 mb-8 block">LEGAL / AI</span>
+                                    <h3 class="text-7xl font-black mb-10 leading-none">CLU</h3>
+                                    <p class="text-white/40 text-xl leading-relaxed">AI-powered legal document analyzer surfacing risk scores via Claude API with severity-tagged findings.</p>
+                                </div>
+                                <div class="flex gap-4 flex-wrap"><span class="px-5 py-2 border border-white/10 rounded-full text-[10px] space-mono opacity-30 uppercase">React 18</span><span class="px-5 py-2 border border-white/10 rounded-full text-[10px] space-mono opacity-30 uppercase">Claude API</span></div>
+                            </div>
+                            <div class="w-1/2 bg-white/[0.02] flex items-center justify-center"><div class="text-[18vw] font-black opacity-[0.02]">CLU</div></div>
+                        </div>
+                    </div>
+                    <!-- PIRIA -->
+                    <div class="horizontal-panel">
+                        <div class="project-card">
+                            <div class="w-1/2 p-20 flex flex-col justify-between">
+                                <div>
+                                    <span class="space-mono text-xs opacity-20 mb-8 block">AI / RUNTIME</span>
+                                    <h3 class="text-7xl font-black mb-10 leading-none">PIRIA</h3>
+                                    <p class="text-white/40 text-xl leading-relaxed">Physics-inspired relational intelligence runtime with persistent cognitive graphs, immutable event logs, and CRDT state.</p>
+                                </div>
+                                <div class="flex gap-4 flex-wrap"><span class="px-5 py-2 border border-white/10 rounded-full text-[10px] space-mono opacity-30 uppercase">Rust</span><span class="px-5 py-2 border border-white/10 rounded-full text-[10px] space-mono opacity-30 uppercase">CRDT</span></div>
+                            </div>
+                            <div class="w-1/2 bg-white/[0.02] flex items-center justify-center"><div class="text-[18vw] font-black opacity-[0.02]">PIRIA</div></div>
+                        </div>
+                    </div>
+                    <!-- Mumcare AI -->
+                    <div class="horizontal-panel">
+                        <div class="project-card">
+                            <div class="w-1/2 p-20 flex flex-col justify-between">
+                                <div>
+                                    <span class="space-mono text-xs opacity-20 mb-8 block">HEALTH / AI</span>
+                                    <h3 class="text-7xl font-black mb-10 leading-none">Mumcare AI</h3>
+                                    <p class="text-white/40 text-xl leading-relaxed">AI decision engine for mothers and caregivers combining empathetic intent with RAG and structured recommendations. Bilingual EN + AR.</p>
+                                </div>
+                                <div class="flex gap-4 flex-wrap"><span class="px-5 py-2 border border-white/10 rounded-full text-[10px] space-mono opacity-30 uppercase">FastAPI</span><span class="px-5 py-2 border border-white/10 rounded-full text-[10px] space-mono opacity-30 uppercase">Bilingual</span></div>
+                            </div>
+                            <div class="w-1/2 bg-white/[0.02] flex items-center justify-center"><div class="text-[18vw] font-black opacity-[0.02]">MUMCARE</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Path -->
+            <section id="path">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-8xl font-black mb-32 tracking-tighter italic playfair">THE PATH</h2>
+                    <div class="space-y-40">
+                        <div class="group border-b border-white/5 pb-20">
+                            <div class="flex justify-between items-end">
+                                <div><span class="space-mono text-[10px] opacity-20 mb-6 block">2026 / MACSOF</span><h3 class="text-6xl font-black group-hover:italic transition-all">AI/ML Intern</h3></div>
+                                <span class="text-2xl opacity-10">AI ARCHITECTURES</span>
+                            </div>
+                            <p class="mt-12 text-white/30 text-lg leading-relaxed max-w-2xl">Multimodal orchestration, RAG, and MCP-based intelligent workflows. Cognitive simulation research and agentic architectures.</p>
+                        </div>
+                        <div class="group border-b border-white/5 pb-20">
+                            <div class="flex justify-between items-end">
+                                <div><span class="space-mono text-[10px] opacity-20 mb-6 block">2025 / AISECT</span><h3 class="text-6xl font-black group-hover:italic transition-all">Cybersecurity Intern</h3></div>
+                                <span class="text-2xl opacity-10">VULN RESEARCH</span>
+                            </div>
+                            <p class="mt-12 text-white/30 text-lg leading-relaxed max-w-2xl">Network security and vulnerability assessment. Monitoring security systems and incident response for organizational defense.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Research Lab -->
+            <section id="research-lab">
+                <div class="max-w-6xl mx-auto w-full">
+                    <h2 class="text-6xl font-black mb-24 tracking-tighter italic playfair">RESEARCH LAB</h2>
+                    <div class="space-y-8">
+                        <div class="p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <h3 class="text-3xl font-black mb-4">Detection Engineering</h3>
+                            <p class="text-white/40 text-lg leading-relaxed mb-4">From noisy cloud events to prioritized identity-path evidence. Graph modeling for privilege escalation, lateral movement, and token abuse detection.</p>
+                            <div class="flex gap-2 flex-wrap"><span class="px-4 py-1 border border-white/10 rounded-full text-xs space-mono opacity-50">GCP IAM</span><span class="px-4 py-1 border border-white/10 rounded-full text-xs space-mono opacity-50">Graphs</span><span class="px-4 py-1 border border-white/10 rounded-full text-xs space-mono opacity-50">Audit Replay</span></div>
+                        </div>
+                        <div class="p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <h3 class="text-3xl font-black mb-4">AI Risk Analysis</h3>
+                            <p class="text-white/40 text-lg leading-relaxed mb-4">Readable LLM workflows for high-stakes review. Risk scoring, source preservation, and clear explanations for non-specialists under time pressure.</p>
+                            <div class="flex gap-2 flex-wrap"><span class="px-4 py-1 border border-white/10 rounded-full text-xs space-mono opacity-50">LLMs</span><span class="px-4 py-1 border border-white/10 rounded-full text-xs space-mono opacity-50">RAG</span><span class="px-4 py-1 border border-white/10 rounded-full text-xs space-mono opacity-50">Risk Scoring</span></div>
+                        </div>
+                        <div class="p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <h3 class="text-3xl font-black mb-4">Security Product Design</h3>
+                            <p class="text-white/40 text-lg leading-relaxed mb-4">Complex backend intelligence shaped into calm, inspectable interfaces. Clear states, strong defaults, and direct paths from finding to action.</p>
+                            <div class="flex gap-2 flex-wrap"><span class="px-4 py-1 border border-white/10 rounded-full text-xs space-mono opacity-50">React</span><span class="px-4 py-1 border border-white/10 rounded-full text-xs space-mono opacity-50">FastAPI</span><span class="px-4 py-1 border border-white/10 rounded-full text-xs space-mono opacity-50">UX Systems</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Achievements & Certifications -->
+            <section id="achievements">
+                <div class="max-w-6xl mx-auto w-full">
+                    <h2 class="text-6xl font-black mb-24 tracking-tighter italic playfair">WINS & CREDENTIALS</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                        <div class="p-10 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <h3 class="text-2xl font-black mb-3">AI Agent Olympics Milan</h3>
+                            <p class="text-white/40 text-sm mb-3 space-mono">2026 · Hackathon Finalist</p>
+                            <p class="text-white/60">Qualifier and pitch finalist demonstrating multimodal AI orchestration and context-aware agent architectures to expert judges.</p>
+                        </div>
+                        <div class="p-10 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <h3 class="text-2xl font-black mb-3">SIH 2024 National Stage</h3>
+                            <p class="text-white/40 text-sm mb-3 space-mono">2024 · Smart India Hackathon</p>
+                            <p class="text-white/60">Cleared regional rounds and competed at national stage of India's largest student innovation challenge.</p>
+                        </div>
+                        <div class="p-10 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <h3 class="text-2xl font-black mb-3">Cloud Security Competitions</h3>
+                            <p class="text-white/40 text-sm mb-3 space-mono">2025-2026 · Active Participant</p>
+                            <p class="text-white/60">IAM Challenge participant, Cloud Hunting Games finalist (86th leaderboard), Wiz Ultimate Cloud Security Challenge.</p>
+                        </div>
+                        <div class="p-10 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all">
+                            <h3 class="text-2xl font-black mb-3">Vulnerability Researcher</h3>
+                            <p class="text-white/40 text-sm mb-3 space-mono">Ongoing · HackerOne & Intigriti</p>
+                            <p class="text-white/60">Active bug bounty researcher with responsible disclosure focus on production systems and live programs.</p>
+                        </div>
+                    </div>
+                    <h3 class="text-3xl font-black mb-8">Verified Certifications</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-6 border border-white/5 rounded-2xl bg-white/[0.01] flex justify-between items-start">
+                            <div>
+                                <p class="font-black text-lg">Fortinet Certified Associate</p>
+                                <p class="text-white/40 text-sm space-mono mt-1">Apr 2026 · Network Security Level 3</p>
+                            </div>
+                            <span class="text-2xl opacity-20">●</span>
+                        </div>
+                        <div class="p-6 border border-white/5 rounded-2xl bg-white/[0.01] flex justify-between items-start">
+                            <div>
+                                <p class="font-black text-lg">Oracle Architect Associate</p>
+                                <p class="text-white/40 text-sm space-mono mt-1">Dec 2025 · OCI Infrastructure</p>
+                            </div>
+                            <span class="text-2xl opacity-20">●</span>
+                        </div>
+                        <div class="p-6 border border-white/5 rounded-2xl bg-white/[0.01] flex justify-between items-start">
+                            <div>
+                                <p class="font-black text-lg">Anthropic Advanced Topics</p>
+                                <p class="text-white/40 text-sm space-mono mt-1">Apr 2026 · Model Context Protocol</p>
+                            </div>
+                            <span class="text-2xl opacity-20">●</span>
+                        </div>
+                        <div class="p-6 border border-white/5 rounded-2xl bg-white/[0.01] flex justify-between items-start">
+                            <div>
+                                <p class="font-black text-lg">Cisco Ethical Hacker</p>
+                                <p class="text-white/40 text-sm space-mono mt-1">Aug 2025 · Offensive Security</p>
+                            </div>
+                            <span class="text-2xl opacity-20">●</span>
+                        </div>
+                        <div class="p-6 border border-white/5 rounded-2xl bg-white/[0.01] flex justify-between items-start">
+                            <div>
+                                <p class="font-black text-lg">Machine Learning (Polimi)</p>
+                                <p class="text-white/40 text-sm space-mono mt-1">Mar 2026 · Politecnico di Milano</p>
+                            </div>
+                            <span class="text-2xl opacity-20">●</span>
+                        </div>
+                        <div class="p-6 border border-white/5 rounded-2xl bg-white/[0.01] flex justify-between items-start">
+                            <div>
+                                <p class="font-black text-lg">Cloud Hunting Games</p>
+                                <p class="text-white/40 text-sm space-mono mt-1">Jun 2026 · Exfilcola CTF</p>
+                            </div>
+                            <span class="text-2xl opacity-20">●</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Education -->
+            <section id="education">
+                <div class="max-w-6xl mx-auto w-full">
+                    <h2 class="text-6xl font-black mb-24 tracking-tighter italic playfair text-right">EDUCATION</h2>
+                    <div class="space-y-20">
+                        <div class="group border-b border-white/5 pb-16">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <p class="space-mono text-xs opacity-30 mb-3">2023 — PRESENT</p>
+                                    <h3 class="text-5xl font-black group-hover:italic transition-all">B.Tech Computer Science</h3>
+                                </div>
+                                <span class="text-xl opacity-10">GITAM</span>
+                            </div>
+                            <p class="text-white/30 text-lg leading-relaxed max-w-2xl">GITAM University, Visakhapatnam · 4th Year · Core CSE focus on AI, LLMs, cybersecurity, and cloud platforms.</p>
+                        </div>
+                        <div class="group border-b border-white/5 pb-16">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <p class="space-mono text-xs opacity-30 mb-3">2023</p>
+                                    <h3 class="text-5xl font-black group-hover:italic transition-all">Intermediate (MPC)</h3>
+                                </div>
+                                <span class="text-xl opacity-10">ASCENT</span>
+                            </div>
+                            <p class="text-white/30 text-lg leading-relaxed max-w-2xl">ASCENT Junior College, Visakhapatnam · Math, Physics, Chemistry · 844/940 (~89.8%)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact -->
+            <section id="contact" class="items-center text-center">
+                <h2 class="text-[14vw] font-black tracking-tighter playfair italic leading-none mb-32">INITIATE.</h2>
+                <div class="mb-20">
+                    <p class="space-mono text-xs opacity-30 mb-8">PRIMARY CONTACT</p>
+                    <a href="mailto:tejaswanthsurisetty@gmail.com" class="text-4xl md:text-7xl font-light hover:italic transition-all duration-700 underline underline-offset-[20px] decoration-white/10">tejaswanthsurisetty@gmail.com</a>
+                </div>
+                <div class="max-w-2xl mx-auto mb-20">
+                    <p class="space-mono text-xs opacity-30 mb-6">EXTERNAL LINKS</p>
+                    <div class="grid grid-cols-3 gap-4">
+                        <a href="https://github.com/Tejaswanth2406" class="p-4 border border-white/10 rounded-lg hover:border-white/30 transition-all opacity-40 hover:opacity-100"><span class="font-black">GitHub</span></a>
+                        <a href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" class="p-4 border border-white/10 rounded-lg hover:border-white/30 transition-all opacity-40 hover:opacity-100"><span class="font-black">LinkedIn</span></a>
+                        <a href="hire_me.html" class="p-4 border border-white/10 rounded-lg hover:border-white/30 transition-all opacity-40 hover:opacity-100"><span class="font-black">Hire Me</span></a>
+                    </div>
+                </div>
+                <p class="mt-32 space-mono text-[9px] opacity-10 tracking-[1em] uppercase">2026 TEJASWANTH SURISETTY • MASTER_V2</p>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+        window.addEventListener('load', () => {
+            gsap.to("#loader", { yPercent: -100, duration: 1.5, ease: "expo.inOut" });
+            const tl = gsap.timeline();
+            tl.from(".hero-title", { y: 200, opacity: 0, duration: 1.8, ease: "expo.out", delay: 1 })
+              .from(".hero-sub", { y: 20, opacity: 0, duration: 1 }, "-=1.4")
+              .to(".hero-line", { scaleY: 1, duration: 2, ease: "expo.inOut" }, "-=1");
+        });
+
+        const cursor = document.getElementById('cursor'), follower = document.getElementById('cursor-follower');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0 });
+            gsap.to(follower, { x: e.clientX - 11, y: e.clientY - 11, duration: 0.5 });
+        });
+
+        const horizontalSection = document.querySelector('.horizontal-container');
+        gsap.to(horizontalSection, {
+            x: () => -(horizontalSection.scrollWidth - window.innerWidth),
+            ease: "none",
+            scrollTrigger: { trigger: "#projects-pin", pin: true, scrub: 1, end: () => "+=" + horizontalSection.scrollWidth, invalidateOnRefresh: true }
+        });
+
+        // Background p5 Integration
+        const mainBG = (p) => {
+            let osc, reverb, dotX = [], dotY = [];
+            p.setup = () => { p.createCanvas(p.windowWidth, p.windowHeight).parent('canvas-bg'); osc = new p5.Oscillator('triangle'); reverb = new p5.Reverb(); osc.disconnect(); reverb.process(osc, 3, 2); };
+            p.draw = () => { p.clear(); if (p.mouseIsPressed) { if (!osc.started) osc.start(); osc.freq(p.map(p.mouseX, 0, p.width, 100, 800), 0.1); osc.amp(p.map(p.mouseY, 0, p.height, 0.4, 0), 0.1); dotX.push(p.mouseX); dotY.push(p.mouseY); if (dotX.length > 20) { dotX.shift(); dotY.shift(); } } else { osc.amp(0, 0.5); } p.noFill(); p.stroke(255, 20); p.beginShape(); for (let i = 0; i < dotX.length; i++) { p.vertex(dotX[i], dotY[i]); p.ellipse(dotX[i], dotY[i], 1, 1); } p.endShape(); };
+        };
+        new p5(mainBG);
+    </script>
+</body>
+</html>
