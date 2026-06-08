@@ -34,11 +34,13 @@
 
     <nav class="fixed top-0 w-full p-10 flex justify-between items-center z-50 mix-blend-difference">
         <div class="text-2xl font-black tracking-tighter">TJS.</div>
-        <div class="space-mono text-[8px] tracking-[0.4em] uppercase opacity-30 flex gap-10">
+        <div class="space-mono text-[8px] tracking-[0.4em] uppercase opacity-30 flex gap-10 flex-wrap justify-center max-w-3xl">
             <a href="#hero">Home</a>
             <a href="#expertise">Stats</a>
+            <a href="#featured-showcase">Projects</a>
             <a href="#projects">Vault</a>
             <a href="#research-lab">Lab</a>
+            <a href="#tech-stack">Stack</a>
             <a href="#path">Path</a>
             <a href="#achievements">Wins</a>
             <a href="#contact">Contact</a>
@@ -376,6 +378,258 @@
                             </div>
                             <span class="text-2xl opacity-20">●</span>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Projects Showcase -->
+            <section id="featured-showcase" class="bg-[#030303]">
+                <div class="max-w-6xl mx-auto w-full">
+                    <h2 class="text-6xl font-black mb-24 tracking-tighter italic playfair">FEATURED PROJECTS</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Hollow Purple -->
+                        <a href="hollowpurple.html" class="group p-12 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all hover:bg-white/[0.02] cursor-pointer overflow-hidden">
+                            <div class="relative h-64 mb-6 rounded-lg bg-white/5 overflow-hidden">
+                                <div class="text-7xl font-black opacity-5 absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">HP</div>
+                                <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            </div>
+                            <div class="space-mono text-xs opacity-20 mb-3">SECURITY • CLOUD IAM</div>
+                            <h3 class="text-3xl font-black mb-4 group-hover:italic transition-all">Hollow Purple</h3>
+                            <p class="text-white/40 text-sm leading-relaxed mb-6">Adaptive cloud identity attack detection with live temporal interaction graphs. 45ms latency lateral movement identification.</p>
+                            <div class="flex gap-2 flex-wrap"><span class="px-3 py-1 border border-white/10 rounded-full text-[10px] space-mono opacity-30">GCP IAM</span><span class="px-3 py-1 border border-white/10 rounded-full text-[10px] space-mono opacity-30">Detection</span></div>
+                        </a>
+
+                        <!-- HAKARI -->
+                        <a href="hakari.html" class="group p-12 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all hover:bg-white/[0.02] cursor-pointer overflow-hidden">
+                            <div class="relative h-64 mb-6 rounded-lg bg-white/5 overflow-hidden">
+                                <div class="text-7xl font-black opacity-5 absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">HA</div>
+                                <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            </div>
+                            <div class="space-mono text-xs opacity-20 mb-3">AI • SIMULATION ENGINE</div>
+                            <h3 class="text-3xl font-black mb-4 group-hover:italic transition-all">HAKARI</h3>
+                            <p class="text-white/40 text-sm leading-relaxed mb-6">Simulation engine grounded in entropy physics and Bayesian inference for knowledge evolution modeling.</p>
+                            <div class="flex gap-2 flex-wrap"><span class="px-3 py-1 border border-white/10 rounded-full text-[10px] space-mono opacity-30">Node.js</span><span class="px-3 py-1 border border-white/10 rounded-full text-[10px] space-mono opacity-30">Entropy</span></div>
+                        </a>
+
+                        <!-- IoT Sentinel -->
+                        <a href="iot_sentinal.html" class="group p-12 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all hover:bg-white/[0.02] cursor-pointer overflow-hidden">
+                            <div class="relative h-64 mb-6 rounded-lg bg-white/5 overflow-hidden">
+                                <div class="text-7xl font-black opacity-5 absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">IS</div>
+                                <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            </div>
+                            <div class="space-mono text-xs opacity-20 mb-3">NETWORK • SECURITY SCANNER</div>
+                            <h3 class="text-3xl font-black mb-4 group-hover:italic transition-all">IoT Sentinel</h3>
+                            <p class="text-white/40 text-sm leading-relaxed mb-6">6-phase automated pipeline for IoT discovery and CVE correlation at 10K pps with deep service fingerprinting.</p>
+                            <div class="flex gap-2 flex-wrap"><span class="px-3 py-1 border border-white/10 rounded-full text-[10px] space-mono opacity-30">Python</span><span class="px-3 py-1 border border-white/10 rounded-full text-[10px] space-mono opacity-30">K8s</span></div>
+                        </a>
+
+                        <!-- CLU -->
+                        <a href="clu.html" class="group p-12 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all hover:bg-white/[0.02] cursor-pointer overflow-hidden">
+                            <div class="relative h-64 mb-6 rounded-lg bg-white/5 overflow-hidden">
+                                <div class="text-7xl font-black opacity-5 absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">CL</div>
+                                <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            </div>
+                            <div class="space-mono text-xs opacity-20 mb-3">AI • LEGAL TECH</div>
+                            <h3 class="text-3xl font-black mb-4 group-hover:italic transition-all">CLU</h3>
+                            <p class="text-white/40 text-sm leading-relaxed mb-6">AI-powered legal document analyzer with severity-tagged risk scores powered by Claude API integration.</p>
+                            <div class="flex gap-2 flex-wrap"><span class="px-3 py-1 border border-white/10 rounded-full text-[10px] space-mono opacity-30">React 18</span><span class="px-3 py-1 border border-white/10 rounded-full text-[10px] space-mono opacity-30">Claude API</span></div>
+                        </a>
+
+                        <!-- PIRIA -->
+                        <a href="piria.html" class="group p-12 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all hover:bg-white/[0.02] cursor-pointer overflow-hidden">
+                            <div class="relative h-64 mb-6 rounded-lg bg-white/5 overflow-hidden">
+                                <div class="text-7xl font-black opacity-5 absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">PR</div>
+                                <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            </div>
+                            <div class="space-mono text-xs opacity-20 mb-3">AI • RUNTIME ENGINE</div>
+                            <h3 class="text-3xl font-black mb-4 group-hover:italic transition-all">PIRIA</h3>
+                            <p class="text-white/40 text-sm leading-relaxed mb-6">Physics-inspired relational intelligence runtime with persistent cognitive graphs and immutable event logs.</p>
+                            <div class="flex gap-2 flex-wrap"><span class="px-3 py-1 border border-white/10 rounded-full text-[10px] space-mono opacity-30">Rust</span><span class="px-3 py-1 border border-white/10 rounded-full text-[10px] space-mono opacity-30">CRDT</span></div>
+                        </a>
+
+                        <!-- Mumcare AI -->
+                        <a href="mumcare.html" class="group p-12 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all hover:bg-white/[0.02] cursor-pointer overflow-hidden">
+                            <div class="relative h-64 mb-6 rounded-lg bg-white/5 overflow-hidden">
+                                <div class="text-7xl font-black opacity-5 absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">MC</div>
+                                <div class="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            </div>
+                            <div class="space-mono text-xs opacity-20 mb-3">HEALTH • AI ASSISTANT</div>
+                            <h3 class="text-3xl font-black mb-4 group-hover:italic transition-all">Mumcare AI</h3>
+                            <p class="text-white/40 text-sm leading-relaxed mb-6">AI decision engine for caregivers with empathetic intent, RAG pipelines, and bilingual EN + AR support.</p>
+                            <div class="flex gap-2 flex-wrap"><span class="px-3 py-1 border border-white/10 rounded-full text-[10px] space-mono opacity-30">FastAPI</span><span class="px-3 py-1 border border-white/10 rounded-full text-[10px] space-mono opacity-30">Bilingual</span></div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Research & Publications -->
+            <section id="publications-section">
+                <div class="max-w-6xl mx-auto w-full">
+                    <h2 class="text-6xl font-black mb-24 tracking-tighter italic playfair">PUBLISHED RESEARCH</h2>
+                    <div class="space-y-8">
+                        <a href="publications.html" class="group p-10 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all block">
+                            <div class="flex justify-between items-start mb-4">
+                                <div class="flex-1">
+                                    <div class="space-mono text-xs opacity-20 mb-2">RESEARCH ARCHIVE</div>
+                                    <h3 class="text-3xl font-black group-hover:italic transition-all">View All Publications</h3>
+                                </div>
+                                <span class="text-2xl opacity-20 group-hover:opacity-40 transition-opacity">→</span>
+                            </div>
+                            <p class="text-white/40 text-lg leading-relaxed">Explore technical publications, security research findings, and academic contributions across cloud security, AI architectures, and vulnerability research.</p>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hidden Vault & Vault Content -->
+            <section id="secret-vault" class="bg-black/50">
+                <div class="max-w-6xl mx-auto w-full">
+                    <h2 class="text-6xl font-black mb-24 tracking-tighter italic playfair">EXCLUSIVE ARCHIVES</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <a href="hidden vault.html" class="group p-12 border border-white/10 rounded-3xl bg-white/[0.02] hover:border-white/30 transition-all hover:bg-white/[0.05] cursor-pointer">
+                            <div class="text-5xl font-black opacity-20 mb-6 group-hover:opacity-40 transition-opacity">🔐</div>
+                            <h3 class="text-2xl font-black mb-3">Hidden Vault</h3>
+                            <p class="text-white/40 text-sm leading-relaxed">Explore curated technical insights, experimental projects, and archived work across security and AI domains.</p>
+                            <div class="mt-6 space-mono text-[10px] opacity-20">CLICK TO UNLOCK →</div>
+                        </a>
+
+                        <a href="vault-content.html" class="group p-12 border border-white/10 rounded-3xl bg-white/[0.02] hover:border-white/30 transition-all hover:bg-white/[0.05] cursor-pointer">
+                            <div class="text-5xl font-black opacity-20 mb-6 group-hover:opacity-40 transition-opacity">📦</div>
+                            <h3 class="text-2xl font-black mb-3">Vault Content</h3>
+                            <p class="text-white/40 text-sm leading-relaxed">Detailed breakdown of project repositories, code samples, documentation, and technical deep-dives.</p>
+                            <div class="mt-6 space-mono text-[10px] opacity-20">ACCESS REPOSITORY →</div>
+                        </a>
+
+                        <a href="hire_me.html" class="group p-12 border border-white/10 rounded-3xl bg-white/[0.02] hover:border-white/30 transition-all hover:bg-white/[0.05] cursor-pointer">
+                            <div class="text-5xl font-black opacity-20 mb-6 group-hover:opacity-40 transition-opacity">💼</div>
+                            <h3 class="text-2xl font-black mb-3">Hire Me</h3>
+                            <p class="text-white/40 text-sm leading-relaxed">Detailed services overview, engagement models, consultation rates, and project inquiry contact forms.</p>
+                            <div class="mt-6 space-mono text-[10px] opacity-20">VIEW SERVICES →</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tech Stack & Infrastructure -->
+            <section id="tech-stack">
+                <div class="max-w-6xl mx-auto w-full">
+                    <h2 class="text-6xl font-black mb-24 tracking-tighter italic playfair text-right">INFRASTRUCTURE</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <div class="space-y-6">
+                            <h3 class="text-3xl font-black">Backend & Processing</h3>
+                            <div class="space-y-3">
+                                <div class="p-4 border border-white/5 rounded-xl bg-white/[0.01] hover:border-white/20 transition-all">
+                                    <p class="font-black text-sm mb-1">Python & FastAPI</p>
+                                    <p class="text-white/30 text-xs">High-performance async API frameworks, data processing pipelines</p>
+                                </div>
+                                <div class="p-4 border border-white/5 rounded-xl bg-white/[0.01] hover:border-white/20 transition-all">
+                                    <p class="font-black text-sm mb-1">Node.js & Express</p>
+                                    <p class="text-white/30 text-xs">Real-time services, event-driven architectures, microservices</p>
+                                </div>
+                                <div class="p-4 border border-white/5 rounded-xl bg-white/[0.01] hover:border-white/20 transition-all">
+                                    <p class="font-black text-sm mb-1">Rust & WASM</p>
+                                    <p class="text-white/30 text-xs">Performance-critical systems, CRDT engines, low-level optimization</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <h3 class="text-3xl font-black">Cloud & DevOps</h3>
+                            <div class="space-y-3">
+                                <div class="p-4 border border-white/5 rounded-xl bg-white/[0.01] hover:border-white/20 transition-all">
+                                    <p class="font-black text-sm mb-1">GCP & Oracle OCI</p>
+                                    <p class="text-white/30 text-xs">Infrastructure design, IAM policies, security compliance frameworks</p>
+                                </div>
+                                <div class="p-4 border border-white/5 rounded-xl bg-white/[0.01] hover:border-white/20 transition-all">
+                                    <p class="font-black text-sm mb-1">Docker & Kubernetes</p>
+                                    <p class="text-white/30 text-xs">Container orchestration, automated scaling, cluster management</p>
+                                </div>
+                                <div class="p-4 border border-white/5 rounded-xl bg-white/[0.01] hover:border-white/20 transition-all">
+                                    <p class="font-black text-sm mb-1">CI/CD Pipelines</p>
+                                    <p class="text-white/30 text-xs">GitHub Actions, automated testing, deployment strategies</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <h3 class="text-3xl font-black">AI & Machine Learning</h3>
+                            <div class="space-y-3">
+                                <div class="p-4 border border-white/5 rounded-xl bg-white/[0.01] hover:border-white/20 transition-all">
+                                    <p class="font-black text-sm mb-1">LLM Integration</p>
+                                    <p class="text-white/30 text-xs">Claude, GPT-4, multimodal models, prompt engineering, RAG systems</p>
+                                </div>
+                                <div class="p-4 border border-white/5 rounded-xl bg-white/[0.01] hover:border-white/20 transition-all">
+                                    <p class="font-black text-sm mb-1">Agent Architectures</p>
+                                    <p class="text-white/30 text-xs">MCP servers, agentic workflows, autonomous decision-making systems</p>
+                                </div>
+                                <div class="p-4 border border-white/5 rounded-xl bg-white/[0.01] hover:border-white/20 transition-all">
+                                    <p class="font-black text-sm mb-1">Data & Analytics</p>
+                                    <p class="text-white/30 text-xs">Vector databases, embedding systems, semantic search pipelines</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <h3 class="text-3xl font-black">Frontend & Design</h3>
+                            <div class="space-y-3">
+                                <div class="p-4 border border-white/5 rounded-xl bg-white/[0.01] hover:border-white/20 transition-all">
+                                    <p class="font-black text-sm mb-1">React & TypeScript</p>
+                                    <p class="text-white/30 text-xs">Modern component architecture, state management, type safety</p>
+                                </div>
+                                <div class="p-4 border border-white/5 rounded-xl bg-white/[0.01] hover:border-white/20 transition-all">
+                                    <p class="font-black text-sm mb-1">WebGL & Animation</p>
+                                    <p class="text-white/30 text-xs">Three.js, Babylon.js, OGL, GSAP, performant 3D graphics</p>
+                                </div>
+                                <div class="p-4 border border-white/5 rounded-xl bg-white/[0.01] hover:border-white/20 transition-all">
+                                    <p class="font-black text-sm mb-1">UI/UX Systems</p>
+                                    <p class="text-white/30 text-xs">Tailwind CSS, component libraries, accessibility-first design</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive Vault Navigation -->
+            <section id="vault-nav" class="bg-[#030303]">
+                <div class="max-w-6xl mx-auto w-full">
+                    <h2 class="text-6xl font-black mb-20 tracking-tighter italic playfair">EXPLORE MORE</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <a href="test_react.html" class="p-8 border border-white/5 rounded-2xl bg-white/[0.01] hover:border-white/20 transition-all hover:bg-white/[0.02] group cursor-pointer">
+                            <div class="text-4xl mb-4 opacity-30 group-hover:opacity-50 transition-opacity">⚛️</div>
+                            <h4 class="font-black text-lg mb-2">React Demo</h4>
+                            <p class="text-white/40 text-sm">Interactive React component showcase and live demonstrations</p>
+                        </a>
+
+                        <a href="hire_me.html" class="p-8 border border-white/5 rounded-2xl bg-white/[0.01] hover:border-white/20 transition-all hover:bg-white/[0.02] group cursor-pointer">
+                            <div class="text-4xl mb-4 opacity-30 group-hover:opacity-50 transition-opacity">👤</div>
+                            <h4 class="font-black text-lg mb-2">Services</h4>
+                            <p class="text-white/40 text-sm">Consultation, mentorship, and project collaboration inquiries</p>
+                        </a>
+
+                        <a href="publications.html" class="p-8 border border-white/5 rounded-2xl bg-white/[0.01] hover:border-white/20 transition-all hover:bg-white/[0.02] group cursor-pointer">
+                            <div class="text-4xl mb-4 opacity-30 group-hover:opacity-50 transition-opacity">📚</div>
+                            <h4 class="font-black text-lg mb-2">Publications</h4>
+                            <p class="text-white/40 text-sm">Technical papers, research findings, and academic work</p>
+                        </a>
+
+                        <a href="vault-content.html" class="p-8 border border-white/5 rounded-2xl bg-white/[0.01] hover:border-white/20 transition-all hover:bg-white/[0.02] group cursor-pointer">
+                            <div class="text-4xl mb-4 opacity-30 group-hover:opacity-50 transition-opacity">🗂️</div>
+                            <h4 class="font-black text-lg mb-2">Vault</h4>
+                            <p class="text-white/40 text-sm">Complete archive of projects, code, and technical resources</p>
+                        </a>
+
+                        <a href="hidden vault.html" class="p-8 border border-white/5 rounded-2xl bg-white/[0.01] hover:border-white/20 transition-all hover:bg-white/[0.02] group cursor-pointer">
+                            <div class="text-4xl mb-4 opacity-30 group-hover:opacity-50 transition-opacity">🔒</div>
+                            <h4 class="font-black text-lg mb-2">Hidden Vault</h4>
+                            <p class="text-white/40 text-sm">Exclusive content and experimental projects archive</p>
+                        </a>
+
+                        <a href="https://github.com/Tejaswanth2406" class="p-8 border border-white/5 rounded-2xl bg-white/[0.01] hover:border-white/20 transition-all hover:bg-white/[0.02] group cursor-pointer">
+                            <div class="text-4xl mb-4 opacity-30 group-hover:opacity-50 transition-opacity">🐙</div>
+                            <h4 class="font-black text-lg mb-2">GitHub</h4>
+                            <p class="text-white/40 text-sm">Open source projects, repositories, and code contributions</p>
+                        </a>
                     </div>
                 </div>
             </section>
