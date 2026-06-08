@@ -5,6 +5,11 @@ import { HoverMembers } from "./components/HoverMembers"
 import { HoverExpand } from "./components/HoverExpand"
 import { TextRoll } from "./components/TextRoll"
 import { ImageCursorTrail } from "./components/ImageCursorTrail"
+import ScrollReveal from "./components/ScrollReveal"
+import ScrollFloat from "./components/ScrollFloat"
+import Galaxy from "./components/Galaxy"
+import Particles from "./components/Particles"
+import RotatingText from "./components/RotatingText"
 
 const MotionPortfolio = () => {
   const [activeSection, setActiveSection] = useState("hero")
@@ -36,12 +41,12 @@ const MotionPortfolio = () => {
   ]
 
   const certifications = [
-    { name: "Cloud Hunting Games", date: "Jun 2026", link: "https://www.cloudhuntinggames.com/certificate/exfilcola/db46a967-79f2-4c08-bc6b-1c2224fbc512" },
-    { name: "Cloud Security Championship", date: "2026", link: "https://www.cloudsecuritychampionship.com/leaderboard?page=9" },
-    { name: "BigIAM Challenge", date: "2026", link: "https://bigiamchallenge.com/finisher/TBBXmPES" },
-    { name: "LinkedIn Certifications", date: "Multiple", link: "https://www.linkedin.com/in/tejaswanth-surisetty-590322312/details/certifications/" },
-    { name: "Fortinet Certified", date: "Apr 2026", link: "#" },
-    { name: "Oracle Architect", date: "Dec 2025", link: "#" },
+    { name: "Cloud Hunting Games", date: "Jun 2026", link: "https://www.cloudhuntinggames.com/certificate/exfilcola/db46a967-79f2-4c08-bc6b-1c2224fbc512", image: "Screenshot 2026-06-02 232923.png" },
+    { name: "Cloud Security Championship", date: "2026", link: "https://www.cloudsecuritychampionship.com/leaderboard?page=9", image: "Screenshot 2026-06-03 103743.png" },
+    { name: "BigIAM Challenge", date: "2026", link: "https://bigiamchallenge.com/finisher/TBBXmPES", image: "Screenshot 2026-06-03 103916.png" },
+    { name: "LinkedIn Certifications", date: "Multiple", link: "https://www.linkedin.com/in/tejaswanth-surisetty-590322312/details/certifications/", image: "Screenshot 2026-06-03 104020.png" },
+    { name: "Fortinet Certified", date: "Apr 2026", link: "#", image: "Screenshot 2026-06-03 104120.png" },
+    { name: "Oracle Architect", date: "Dec 2025", link: "#", image: "Screenshot 2026-06-03 104220.png" },
   ]
 
   return (
@@ -80,11 +85,20 @@ const MotionPortfolio = () => {
         id="hero"
         className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
       >
+        <div className="absolute inset-0 z-0">
+          <Galaxy 
+            density={0.8} 
+            transparent={true} 
+            starSpeed={0.3}
+            glowIntensity={0.2}
+            mouseInteraction={true}
+          />
+        </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
-          className="text-center max-w-4xl mx-auto px-6 space-y-8"
+          className="text-center max-w-4xl mx-auto px-6 space-y-8 relative z-10"
         >
           <motion.h1
             className="text-7xl md:text-9xl font-black tracking-tighter leading-none italic playfair"
@@ -140,7 +154,16 @@ const MotionPortfolio = () => {
           viewport={{ once: true }}
           className="max-w-6xl mx-auto"
         >
-          <h2 className="text-6xl font-black mb-24 tracking-tighter italic playfair">EXPERTISE</h2>
+          <ScrollFloat
+            animationDuration={1.5}
+            ease="back.inOut(2)"
+            scrollStart="center bottom+=50%"
+            scrollEnd="bottom bottom-=40%"
+            stagger={0.03}
+            containerClassName="text-6xl font-black mb-24 tracking-tighter italic playfair"
+          >
+            EXPERTISE
+          </ScrollFloat>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {[
               { value: "20+", label: "PROJECTS", desc: "Production systems" },
@@ -174,7 +197,15 @@ const MotionPortfolio = () => {
           viewport={{ once: true }}
           className="max-w-6xl mx-auto"
         >
-          <h2 className="text-6xl font-black mb-24 tracking-tighter italic playfair text-right">TOOLKIT</h2>
+          <ScrollReveal 
+            baseOpacity={0.05}
+            enableBlur={true}
+            blurStrength={3}
+            containerClassName="text-6xl font-black mb-24 tracking-tighter italic playfair text-right"
+            textClassName=""
+          >
+            TOOLKIT
+          </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {[
               { title: "SECURITY", skills: ["Cloud IAM Analysis", "Vuln Research", "Offensive Security", "Network Scanning", "Pen Testing"] },
@@ -271,13 +302,22 @@ const MotionPortfolio = () => {
       </section>
 
       {/* Research Lab */}
-      <section id="research" className="relative py-32 px-6 md:px-20">
+      <section id="research" className="relative py-32 px-6 md:px-20 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Particles 
+            particleCount={100}
+            particleSpread={8}
+            speed={0.05}
+            particleBaseSize={80}
+            alphaParticles={true}
+          />
+        </div>
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="max-w-6xl mx-auto"
+          className="max-w-6xl mx-auto relative z-10"
         >
           <h2 className="text-6xl font-black mb-24 tracking-tighter italic playfair">RESEARCH LAB</h2>
           <div className="space-y-8">
@@ -304,7 +344,7 @@ const MotionPortfolio = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.1 }}
                 viewport={{ once: true }}
-                className="p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all"
+                className="p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all backdrop-blur-sm"
               >
                 <h3 className="text-2xl font-black mb-4">{research.title}</h3>
                 <p className="text-white/40 text-lg mb-6">{research.desc}</p>
@@ -390,7 +430,7 @@ const MotionPortfolio = () => {
           </div>
 
           <h3 className="text-3xl font-black mb-8">Verified Certifications</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {certifications.map((cert, i) => (
               <motion.a
                 key={i}
@@ -399,15 +439,24 @@ const MotionPortfolio = () => {
                 rel={cert.link.startsWith("http") ? "noopener noreferrer" : ""}
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.3)" }}
                 transition={{ delay: i * 0.05 }}
                 viewport={{ once: true }}
-                className="p-6 border border-white/5 rounded-2xl bg-white/[0.01] flex justify-between items-start hover:border-white/20 transition-all"
+                className="group p-0 border border-white/10 rounded-2xl overflow-hidden bg-white/[0.01] hover:border-white/20 transition-all cursor-pointer"
               >
-                <div>
-                  <p className="font-black">{cert.name}</p>
-                  <p className="text-white/40 text-xs space-mono mt-1">{cert.date}</p>
+                {cert.image && (
+                  <div className="w-full h-48 overflow-hidden bg-black/20">
+                    <img 
+                      src={cert.image} 
+                      alt={cert.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                )}
+                <div className="p-4">
+                  <p className="font-black text-sm">{cert.name}</p>
+                  <p className="text-white/40 text-xs space-mono mt-2">{cert.date}</p>
                 </div>
-                <span className="text-xl opacity-20">●</span>
               </motion.a>
             ))}
           </div>

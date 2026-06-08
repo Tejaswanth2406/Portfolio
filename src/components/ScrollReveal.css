@@ -1,0 +1,17 @@
+.scroll-reveal {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+.scroll-reveal-text {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2em;
+}
+
+.scroll-reveal .word {
+  display: inline-block;
+}
