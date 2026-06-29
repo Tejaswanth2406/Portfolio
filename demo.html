@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NHM — Natural History Museum</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/framer-motion@11.0.8/dist/framer-motion.js"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-background": "#1a1c1c",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-surface": "#1a1c1c",
+                        "surface-container-low": "#f3f3f3",
+                        "secondary-fixed-dim": "#c9c6c5",
+                        "on-secondary": "#ffffff",
+                        "surface-container-high": "#e8e8e8",
+                        "inverse-on-surface": "#f0f1f1",
+                        "tertiary-container": "#1d1b1a",
+                        "surface-bright": "#f9f9f9",
+                        "tertiary": "#000000",
+                        "on-primary-fixed": "#1c1b1b",
+                        "error-container": "#ffdad6",
+                        "error": "#ba1a1a",
+                        "secondary": "#5f5e5e",
+                        "outline": "#747878",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "primary-fixed": "#e5e2e1",
+                        "background": "#f9f9f9",
+                        "surface-tint": "#5f5e5e",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#e6e1df",
+                        "on-tertiary-fixed": "#1d1b1a",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#474646",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "on-tertiary-container": "#868381",
+                        "surface-container": "#eeeeee",
+                        "surface-variant": "#e2e2e2",
+                        "inverse-primary": "#c8c6c5",
+                        "surface": "#f9f9f9",
+                        "primary": "#000000",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#474646",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#dadada",
+                        "inverse-surface": "#2f3131",
+                        "tertiary-fixed-dim": "#cac6c3",
+                        "on-primary-container": "#858383",
+                        "on-surface-variant": "#444748",
+                        "secondary-fixed": "#e5e2e1",
+                        "primary-container": "#1c1b1b",
+                        "secondary-container": "#e5e2e1",
+                        "on-secondary-container": "#656464",
+                        "on-tertiary-fixed-variant": "#484645",
+                        "on-error": "#ffffff",
+                        "outline-variant": "#c4c7c7"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "container-max": "1440px",
+                        "section-gap-md": "80px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "24px",
+                        "section-gap-lg": "128px",
+                        "unit": "8px",
+                        "gutter": "32px"
+                    },
+                    fontFamily: {
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "display-xl": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "display-lg": ["56px", {"lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "600"}],
+                        "label-sm": ["10px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                        "display-xl": ["80px", {"lineHeight": "1.0", "letterSpacing": "-0.04em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "label-md": ["11px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fcfcfc;
+            color: #111;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .hero-video {
+            filter: grayscale(1) contrast(1.1);
+            mix-blend-mode: multiply;
+        }
+        .grain-overlay {
+            background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+            opacity: 0.05;
+            pointer-events: none;
+        }
+        .reveal-up {
+            transform: translateY(100%);
+            animation: revealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes revealUp {
+            to { transform: translateY(0); }
+        }
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+
+        /* Custom SVG Filter for Sand Transition */
+        .sand-filter {
+            filter: url(#sand-dissolve);
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 768px) {
+            .display-xl-custom {
+                font-size: 3.5rem;
+                line-height: 1;
+                letter-spacing: -0.05em;
+            }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-background">
+<!-- NAVIGATION DRAWER (Hidden by default) -->
+<nav class="fixed inset-0 z-[100] bg-surface flex flex-col p-margin-mobile space-y-8 translate-y-full transition-transform duration-500 ease-in-out" id="mobile-drawer">
+<div class="flex justify-between items-center">
+<span class="font-headline-lg text-primary tracking-tighter font-bold">NHM INDEX</span>
+<button class="p-2" onclick="toggleMenu()">
+<span class="material-symbols-outlined text-headline-md">close</span>
+</button>
+</div>
+<div class="flex flex-col space-y-6 pt-10">
+<a class="font-headline-md text-primary border-b border-primary pb-1" href="#">Exhibitions</a>
+<a class="font-headline-md text-secondary hover:text-primary transition-colors" href="#">Collections</a>
+<a class="font-headline-md text-secondary hover:text-primary transition-colors" href="#">Research</a>
+<a class="font-headline-md text-secondary hover:text-primary transition-colors" href="#">Archive</a>
+<a class="font-headline-md text-secondary hover:text-primary transition-colors" href="#">Visit</a>
+</div>
+<div class="mt-auto border-t border-outline-variant pt-8">
+<p class="font-label-sm text-secondary uppercase tracking-widest mb-4">Current Exhibition</p>
+<p class="font-headline-md">Titanosaur: Life as a Giant</p>
+</div>
+</nav>
+<!-- SECTION 1: HERO -->
+<section class="relative min-h-screen w-full overflow-hidden flex flex-col bg-[#fcfcfc]">
+<div class="grain-overlay absolute inset-0 z-10"></div>
+<!-- Top App Bar Content -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile py-6 max-w-container-max mx-auto">
+<div class="overflow-hidden h-12 flex items-center">
+<!-- Custom SVG Logo -->
+<svg class="text-primary fill-current" fill="none" height="30" viewbox="0 0 840 100" width="80" xmlns="http://www.w3.org/2000/svg">
+<path class="reveal-up stagger-1" d="M100 100H0V0H20V80H80V0H100V100Z"></path>
+<path class="reveal-up stagger-2" d="M300 100H200V0H220V40H280V0H300V100Z" style="transform: translateX(120px)"></path>
+<path class="reveal-up stagger-3" d="M500 100V0H540L570 60L600 0H640V100H620V20H580L570 40L560 20V100H540V100H500Z" style="transform: translateX(240px)"></path>
+</svg>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-label-md text-secondary hidden md:block">VISIT</span>
+<button class="flex flex-col gap-1.5 p-2" onclick="toggleMenu()">
+<div class="w-6 h-0.5 bg-primary"></div>
+<div class="w-4 h-0.5 bg-primary self-end"></div>
+</button>
+</div>
+</header>
+<!-- Background Video with Delay -->
+<div class="absolute inset-0 opacity-0 transition-opacity duration-1000 z-0" id="hero-vid-container">
+<video autoplay="" class="hero-video absolute inset-0 w-full h-full object-cover grayscale brightness-110" loop="" muted="" playsinline="">
+<source src="https://res.cloudinary.com/dsdxaxkiz/video/upload/v1779624998/magnific_use-img-2-as-the-exact-ba_Piu3X0W42C_wnrc8f.mp4" type="video/mp4"/>
+</video>
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#fcfcfc]"></div>
+</div>
+<!-- Hero Content -->
+<div class="relative z-20 mt-auto px-margin-mobile pb-16 flex flex-col items-start gap-8">
+<div class="flex items-center gap-4">
+<span class="font-label-sm px-2 py-1 border border-primary">01</span>
+<div class="h-px w-12 bg-outline-variant"></div>
+</div>
+<h1 class="display-xl-custom font-headline-lg font-bold tracking-tight text-primary max-w-xs uppercase">
+                Timeless<br/>Wonders
+            </h1>
+<button class="group relative overflow-hidden bg-primary text-on-primary px-8 py-4 flex items-center gap-3 transition-transform active:scale-95 duration-150">
+<div class="absolute inset-0 bg-secondary translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+<span class="relative z-10 font-label-md">EXPLORE NOW</span>
+<svg class="relative z-10 w-4 h-4 fill-current transition-transform group-hover:translate-x-1" viewbox="0 0 24 24">
+<path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L7.39,18C9.45,16.59 12.12,14.74 16,15V23H18V15C19,15 20,15 21,15V13C18,13 15,13 12,15C9.75,13.13 7,11 7,7C7,4 9,2 12,2C15,2 17,4 17,8Z"></path>
+</svg>
+</button>
+</div>
+</section>
+<!-- SECTION 2: EXPLORE OUR WORLD -->
+<section class="bg-background py-section-gap-md px-margin-mobile border-t border-outline-variant">
+<div class="flex flex-col gap-12 max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<span class="font-label-sm text-secondary">[ 02 ] Explore Our World</span>
+</div>
+<h2 class="text-[2.2rem] leading-[1.1] font-headline-md text-primary max-w-md">
+                Unearth the stories of our planet's past, from deep-sea fossils to the giants of the sky.
+            </h2>
+<div class="flex flex-wrap gap-3">
+<div class="border border-outline px-4 py-2 flex items-center gap-2 group hover:bg-primary hover:text-on-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[18px]">skeleton</span>
+<span class="font-label-md">BONE</span>
+</div>
+<div class="border border-outline px-4 py-2 flex items-center gap-2 group hover:bg-primary hover:text-on-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[18px]">dns</span>
+<span class="font-label-md">DNA</span>
+</div>
+<div class="border border-outline px-4 py-2 flex items-center gap-2 group hover:bg-primary hover:text-on-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[18px]">diamond</span>
+<span class="font-label-md">GEM</span>
+</div>
+<div class="border border-outline px-4 py-2 flex items-center gap-2 group hover:bg-primary hover:text-on-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[18px]">eco</span>
+<span class="font-label-md">LEAF</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: ANCIENT COLLECTION (Dark) -->
+<section class="bg-[#0a0a0a] text-white pt-24 pb-section-gap-md overflow-hidden relative">
+<div class="absolute top-0 right-0 w-64 h-64 opacity-50 z-10 -translate-y-1/2 translate-x-1/4">
+<img alt="Skeleton of a Pterodactyl" class="w-full h-full object-contain rotate-12" data-alt="A high-contrast monochrome studio photograph of a Pterodactyl skeleton fossil. The lighting is dramatic, casting sharp shadows against a deep black void. The bone structure is intricately detailed, showcasing the skeletal anatomy of the wings and skull. The image is rendered with a pristine museum-archive aesthetic, emphasizing structural precision and scientific clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByN_FFNEKvqNWgjiJB5j9HvvYdcxVXDOhCgsEg9qBr99UcX5z76c68Pk7ljcCtLuXZm538UCf2FmK-ltR7NcjW3T3_bgqiSiOlFEevTqT6wF_kkZPKzab7Nrpesst0_OVFRXhH1OMxI_vOlmwIPfBHbKi2_HNRJtITniiUzDX-NUL98u4_FIBXzO8zS155OxH73gah6xvPkirY4l0o5JSLxK6_c0L8ODFrxUdKsHq8kb8GzH399ZvehiTcxo8BUQ7z2PUGBRDccKA"/>
+</div>
+<div class="px-margin-mobile relative z-20">
+<div class="flex items-center gap-4 mb-16">
+<span class="font-label-sm text-secondary">[ 03 ] Archive Chapters</span>
+</div>
+<!-- Image Transition Canvas Placeholder -->
+<div class="relative w-full aspect-[4/5] mb-12 overflow-hidden border border-white/10">
+<div class="absolute inset-0 transition-opacity duration-700" id="chapter-image-container">
+<img alt="Specimen Detail" class="w-full h-full object-cover grayscale contrast-125" data-alt="A macro scientific photographic close-up of a prehistoric reptile fossil embedded in ancient sedimentary rock. The lighting highlights the texture of the scales and bone fragments with extreme clarity. The color palette is strictly monochrome, focusing on the intricate details of the specimen as if seen through a microscope. The mood is archival and intellectual." id="chapter-active-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSanCRndgQfoukeTsgVTRm5p5iH1Fo1VJGxdnehRVfNbvHthZLeshZNX-_T43bCs4ZK1NV--j0B5nRM86Mmq3Utk8CTOX9twe69PmcmfT6dg5aknQKUBxnKsZznIeiPldhCzHNtn0VVCiQEKcFBUFpMC0GWTbMRCG0qvdNEO6GDCp2b2FBt-jvd3m7MQMh97azZIMs-ndW1Nm-mWq63SihbigIlXMQYNS9R2Kp_hDvSR8JCPEnpKrk7My4x5qa6wTRFAWO425z_e4"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] to-transparent"></div>
+</div>
+<div class="flex flex-col border-t border-white/20">
+<!-- List of Chapters -->
+<div class="chapter-item flex justify-between items-center py-6 border-b border-white/10 opacity-50 transition-all duration-300" data-chapter="0" onclick="setChapter(0)">
+<div class="flex items-baseline gap-6">
+<span class="font-label-sm font-label-md">01</span>
+<span class="font-headline-md text-white">Age of Dinosaurs</span>
+</div>
+<span class="material-symbols-outlined hidden transition-transform rotate-0">arrow_outward</span>
+</div>
+<div class="chapter-item flex justify-between items-center py-6 border-b border-white/10 opacity-50 transition-all duration-300" data-chapter="1" onclick="setChapter(1)">
+<div class="flex items-baseline gap-6">
+<span class="font-label-sm font-label-md">02</span>
+<span class="font-headline-md text-white">Fossils of Ancient Life</span>
+</div>
+<span class="material-symbols-outlined hidden transition-transform rotate-0">arrow_outward</span>
+</div>
+<div class="chapter-item active flex justify-between items-center py-6 border-b border-white/10 opacity-100 transition-all duration-300" data-chapter="2" onclick="setChapter(2)">
+<div class="flex items-baseline gap-6">
+<span class="font-label-sm font-label-md">03</span>
+<span class="font-headline-md text-white">Reptiles of the Mesozoic</span>
+</div>
+<span class="material-symbols-outlined block transition-transform rotate-0">arrow_outward</span>
+</div>
+<div class="chapter-item flex justify-between items-center py-6 border-b border-white/10 opacity-50 transition-all duration-300" data-chapter="3" onclick="setChapter(3)">
+<div class="flex items-baseline gap-6">
+<span class="font-label-sm font-label-md">04</span>
+<span class="font-headline-md text-white">Marine Fossil Gallery</span>
+</div>
+<span class="material-symbols-outlined hidden transition-transform rotate-0">arrow_outward</span>
+</div>
+<div class="chapter-item flex justify-between items-center py-6 border-b border-white/10 opacity-50 transition-all duration-300" data-chapter="4" onclick="setChapter(4)">
+<div class="flex items-baseline gap-6">
+<span class="font-label-sm font-label-md">05</span>
+<span class="font-headline-md text-white">Prehistoric Giants</span>
+</div>
+<span class="material-symbols-outlined hidden transition-transform rotate-0">arrow_outward</span>
+</div>
+</div>
+</div>
+</section>
+<!-- FOOTER -->
+<footer class="bg-primary-container text-on-primary-container border-t border-outline-variant">
+<div class="w-full px-margin-mobile py-12 flex flex-col gap-8">
+<div class="flex justify-between items-start">
+<span class="font-headline-md text-on-primary-container font-bold tracking-tighter">NHM</span>
+<div class="flex flex-col text-right gap-2">
+<a class="font-label-sm opacity-70 hover:opacity-100 transition-opacity" href="#">Contact</a>
+<a class="font-label-sm opacity-70 hover:opacity-100 transition-opacity" href="#">Access</a>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<p class="font-label-sm opacity-70">© 2024 NATURAL HISTORY MUSEUM. ARCHIVAL RECORD.</p>
+<div class="flex gap-4">
+<a class="font-label-sm underline" href="#">Terms</a>
+<a class="font-label-sm underline" href="#">Privacy</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- SVG Filter for Transitions -->
+<svg aria-hidden="true" focusable="false" style="position: absolute; width: 0; height: 0;">
+<defs>
+<filter id="sand-dissolve">
+<feturbulence basefrequency="0.95" numoctaves="10" result="noise" type="fractalNoise"></feturbulence>
+<fedisplacementmap in="SourceGraphic" in2="noise" scale="20"></fedisplacementmap>
+</filter>
+</defs>
+</svg>
+<script>
+        // Menu Toggle
+        function toggleMenu() {
+            const drawer = document.getElementById('mobile-drawer');
+            drawer.classList.toggle('translate-y-full');
+            if (!drawer.classList.contains('translate-y-full')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Hero Video Delay
+        setTimeout(() => {
+            const vid = document.getElementById('hero-vid-container');
+            if(vid) vid.style.opacity = '1';
+        }, 2800);
+
+        // Chapter Selection Logic
+        const chapters = [
+            "https://res.cloudinary.com/dsdxaxkiz/image/upload/v1/01_udnber.png",
+            "https://res.cloudinary.com/dsdxaxkiz/image/upload/v1/02_pmvxxl.png",
+            "https://res.cloudinary.com/dsdxaxkiz/image/upload/v1/03_hcp3jc.png",
+            "https://res.cloudinary.com/dsdxaxkiz/image/upload/v1/04_get63z.png",
+            "https://res.cloudinary.com/dsdxaxkiz/image/upload/v1/05_kz1tyu.png"
+        ];
+
+        let currentChapter = 2;
+        let autoCycle;
+
+        function setChapter(index) {
+            currentChapter = index;
+            const items = document.querySelectorAll('.chapter-item');
+            const img = document.getElementById('chapter-active-img');
+            const container = document.getElementById('chapter-image-container');
+
+            // Update UI
+            items.forEach((item, i) => {
+                const arrow = item.querySelector('.material-symbols-outlined');
+                if (i === index) {
+                    item.classList.add('active', 'opacity-100');
+                    item.classList.remove('opacity-50');
+                    arrow.classList.remove('hidden');
+                    arrow.classList.add('block');
+                } else {
+                    item.classList.remove('active', 'opacity-100');
+                    item.classList.add('opacity-50');
+                    arrow.classList.add('hidden');
+                    arrow.classList.remove('block');
+                }
+            });
+
+            // Transition Image with Filter effect
+            container.style.filter = "url(#sand-dissolve) brightness(1.5) grayscale(1)";
+            container.style.opacity = "0.4";
+            
+            setTimeout(() => {
+                img.src = chapters[index];
+                container.style.filter = "none";
+                container.style.opacity = "1";
+            }, 400);
+
+            // Reset cycle timer on user interaction
+            clearInterval(autoCycle);
+            startAutoCycle();
+        }
+
+        function startAutoCycle() {
+            autoCycle = setInterval(() => {
+                currentChapter = (currentChapter + 1) % chapters.length;
+                setChapter(currentChapter);
+            }, 6000);
+        }
+
+        // Init
+        window.onload = () => {
+            startAutoCycle();
+        };
+
+        // Scroll Interactions
+        window.addEventListener('scroll', () => {
+            const scrollPos = window.scrollY;
+            const heroVid = document.querySelector('.hero-video');
+            if (heroVid) {
+                heroVid.style.transform = `translateY(${scrollPos * 0.2}px)`;
+            }
+        });
+    </script>
+</body></html>

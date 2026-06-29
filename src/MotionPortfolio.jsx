@@ -1,548 +1,1297 @@
-import React, { useEffect, useState, useRef } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import AnimatedBackground from "./AnimatedBackground"
-import { HoverMembers } from "./components/HoverMembers"
-import { HoverExpand } from "./components/HoverExpand"
-import { TextRoll } from "./components/TextRoll"
-import { ImageCursorTrail } from "./components/ImageCursorTrail"
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  lazy,
+  Suspense,
+} from "react"
+import { motion, useScroll, useTransform, AnimatePresence, useInView, useAnimation } from "framer-motion"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+import Preloader from "./components/Preloader"
 import ScrollReveal from "./components/ScrollReveal"
-import ScrollFloat from "./components/ScrollFloat"
-import Galaxy from "./components/Galaxy"
-import Particles from "./components/Particles"
-import RotatingText from "./components/RotatingText"
+import ThreeDPhotoCarousel from "./components/three-d-carousel"
+import { GradientHeading } from "./components/ui/gradient-heading"
+import { TextAnimate } from "./components/ui/text-animate"
+import LogoCarousel from "./components/ui/logo-carousel"
 
-const MotionPortfolio = () => {
-  const [activeSection, setActiveSection] = useState("hero")
-  const [scrollY, setScrollY] = useState(0)
+gsap.registerPlugin(ScrollTrigger)
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+// ─── Data ───────────────────────────────────────────────────────────────────
+
+const projects = [
+  {
+    id: "hollow-purple",
+    name: "Hollow Purple",
+    category: "CLOUD SECURITY",
+    tagline: "Adaptive Cloud Identity Attack Detection",
+    description:
+      "15-microservice pipeline that constructs live temporal identity interaction graphs from cloud event streams, with Merkle audit chains and FastAPI orchestration.",
+    metrics: ["15 Microservices", "10K events/sec", "GCP IAM"],
+    stack: ["Python", "FastAPI", "GCP IAM", "Docker", "Temporal Graphs"],
+    link: "hollowpurple.html",
+    github: "https://github.com/Tejaswanth2406/hollow-purple",
+    image: "Screenshot 2026-06-08 125511.png",
+  },
+  {
+    id: "hakari",
+    name: "HAKARI",
+    category: "AI / SIMULATION",
+    tagline: "Cognitive Simulation Engine",
+    description:
+      "Physics-inspired simulation grounded in entropy mechanics, Bayesian inference, and information theory — modeling emergent cognition.",
+    metrics: ["Entropy Physics", "Bayesian Core", "Information Theory"],
+    stack: ["JavaScript", "Node.js", "Bayesian Inference"],
+    link: "hakari.html",
+    github: "https://github.com/Tejaswanth2406/hakari",
+    image: "Screenshot 2026-06-07 230310.png",
+  },
+  {
+    id: "piria",
+    name: "PIRIA",
+    category: "AI RUNTIME",
+    tagline: "Physics-Inspired Relational Intelligence Architecture",
+    description:
+      "MVP runtime for persistent cognitive graphs using WAL journaling, CRDT-style merging, and physics-inspired relational intelligence.",
+    metrics: ["Persistent Graphs", "WAL Journaling", "CRDT Merging"],
+    stack: ["Rust", "Graph Runtime", "WAL"],
+    link: "piria.html",
+    github: "https://github.com/Tejaswanth2406/PIRIA",
+    image: "Screenshot 2026-06-03 104955.png",
+  },
+  {
+    id: "iot-sentinel",
+    name: "IoT Sentinel",
+    category: "NETWORK SECURITY",
+    tagline: "Wide-Area Network Security Scanner",
+    description:
+      "Unified Wireshark, Nmap and RustScan scanner with CVE correlation and industrial protocol detection at 10K packets per second.",
+    metrics: ["10K pps", "CVE Correlation", "Industrial Protocols"],
+    stack: ["Python", "Lua", "FastAPI", "Docker", "Nmap"],
+    link: "iot_sentinal.html",
+    github: "https://github.com/Tejaswanth2406/iot-sentinal",
+    image: "Screenshot 2026-06-03 104507.png",
+  },
+  {
+    id: "clu",
+    name: "CLU",
+    category: "LEGAL / AI",
+    tagline: "AI Legal Document Analyzer",
+    description:
+      "Severity-tagged analysis of ToS and Privacy Policies with plain-English summaries and risk scores powered by Anthropic's Claude.",
+    metrics: ["Risk Scoring", "ToS Analysis", "Claude API"],
+    stack: ["TypeScript", "React 18", "Anthropic API"],
+    link: "clu.html",
+    github: "https://github.com/Tejaswanth2406/CLU",
+    image: "Screenshot 2026-06-03 104248.png",
+  },
+  {
+    id: "mumcare",
+    name: "Mumcare AI",
+    category: "HEALTH / AI",
+    tagline: "AI Decision Engine for Caregivers",
+    description:
+      "Empathetic intent handling with grounded RAG retrieval and bilingual EN+AR support for maternal healthcare guidance.",
+    metrics: ["Bilingual EN+AR", "RAG Pipeline", "Empathetic AI"],
+    stack: ["FastAPI", "Claude 3", "RAG", "Langchain"],
+    link: "mumcare.html",
+    github: "https://github.com/Tejaswanth2406/Mumcare-AI-",
+    image: "Screenshot 2026-06-03 104542.png",
+  },
+]
+
+const experiences = [
+  {
+    role: "AI/ML Intern",
+    company: "MACSOF",
+    period: "May 2026 — Jul 2026",
+    type: "INTERNSHIP",
+    description:
+      "Advanced AI systems: multimodal orchestration, Retrieval-Augmented Generation, and MCP-based intelligent workflows. Contributing to cognitive simulation research.",
+    tags: ["RAG", "MCP", "Multimodal", "Agents"],
+  },
+  {
+    role: "Cybersecurity Intern",
+    company: "AISECT",
+    period: "Jun 2025 — Oct 2025",
+    type: "INTERNSHIP",
+    description:
+      "Network security, vulnerability assessment, threat monitoring, and incident response to support organizational cybersecurity posture.",
+    tags: ["Network Security", "Vulnerability Assessment", "Incident Response"],
+  },
+  {
+    role: "Vulnerability Researcher",
+    company: "HackerOne & Intigriti",
+    period: "Ongoing",
+    type: "INDEPENDENT",
+    description:
+      "Active in offensive security: reverse engineering, IAM challenges, responsible disclosure, and security tooling development.",
+    tags: ["Offensive Security", "IAM", "Reverse Engineering", "CVE Research"],
+  },
+]
+
+const achievements = [
+  {
+    title: "AI Agent Olympics Milan",
+    year: "2026",
+    label: "FINALIST",
+    description:
+      "Pitched context-aware AI agent with multimodal orchestration to expert judges and investors at Milan.",
+  },
+  {
+    title: "SIH 2024",
+    year: "2024",
+    label: "NATIONAL QUALIFIER",
+    description:
+      "Smart India Hackathon National Level. Cleared regional rounds, led team through national stage selection.",
+  },
+  {
+    title: "Cloud Hunting Games",
+    year: "2025",
+    label: "CERTIFICATE",
+    description: "Completed the cloud security CTF challenge with verified certificate.",
+    link: "https://www.cloudhuntinggames.com/certificate/exfilcola/db46a967-79f2-4c08-bc6b-1c2224fbc512",
+  },
+  {
+    title: "Cloud Security Championship",
+    year: "2026",
+    label: "LEADERBOARD",
+    description: "Ranked in the global cloud security championship leaderboard.",
+    link: "https://www.cloudsecuritychampionship.com/leaderboard?page=9",
+  },
+  {
+    title: "Wiz BigIAM Challenge",
+    year: "2026",
+    label: "FINISHER",
+    description: "Completed the BigIAM cloud identity and access management challenge.",
+    link: "https://bigiamchallenge.com/finisher/TBBXmPES",
+  },
+]
+
+const certifications = [
+  { name: "Fortinet Certified", date: "Apr 2026", image: "Screenshot 2026-06-03 104120.png" },
+  { name: "Anthropic MCP", date: "Apr 2026", image: "Screenshot 2026-06-03 104020.png" },
+  { name: "Oracle OCI Architect", date: "Dec 2025", image: "Screenshot 2026-06-03 104220.png" },
+  { name: "Cloud Hunting Games", date: "Jun 2026", image: "Screenshot 2026-06-02 232923.png", link: "https://www.cloudhuntinggames.com/certificate/exfilcola/db46a967-79f2-4c08-bc6b-1c2224fbc512" },
+  { name: "BigIAM Challenge", date: "Jun 2026", image: "Screenshot 2026-06-03 103916.png", link: "https://bigiamchallenge.com/finisher/TBBXmPES" },
+  { name: "Cloud Security Championship", date: "Jun 2026", image: "Screenshot 2026-06-03 103743.png", link: "https://www.cloudsecuritychampionship.com/leaderboard?page=9" },
+]
+
+const affiliations = [
+  { name: "PoetrySoup", role: "Published Poet", link: "https://www.poetrysoup.com/poems_poets/poems_by_poet.aspx?ID=194817" },
+  { name: "iNaturalist", role: "Naturalist Member", link: "https://www.inaturalist.org/people/tejaswanthsurisetty" },
+  { name: "Myma", role: "Visual Artist", link: "https://www.myma.art/artwork/cmpuu7f6p000lad2i7fbufalh" },
+  { name: "Loopgarden", role: "Music Artist", link: "https://loopgarden.io/the-study/" },
+]
+
+const skills = [
+  {
+    category: "PROGRAMMING",
+    items: ["Python", "JavaScript", "TypeScript", "Rust", "Java", "Lua", "HTML/CSS"],
+  },
+  {
+    category: "AI & ML",
+    items: ["LLMs & Agents", "RAG Systems", "MCP Servers", "Claude & GPT-4", "LangChain", "Vector DBs"],
+  },
+  {
+    category: "SECURITY",
+    items: ["Penetration Testing", "IAM & Cloud Security", "CVE Research", "Burp Suite", "Nmap & RustScan", "OWASP"],
+  },
+  {
+    category: "CLOUD",
+    items: ["GCP", "Oracle OCI", "Docker", "Kubernetes", "Terraform", "Vercel"],
+  },
+  {
+    category: "FRAMEWORKS",
+    items: ["React 18", "Next.js", "FastAPI", "Node.js", "Vite", "Framer Motion"],
+  },
+  {
+    category: "DEVOPS",
+    items: ["Git & GitHub Actions", "CI/CD Pipelines", "Microservices", "WebGL", "GSAP", "Three.js"],
+  },
+]
+
+// ─── Reusable Micro Components ───────────────────────────────────────────────
+
+function SectionLabel({ children }) {
+  return (
+    <p className="space-mono text-[10px] tracking-[0.4em] text-white/30 uppercase mb-6">
+      {children}
+    </p>
+  )
+}
+
+function Divider() {
+  return <div className="w-full h-px bg-white/5 my-0" />
+}
+
+function MagneticButton({ children, href, className, onClick, ...props }) {
+  const btnRef = useRef(null)
+
+  const handleMouseMove = useCallback((e) => {
+    const el = btnRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const x = e.clientX - rect.left - rect.width / 2
+    const y = e.clientY - rect.top - rect.height / 2
+    el.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`
   }, [])
 
-  const navigationItems = [
-    { name: "Home", href: "#hero", id: "hero" },
-    { name: "Stats", href: "#expertise", id: "expertise" },
-    { name: "Vault", href: "#projects", id: "projects" },
-    { name: "Lab", href: "#research", id: "research" },
-    { name: "Path", href: "#timeline", id: "timeline" },
-    { name: "Wins", href: "#achievements", id: "achievements" },
-    { name: "Contact", href: "#contact", id: "contact" },
-  ]
+  const handleMouseLeave = useCallback(() => {
+    if (btnRef.current) btnRef.current.style.transform = "translate(0,0)"
+  }, [])
 
-  const projectsData = [
-    { name: "Hollow Purple", category: "SECURITY", description: "Cloud IAM Detection", link: "hollowpurple.html", github: "https://github.com/Tejaswanth2406/hollow-purple" },
-    { name: "HAKARI", category: "AI/ML", description: "AI Research Engine", link: "hakari.html", github: "https://github.com/Tejaswanth2406/hakari" },
-    { name: "IOT Sentinel", category: "SECURITY", description: "Network Security Scanner", link: "iot_sentinal.html", github: "https://github.com/Tejaswanth2406/iot-sentinal" },
-    { name: "CLU", category: "LEGAL/AI", description: "Legal AI Analyzer", link: "clu.html", github: "https://github.com/Tejaswanth2406/CLU" },
-    { name: "PIRIA", category: "AI/RUNTIME", description: "Relational Intelligence Runtime", link: "piria.html", github: "https://github.com/Tejaswanth2406/PIRIA" },
-    { name: "Mumcare AI", category: "HEALTH/AI", description: "Health AI Decision Engine", link: "mumcare.html", github: "https://github.com/Tejaswanth2406/Mumcare-AI-" },
-  ]
-
-  const certifications = [
-    { name: "Cloud Hunting Games", date: "Jun 2026", link: "https://www.cloudhuntinggames.com/certificate/exfilcola/db46a967-79f2-4c08-bc6b-1c2224fbc512", image: "Screenshot 2026-06-02 232923.png" },
-    { name: "Cloud Security Championship", date: "2026", link: "https://www.cloudsecuritychampionship.com/leaderboard?page=9", image: "Screenshot 2026-06-03 103743.png" },
-    { name: "BigIAM Challenge", date: "2026", link: "https://bigiamchallenge.com/finisher/TBBXmPES", image: "Screenshot 2026-06-03 103916.png" },
-    { name: "LinkedIn Certifications", date: "Multiple", link: "https://www.linkedin.com/in/tejaswanth-surisetty-590322312/details/certifications/", image: "Screenshot 2026-06-03 104020.png" },
-    { name: "Fortinet Certified", date: "Apr 2026", link: "#", image: "Screenshot 2026-06-03 104120.png" },
-    { name: "Oracle Architect", date: "Dec 2025", link: "#", image: "Screenshot 2026-06-03 104220.png" },
-  ]
+  const Tag = href ? "a" : "button"
 
   return (
-    <div className="relative w-full overflow-hidden bg-black text-white">
-      <AnimatedBackground />
+    <Tag
+      ref={btnRef}
+      href={href}
+      onClick={onClick}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`inline-flex items-center gap-2 transition-all duration-300 ${className}`}
+      style={{ transition: "transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)" }}
+      {...props}
+    >
+      {children}
+    </Tag>
+  )
+}
 
-      {/* Navigation */}
-      <motion.nav
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="fixed top-0 w-full z-50 flex justify-between items-center px-10 py-8 mix-blend-difference"
-      >
-        <motion.div
-          className="text-2xl font-black tracking-tighter"
-          whileHover={{ scale: 1.1 }}
-        >
-          TJS.
-        </motion.div>
-        <div className="space-mono text-[8px] tracking-[0.4em] uppercase opacity-30 flex gap-10">
-          {navigationItems.map((item) => (
-            <motion.a
-              key={item.id}
-              href={item.href}
-              className="hover:opacity-100 transition-opacity"
-              whileHover={{ scale: 1.1 }}
-            >
-              {item.name}
-            </motion.a>
-          ))}
-        </div>
-      </motion.nav>
+function TiltCard({ children, className }) {
+  const cardRef = useRef(null)
 
-      {/* Hero Section */}
-      <section
-        id="hero"
-        className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
-      >
-        <div className="absolute inset-0 z-0">
-          <Galaxy 
-            density={0.8} 
-            transparent={true} 
-            starSpeed={0.3}
-            glowIntensity={0.2}
-            mouseInteraction={true}
-          />
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.3 }}
-          className="text-center max-w-4xl mx-auto px-6 space-y-8 relative z-10"
-        >
-          <motion.h1
-            className="text-7xl md:text-9xl font-black tracking-tighter leading-none italic playfair"
-            style={{
-              backgroundImage: "linear-gradient(to right, #ffffff, #ffffff/70)",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            <TextRoll center>TEJASWANTH</TextRoll>
-          </motion.h1>
-          
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-            className="text-xl md:text-2xl text-white/60 space-mono tracking-wide"
-          >
-            Security Engineer × AI Systems × Cloud Architecture
-          </motion.p>
+  const handleMouseMove = useCallback((e) => {
+    const el = cardRef.current
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width - 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5
+    el.style.transform = `perspective(1000px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) scale(1.01)`
+  }, [])
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
-            className="flex justify-center gap-6 pt-8"
-          >
-            <motion.a
-              href="mailto:tejaswanthsurisetty@gmail.com"
-              whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
-              className="px-8 py-4 border border-white/20 rounded-full hover:border-white/50 transition-colors"
-            >
-              Get in Touch
-            </motion.a>
-            <motion.a
-              href="hire_me.html"
-              whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
-              className="px-8 py-4 border border-white/20 rounded-full hover:border-white/50 transition-colors"
-            >
-              Hire Me
-            </motion.a>
-          </motion.div>
-        </motion.div>
-      </section>
+  const handleMouseLeave = useCallback(() => {
+    if (cardRef.current)
+      cardRef.current.style.transform = "perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)"
+  }, [])
 
-      {/* Expertise Stats */}
-      <section id="expertise" className="relative py-32 px-6 md:px-20">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="max-w-6xl mx-auto"
-        >
-          <ScrollFloat
-            animationDuration={1.5}
-            ease="back.inOut(2)"
-            scrollStart="center bottom+=50%"
-            scrollEnd="bottom bottom-=40%"
-            stagger={0.03}
-            containerClassName="text-6xl font-black mb-24 tracking-tighter italic playfair"
-          >
-            EXPERTISE
-          </ScrollFloat>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {[
-              { value: "20+", label: "PROJECTS", desc: "Production systems" },
-              { value: "5+", label: "SECURITY AREAS", desc: "IAM, Cloud, Vulns" },
-              { value: "3", label: "PUBLICATIONS", desc: "Research & findings" },
-              { value: "AI", label: "FOCUS", desc: "LLMs & Agents" },
-            ].map((stat, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all"
-              >
-                <div className="text-5xl font-black mb-4">{stat.value}</div>
-                <p className="space-mono text-xs opacity-50 mb-2">{stat.label}</p>
-                <p className="text-white/40 text-sm">{stat.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Skills Matrix */}
-      <section id="skills" className="relative py-32 px-6 md:px-20">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="max-w-6xl mx-auto"
-        >
-          <ScrollReveal 
-            baseOpacity={0.05}
-            enableBlur={true}
-            blurStrength={3}
-            containerClassName="text-6xl font-black mb-24 tracking-tighter italic playfair text-right"
-            textClassName=""
-          >
-            TOOLKIT
-          </ScrollReveal>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {[
-              { title: "SECURITY", skills: ["Cloud IAM Analysis", "Vuln Research", "Offensive Security", "Network Scanning", "Pen Testing"] },
-              { title: "AI/ML", skills: ["LLM Systems", "RAG Pipelines", "Agentic Workflows", "Multimodal AI", "Prompt Eng"] },
-              { title: "ENGINEERING", skills: ["Python/FastAPI", "React/TypeScript", "Docker/K8s", "Terraform", "Node.js"] },
-              { title: "CLOUD", skills: ["GCP & OCI", "IAM Policies", "Infra Code", "Microservices", "API Design"] },
-            ].map((section, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all"
-              >
-                <h3 className="space-mono text-xs opacity-20 mb-6">{section.title}</h3>
-                <ul className="space-y-3 text-sm font-bold">
-                  {section.skills.map((skill, j) => (
-                    <li key={j} className="text-white/80 hover:text-white transition">{skill}</li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Interactive Expertise Areas */}
-      <HoverMembers />
-
-      {/* Projects Section */}
-      <section id="projects" className="relative py-32 px-6 md:px-20">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="max-w-6xl mx-auto"
-        >
-          <h2 className="text-6xl font-black mb-24 tracking-tighter italic playfair">VAULT</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projectsData.map((project, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="group"
-              >
-                <motion.a
-                  href={project.link}
-                  whileHover={{ scale: 1.05 }}
-                  className="block p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all cursor-pointer"
-                >
-                  <span className="space-mono text-xs opacity-20 mb-4 block">{project.category}</span>
-                  <h3 className="text-3xl font-black mb-4">{project.name}</h3>
-                  <p className="text-white/40 text-lg mb-6">{project.description}</p>
-                  <div className="flex gap-3">
-                    <span className="px-4 py-2 border border-white/10 rounded-full text-xs space-mono opacity-50 hover:opacity-100 transition-opacity">
-                      View Project
-                    </span>
-                    {project.github && (
-                      <motion.a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="px-4 py-2 border border-white/10 rounded-full text-xs space-mono opacity-50 hover:opacity-100 transition-opacity"
-                      >
-                        GitHub
-                      </motion.a>
-                    )}
-                  </div>
-                </motion.a>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Interactive Gallery */}
-      <section className="relative py-32 px-6 md:px-20 bg-white/[0.01]">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="max-w-6xl mx-auto"
-        >
-          <h3 className="text-3xl font-black mb-16 text-center italic playfair">INTERACTIVE SHOWCASE</h3>
-          <HoverExpand className="bg-black/20 p-8 rounded-3xl" />
-        </motion.div>
-      </section>
-
-      {/* Research Lab */}
-      <section id="research" className="relative py-32 px-6 md:px-20 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Particles 
-            particleCount={100}
-            particleSpread={8}
-            speed={0.05}
-            particleBaseSize={80}
-            alphaParticles={true}
-          />
-        </div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="max-w-6xl mx-auto relative z-10"
-        >
-          <h2 className="text-6xl font-black mb-24 tracking-tighter italic playfair">RESEARCH LAB</h2>
-          <div className="space-y-8">
-            {[
-              {
-                title: "Detection Engineering",
-                desc: "Graph modeling for privilege escalation and lateral movement detection.",
-                tags: ["GCP IAM", "Graphs", "Audit Replay"],
-              },
-              {
-                title: "AI Risk Analysis",
-                desc: "Readable LLM workflows for high-stakes risk assessment and scoring.",
-                tags: ["LLMs", "RAG", "Risk Scoring"],
-              },
-              {
-                title: "Security Product Design",
-                desc: "Complex intelligence shaped into calm, inspectable interfaces.",
-                tags: ["React", "FastAPI", "UX Systems"],
-              },
-            ].map((research, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all backdrop-blur-sm"
-              >
-                <h3 className="text-2xl font-black mb-4">{research.title}</h3>
-                <p className="text-white/40 text-lg mb-6">{research.desc}</p>
-                <div className="flex gap-2 flex-wrap">
-                  {research.tags.map((tag, j) => (
-                    <span key={j} className="px-3 py-1 border border-white/10 rounded-full text-xs space-mono opacity-50">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Timeline / Path */}
-      <section id="timeline" className="relative py-32 px-6 md:px-20">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="max-w-6xl mx-auto"
-        >
-          <h2 className="text-6xl font-black mb-24 tracking-tighter italic playfair text-right">EDUCATION</h2>
-          <div className="space-y-12">
-            {[
-              { year: "2023 — PRESENT", title: "B.Tech Computer Science", institution: "GITAM University" },
-              { year: "2023", title: "Intermediate (MPC)", institution: "ASCENT Junior College" },
-            ].map((edu, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.2 }}
-                viewport={{ once: true }}
-                className="border-b border-white/5 pb-12 group hover:border-white/10 transition-all"
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="space-mono text-xs opacity-30 mb-3">{edu.year}</p>
-                    <h3 className="text-4xl font-black group-hover:italic transition-all">{edu.title}</h3>
-                  </div>
-                  <span className="text-lg opacity-10">{edu.institution}</span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Achievements */}
-      <section id="achievements" className="relative py-32 px-6 md:px-20">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="max-w-6xl mx-auto"
-        >
-          <h2 className="text-6xl font-black mb-24 tracking-tighter italic playfair">WINS & CREDENTIALS</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-            {[
-              { title: "AI Agent Olympics Milan", year: "2026", desc: "Hackathon Finalist" },
-              { title: "SIH 2024 National Stage", year: "2024", desc: "Smart India Hackathon" },
-              { title: "Cloud Security Competitions", year: "2025-2026", desc: "Active Participant" },
-              { title: "Vulnerability Researcher", year: "Ongoing", desc: "HackerOne & Intigriti" },
-            ].map((achievement, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 transition-all"
-              >
-                <h3 className="text-xl font-black mb-2">{achievement.title}</h3>
-                <p className="text-white/40 text-sm space-mono mb-3">{achievement.year} · {achievement.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          <h3 className="text-3xl font-black mb-8">Verified Certifications</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {certifications.map((cert, i) => (
-              <motion.a
-                key={i}
-                href={cert.link}
-                target={cert.link.startsWith("http") ? "_blank" : "_self"}
-                rel={cert.link.startsWith("http") ? "noopener noreferrer" : ""}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.3)" }}
-                transition={{ delay: i * 0.05 }}
-                viewport={{ once: true }}
-                className="group p-0 border border-white/10 rounded-2xl overflow-hidden bg-white/[0.01] hover:border-white/20 transition-all cursor-pointer"
-              >
-                {cert.image && (
-                  <div className="w-full h-48 overflow-hidden bg-black/20">
-                    <img 
-                      src={cert.image} 
-                      alt={cert.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                )}
-                <div className="p-4">
-                  <p className="font-black text-sm">{cert.name}</p>
-                  <p className="text-white/40 text-xs space-mono mt-2">{cert.date}</p>
-                </div>
-              </motion.a>
-            ))}
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Contact */}
-      <section id="contact" className="relative min-h-screen flex flex-col items-center justify-center py-32 px-6">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center max-w-2xl mx-auto"
-        >
-          <h2 className="text-[14vw] font-black tracking-tighter playfair italic leading-none mb-16">
-            <TextRoll center>INITIATE</TextRoll>
-          </h2>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            viewport={{ once: true }}
-            className="mb-16"
-          >
-            <p className="space-mono text-xs opacity-30 mb-6">PRIMARY CONTACT</p>
-            <motion.a
-              href="mailto:tejaswanthsurisetty@gmail.com"
-              className="text-4xl md:text-6xl font-light hover:italic transition-all duration-500 underline underline-offset-[20px] decoration-white/10 block"
-              whileHover={{ scale: 1.05, color: "#ffffff" }}
-            >
-              tejaswanthsurisetty@gmail.com
-            </motion.a>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            viewport={{ once: true }}
-            className="mb-16"
-          >
-            <p className="space-mono text-xs opacity-30 mb-6">EXTERNAL LINKS</p>
-            <div className="grid grid-cols-3 gap-4 max-w-sm mx-auto">
-              <motion.a
-                href="https://github.com/Tejaswanth2406"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.3)" }}
-                className="p-4 border border-white/10 rounded-lg opacity-40 hover:opacity-100 transition-all font-black"
-              >
-                GitHub
-              </motion.a>
-              <motion.a
-                href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.3)" }}
-                className="p-4 border border-white/10 rounded-lg opacity-40 hover:opacity-100 transition-all font-black"
-              >
-                LinkedIn
-              </motion.a>
-              <motion.a
-                href="hire_me.html"
-                whileHover={{ scale: 1.05, borderColor: "rgba(255,255,255,0.3)" }}
-                className="p-4 border border-white/10 rounded-lg opacity-40 hover:opacity-100 transition-all font-black"
-              >
-                Hire Me
-              </motion.a>
-            </div>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            viewport={{ once: true }}
-            className="mt-16 space-mono text-[9px] opacity-10 tracking-[1em] uppercase"
-          >
-            2026 TEJASWANTH SURISETTY • MOTION_PORTFOLIO
-          </motion.p>
-        </motion.div>
-      </section>
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={className}
+      style={{ transition: "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)", transformStyle: "preserve-3d" }}
+    >
+      {children}
     </div>
   )
 }
 
-export default MotionPortfolio
+// ─── Nav ─────────────────────────────────────────────────────────────────────
+
+function Navbar({ visible }) {
+  return (
+    <motion.nav
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: visible ? 0 : -80, opacity: visible ? 1 : 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-8 md:px-16 py-5 glass border-b border-white/5"
+    >
+      <a href="#hero" className="space-mono text-sm font-bold tracking-wider text-white">
+        TJS.
+      </a>
+      <div className="hidden md:flex items-center gap-8">
+        {["Work", "About", "Experience", "Skills", "Contact"].map((item) => (
+          <a
+            key={item}
+            href={`#${item.toLowerCase()}`}
+            className="space-mono text-[10px] tracking-[0.3em] text-white/40 hover:text-white transition-colors uppercase"
+          >
+            {item}
+          </a>
+        ))}
+      </div>
+      <MagneticButton
+        href="hire_me.html"
+        className="px-5 py-2 border border-white/20 rounded-full space-mono text-[10px] tracking-widest text-white/70 hover:text-white hover:border-white/50"
+      >
+        HIRE ME
+      </MagneticButton>
+    </motion.nav>
+  )
+}
+
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+
+function Hero({ onScrolled }) {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] })
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"])
+  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.92])
+
+  useEffect(() => {
+    const unsub = scrollYProgress.on("change", (v) => {
+      if (v > 0.15) onScrolled?.(true)
+      else onScrolled?.(false)
+    })
+    return unsub
+  }, [scrollYProgress, onScrolled])
+
+  return (
+    <section
+      id="hero"
+      ref={ref}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+    >
+      {/* Layered background */}
+      <div className="absolute inset-0 z-0">
+        {/* Radial gradient */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(255,255,255,0.06),transparent)]" />
+        {/* Grid */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
+            backgroundSize: "80px 80px",
+          }}
+        />
+      </div>
+
+      <motion.div
+        style={{ y, opacity, scale }}
+        className="relative z-10 text-center px-6 max-w-6xl mx-auto w-full"
+      >
+        {/* Label */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="flex justify-center mb-10"
+        >
+          <div className="flex items-center gap-3 px-4 py-2 border border-white/10 rounded-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+            <span className="space-mono text-[10px] tracking-[0.4em] text-white/40 uppercase">
+              AVAILABLE FOR WORK — 2026
+            </span>
+          </div>
+        </motion.div>
+
+        {/* Main heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="text-[clamp(3rem,12vw,10rem)] font-black leading-[0.9] tracking-[-0.04em] playfair mb-8"
+        >
+          <span className="gradient-text italic">Tejaswanth</span>
+          <br />
+          <span className="text-white/80">Surisetty</span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="text-lg md:text-xl text-white/40 font-light max-w-2xl mx-auto mb-14 leading-relaxed"
+        >
+          Security Engineer · AI Systems Architect · Vulnerability Researcher
+          <br />
+          <span className="text-white/20 text-sm">4th Year CSE · GITAM University</span>
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+          className="flex flex-wrap gap-4 justify-center mb-16"
+        >
+          <MagneticButton
+            href="#work"
+            className="px-8 py-4 bg-white text-black font-bold rounded-full text-sm hover:bg-white/90"
+          >
+            View Work
+          </MagneticButton>
+          <MagneticButton
+            href="mailto:tejaswanthsurisetty@gmail.com"
+            className="px-8 py-4 border border-white/20 rounded-full text-sm text-white/80 hover:text-white hover:border-white/50"
+          >
+            Get in Touch
+          </MagneticButton>
+        </motion.div>
+
+        {/* Tech badges */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1 }}
+          className="flex flex-wrap gap-2 justify-center"
+        >
+          {["Python", "React", "FastAPI", "GSAP", "GCP", "Claude API", "Docker"].map((t) => (
+            <span
+              key={t}
+              className="px-3 py-1 border border-white/10 rounded-full space-mono text-[10px] text-white/30 tracking-wider"
+            >
+              {t}
+            </span>
+          ))}
+        </motion.div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+      >
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-px h-12 bg-gradient-to-b from-white/30 to-transparent"
+        />
+        <span className="space-mono text-[9px] tracking-[0.4em] text-white/20 uppercase">SCROLL</span>
+      </motion.div>
+    </section>
+  )
+}
+
+// ─── Philosophy ───────────────────────────────────────────────────────────────
+
+function PhilosophySection() {
+  return (
+    <section id="philosophy" className="relative py-32 md:py-48 px-6 flex items-center justify-center min-h-[60vh]">
+      <div className="max-w-4xl mx-auto text-center">
+        <SectionLabel>PHILOSOPHY</SectionLabel>
+        <ScrollReveal
+          baseOpacity={0}
+          enableBlur={true}
+          baseRotation={3}
+          blurStrength={6}
+          containerClassName="text-3xl md:text-5xl font-light playfair italic leading-relaxed text-white/80"
+        >
+          Technology should feel invisible. Intelligence should feel natural. Security should never be an afterthought.
+        </ScrollReveal>
+      </div>
+    </section>
+  )
+}
+
+// ─── Featured Work ────────────────────────────────────────────────────────────
+
+function FeaturedWork() {
+  const featured = projects.slice(0, 3)
+
+  return (
+    <section id="work" className="relative py-24 px-6 md:px-16">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex items-end justify-between mb-16">
+          <div>
+            <SectionLabel>FEATURED WORK</SectionLabel>
+            <GradientHeading size="xl" weight="bold" as="h2">
+              Selected Projects
+            </GradientHeading>
+          </div>
+          <a
+            href="#projects"
+            className="hidden md:flex items-center gap-2 space-mono text-[10px] tracking-widest text-white/30 hover:text-white transition-colors uppercase"
+          >
+            View All <span className="text-lg">→</span>
+          </a>
+        </div>
+
+        <div className="space-y-px">
+          {featured.map((project, i) => (
+            <React.Fragment key={project.id}>
+              <TiltCard className="group">
+                <motion.div
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 py-10 px-6 hover:bg-white/[0.02] transition-colors rounded-2xl"
+                >
+                  <div className="flex-1 space-y-3">
+                    <div className="flex items-center gap-4">
+                      <span className="space-mono text-[10px] tracking-widest text-white/20">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="space-mono text-[10px] tracking-widest text-white/30 uppercase">
+                        {project.category}
+                      </span>
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-black tracking-tight group-hover:italic transition-all duration-300">
+                      {project.name}
+                    </h3>
+                    <p className="text-white/40 text-base leading-relaxed max-w-xl">
+                      {project.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {project.stack.slice(0, 4).map((t) => (
+                        <span
+                          key={t}
+                          className="px-3 py-1 border border-white/10 rounded-full space-mono text-[10px] text-white/30"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 md:flex-col md:items-end">
+                    <a
+                      href={project.link}
+                      className="px-6 py-3 bg-white text-black font-bold rounded-full text-xs hover:bg-white/90 transition-colors"
+                    >
+                      View Project
+                    </a>
+                    {project.github && (
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-6 py-3 border border-white/20 rounded-full text-xs text-white/60 hover:text-white hover:border-white/50 transition-colors"
+                      >
+                        GitHub →
+                      </a>
+                    )}
+                  </div>
+                </motion.div>
+              </TiltCard>
+              {i < featured.length - 1 && <Divider />}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── About ───────────────────────────────────────────────────────────────────
+
+function AboutSection() {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-100px 0px" })
+
+  return (
+    <section id="about" ref={ref} className="relative py-24 md:py-40 px-6 md:px-16">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
+        {/* Left: portrait placeholder with dither styling */}
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-white/[0.03] border border-white/10 group"
+        >
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center space-y-4">
+              <p className="space-mono text-[10px] tracking-[0.4em] text-white/20">TEJASWANTH</p>
+              <div className="text-8xl font-black text-white/5 playfair italic">TJS</div>
+              <p className="space-mono text-[10px] tracking-widest text-white/15">GITAM · CSE · 2026</p>
+            </div>
+          </div>
+          {/* Grid overlay */}
+          <div
+            className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.07] transition-opacity"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)",
+              backgroundSize: "40px 40px",
+            }}
+          />
+          <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="absolute bottom-6 left-6">
+            <p className="space-mono text-[10px] tracking-widest text-white/40">4th Year CSE</p>
+            <p className="space-mono text-[10px] tracking-widest text-white/20">GITAM University</p>
+          </div>
+        </motion.div>
+
+        {/* Right: story */}
+        <motion.div
+          initial={{ opacity: 0, x: 40 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          className="space-y-10"
+        >
+          <div>
+            <SectionLabel>ABOUT</SectionLabel>
+            <GradientHeading size="lg" weight="bold" as="h2" className="mb-6">
+              Building at the intersection of AI & Security
+            </GradientHeading>
+            <p className="text-white/50 text-lg leading-relaxed">
+              I'm a 4th Year CSE student at GITAM University, Visakhapatnam, obsessively focused on LLMs, RAG pipelines, cloud security, and vulnerability research. I build systems that are both intelligent and secure.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            {[
+              { label: "EDUCATION", value: "B.Tech CSE · GITAM University · 2023–Present" },
+              { label: "FOCUS", value: "AI Systems · Cloud Security · Vulnerability Research" },
+              { label: "INTERESTS", value: "Cognitive AI · Entropy Physics · Red Teaming · Poetry" },
+              { label: "VISION", value: "Secure, intelligent systems that amplify human potential" },
+            ].map(({ label, value }) => (
+              <div key={label} className="flex gap-8 py-4 border-b border-white/5">
+                <span className="space-mono text-[10px] tracking-widest text-white/25 w-28 flex-shrink-0 pt-1">
+                  {label}
+                </span>
+                <span className="text-white/70 text-sm leading-relaxed">{value}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex gap-4 flex-wrap">
+            <MagneticButton
+              href="https://github.com/Tejaswanth2406"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3 border border-white/20 rounded-full text-sm text-white/60 hover:text-white hover:border-white/50 transition-colors space-mono text-xs tracking-widest"
+            >
+              GITHUB →
+            </MagneticButton>
+            <MagneticButton
+              href="https://www.linkedin.com/in/tejaswanth-surisetty-590322312/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3 border border-white/20 rounded-full text-sm text-white/60 hover:text-white hover:border-white/50 transition-colors space-mono text-xs tracking-widest"
+            >
+              LINKEDIN →
+            </MagneticButton>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Education ────────────────────────────────────────────────────────────────
+
+function EducationSection() {
+  return (
+    <section id="education" className="relative py-24 px-6 md:px-16 bg-white/[0.01]">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>EDUCATION</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-16">
+          Academic Path
+        </GradientHeading>
+        <div className="space-y-px">
+          {[
+            {
+              period: "2023 — Present",
+              degree: "B.Tech Computer Science & Engineering",
+              institution: "GITAM University, Visakhapatnam",
+              detail: "Focus: AI, LLMs, Cloud Security, Cybersecurity",
+            },
+            {
+              period: "2021 — 2023",
+              degree: "Intermediate (MPC)",
+              institution: "ASCENT Junior College, Visakhapatnam",
+              detail: "Mathematics, Physics, Chemistry · 844/940 (~89.8%)",
+            },
+          ].map((edu, i) => (
+            <React.Fragment key={i}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.7 }}
+                className="group py-10 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-white/[0.02] px-4 rounded-2xl transition-colors"
+              >
+                <div className="space-y-2">
+                  <p className="space-mono text-[10px] tracking-widest text-white/25">{edu.period}</p>
+                  <h3 className="text-2xl md:text-3xl font-black tracking-tight group-hover:italic transition-all duration-300">
+                    {edu.degree}
+                  </h3>
+                  <p className="text-white/40">{edu.detail}</p>
+                </div>
+                <p className="text-white/30 text-right md:text-right md:max-w-[200px]">{edu.institution}</p>
+              </motion.div>
+              {i < 1 && <Divider />}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Experience ───────────────────────────────────────────────────────────────
+
+function ExperienceSection() {
+  const lineRef = useRef(null)
+
+  useEffect(() => {
+    if (!lineRef.current) return
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        lineRef.current,
+        { scaleY: 0, transformOrigin: "top center" },
+        {
+          scaleY: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: lineRef.current,
+            start: "top 70%",
+            end: "bottom 30%",
+            scrub: 1,
+          },
+        }
+      )
+    })
+    return () => ctx.revert()
+  }, [])
+
+  return (
+    <section id="experience" className="relative py-24 px-6 md:px-16">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>EXPERIENCE</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-16">
+          Career Timeline
+        </GradientHeading>
+
+        <div className="relative pl-8 md:pl-16">
+          {/* Timeline line */}
+          <div className="absolute left-0 md:left-4 top-2 bottom-2 w-px bg-white/5">
+            <div ref={lineRef} className="absolute inset-0 bg-white/30 origin-top" />
+          </div>
+
+          <div className="space-y-16">
+            {experiences.map((exp, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-50px 0px" }}
+                transition={{ delay: i * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="relative group"
+              >
+                {/* Timeline dot */}
+                <div className="absolute -left-9 md:-left-[4.5rem] top-1.5 w-2.5 h-2.5 rounded-full bg-white/20 border border-white/40 group-hover:bg-white group-hover:scale-125 transition-all duration-300" />
+
+                <div className="space-y-3">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="px-3 py-1 border border-white/15 rounded-full space-mono text-[9px] tracking-widest text-white/40 uppercase">
+                      {exp.type}
+                    </span>
+                    <span className="space-mono text-[10px] text-white/25">{exp.period}</span>
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-black tracking-tight group-hover:italic transition-all duration-300">
+                    {exp.role}
+                  </h3>
+                  <p className="text-white/40 font-semibold">{exp.company}</p>
+                  <p className="text-white/40 leading-relaxed max-w-2xl">{exp.description}</p>
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {exp.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1 bg-white/[0.05] rounded-full space-mono text-[10px] text-white/40"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Skills ───────────────────────────────────────────────────────────────────
+
+function SkillsSection() {
+  return (
+    <section id="skills" className="relative py-24 px-6 md:px-16 bg-white/[0.01]">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>INTELLIGENCE</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-8">
+          Skills & Arsenal
+        </GradientHeading>
+
+        {/* Logo Carousel */}
+        <div className="relative mb-16 -mx-6 md:-mx-16 overflow-hidden">
+          <LogoCarousel />
+        </div>
+
+        {/* Skill grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {skills.map((skillGroup, i) => (
+            <motion.div
+              key={skillGroup.category}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.6 }}
+              className="p-6 border border-white/5 rounded-2xl bg-white/[0.01] hover:border-white/15 hover:bg-white/[0.03] transition-all group"
+            >
+              <p className="space-mono text-[10px] tracking-[0.4em] text-white/30 uppercase mb-5">
+                {skillGroup.category}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {skillGroup.items.map((skill, j) => (
+                  <motion.span
+                    key={skill}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.06 + j * 0.04, duration: 0.4 }}
+                    className="px-3 py-1.5 bg-white/[0.05] hover:bg-white/10 border border-white/10 hover:border-white/25 rounded-full text-xs text-white/60 hover:text-white transition-all cursor-default"
+                  >
+                    {skill}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── All Projects ─────────────────────────────────────────────────────────────
+
+function ProjectsSection() {
+  return (
+    <section id="projects" className="relative py-24 px-6 md:px-16">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>PROJECT VAULT</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-16">
+          All Projects
+        </GradientHeading>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {projects.map((project, i) => (
+            <TiltCard key={project.id} className="group h-full">
+              <motion.div
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.07, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="h-full flex flex-col p-8 border border-white/5 rounded-3xl bg-white/[0.01] hover:border-white/20 hover:bg-white/[0.03] transition-all"
+              >
+                {/* Project image */}
+                {project.image && (
+                  <div className="w-full h-40 rounded-xl overflow-hidden mb-6 bg-white/5">
+                    <img
+                      src={project.image}
+                      alt={project.name}
+                      className="w-full h-full object-cover opacity-40 group-hover:opacity-70 transition-opacity duration-500 mix-blend-screen"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="space-mono text-[10px] tracking-widest text-white/25 uppercase">{project.category}</span>
+                  <span className="space-mono text-white/10">·</span>
+                  <span className="space-mono text-[10px] text-white/15">{String(i + 1).padStart(2, "0")}</span>
+                </div>
+                <h3 className="text-2xl font-black tracking-tight mb-3 group-hover:italic transition-all duration-300">
+                  {project.name}
+                </h3>
+                <p className="text-sm text-white/40 leading-relaxed mb-6 flex-grow">{project.description}</p>
+                <div className="flex flex-wrap gap-1.5 mb-6">
+                  {project.stack.map((t) => (
+                    <span key={t} className="px-2.5 py-1 border border-white/10 rounded-full space-mono text-[9px] text-white/30">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex gap-3">
+                  <a
+                    href={project.link}
+                    className="px-4 py-2 bg-white text-black font-bold rounded-full text-xs hover:bg-white/90 transition-colors"
+                  >
+                    View →
+                  </a>
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 border border-white/20 rounded-full text-xs text-white/50 hover:text-white hover:border-white/50 transition-colors"
+                    >
+                      GitHub
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            </TiltCard>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Research ─────────────────────────────────────────────────────────────────
+
+function ResearchSection() {
+  const topics = [
+    { title: "Cloud Security & IAM", desc: "Identity and Access Management on GCP & OCI. Privilege escalation paths, audit logging, and temporal graph-based anomaly detection." },
+    { title: "Vulnerability Research", desc: "Active on HackerOne and Intigriti. Offensive security, responsible disclosure, and CVE analysis across web and network attack surfaces." },
+    { title: "Reverse Engineering", desc: "Binary analysis, firmware unpacking, and protocol analysis for IoT and industrial control systems." },
+    { title: "AI Red Teaming", desc: "Adversarial prompt engineering, jailbreaking, and model robustness evaluation for LLM-based systems." },
+    { title: "CTF & Competitions", desc: "Cloud Hunting Games, BigIAM Challenge, Wiz Security Championship. Placed globally in cloud security challenges." },
+    { title: "AI Safety Research", desc: "Exploring alignment, interpretability, and safe deployment patterns for autonomous AI agents in production." },
+  ]
+
+  return (
+    <section id="research" className="relative py-24 px-6 md:px-16 bg-white/[0.01]">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>RESEARCH & SECURITY</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-16">
+          Research Areas
+        </GradientHeading>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5 rounded-3xl overflow-hidden">
+          {topics.map((topic, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.06, duration: 0.6 }}
+              className="p-8 bg-black hover:bg-white/[0.025] transition-colors group"
+            >
+              <div className="flex items-start gap-4">
+                <span className="space-mono text-[9px] text-white/20 mt-1 flex-shrink-0">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="space-y-2">
+                  <h3 className="font-black text-lg group-hover:italic transition-all duration-300">
+                    {topic.title}
+                  </h3>
+                  <p className="text-white/40 text-sm leading-relaxed">{topic.desc}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Gallery ─────────────────────────────────────────────────────────────────
+
+function GallerySection() {
+  return (
+    <section id="gallery" className="relative py-24 px-6 md:px-16">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>GALLERY</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-12">
+          Screenshots & Credentials
+        </GradientHeading>
+        <div className="border border-white/5 rounded-3xl overflow-hidden bg-white/[0.01] p-4">
+          <ThreeDPhotoCarousel />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Achievements ─────────────────────────────────────────────────────────────
+
+function AchievementsSection() {
+  return (
+    <section id="achievements" className="relative py-24 px-6 md:px-16 bg-white/[0.01]">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>ACHIEVEMENTS</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-16">
+          Wins & Recognition
+        </GradientHeading>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {achievements.map((ach, i) => (
+            <TiltCard key={i}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.6 }}
+                className="h-full p-8 border border-white/5 rounded-2xl bg-black hover:border-white/20 hover:bg-white/[0.03] transition-all group"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <span className="px-3 py-1 border border-white/20 rounded-full space-mono text-[9px] tracking-widest text-white/50 uppercase">
+                    {ach.label}
+                  </span>
+                  <span className="space-mono text-[10px] text-white/20">{ach.year}</span>
+                </div>
+                <h3 className="text-xl font-black mb-3 group-hover:italic transition-all duration-300">
+                  {ach.title}
+                </h3>
+                <p className="text-white/40 text-sm leading-relaxed">{ach.description}</p>
+                {ach.link && (
+                  <a
+                    href={ach.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 mt-4 space-mono text-[10px] text-white/30 hover:text-white transition-colors tracking-widest"
+                  >
+                    VERIFY →
+                  </a>
+                )}
+              </motion.div>
+            </TiltCard>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Certifications ───────────────────────────────────────────────────────────
+
+function CertificationsSection() {
+  const [hovered, setHovered] = useState(null)
+
+  return (
+    <section id="certifications" className="relative py-24 px-6 md:px-16">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>CERTIFICATIONS</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-16">
+          Verified Credentials
+        </GradientHeading>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {certifications.map((cert, i) => (
+            <motion.a
+              key={i}
+              href={cert.link || "#"}
+              target={cert.link ? "_blank" : "_self"}
+              rel={cert.link ? "noopener noreferrer" : ""}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.07, duration: 0.6 }}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+              className="group border border-white/5 rounded-2xl overflow-hidden hover:border-white/20 transition-all block"
+            >
+              {/* Image with dither-like effect */}
+              <div className="relative h-44 bg-white/[0.02] overflow-hidden">
+                <img
+                  src={cert.image}
+                  alt={cert.name}
+                  className={`w-full h-full object-cover transition-all duration-500 ${
+                    hovered === i
+                      ? "opacity-80 filter-none scale-105"
+                      : "opacity-30 grayscale scale-100"
+                  }`}
+                  loading="lazy"
+                />
+                {hovered !== i && (
+                  <div className="absolute inset-0 mix-blend-overlay bg-black/40" />
+                )}
+              </div>
+              <div className="p-5 bg-black">
+                <h3 className="font-black text-base mb-1 group-hover:italic transition-all duration-300">
+                  {cert.name}
+                </h3>
+                <p className="space-mono text-[10px] text-white/30 tracking-widest">{cert.date}</p>
+                {cert.link && (
+                  <p className="space-mono text-[9px] text-white/20 mt-2 tracking-widest">CLICK TO VERIFY →</p>
+                )}
+              </div>
+            </motion.a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Publications ─────────────────────────────────────────────────────────────
+
+function PublicationsSection() {
+  return (
+    <section id="publications" className="relative py-24 px-6 md:px-16 bg-white/[0.01]">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>PUBLICATIONS</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-8">
+          Research & Writing
+        </GradientHeading>
+        <div className="flex items-center gap-8 py-16 border-y border-white/5">
+          <div className="space-y-3">
+            <span className="px-4 py-2 border border-white/15 rounded-full space-mono text-[10px] tracking-widest text-white/40">
+              COMING SOON
+            </span>
+            <p className="text-white/30 text-lg leading-relaxed max-w-xl">
+              Technical papers, security research findings, and academic contributions across cloud security, AI architectures, and vulnerability research will be published here.
+            </p>
+            <a
+              href="publications.html"
+              className="inline-flex items-center gap-2 space-mono text-[10px] text-white/30 hover:text-white transition-colors tracking-widest"
+            >
+              VIEW PUBLICATIONS PAGE →
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Affiliations ─────────────────────────────────────────────────────────────
+
+function AffiliationsSection() {
+  return (
+    <section id="affiliations" className="relative py-24 px-6 md:px-16">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>BEYOND CODE</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-16">
+          Affiliations & Art
+        </GradientHeading>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {affiliations.map((affil, i) => (
+            <motion.a
+              key={i}
+              href={affil.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              whileHover={{ scale: 1.03 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.5 }}
+              className="group p-6 border border-white/5 rounded-2xl bg-white/[0.01] hover:border-white/25 hover:bg-white/[0.04] transition-all text-center flex flex-col items-center justify-center min-h-[140px] gap-3"
+            >
+              <h4 className="font-black text-lg group-hover:italic transition-all duration-300">{affil.name}</h4>
+              <p className="space-mono text-[10px] text-white/30 tracking-widest uppercase">{affil.role}</p>
+            </motion.a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Contact ─────────────────────────────────────────────────────────────────
+
+function ContactSection() {
+  return (
+    <section id="contact" className="relative py-32 md:py-48 px-6 text-center bg-white/[0.01]">
+      <div className="max-w-4xl mx-auto">
+        <SectionLabel>INITIATE CONNECTION</SectionLabel>
+        <GradientHeading size="xxxl" weight="black" as="h2" className="mb-8">
+          Let's Build Something
+        </GradientHeading>
+        <p className="text-white/40 text-xl mb-16 leading-relaxed">
+          Open to internships, research collaborations, freelance projects, and meaningful conversations.
+        </p>
+        <div className="flex flex-col items-center gap-6">
+          <MagneticButton
+            href="mailto:tejaswanthsurisetty@gmail.com"
+            className="text-2xl md:text-4xl font-light text-white hover:italic transition-all duration-500 underline underline-offset-8 decoration-white/20 hover:decoration-white"
+          >
+            tejaswanthsurisetty@gmail.com
+          </MagneticButton>
+
+          <div className="flex flex-wrap gap-4 justify-center pt-8">
+            {[
+              { label: "GitHub", href: "https://github.com/Tejaswanth2406" },
+              { label: "LinkedIn", href: "https://www.linkedin.com/in/tejaswanth-surisetty-590322312/" },
+              { label: "Hire Me", href: "hire_me.html" },
+              { label: "Support", href: "https://v0-tejjj-support-portal.vercel.app/" },
+            ].map((link) => (
+              <MagneticButton
+                key={link.label}
+                href={link.href}
+                target={link.href.startsWith("http") ? "_blank" : "_self"}
+                rel={link.href.startsWith("http") ? "noopener noreferrer" : ""}
+                className="px-6 py-3 border border-white/15 rounded-full space-mono text-xs tracking-widest text-white/40 hover:text-white hover:border-white/50 transition-all"
+              >
+                {link.label}
+              </MagneticButton>
+            ))}
+          </div>
+        </div>
+
+        <p className="mt-24 space-mono text-[9px] opacity-15 tracking-[1em] uppercase">
+          2026 TEJASWANTH SURISETTY · TEJJJ.IS-A.DEV
+        </p>
+      </div>
+    </section>
+  )
+}
+
+// ─── Root ─────────────────────────────────────────────────────────────────────
+
+export default function MotionPortfolio() {
+  const [ready, setReady] = useState(false)
+  const [navVisible, setNavVisible] = useState(false)
+  const lenisRef = useRef(null)
+
+  // Lenis smooth scroll
+  useEffect(() => {
+    if (!ready) return
+    import("lenis").then(({ default: Lenis }) => {
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+      })
+      lenisRef.current = lenis
+
+      lenis.on("scroll", ScrollTrigger.update)
+
+      gsap.ticker.add((time) => lenis.raf(time * 1000))
+      gsap.ticker.lagSmoothing(0)
+
+      return () => {
+        lenis.destroy()
+        gsap.ticker.remove((time) => lenis.raf(time * 1000))
+      }
+    })
+  }, [ready])
+
+  return (
+    <>
+      <Preloader onComplete={() => setReady(true)} />
+
+      {ready && (
+        <div className="relative bg-black text-white overflow-x-hidden noise-overlay">
+          <Navbar visible={navVisible} />
+
+          <Hero onScrolled={setNavVisible} />
+          <PhilosophySection />
+          <Divider />
+          <FeaturedWork />
+          <Divider />
+          <AboutSection />
+          <Divider />
+          <EducationSection />
+          <Divider />
+          <ExperienceSection />
+          <Divider />
+          <SkillsSection />
+          <Divider />
+          <ProjectsSection />
+          <Divider />
+          <ResearchSection />
+          <Divider />
+          <GallerySection />
+          <Divider />
+          <AchievementsSection />
+          <Divider />
+          <CertificationsSection />
+          <Divider />
+          <PublicationsSection />
+          <Divider />
+          <AffiliationsSection />
+          <Divider />
+          <ContactSection />
+        </div>
+      )}
+    </>
+  )
+}

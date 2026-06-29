@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TS_ARCHIVE // PHASE_01</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#000000",
+                        "background": "#fcfcfc",
+                        "surface": "#0a0a0a",
+                        "outline": "#747878",
+                        "outline-variant": "#c4c7c7",
+                        "on-background": "#111111",
+                        "on-surface": "#ffffff"
+                    },
+                    spacing: {
+                        "sm": "8px",
+                        "grid-margin": "24px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xl": "48px",
+                        "xs": "4px"
+                    },
+                    fontFamily: {
+                        "body-md": ["Inter"],
+                        "mono-data": ["JetBrains Mono"],
+                        "mono-label": ["JetBrains Mono"],
+                        "headline-lg": ["Inter"]
+                    },
+                    fontSize: {
+                        "body-md": ["16px", { "lineHeight": "1.6" }],
+                        "mono-data": ["14px", { "lineHeight": "1.5" }],
+                        "mono-label": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .logo-enter {
+            animation: letterBlock 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes letterBlock {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .video-reveal {
+            animation: fadeIn 1.2s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.18; }
+        }
+
+        .archive-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media (max-width: 768px) {
+            .archive-grid { grid-template-columns: 1fr; }
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Technical Brutalism Overrides */
+        * { border-radius: 0 !important; }
+        
+        .mask-data-mountain {
+            mask-image: linear-gradient(to top, black 80%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary overflow-x-hidden">
+<!-- NAVIGATION SHELL -->
+<header class="fixed top-0 left-0 w-full z-50 bg-background border-b border-primary flex justify-between items-center px-grid-margin py-md">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">security</span>
+<div class="flex gap-2" id="logo-container">
+<!-- LOGO TS - POLYGON BASED -->
+<svg class="logo-enter" height="24" viewbox="0 0 48 24" width="48">
+<!-- T: 4 Polygons -->
+<polygon fill="currentColor" points="0,0 20,0 20,4 0,4"></polygon>
+<polygon fill="currentColor" points="8,4 12,4 12,24 8,24"></polygon>
+<!-- S: 6 Polygons -->
+<polygon fill="currentColor" points="28,0 48,0 48,4 28,4"></polygon>
+<polygon fill="currentColor" points="28,4 32,4 32,12 28,12"></polygon>
+<polygon fill="currentColor" points="28,10 48,10 48,14 28,14"></polygon>
+<polygon fill="currentColor" points="44,14 48,14 48,20 44,20"></polygon>
+<polygon fill="currentColor" points="28,20 48,20 48,24 28,24"></polygon>
+<polygon fill="currentColor" points="44,12 48,12 48,14 44,14"></polygon>
+</svg>
+</div>
+</div>
+<nav class="hidden md:flex gap-8 items-center font-mono-label text-mono-label">
+<a class="text-primary font-bold" href="#">ROOT/RESEARCH</a>
+<span class="text-outline">/</span>
+<a class="text-secondary hover:invert" href="#">ROOT/AI_MODELS</a>
+<span class="text-outline">/</span>
+<a class="text-secondary hover:invert" href="#">ROOT/SECURITY_LOGS</a>
+</nav>
+<button class="md:hidden z-60 relative w-8 h-8 flex flex-col justify-center items-center gap-1.5 group" id="mobile-menu-trigger">
+<div class="w-6 h-0.5 bg-primary transition-transform duration-300" id="bar-1"></div>
+<div class="w-6 h-0.5 bg-primary transition-transform duration-300" id="bar-2"></div>
+</button>
+</header>
+<!-- MOBILE MENU OVERLAY -->
+<div class="fixed inset-0 bg-background z-40 translate-x-full transition-transform duration-500 p-grid-margin flex flex-col justify-center" id="mobile-menu">
+<div class="flex flex-col gap-8 font-headline-lg text-headline-lg uppercase italic border-l-4 border-primary pl-6">
+<a class="hover:bg-primary hover:text-on-primary" href="#">ROOT/RESEARCH</a>
+<a class="hover:bg-primary hover:text-on-primary" href="#">ROOT/AI_MODELS</a>
+<a class="hover:bg-primary hover:text-on-primary" href="#">ROOT/SECURITY_LOGS</a>
+<a class="hover:bg-primary hover:text-on-primary" href="#">ROOT/ARCHIVE</a>
+<a class="hover:bg-primary hover:text-on-primary" href="#">ROOT/CONFIG</a>
+</div>
+</div>
+<!-- SECTION 01: HERO -->
+<section class="relative min-h-screen pt-24 px-grid-margin flex flex-col">
+<!-- Grayscale BG Video Placeholder (Simulated via overlay) -->
+<div class="absolute inset-0 z-0 opacity-0 transition-opacity duration-1000 bg-cover bg-center grayscale pointer-events-none" id="hero-bg-overlay" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDcG43D1zEWx_XHOsquD5mnm04nn6Fn1xDa6P03ivK2iAFxWqPCemofXfm2wX9-hIOk2tVtq67snjaSUsr2BtbvzIfoxr35-euXuXiRAODzgOpnHDpuyHXWC0Tk9pjfgOI1sDoP14K5yZdc8pwVWlVg9sLEk36rMLrUeBjxw5DIfKAxjav0RdFLlMpg6cs_ut1CSCO3OADPY-oXFFaIQFkRDfcsmFgiTN-qiCk7kY_qX-6OqhHYaLq526BvE_rJZWidxuaPXrUhYHY'); mix-blend-mode: multiply;"></div>
+<div class="relative z-10 grid grid-cols-12 gap-grid-gutter flex-grow">
+<!-- Left Block -->
+<div class="col-span-12 md:col-span-8 flex flex-col justify-center py-xl">
+<h1 class="font-headline-lg text-[64px] md:text-[120px] leading-[0.9] tracking-tighter mb-8 max-w-4xl uppercase font-bold">
+                    SECURITY<br/>MEETS<br/>INTELLIGENCE
+                </h1>
+<div class="flex flex-col md:flex-row gap-6 items-start">
+<button class="group relative flex items-center gap-4 bg-primary text-background px-8 py-4 overflow-hidden">
+<span class="relative z-10 font-mono-label">ENTER ARCHIVE</span>
+<span class="material-symbols-outlined relative z-10" data-icon="security" style="font-variation-settings: 'FILL' 1;">security</span>
+<div class="absolute inset-0 bg-on-background translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300"></div>
+</button>
+<div class="flex items-center gap-4 py-4 border-b border-primary md:border-none">
+<span class="font-mono-label opacity-60">REF_ID: // 882.019</span>
+<span class="w-12 h-[1px] bg-primary"></span>
+<span class="font-mono-label opacity-60">EST: 2024</span>
+</div>
+</div>
+</div>
+<!-- Sidebar Stats -->
+<div class="col-span-12 md:col-span-4 border-l border-primary md:pl-8 flex flex-col justify-center gap-12 py-xl">
+<div class="space-y-2">
+<p class="font-mono-label uppercase text-outline">Current Focus</p>
+<div class="flex items-center justify-between border-b border-outline-variant py-2">
+<span class="font-mono-data">THREAT_NODES</span>
+<span class="font-headline-lg">25+</span>
+</div>
+<div class="flex items-center justify-between border-b border-outline-variant py-2">
+<span class="font-mono-data">AI_PROTOCOLS</span>
+<span class="font-headline-lg">20+</span>
+</div>
+<div class="flex items-center justify-between border-b border-outline-variant py-2">
+<span class="font-mono-data">CORE_ARCHIVES</span>
+<span class="font-headline-lg">12+</span>
+</div>
+</div>
+<div class="relative w-full aspect-square border border-primary p-4 overflow-hidden">
+<img alt="Technical data visualization" class="w-full h-full object-cover grayscale opacity-80" data-alt="A highly detailed technical architectural drawing of an intelligence security node. The schematic features complex geometric patterns, circuit-like lines, and utilitarian notations. The style is strictly monochrome, emphasizing technical brutality and high information density. Subtle gray tones and sharp black lines create a sense of authoritative precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFblktt5HFQ76LMtEgyM_N_tPMFoZVsHGzZdlmCxgczp12nInTgyEbB4_ddUQkkUtiFU3uMxDagIXXJyBxLfzME1DalrFldPGzI9oNn25seKUfnOa7cifr95rnMklZJS50PLLxDLfsTZ8wY9A17GWPfEUNtbWXkKv5pTCd54_YrYPJ3lNvV2qIt8Mwkbztfo6p-KnmTuxWAuE-OYdJGCEkttaVSmruFqRWxJlLjG-n4ymNiF-yRJAScVDK2e08czXnijLVki16B_c"/>
+<div class="absolute top-2 right-2 font-mono-label bg-primary text-background px-2 py-1">[ LIVE_FEED ]</div>
+</div>
+</div>
+</div>
+<!-- Scroll Indicator -->
+<div class="relative z-10 flex justify-between items-center py-md border-t border-primary mt-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 border border-primary rounded-full flex items-center justify-center animate-pulse">
+<span class="material-symbols-outlined text-[16px]">pause</span>
+</div>
+<span class="font-mono-label uppercase">Scroll to Explore</span>
+</div>
+<div class="font-mono-label">TS_ARCHIVE // PH_01</div>
+</div>
+</section>
+<!-- SECTION 02: MANIFESTO -->
+<section class="relative bg-background py-xl px-grid-margin border-y border-primary">
+<div class="max-w-5xl mx-auto py-24 text-center">
+<h2 class="font-headline-lg text-4xl md:text-6xl leading-tight mb-16">
+                Technology should be intelligent by design and <span class="bg-primary text-background px-2">secure by default.</span>
+</h2>
+<div class="flex flex-wrap justify-center gap-4">
+<div class="flex items-center gap-2 border border-primary px-6 py-3 font-mono-label hover:bg-primary hover:text-background transition-colors cursor-default">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+                    SECURITY FIRST
+                </div>
+<div class="flex items-center gap-2 border border-primary px-6 py-3 font-mono-label hover:bg-primary hover:text-background transition-colors cursor-default">
+<span class="material-symbols-outlined text-sm">memory</span>
+                    AI NATIVE
+                </div>
+<div class="flex items-center gap-2 border border-primary px-6 py-3 font-mono-label hover:bg-primary hover:text-background transition-colors cursor-default">
+<span class="material-symbols-outlined text-sm">cloud</span>
+                    CLOUD SCALE
+                </div>
+<div class="flex items-center gap-2 border border-primary px-6 py-3 font-mono-label hover:bg-primary hover:text-background transition-colors cursor-default">
+<span class="material-symbols-outlined text-sm">hub</span>
+                    INFRASTRUCTURE
+                </div>
+<div class="flex items-center gap-2 border border-primary px-6 py-3 font-mono-label hover:bg-primary hover:text-background transition-colors cursor-default">
+<span class="material-symbols-outlined text-sm">search</span>
+                    RESEARCH DRIVEN
+                </div>
+</div>
+</div>
+<!-- LARGE SPACER FOR OVERLAP -->
+<div class="h-64 md:h-96"></div>
+</section>
+<!-- SECTION 03: RESEARCH ARCHIVE -->
+<section class="relative bg-surface text-on-surface overflow-hidden min-h-screen -mt-32">
+<!-- DATA MOUNTAIN OVERLAP -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl z-20 mask-data-mountain transform translate-y-32 transition-transform duration-[1400ms] ease-out" id="data-mountain">
+<img alt="Data visual peak" class="w-full mix-blend-screen opacity-85" data-alt="A massive, jagged digital mountain range formed from shimmering data points and glowing architectural lines. The visual is set against a pitch-black background, utilizing a high-contrast monochrome palette. The aesthetic is sharp, technical, and brutally cold, suggesting a vast repository of encrypted intelligence. Light rays emanate from within the structure, highlighting its complex, geometric layers." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARXwAB3gPigxU3BsoEwYGwxfpY5pwLC1Vwry4J-zQeWBFNUZoTJfCKnhQXtvzegyzRyuqYJyk66X6m32onDjzTaz5HZ5eOndeWyGU3pKxwqj4tIy4krTcEMNmJ8U4Ygshp9zjqu765Mb6r3N6dKwHKcmrk7WAfXXyzNH2pMeisNepJcen6gs5jA1gXIVR8GgKnlJk-HyeprWbKUX1uw9lHlayU8GKjCu8dnmmbp5XIy4KHiiczCiwsADv-e18NcCKodG4VfJYkXWA"/>
+</div>
+<!-- NEURAL TEXTURE BG -->
+<div class="absolute inset-0 opacity-[0.04] mix-blend-screen grayscale">
+<img alt="Texture" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcG43D1zEWx_XHOsquD5mnm04nn6Fn1xDa6P03ivK2iAFxWqPCemofXfm2wX9-hIOk2tVtq67snjaSUsr2BtbvzIfoxr35-euXuXiRAODzgOpnHDpuyHXWC0Tk9pjfgOI1sDoP14K5yZdc8pwVWlVg9sLEk36rMLrUeBjxw5DIfKAxjav0RdFLlMpg6cs_ut1CSCO3OADPY-oXFFaIQFkRDfcsmFgiTN-qiCk7kY_qX-6OqhHYaLq526BvE_rJZWidxuaPXrUhYHY"/>
+</div>
+<div class="relative z-30 px-grid-margin pt-64 pb-24">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<h3 class="font-headline-lg text-4xl md:text-5xl max-w-2xl leading-none">
+                    CURATED FROM YEARS OF ENGINEERING, RESEARCH 
+                    <span class="inline-flex items-center gap-2 text-primary bg-on-surface px-2 ml-2">
+<span class="material-symbols-outlined">analytics</span>
+<span class="material-symbols-outlined">terminal</span>
+</span>
+                    &amp; DISCOVERY.
+                </h3>
+<div class="font-mono-label opacity-40 text-right">
+                    SEC_ARCHIVE // INDEX_V.01<br/>
+                    SYSTEM_STATUS: [ OPERATIONAL ]
+                </div>
+</div>
+<!-- Archive Panel -->
+<div class="archive-grid border border-on-surface/20">
+<!-- Left: Engine Display -->
+<div class="relative aspect-video md:aspect-auto border-r border-on-surface/20 bg-primary/20 overflow-hidden">
+<div class="w-full h-full transition-opacity duration-500" id="engine-display">
+<!-- Content injected by JS -->
+</div>
+<div class="absolute bottom-4 left-4 font-mono-label bg-on-surface text-surface px-3 py-1 uppercase tracking-widest" id="active-chapter-label">
+                        [ 01_HOLLOW_PURPLE ]
+                    </div>
+</div>
+<!-- Right: Chapter List -->
+<div class="flex flex-col bg-surface">
+<button class="chapter-item group border-b border-on-surface/20 p-8 text-left transition-all hover:bg-on-surface hover:text-surface active-chapter" data-id="01">
+<div class="flex items-center justify-between mb-4">
+<span class="font-mono-data text-xs opacity-60">01 // PROTOCOL</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</div>
+<h4 class="font-headline-lg text-2xl uppercase">HOLLOW_PURPLE</h4>
+<p class="font-mono-data text-sm mt-2 opacity-60 group-hover:opacity-100">Quantum-resistant encryption layering for distributed ledgers.</p>
+</button>
+<button class="chapter-item group border-b border-on-surface/20 p-8 text-left transition-all hover:bg-on-surface hover:text-surface" data-id="02">
+<div class="flex items-center justify-between mb-4">
+<span class="font-mono-data text-xs opacity-60">02 // MONITOR</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</div>
+<h4 class="font-headline-lg text-2xl uppercase">IOT_SENTINEL</h4>
+<p class="font-mono-data text-sm mt-2 opacity-60 group-hover:opacity-100">Heuristic threat detection for edge-computing ecosystems.</p>
+</button>
+<button class="chapter-item group border-b border-on-surface/20 p-8 text-left transition-all hover:bg-on-surface hover:text-surface" data-id="03">
+<div class="flex items-center justify-between mb-4">
+<span class="font-mono-data text-xs opacity-60">03 // ENGINE</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</div>
+<h4 class="font-headline-lg text-2xl uppercase">HAKARI_SYSTEM</h4>
+<p class="font-mono-data text-sm mt-2 opacity-60 group-hover:opacity-100">Automated resource balancing for sovereign cloud nodes.</p>
+</button>
+<button class="chapter-item group border-b border-on-surface/20 p-8 text-left transition-all hover:bg-on-surface hover:text-surface" data-id="04">
+<div class="flex items-center justify-between mb-4">
+<span class="font-mono-data text-xs opacity-60">04 // NETWORK</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</div>
+<h4 class="font-headline-lg text-2xl uppercase">NEURAL_DREDGE</h4>
+<p class="font-mono-data text-sm mt-2 opacity-60 group-hover:opacity-100">Deep-archive scanning for pattern recognition in legacy data.</p>
+</button>
+<button class="chapter-item group p-8 text-left transition-all hover:bg-on-surface hover:text-surface" data-id="05">
+<div class="flex items-center justify-between mb-4">
+<span class="font-mono-data text-xs opacity-60">05 // CORE</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</div>
+<h4 class="font-headline-lg text-2xl uppercase">SYSTEM_OVERRIDE</h4>
+<p class="font-mono-data text-sm mt-2 opacity-60 group-hover:opacity-100">Manual control primitives for total infrastructure lockdown.</p>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- FOOTER -->
+<footer class="bg-primary text-on-primary py-xl px-grid-margin border-t border-on-surface/10">
+<div class="flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="font-mono-label flex items-center gap-4">
+<span class="bg-background text-primary px-2 py-1">TS_ARCHIVE</span>
+<span class="opacity-70">© 2024 TS_CORE_SYSTEM // [ CLASSIFIED ]</span>
+</div>
+<div class="flex gap-8 font-mono-label text-xs uppercase tracking-widest opacity-70">
+<a class="hover:opacity-100 underline" href="#">DECRYPT_DATA</a>
+<a class="hover:opacity-100" href="#">NODE_STATUS</a>
+<a class="hover:opacity-100" href="#">SRC_CODE</a>
+</div>
+</div>
+</footer>
+<script>
+        // --- LOGIC & ANIMATIONS ---
+
+        // 1. Mobile Menu Toggle
+        const menuBtn = document.getElementById('mobile-menu-trigger');
+        const menu = document.getElementById('mobile-menu');
+        const bar1 = document.getElementById('bar-1');
+        const bar2 = document.getElementById('bar-2');
+        let isMenuOpen = false;
+
+        menuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                menu.classList.remove('translate-x-full');
+                bar1.style.transform = 'translateY(4px) rotate(45deg)';
+                bar2.style.transform = 'translateY(-4px) rotate(-45deg)';
+            } else {
+                menu.classList.add('translate-x-full');
+                bar1.style.transform = 'none';
+                bar2.style.transform = 'none';
+            }
+        });
+
+        // 2. Hero Background Video Reveal
+        setTimeout(() => {
+            const overlay = document.getElementById('hero-bg-overlay');
+            overlay.classList.add('video-reveal');
+        }, 2800);
+
+        // 3. Archive Display Logic (SandTransitionImage Engine Simulation)
+        const chapters = {
+            '01': { title: '01_HOLLOW_PURPLE', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCaiXcYAV-uXhJmlXk15joyv_0Urt6mLel2PViv8p_RReJQi61zPNJTncrsiGFK04P6eiJGZXnUe-Wyd3g37Z932sPosj2jD8fH37x10eQKWCNJTHAMMXqXriTpbObU10UGHBORgWzUFXytLFqVrdPQVzVyw1gg4R-TSUFGw3iut2GRSxytAGzQxNtWZe2wbkw6SioHDG7wUkIlvoS1d_FZOSh5JK7_B8yrrsXp0tJXHnkRE2r6nSXetm-YLUXYgxmx3oxddhu1Qw8' },
+            '02': { title: '02_IOT_SENTINEL', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCeizkHdvcSfxfDpAm1u5cWTXTkK2_r7kb55jKa8VrYEJeJBFHrikrQ84wHk4TJdAD2Dhz-w0XM-RzTz983xwp0RV88VJqtmdPNCtmg4G7wXxRAc_pjOX6S3au03xHiKB-_fD4YPjNiXbWaIMYX7mT1NAm-O3BnaWZ6nhKwXdivgq37-pL3JTLJ0DTglVJkaF3pME9u9PnsjBb66sqkSDFcMTNi5X2gpLCCqOAe-cZsOOuwftPQoZsl0riZTOcn_sdbhf6qMaWynYE' },
+            '03': { title: '03_HAKARI_SYSTEM', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDlEZewTR3JjMMc6WV8quBr0pfzJTMBoDLQcQLoEXFcdq0vvKr9IGCMKiaODsbwJEtvCByho55WDA_Mti__XNBRUCYggVjBYleUzjERjmSDXFfzp0mZ5O4sbSx9jEmHkRcE9QFUDgWgPZrHkKFnROAwR4DDxvEw9ztslsWEXveCIGOlyDD0y4iBBzOp9ZEu_eNdcrNiOrkCJ9NR2HhShhJN74ry-PKnstqccKi53egMYMOZxpazRbSrjW3H8IsKikQo-Wxi8_MV0D0' },
+            '04': { title: '04_NEURAL_DREDGE', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDcG43D1zEWx_XHOsquD5mnm04nn6Fn1xDa6P03ivK2iAFxWqPCemofXfm2wX9-hIOk2tVtq67snjaSUsr2BtbvzIfoxr35-euXuXiRAODzgOpnHDpuyHXWC0Tk9pjfgOI1sDoP14K5yZdc8pwVWlVg9sLEk36rMLrUeBjxw5DIfKAxjav0RdFLlMpg6cs_ut1CSCO3OADPY-oXFFaIQFkRDfcsmFgiTN-qiCk7kY_qX-6OqhHYaLq526BvE_rJZWidxuaPXrUhYHY' },
+            '05': { title: '05_SYSTEM_OVERRIDE', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAFblktt5HFQ76LMtEgyM_N_tPMFoZVsHGzZdlmCxgczp12nInTgyEbB4_ddUQkkUtiFU3uMxDagIXXJyBxLfzME1DalrFldPGzI9oNn25seKUfnOa7cifr95rnMklZJS50PLLxDLfsTZ8wY9A17GWPfEUNtbWXkKv5pTCd54_YrYPJ3lNvV2qIt8Mwkbztfo6p-KnmTuxWAuE-OYdJGCEkttaVSmruFqRWxJlLjG-n4ymNiF-yRJAScVDK2e08czXnijLVki16B_c' }
+        };
+
+        const engineDisplay = document.getElementById('engine-display');
+        const chapterLabel = document.getElementById('active-chapter-label');
+        const chapterItems = document.querySelectorAll('.chapter-item');
+
+        function updateDisplay(id) {
+            const data = chapters[id];
+            
+            // Start Fade Out
+            engineDisplay.style.opacity = '0';
+            
+            setTimeout(() => {
+                engineDisplay.innerHTML = `<img src="${data.img}" class="w-full h-full object-cover grayscale brightness-75 contrast-125" alt="${data.title}">`;
+                chapterLabel.innerText = `[ ${data.title} ]`;
+                engineDisplay.style.opacity = '1';
+            }, 300);
+
+            // Update Active Classes
+            chapterItems.forEach(item => {
+                if (item.dataset.id === id) {
+                    item.classList.add('bg-on-surface', 'text-surface');
+                } else {
+                    item.classList.remove('bg-on-surface', 'text-surface');
+                }
+            });
+        }
+
+        chapterItems.forEach(item => {
+            item.addEventListener('click', () => {
+                updateDisplay(item.dataset.id);
+            });
+        });
+
+        // Initial Load
+        updateDisplay('01');
+
+        // 4. Data Mountain Entrance Animation (on scroll)
+        const mountain = document.getElementById('data-mountain');
+        window.addEventListener('scroll', () => {
+            const rect = mountain.getBoundingClientRect();
+            if (rect.top < window.innerHeight) {
+                mountain.style.transform = 'translateY(0)';
+            }
+        });
+
+        // 5. Automatic Chapter Cycle
+        let currentIdx = 1;
+        setInterval(() => {
+            if (!document.querySelector('.chapter-item:hover')) {
+                currentIdx = (currentIdx % 5) + 1;
+                const nextId = String(currentIdx).padStart(2, '0');
+                updateDisplay(nextId);
+            }
+        }, 8000);
+
+    </script>
+</body></html>
