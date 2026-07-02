@@ -1772,6 +1772,18 @@
       color: rgba(138, 108, 46, .10)
     }
 
+    .pcard.d6 .pcard-num,
+    .pcard.d7 .pcard-num,
+    .pcard.d8 .pcard-num {
+      color: rgba(255, 255, 255, 0.08);
+    }
+
+    .pcard.d6:hover .pcard-num,
+    .pcard.d7:hover .pcard-num,
+    .pcard.d8:hover .pcard-num {
+      color: rgba(255, 255, 255, 0.12);
+    }
+
     .pcard-tag {
       font-family: 'JetBrains Mono', monospace;
       font-size: 9px;
@@ -2826,6 +2838,26 @@
       margin-bottom: 10px
     }
 
+    /* Text contrast for image-backed cards */
+    .pcard.d6 .pcard-desc,
+    .pcard.d7 .pcard-desc,
+    .pcard.d8 .pcard-desc {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .pcard.d6 .pcard-title,
+    .pcard.d7 .pcard-title,
+    .pcard.d8 .pcard-title {
+      color: #ffffff;
+    }
+
+    .pcard.d6 .pcard-tag,
+    .pcard.d7 .pcard-tag,
+    .pcard.d8 .pcard-tag {
+      border-color: rgba(255, 255, 255, 0.3);
+      color: rgba(255, 255, 255, 0.9);
+    }
+
     .pcard-bullets {
       list-style: none;
       margin-bottom: 14px;
@@ -2842,6 +2874,12 @@
       position: relative;
       opacity: .75;
       transition: opacity .2s;
+    }
+
+    .pcard.d6 .pcard-bullets li,
+    .pcard.d7 .pcard-bullets li,
+    .pcard.d8 .pcard-bullets li {
+      color: rgba(255, 255, 255, 0.75);
     }
 
     .pcard-bullets li::before {
@@ -2879,6 +2917,22 @@
       color: var(--gold)
     }
 
+    .pcard.d6 .ptag,
+    .pcard.d7 .ptag,
+    .pcard.d8 .ptag {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .pcard.d6:hover .ptag,
+    .pcard.d7:hover .ptag,
+    .pcard.d8:hover .ptag {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+      color: #ffffff;
+    }
+
     .pcard-links {
       display: flex;
       gap: 14px;
@@ -2899,9 +2953,21 @@
       transition: color .2s, gap .2s;
     }
 
+    .pcard.d6 .pcard-link,
+    .pcard.d7 .pcard-link,
+    .pcard.d8 .pcard-link {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
     .pcard-link:hover {
       color: var(--gold);
       gap: 10px
+    }
+
+    .pcard.d6:hover .pcard-link,
+    .pcard.d7:hover .pcard-link,
+    .pcard.d8:hover .pcard-link {
+      color: rgba(255, 255, 255, 1);
     }
 
     .pcard-link.gh {
@@ -7002,6 +7068,18 @@
               <img src="MUMCARE_AI.PNG" alt="Mumcare AI project preview" loading="lazy">
               <span class="work-card-title">Mumcare AI</span>
             </a>
+            <a class="work-card" href="omega.html" data-work-name="OMEGA" data-work-role="Cognitive Architecture">
+              <img src="omega.png" alt="OMEGA project preview" loading="lazy">
+              <span class="work-card-title">OMEGA</span>
+            </a>
+            <a class="work-card" href="geofusion.html" data-work-name="GEOFUSION" data-work-role="Geospatial Analysis">
+              <img src="geofusion.png" alt="GEOFUSION project preview" loading="lazy">
+              <span class="work-card-title">GEOFUSION</span>
+            </a>
+            <a class="work-card" href="void.html" data-work-name="VOID" data-work-role="Cognitive Engine">
+              <img src="void.png" alt="VOID project preview" loading="lazy">
+              <span class="work-card-title">VOID</span>
+            </a>
           </div>
           <div class="hover-members-detail hover-members-idle" aria-live="polite">
             <span class="hover-members-name">Hover to reveal</span>
@@ -7163,7 +7241,7 @@
                 →</a><a href="https://github.com/Tejaswanth2406/Mumcare-AI-" target="_blank" rel="noopener noreferrer"
                 class="pcard-link gh" onclick="event.stopPropagation()">GitHub ↗</a></div>
           </div>
-          <div class="pcard rv d6" onclick="location.href='omega.html'">
+          <div class="pcard rv d6" onclick="location.href='omega.html'" style="background-image: linear-gradient(135deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.45) 100%), url('omega.png'); background-size: cover; background-position: center; background-attachment: fixed;">
             <div class="pcard-tag ai">Cognitive Architecture</div>
             <div class="pcard-title">OMEGA</div>
             <p class="pcard-desc">12-layer self-evolving cognitive organism that models itself, benchmarks itself, and rewrites itself — pushing toward genuine artificial life.</p>
@@ -7178,7 +7256,7 @@
                 →</a><a href="https://github.com/Tejaswanth2406/OMEGA" target="_blank" rel="noopener noreferrer"
                 class="pcard-link gh" onclick="event.stopPropagation()">GitHub ↗</a></div>
           </div>
-          <div class="pcard sec rv d7" onclick="location.href='geofusion.html'">
+          <div class="pcard sec rv d7" onclick="location.href='geofusion.html'" style="background-image: linear-gradient(135deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.45) 100%), url('geofusion.png'); background-size: cover; background-position: center; background-attachment: fixed;">
             <div class="pcard-tag sec">Geospatial</div>
             <div class="pcard-title">GEOFUSION</div>
             <p class="pcard-desc">Advanced geospatial data fusion and multi-modal analysis platform for location intelligence, terrain modeling, and spatial reasoning.</p>
@@ -7193,7 +7271,7 @@
                 →</a><a href="https://github.com/Tejaswanth2406/geofusion" target="_blank" rel="noopener noreferrer"
                 class="pcard-link gh" onclick="event.stopPropagation()">GitHub ↗</a></div>
           </div>
-          <div class="pcard rv d8" onclick="location.href='void.html'">
+          <div class="pcard rv d8" onclick="location.href='void.html'" style="background-image: linear-gradient(135deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.45) 100%), url('void.png'); background-size: cover; background-position: center; background-attachment: fixed;">
             <div class="pcard-tag ai">AI Architecture</div>
             <div class="pcard-title">VOID</div>
             <p class="pcard-desc">Computational Space Theory of Intelligence — an 8-layer cognitive engine exploring how meaning emerges from coherent reasoning and representational dimensions.</p>
