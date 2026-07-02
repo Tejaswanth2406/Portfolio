@@ -30,6 +30,11 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&display=swap"
     rel="stylesheet" />
+  <script>
+    if (sessionStorage.getItem('introPlayed')) {
+      document.documentElement.classList.add('skip-intro');
+    }
+  </script>
   <style>
     *,
     *::before,
@@ -159,7 +164,7 @@
     #loader {
       position: fixed;
       inset: 0;
-      background: var(--cream);
+      background: radial-gradient(circle at 15% 15%, #19518d 0%, #0c2b53 100%);
       z-index: 99990;
       display: flex;
       align-items: center;
@@ -168,6 +173,52 @@
       gap: 32px;
       transition: opacity .8s ease .3s, visibility .8s ease .3s;
       animation: loaderFailsafe .01s linear 3s forwards;
+      overflow: hidden;
+    }
+
+    html.skip-intro #loader {
+      animation: none !important;
+      transition: opacity 0.4s ease, visibility 0.4s ease !important;
+    }
+    
+    html.skip-intro .loader-title span,
+    html.skip-intro .loader-sub span,
+    html.skip-intro .loader-line::after,
+    html.skip-intro .loader-radar::after {
+      animation: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+
+    .loader-radar {
+      position: absolute;
+      top: 50px;
+      left: 50px;
+      width: 80px;
+      height: 80px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+      z-index: 99991;
+    }
+
+    .loader-radar::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: #ffffff;
+      border-radius: 50%;
+      box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.5);
+      animation: pulse-ring 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(0.9); opacity: 0.8; }
+      50% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.8; }
     }
 
     #loader.done {
@@ -177,12 +228,13 @@
 
     .loader-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(32px, 6vw, 72px);
-      font-weight: 900;
+      font-size: clamp(40px, 8vw, 90px);
+      font-weight: 400;
       font-style: italic;
-      color: var(--ink);
-      letter-spacing: -.02em;
+      color: #ffffff;
+      letter-spacing: 0.05em;
       overflow: hidden;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
 
     .loader-title span {
@@ -237,10 +289,10 @@
 
     .loader-sub {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      letter-spacing: .3em;
+      font-size: 14px;
+      letter-spacing: .4em;
       text-transform: uppercase;
-      color: var(--ink-45);
+      color: rgba(255, 255, 255, 0.7);
       overflow: hidden;
     }
 
@@ -251,9 +303,10 @@
     }
 
     .loader-line {
-      width: 200px;
+      width: 300px;
+      max-width: 80vw;
       height: 1px;
-      background: var(--ink-20);
+      background: transparent;
       position: relative;
       overflow: hidden;
     }
@@ -262,9 +315,9 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: var(--gold);
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
       transform: translateX(-100%);
-      animation: slideIn .9s cubic-bezier(.22, .68, 0, 1.2) .4s forwards;
+      animation: slideIn 1.2s cubic-bezier(.22, .68, 0, 1.2) .4s forwards;
     }
 
     @keyframes liftUp {
@@ -6632,10 +6685,11 @@
 
   <!-- LOADER -->
   <div id="loader" aria-hidden="true">
+    <div class="loader-radar"></div>
     <div class="loader-title">
       <span>T</span><span>e</span><span>j</span><span>a</span><span>s</span><span>w</span><span>a</span><span>n</span><span>t</span><span>h</span>
     </div>
-    <div class="loader-sub"><span>Security · AI · Research</span></div>
+    <div class="loader-sub"><span>SECURITY - AI - RESEARCH</span></div>
     <div class="loader-line"></div>
   </div>
 
@@ -6924,7 +6978,7 @@
             <span class="hover-members-label">MY WORK</span>
           </div>
           <div class="hover-members-row">
-            <a class="work-card" href="hollowpurple.html" data-work-name="Hollow Purple" data-work-role="Cloud IAM Detection">
+            <a class="work-card" href="https://hollow-purple-iota.vercel.app/" target="_blank" rel="noopener noreferrer" data-work-name="Hollow Purple" data-work-role="Cloud IAM Detection">
               <img src="HOLLOWPURPLE.PNG" alt="Hollow Purple project preview" loading="lazy">
               <span class="work-card-title">Hollow Purple</span>
             </a>
@@ -7882,7 +7936,16 @@
 
     function finishLoading() {
       const loader = document.getElementById('loader');
-      if (loader) setTimeout(() => loader.classList.add('done'), prefersReducedMotion ? 0 : 1200);
+      if (loader) {
+        if (sessionStorage.getItem('introPlayed')) {
+          loader.classList.add('done');
+        } else {
+          setTimeout(() => {
+            loader.classList.add('done');
+            sessionStorage.setItem('introPlayed', 'true');
+          }, prefersReducedMotion ? 0 : 1200);
+        }
+      }
     }
 
     if (document.readyState === 'loading') {
