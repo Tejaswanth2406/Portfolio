@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GeoFusion AI — Multi-Sensor Satellite Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo+Expanded:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky-top:#dfeff2;
+    --sky-bottom:#eef6ea;
+    --terrain-1:#274a2e;
+    --terrain-2:#3c6b3a;
+    --terrain-3:#5c8f45;
+    --terrain-4:#86ad55;
+    --ink:#12210f;
+    --paper:#f4f6ee;
+    --orange:#ff5a1f;
+    --orange-deep:#e8430c;
+    --line:#eef1e6;
+    --grid-line:rgba(18,33,15,0.10);
+    --card:rgba(244,246,238,0.86);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Space Grotesk',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+
+  ::selection{background:var(--orange);color:#fff;}
+
+  a{color:inherit;text-decoration:none;}
+
+  .display{
+    font-family:'Archivo Expanded',sans-serif;
+    font-weight:800;
+    letter-spacing:-0.01em;
+  }
+
+  .mono{
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  /* ---------- grid overlay ---------- */
+  .grid-overlay{
+    position:absolute;
+    inset:0;
+    background-image:
+      repeating-linear-gradient(90deg, var(--grid-line) 0 1px, transparent 1px 16.666%),
+      repeating-linear-gradient(0deg, var(--grid-line) 0 1px, transparent 1px 12.5%);
+    pointer-events:none;
+    z-index:2;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    overflow:hidden;
+    background:linear-gradient(180deg,var(--sky-top) 0%, var(--sky-bottom) 42%);
+  }
+
+  .hero-terrain{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    width:100%;
+    z-index:1;
+  }
+
+  .topbar{
+    position:absolute;
+    top:24px; left:24px; right:24px;
+    z-index:5;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  .pill-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--paper);
+    border-radius:999px;
+    padding:12px 20px 12px 16px;
+    font-size:13px;
+    font-weight:600;
+    box-shadow:0 4px 18px rgba(18,33,15,0.18);
+    transition:transform .25s ease;
+  }
+  .pill-btn:hover{transform:translateY(-2px);}
+  .pill-btn svg{width:16px;height:16px;flex-shrink:0;}
+
+  .icon-btn{
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--ink);
+    color:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 18px rgba(18,33,15,0.25);
+    transition:transform .25s ease;
+    font-size:16px;
+  }
+  .icon-btn:hover{transform:rotate(20deg);}
+
+  .hero-copy{
+    position:absolute;
+    top:100px;
+    left:24px; right:24px;
+    z-index:5;
+    display:flex;
+    justify-content:space-between;
+    gap:40px;
+    font-size:12.5px;
+    line-height:1.55;
+    color:var(--ink);
+    opacity:0.72;
+    max-width:1100px;
+    margin:0 auto;
+  }
+  .hero-copy p{max-width:230px;}
+  .hero-copy .right-block{text-align:right;margin-left:auto;}
+
+  .hero-title-wrap{
+    position:relative;
+    z-index:5;
+    padding-top:210px;
+    text-align:center;
+  }
+
+  .eyebrow-line{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--terrain-1);
+    opacity:0.65;
+    margin-bottom:14px;
+  }
+
+  .hero-title{
+    font-size:clamp(64px, 15vw, 190px);
+    line-height:0.86;
+    color:var(--orange);
+    text-shadow:3px 3px 0 rgba(232,67,12,0.15);
+    position:relative;
+    display:inline-block;
+  }
+
+  .hero-title .accent-dot{
+    position:absolute;
+    width:0.62em;height:0.62em;
+    right:-0.02em;
+    top:0.08em;
+    transform:translateX(100%);
+  }
+
+  .hero-sub{
+    max-width:640px;
+    margin:26px auto 0;
+    font-size:16px;
+    line-height:1.6;
+    color:var(--ink);
+    opacity:0.78;
+    padding:0 24px;
+  }
+
+  .hero-cta-row{
+    margin-top:34px;
+    display:flex;
+    gap:14px;
+    justify-content:center;
+    flex-wrap:wrap;
+    padding:0 24px;
+  }
+
+  .btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.03em;
+    padding:14px 26px;
+    border-radius:999px;
+    font-weight:500;
+    transition:transform .25s ease, box-shadow .25s ease;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .btn-solid{background:var(--ink);color:var(--paper);}
+  .btn-solid:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(18,33,15,0.3);}
+  .btn-outline{border:1.5px solid var(--ink);color:var(--ink);}
+  .btn-outline:hover{transform:translateY(-3px);background:var(--ink);color:var(--paper);}
+
+  /* ---------- signature: orbit line art connecting nodes ---------- */
+  .orbit-wrap{
+    position:relative;
+    z-index:4;
+    margin-top:64px;
+    height:230px;
+  }
+  .orbit-wrap svg{width:100%;height:100%;}
+  .orbit-path{
+    fill:none;
+    stroke:rgba(244,246,238,0.9);
+    stroke-width:1.2;
+    stroke-dasharray:4 3;
+  }
+  .orbit-node{
+    fill:none;
+    stroke:rgba(244,246,238,0.95);
+    stroke-width:1.4;
+  }
+  .orbit-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    fill:rgba(244,246,238,0.95);
+    letter-spacing:0.05em;
+  }
+
+  .footer-logo-row{
+    position:absolute;
+    bottom:24px; left:24px; right:24px;
+    z-index:5;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+  }
+  .wordmark{
+    font-family:'Archivo Expanded',sans-serif;
+    font-weight:800;
+    font-size:20px;
+    letter-spacing:0.01em;
+    color:var(--ink);
+  }
+  .contact-line{
+    font-size:12px;
+    color:var(--ink);
+    opacity:0.75;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:2px;
+  }
+  .contact-line .label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    opacity:0.6;
+  }
+  .corner-fab{
+    position:absolute;
+    bottom:24px;right:24px;
+    width:52px;height:52px;
+    border-radius:50%;
+    background:var(--orange);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;
+    box-shadow:0 8px 24px rgba(232,67,12,0.35);
+    z-index:6;
+    font-size:20px;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{
+    position:relative;
+    padding:110px 24px;
+    max-width:1180px;
+    margin:0 auto;
+  }
+
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:18px;
+    margin-bottom:48px;
+    flex-wrap:wrap;
+  }
+  .section-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--orange-deep);
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    border:1px solid var(--orange-deep);
+    padding:5px 10px;
+    border-radius:999px;
+  }
+  .section-title{
+    font-size:clamp(30px,4.4vw,52px);
+    line-height:1.02;
+  }
+
+  /* deployment table */
+  .deploy-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:1px;
+    background:var(--grid-line);
+    border:1px solid var(--grid-line);
+  }
+  .deploy-card{
+    background:var(--paper);
+    padding:26px 24px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    transition:background .25s ease;
+  }
+  .deploy-card:hover{background:#fff;}
+  .deploy-icon{
+    width:34px;height:34px;
+    border-radius:8px;
+    background:var(--terrain-3);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:15px;
+  }
+  .deploy-name{font-weight:700;font-size:15px;}
+  .deploy-url{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--terrain-1);
+    word-break:break-all;
+    opacity:0.85;
+  }
+
+  .creds-strip{
+    margin-top:36px;
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .cred-pill{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    background:var(--ink);
+    color:var(--paper);
+    padding:10px 16px;
+    border-radius:8px;
+  }
+  .cred-pill b{color:var(--orange);}
+  .note-line{
+    margin-top:18px;
+    font-size:12.5px;
+    opacity:0.6;
+    font-style:italic;
+  }
+
+  /* architecture */
+  .arch-track{
+    position:relative;
+  }
+  .arch-row{
+    display:grid;
+    grid-template-columns:36px 1fr;
+    gap:20px;
+    padding:26px 0;
+    border-top:1px solid var(--grid-line);
+  }
+  .arch-row:last-child{border-bottom:1px solid var(--grid-line);}
+  .arch-marker{
+    width:10px;height:10px;
+    border:1.5px solid var(--orange-deep);
+    margin-top:6px;
+    transform:rotate(45deg);
+  }
+  .arch-body{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;align-items:start;}
+  .arch-name{font-weight:700;font-size:17px;}
+  .arch-role{font-size:13px;opacity:0.7;line-height:1.5;}
+  .arch-tech{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--terrain-1);
+    opacity:0.85;
+  }
+
+  @media (max-width:720px){
+    .arch-body{grid-template-columns:1fr;gap:6px;}
+  }
+
+  /* math foundation */
+  .math-block{
+    background:var(--ink);
+    color:var(--paper);
+    border-radius:18px;
+    padding:38px;
+    margin-bottom:20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .math-block::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:repeating-linear-gradient(90deg, rgba(244,246,238,0.04) 0 1px, transparent 1px 40px);
+    pointer-events:none;
+  }
+  .math-step{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--orange);
+    margin-bottom:10px;
+  }
+  .math-title{font-size:19px;font-weight:700;margin-bottom:12px;}
+  .math-formula{
+    font-family:'JetBrains Mono',monospace;
+    font-size:14px;
+    background:rgba(244,246,238,0.06);
+    border-left:2px solid var(--orange);
+    padding:14px 18px;
+    border-radius:0 8px 8px 0;
+    margin:14px 0;
+    overflow-x:auto;
+    white-space:pre;
+  }
+  .math-desc{font-size:13.5px;opacity:0.72;line-height:1.6;max-width:640px;}
+
+  /* dataset table */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+  }
+  th{
+    text-align:left;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    opacity:0.55;
+    padding-bottom:12px;
+    border-bottom:1.5px solid var(--ink);
+  }
+  td{
+    padding:16px 12px 16px 0;
+    border-bottom:1px solid var(--grid-line);
+    vertical-align:top;
+  }
+  td:first-child, th:first-child{padding-left:0;}
+  .tag-chip{
+    display:inline-block;
+    background:var(--terrain-4);
+    color:var(--ink);
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    padding:3px 9px;
+    border-radius:999px;
+    font-weight:600;
+  }
+
+  /* quickstart */
+  .code-window{
+    background:var(--ink);
+    border-radius:14px;
+    overflow:hidden;
+    margin-bottom:24px;
+  }
+  .code-head{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 16px;
+    background:rgba(244,246,238,0.05);
+  }
+  .code-dot{width:9px;height:9px;border-radius:50%;}
+  .d1{background:#ff5f56;} .d2{background:#ffbd2e;} .d3{background:#27c93f;}
+  .code-step-label{
+    margin-left:auto;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    color:var(--paper);
+    opacity:0.5;
+  }
+  pre{
+    padding:20px;
+    overflow-x:auto;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    line-height:1.7;
+    color:#e8ebe0;
+  }
+  pre .cm{color:#8fae7d;}
+  pre .kw{color:#ff8a5c;}
+
+  /* metrics */
+  .metric-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+  }
+  .metric-card{
+    border:1px solid var(--grid-line);
+    border-radius:14px;
+    padding:24px;
+    background:#fff;
+  }
+  .metric-formula{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    color:var(--orange-deep);
+    margin-top:10px;
+  }
+
+  /* footer cta */
+  .final-cta{
+    text-align:center;
+    padding:130px 24px 100px;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(180deg,var(--paper) 0%, #e6ede0 100%);
+  }
+  .final-cta .hero-title{font-size:clamp(46px,10vw,110px);}
+  footer{
+    padding:36px 24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:12px;
+    opacity:0.6;
+    flex-wrap:wrap;
+    gap:12px;
+    font-family:'JetBrains Mono',monospace;
+  }
+
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--paper);}
+  ::-webkit-scrollbar-thumb{background:var(--terrain-3);border-radius:10px;}
+
+  @media (max-width:640px){
+    .hero-copy{flex-direction:column;gap:14px;}
+    .hero-copy .right-block{text-align:left;margin-left:0;}
+    .arch-body{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<div class="hero">
+  <div class="grid-overlay"></div>
+
+  <div class="topbar">
+    <a class="pill-btn" href="https://github.com/Tejaswanth2406/geofusion-platform" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+      geofusion-platform
+    </a>
+    <div class="icon-btn">🛰</div>
+  </div>
+
+  <div class="hero-copy">
+    <p>Cross-modal retrieval across optical, SAR &amp; multispectral sensors — the map isn't the territory, but the embedding might be.</p>
+    <p class="right-block">Contrastive alignment trained on Sentinel-1, Sentinel-2 &amp; Landsat-8 tiles, indexed for sub-50ms search.</p>
+  </div>
+
+  <div class="hero-title-wrap">
+    <div class="eyebrow-line">// enterprise geospatial intelligence engine</div>
+    <h1 class="hero-title display">geo<br>fusion</h1>
+    <p class="hero-sub">A research-grade retrieval platform that finds the same patch of Earth across three different satellites, three different physics, one shared latent space.</p>
+    <div class="hero-cta-row">
+      <a class="btn btn-solid" href="https://geofusion-platform.vercel.app" target="_blank" rel="noopener">Launch live demo →</a>
+      <a class="btn btn-outline" href="#architecture">See how it works</a>
+    </div>
+  </div>
+
+  <div class="orbit-wrap">
+    <svg viewBox="0 0 1200 230" preserveAspectRatio="xMidYMid meet">
+      <path class="orbit-path" d="M120,60 C 320,220 500,20 620,120 S 900,40 1080,140"/>
+      <rect class="orbit-node" x="112" y="52" width="16" height="16"/>
+      <rect class="orbit-node" x="612" y="112" width="16" height="16"/>
+      <rect class="orbit-node" x="1072" y="132" width="16" height="16"/>
+      <text class="orbit-label" x="90" y="42">OPTICAL</text>
+      <text class="orbit-label" x="590" y="102">SAR</text>
+      <text class="orbit-label" x="1030" y="122">MULTISPECTRAL</text>
+    </svg>
+  </div>
+
+  <svg class="hero-terrain" viewBox="0 0 1440 520" preserveAspectRatio="none">
+    <path fill="var(--terrain-4)" d="M0,300 C 240,220 380,340 620,260 C 860,180 1040,320 1440,240 L1440,520 L0,520 Z"/>
+    <path fill="var(--terrain-3)" d="M0,360 C 260,300 460,400 700,330 C 940,260 1160,380 1440,320 L1440,520 L0,520 Z"/>
+    <path fill="var(--terrain-2)" d="M0,420 C 300,380 520,460 760,410 C 1000,360 1220,440 1440,400 L1440,520 L0,520 Z"/>
+    <path fill="var(--terrain-1)" d="M0,470 C 320,450 560,500 800,470 C 1040,440 1240,490 1440,465 L1440,520 L0,520 Z"/>
+    <g stroke="rgba(244,246,238,0.35)" stroke-width="1" fill="none">
+      <path d="M0,330 C 240,255 380,370 620,290 C 860,215 1040,345 1440,270"/>
+      <path d="M0,390 C 260,335 460,425 700,360 C 940,295 1160,405 1440,350"/>
+    </g>
+  </svg>
+
+  <div class="footer-logo-row">
+    <div class="wordmark">GEOFUSION</div>
+    <div class="contact-line">
+      <span class="label">repo maintained by</span>
+      <span>Tejaswanth Surisetty &amp; Jaya242</span>
+    </div>
+  </div>
+  <a class="corner-fab" href="#deployment">↓</a>
+</div>
+
+<!-- ================= LIVE DEPLOYMENT ================= -->
+<section id="deployment">
+  <div class="section-head">
+    <span class="section-tag">01 · live</span>
+    <h2 class="section-title display">Five services,<br>one origin.</h2>
+  </div>
+
+  <div class="deploy-grid">
+    <div class="deploy-card">
+      <div class="deploy-icon">▲</div>
+      <div class="deploy-name">Frontend</div>
+      <div class="deploy-url">geofusion-platform.vercel.app</div>
+    </div>
+    <div class="deploy-card">
+      <div class="deploy-icon">◆</div>
+      <div class="deploy-name">API Gateway</div>
+      <div class="deploy-url">geofusion-platform.onrender.com/docs</div>
+    </div>
+    <div class="deploy-card">
+      <div class="deploy-icon">●</div>
+      <div class="deploy-name">Embedding Service</div>
+      <div class="deploy-url">geofusion-embedding.onrender.com/docs</div>
+    </div>
+    <div class="deploy-card">
+      <div class="deploy-icon">■</div>
+      <div class="deploy-name">Retrieval Service</div>
+      <div class="deploy-url">geofusion-retrieval.onrender.com/docs</div>
+    </div>
+    <div class="deploy-card">
+      <div class="deploy-icon">▶</div>
+      <div class="deploy-name">Evaluation Service</div>
+      <div class="deploy-url">geofusion-evaluation.onrender.com/docs</div>
+    </div>
+  </div>
+
+  <div class="creds-strip">
+    <div class="cred-pill">admin → <b>admin</b> / geofusion_demo_2026</div>
+    <div class="cred-pill">analyst (read-only) → <b>analyst</b> / analyst_pass</div>
+  </div>
+  <p class="note-line">First request may take 30–60s — free-tier services cold-start from sleep.</p>
+</section>
+
+<!-- ================= ARCHITECTURE ================= -->
+<section id="architecture">
+  <div class="section-head">
+    <span class="section-tag">02 · architecture</span>
+    <h2 class="section-title display">Six microservices,<br>each doing one thing.</h2>
+  </div>
+
+  <div class="arch-track">
+    <div class="arch-row">
+      <div class="arch-marker"></div>
+      <div class="arch-body">
+        <div class="arch-name">Frontend</div>
+        <div class="arch-role">React SPA, Vite build, served from the Vercel edge network.</div>
+        <div class="arch-tech">React 18 · Vite · Vercel rewrites</div>
+      </div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-marker"></div>
+      <div class="arch-body">
+        <div class="arch-name">API Gateway</div>
+        <div class="arch-role">Auth, rate limiting, request routing, explainability layer.</div>
+        <div class="arch-tech">FastAPI · JWT · structlog · Prometheus client</div>
+      </div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-marker"></div>
+      <div class="arch-body">
+        <div class="arch-name">Embedding Service</div>
+        <div class="arch-role">Maps each raw satellite tile into a 512-D latent vector.</div>
+        <div class="arch-tech">PyTorch · timm ViT · ResNet50</div>
+      </div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-marker"></div>
+      <div class="arch-body">
+        <div class="arch-name">Retrieval Service</div>
+        <div class="arch-role">Vector → top-K nearest matches across the shared index.</div>
+        <div class="arch-tech">FAISS · IndexFlatIP · cosine similarity</div>
+      </div>
+    </div>
+    <div class="arch-row">
+      <div class="arch-marker"></div>
+      <div class="arch-body">
+        <div class="arch-name">Evaluation Service</div>
+        <div class="arch-role">Benchmarking, precision/recall curves, latency profiling.</div>
+        <div class="arch-tech">F1@K · mAP · p50/p95/p99</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MATH FOUNDATION ================= -->
+<section id="math">
+  <div class="section-head">
+    <span class="section-tag">03 · foundation</span>
+    <h2 class="section-title display">The same patch of Earth,<br>seen three ways.</h2>
+  </div>
+
+  <div class="math-block">
+    <div class="math-step">step 01 — shared embedding space</div>
+    <div class="math-title">Modality-specific encoders, one latent space</div>
+    <p class="math-desc">An optical image and a SAR image of the same region are pushed through separate encoders into a common d-dimensional space, so geometry — not sensor physics — becomes the basis for comparison.</p>
+    <div class="math-formula">z_o = f_o(x_o; θ_o)      z_s = f_s(x_s; θ_s)      z_o, z_s ∈ R^d</div>
+  </div>
+
+  <div class="math-block">
+    <div class="math-step">step 02 — fusion objective</div>
+    <div class="math-title">Pull matches together, push mismatches apart</div>
+    <p class="math-desc">Training minimizes embedding distance between images of the same location while enforcing a margin m between unrelated pairs — the core hypothesis of the whole platform.</p>
+    <div class="math-formula">min Σ D(f_o(x_o^i), f_s(x_s^i))
+subject to D(f_o(x_o^i), f_s(x_s^j)) > m,  i ≠ j</div>
+  </div>
+
+  <div class="math-block">
+    <div class="math-step">step 03 — contrastive loss</div>
+    <div class="math-title">InfoNCE over cosine similarity</div>
+    <p class="math-desc">For a positive pair, the loss softly ranks the true match above every other candidate in the batch, tempered by τ.</p>
+    <div class="math-formula">L = −log[ exp(Sim(z_o,z_s)/τ) / Σ_k exp(Sim(z_o,z_k)/τ) ]
+Sim(z_i,z_j) = (z_i · z_j) / (‖z_i‖ ‖z_j‖)</div>
+  </div>
+
+  <div class="math-block">
+    <div class="math-step">step 04 — retrieval at scale</div>
+    <div class="math-title">Search in log time, not linear time</div>
+    <p class="math-desc">A FAISS approximate nearest-neighbour index turns brute-force search into something that stays fast past a million tiles.</p>
+    <div class="math-formula">O(N·d)  →  O(log N)         sub-50ms over 1M+ tiles</div>
+  </div>
+</section>
+
+<!-- ================= DATASET ================= -->
+<section id="dataset">
+  <div class="section-head">
+    <span class="section-tag">04 · dataset</span>
+    <h2 class="section-title display">Three sensors,<br>one Earth.</h2>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>Modality</th><th>Source</th><th>Bands / Format</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="tag-chip">Optical</span></td>
+        <td>Sentinel-2 · ESA Copernicus</td>
+        <td>10 bands (B02–B12) · 10–60m resolution</td>
+      </tr>
+      <tr>
+        <td><span class="tag-chip">SAR</span></td>
+        <td>Sentinel-1 · ESA Copernicus</td>
+        <td>VV + VH polarisations · ~10m resolution</td>
+      </tr>
+      <tr>
+        <td><span class="tag-chip">Multispectral</span></td>
+        <td>Landsat-8 · USGS</td>
+        <td>11 bands · 30m resolution</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="note-line" style="margin-top:28px;">The live demo index is seeded with 20 synthetic tiles across the Amazon, Sahara, Himalayas, Arctic and Pacific — the same <code>/index/add</code> endpoint scales to millions in production.</p>
+</section>
+
+<!-- ================= QUICKSTART ================= -->
+<section id="quickstart">
+  <div class="section-head">
+    <span class="section-tag">05 · run it locally</span>
+    <h2 class="section-title display">Four commands<br>to a live retrieval.</h2>
+  </div>
+
+  <div class="code-window">
+    <div class="code-head"><div class="code-dot d1"></div><div class="code-dot d2"></div><div class="code-dot d3"></div><span class="code-step-label">clone &amp; install</span></div>
+    <pre><span class="cm"># 1. clone the repo</span>
+git clone https://github.com/Tejaswanth2406/geofusion-platform.git
+cd geofusion-platform
+pip install -r requirements.txt</pre>
+  </div>
+
+  <div class="code-window">
+    <div class="code-head"><div class="code-dot d1"></div><div class="code-dot d2"></div><div class="code-dot d3"></div><span class="code-step-label">start the stack</span></div>
+    <pre><span class="cm"># 2. gateway, embedding, retrieval, evaluation, MLflow, Prometheus, Grafana</span>
+docker-compose up --build -d</pre>
+  </div>
+
+  <div class="code-window">
+    <div class="code-head"><div class="code-dot d1"></div><div class="code-dot d2"></div><div class="code-dot d3"></div><span class="code-step-label">authenticate</span></div>
+    <pre><span class="kw">curl</span> -X POST http://localhost:8000/auth/token \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"geofusion_demo_2026"}'</pre>
+  </div>
+
+  <div class="code-window">
+    <div class="code-head"><div class="code-dot d1"></div><div class="code-dot d2"></div><div class="code-dot d3"></div><span class="code-step-label">cross-modal retrieval</span></div>
+    <pre><span class="kw">curl</span> -X POST http://localhost:8000/api/v1/retrieve \
+  -H "Authorization: Bearer &lt;ACCESS_TOKEN&gt;" \
+  -F "sensor=optical" \
+  -F "image=@data/sentinel2/tile001/image.tiff"</pre>
+  </div>
+</section>
+
+<!-- ================= METRICS ================= -->
+<section id="metrics">
+  <div class="section-head">
+    <span class="section-tag">06 · evaluation</span>
+    <h2 class="section-title display">Measured, not assumed.</h2>
+  </div>
+
+  <div class="metric-grid">
+    <div class="metric-card">
+      <div class="deploy-name">Precision@K</div>
+      <p class="arch-role">Share of the top-K retrieved tiles that are actually relevant.</p>
+      <div class="metric-formula">|Relevant ∩ Retrieved@K| / K</div>
+    </div>
+    <div class="metric-card">
+      <div class="deploy-name">Recall@K</div>
+      <p class="arch-role">Share of all relevant tiles the system managed to surface.</p>
+      <div class="metric-formula">|Relevant ∩ Retrieved@K| / |Relevant|</div>
+    </div>
+    <div class="metric-card">
+      <div class="deploy-name">F1@K</div>
+      <p class="arch-role">Harmonic mean of precision and recall at K.</p>
+      <div class="metric-formula">2·P·R / (P + R)</div>
+    </div>
+    <div class="metric-card">
+      <div class="deploy-name">mAP &amp; latency</div>
+      <p class="arch-role">Mean average precision plus p50/p95/p99 request latency, tracked in Prometheus.</p>
+      <div class="metric-formula">Grafana · live dashboards</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<div class="final-cta" id="try-it">
+  <div class="eyebrow-line">// go touch some satellite data</div>
+  <h2 class="hero-title display">try it live</h2>
+  <p class="hero-sub" style="margin-left:auto;margin-right:auto;">Sign in with the demo credentials above and run a real cross-modal search in under a minute.</p>
+  <div class="hero-cta-row">
+    <a class="btn btn-solid" href="https://geofusion-platform.vercel.app" target="_blank" rel="noopener">Open the platform →</a>
+    <a class="btn btn-outline" href="https://github.com/Tejaswanth2406/geofusion-platform" target="_blank" rel="noopener">View source on GitHub</a>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 GeoFusion AI · MIT License · BAH 2026 Hack2Skill</span>
+  <span>get in touch → github.com/Tejaswanth2406</span>
+</footer>
+
+</body>
+</html>
