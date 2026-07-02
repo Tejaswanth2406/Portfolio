@@ -1110,6 +1110,281 @@ function CertificationsSection() {
   )
 }
 
+// ─── Featured Projects Showcase ───────────────────────────────────────────────
+
+function FeaturedProjectsSection() {
+  const [hoveredProject, setHoveredProject] = useState(null)
+
+  return (
+    <section id="featured-projects" className="relative py-24 px-6 md:px-16 bg-white/[0.01]">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>SHOWCASE</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-16">
+          Featured Projects
+        </GradientHeading>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((project, i) => (
+            <motion.a
+              key={project.id}
+              href={project.link}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.6 }}
+              onMouseEnter={() => setHoveredProject(i)}
+              onMouseLeave={() => setHoveredProject(null)}
+              className="group relative border border-white/10 rounded-2xl overflow-hidden hover:border-white/30 transition-all block h-full"
+            >
+              {/* Image background */}
+              <div className="relative h-56 bg-gradient-to-br from-white/5 to-white/[0.02] overflow-hidden">
+                <img
+                  src={project.image}
+                  alt={project.name}
+                  className={`w-full h-full object-cover transition-all duration-500 ${
+                    hoveredProject === i
+                      ? "scale-110 opacity-60"
+                      : "scale-100 opacity-30"
+                  }`}
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+              </div>
+
+              {/* Content */}
+              <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                <div className="space-mono text-[10px] text-white/50 tracking-widest mb-2">
+                  {project.category}
+                </div>
+                <h3 className="text-xl font-black mb-2 group-hover:italic transition-all">
+                  {project.name}
+                </h3>
+                <p className="text-xs text-white/60 line-clamp-2 mb-4">
+                  {project.tagline}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {project.stack.slice(0, 3).map((tech, j) => (
+                    <span
+                      key={j}
+                      className="space-mono text-[8px] px-2 py-1 border border-white/20 rounded-full text-white/70"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Hover overlay */}
+              {hoveredProject === i && (
+                <motion.div
+                  className="absolute inset-0 border-2 border-white/50 rounded-2xl"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
+              )}
+            </motion.a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Exclusive Archives ────────────────────────────────────────────────────────
+
+function ExclusiveArchivesSection() {
+  const archives = [
+    {
+      title: "Hidden Vault",
+      description: "Exclusive research, unreleased projects, and experimental work",
+      href: "hidden vault.html",
+      icon: "🔐",
+    },
+    {
+      title: "Vault Content",
+      description: "Deep dives into specialized security and AI topics",
+      href: "vault-content.html",
+      icon: "📦",
+    },
+    {
+      title: "Services",
+      description: "Security consulting, AI systems design, and architecture",
+      href: "hire_me.html",
+      icon: "⚙️",
+    },
+  ]
+
+  return (
+    <section id="archives" className="relative py-24 px-6 md:px-16">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>RESOURCES</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-16">
+          Exclusive Archives
+        </GradientHeading>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {archives.map((archive, i) => (
+            <motion.a
+              key={i}
+              href={archive.href}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.6 }}
+              className="group p-8 border border-white/10 rounded-2xl hover:border-white/30 transition-all hover:bg-white/[0.03] block"
+            >
+              <div className="text-4xl mb-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                {archive.icon}
+              </div>
+              <h3 className="font-black text-lg mb-3 group-hover:italic transition-all">
+                {archive.title}
+              </h3>
+              <p className="text-sm text-white/60 group-hover:text-white/80 transition-colors">
+                {archive.description}
+              </p>
+              <div className="mt-4 text-xs text-white/40 group-hover:text-white/60 transition-colors">
+                EXPLORE →
+              </div>
+            </motion.a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Infrastructure Tech Stack ────────────────────────────────────────────────
+
+function InfrastructureStackSection() {
+  const stackCategories = [
+    {
+      title: "Backend & Processing",
+      items: ["Python", "Node.js", "Rust", "FastAPI", "Express"],
+    },
+    {
+      title: "Cloud & DevOps",
+      items: ["GCP", "OCI", "Docker", "Kubernetes", "CI/CD"],
+    },
+    {
+      title: "AI & Machine Learning",
+      items: ["LLMs", "Claude API", "RAG", "Anthropic MCP", "Graph AI"],
+    },
+    {
+      title: "Frontend & Design",
+      items: ["React 18", "WebGL", "GSAP", "Framer Motion", "Tailwind"],
+    },
+  ]
+
+  return (
+    <section id="infrastructure" className="relative py-24 px-6 md:px-16 bg-white/[0.01]">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>TECH</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-16">
+          Infrastructure Stack
+        </GradientHeading>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {stackCategories.map((category, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08, duration: 0.6 }}
+              className="p-6 border border-white/10 rounded-2xl hover:border-white/20 transition-all hover:bg-white/[0.02]"
+            >
+              <h3 className="font-black text-sm mb-6 tracking-widest">
+                {category.title.toUpperCase()}
+              </h3>
+              <div className="space-y-2">
+                {category.items.map((item, j) => (
+                  <div key={j} className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                    <span className="text-sm text-white/70">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Explore More Navigation ──────────────────────────────────────────────────
+
+function ExploreMoreSection() {
+  const links = [
+    {
+      title: "React Demo",
+      description: "Interactive component showcase",
+      href: "test_react.html",
+    },
+    {
+      title: "Services",
+      description: "Consulting and development",
+      href: "hire_me.html",
+    },
+    {
+      title: "Publications",
+      description: "Research and technical papers",
+      href: "publications.html",
+    },
+    {
+      title: "Hidden Vault",
+      description: "Exclusive content",
+      href: "hidden vault.html",
+    },
+    {
+      title: "GitHub",
+      description: "All source code",
+      href: "https://github.com/Tejaswanth2406",
+      external: true,
+    },
+    {
+      title: "HackerOne Profile",
+      description: "Security research",
+      href: "https://hackerone.com/tejaswanth2406",
+      external: true,
+    },
+  ]
+
+  return (
+    <section id="explore-more" className="relative py-24 px-6 md:px-16">
+      <div className="max-w-6xl mx-auto">
+        <SectionLabel>NAVIGATION</SectionLabel>
+        <GradientHeading size="xl" weight="bold" as="h2" className="mb-16">
+          Explore More
+        </GradientHeading>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {links.map((link, i) => (
+            <motion.a
+              key={i}
+              href={link.href}
+              target={link.external ? "_blank" : "_self"}
+              rel={link.external ? "noopener noreferrer" : ""}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.07, duration: 0.5 }}
+              className="group p-6 border border-white/10 rounded-2xl hover:border-white/30 transition-all hover:bg-white/[0.03] block"
+            >
+              <h3 className="font-black text-base mb-2 group-hover:italic transition-all flex items-center justify-between">
+                {link.title}
+                {link.external && <span className="text-xs opacity-50">↗</span>}
+              </h3>
+              <p className="text-sm text-white/60">{link.description}</p>
+            </motion.a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 // ─── Publications ─────────────────────────────────────────────────────────────
 
 function PublicationsSection() {
@@ -1284,6 +1559,14 @@ export default function MotionPortfolio() {
           <AchievementsSection />
           <Divider />
           <CertificationsSection />
+          <Divider />
+          <FeaturedProjectsSection />
+          <Divider />
+          <ExclusiveArchivesSection />
+          <Divider />
+          <InfrastructureStackSection />
+          <Divider />
+          <ExploreMoreSection />
           <Divider />
           <PublicationsSection />
           <Divider />

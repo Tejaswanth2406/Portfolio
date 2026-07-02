@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMEGA — Self-Evolving Cognitive Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#efe8d9;
+    --bg-deep:#e4dabf;
+    --ink:#1c1a15;
+    --ink-soft:rgba(28,26,21,0.66);
+    --rule:rgba(28,26,21,0.22);
+    --contour:rgba(28,26,21,0.09);
+    --rust:#a9622f;
+    --olive:#5b5a3d;
+    --paper:#f7f3e8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Work Sans',sans-serif;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--rust);color:var(--paper);}
+  a{color:inherit;text-decoration:none;}
+  .display{font-family:'Big Shoulders Display',sans-serif;font-weight:900;letter-spacing:-0.01em;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* ---------- contour background ---------- */
+  .contour-bg{
+    position:absolute;inset:0;
+    z-index:0;
+    opacity:0.9;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    background:var(--bg);
+    overflow:hidden;
+  }
+
+  .topbar{
+    position:relative;z-index:5;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    padding:26px 30px 0;
+  }
+  .back-btn{
+    width:44px;height:44px;
+    border-radius:50%;
+    background:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 14px rgba(28,26,21,0.14);
+    transition:transform .25s ease;
+  }
+  .back-btn:hover{transform:translateX(-3px);}
+  .back-btn svg{width:18px;height:18px;}
+
+  .meta-left, .meta-right{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    line-height:1.6;
+    color:var(--ink-soft);
+  }
+  .meta-left{display:flex;gap:34px;margin-left:18px;padding-top:6px;}
+  .meta-right{text-align:right;display:flex;align-items:flex-start;gap:16px;padding-top:6px;}
+  .meta-label{text-transform:uppercase;letter-spacing:0.1em;opacity:0.6;font-size:9.5px;display:block;margin-bottom:2px;}
+  .brain-btn{
+    width:44px;height:44px;border-radius:50%;
+    background:var(--ink);color:var(--bg);
+    display:flex;align-items:center;justify-content:center;
+    font-size:16px;
+    box-shadow:0 4px 14px rgba(28,26,21,0.25);
+  }
+
+  .hero-title-block{
+    position:relative;z-index:5;
+    padding:60px 30px 0;
+  }
+  .hero-rule{
+    width:100%;
+    height:1px;
+    background:var(--rule);
+    margin-top:22px;
+  }
+  .hero-title{
+    font-size:clamp(56px,13vw,168px);
+    line-height:0.86;
+  }
+
+  .hero-columns{
+    position:relative;z-index:5;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:30px;
+    padding:38px 30px 0;
+  }
+  .hero-columns p{
+    font-size:12px;
+    line-height:1.65;
+    color:var(--ink-soft);
+  }
+
+  .credit-row{
+    position:relative;z-index:5;
+    display:flex;
+    justify-content:space-between;
+    padding:30px 30px 0;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    color:var(--ink-soft);
+  }
+
+  /* ---------- signature: layered elevation of 12 cognitive layers ---------- */
+  .strata{
+    position:relative;
+    margin-top:40px;
+    height:340px;
+    z-index:2;
+  }
+  .strata svg{width:100%;height:100%;display:block;}
+  .strata-tag{
+    position:absolute;
+    z-index:6;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.08em;
+    color:var(--paper);
+    text-transform:uppercase;
+  }
+
+  .corner-fab-group{
+    position:absolute;
+    bottom:26px;right:26px;
+    z-index:8;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .fab{
+    width:50px;height:50px;border-radius:50%;
+    background:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 20px rgba(28,26,21,0.25);
+    font-size:17px;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{
+    position:relative;
+    max-width:1180px;
+    margin:0 auto;
+    padding:110px 30px;
+  }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    gap:18px;
+    margin-bottom:50px;
+    flex-wrap:wrap;
+  }
+  .section-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--rust);
+    border:1px solid var(--rust);
+    padding:5px 10px;
+    border-radius:999px;
+  }
+  .section-title{font-size:clamp(30px,4.4vw,54px);line-height:1.02;}
+
+  /* architecture / elevation list */
+  .layer-row{
+    display:grid;
+    grid-template-columns:70px 1px 1fr;
+    gap:22px;
+    padding:20px 0;
+    border-top:1px solid var(--rule);
+    align-items:center;
+  }
+  .layer-row:last-child{border-bottom:1px solid var(--rule);}
+  .layer-num{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:700;
+    font-size:34px;
+    color:var(--rust);
+    line-height:1;
+  }
+  .layer-divider{background:var(--rule);height:38px;}
+  .layer-body{
+    display:grid;
+    grid-template-columns:1fr 1.4fr auto;
+    gap:16px;
+    align-items:center;
+  }
+  .layer-name{font-weight:600;font-size:16px;}
+  .layer-desc{font-size:12.5px;color:var(--ink-soft);}
+  .layer-mod{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--olive);
+    white-space:nowrap;
+  }
+  @media (max-width:720px){
+    .layer-body{grid-template-columns:1fr;gap:4px;}
+  }
+
+  /* formula */
+  .formula-block{
+    background:var(--ink);
+    color:var(--bg);
+    border-radius:4px;
+    padding:56px 40px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .formula-block::before{
+    content:"";
+    position:absolute;inset:0;
+    background-image:repeating-linear-gradient(0deg, rgba(247,243,232,0.03) 0 1px, transparent 1px 30px);
+    pointer-events:none;
+  }
+  .formula-eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--rust);
+    margin-bottom:20px;
+  }
+  .formula-text{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:700;
+    font-size:clamp(20px,4vw,42px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+  .formula-text .op{color:var(--rust);}
+
+  /* quickstart */
+  .code-window{
+    background:var(--ink);
+    border-radius:4px;
+    overflow:hidden;
+    margin-bottom:22px;
+  }
+  .code-head{
+    display:flex;align-items:center;gap:8px;
+    padding:12px 16px;
+    background:rgba(247,243,232,0.05);
+  }
+  .code-dot{width:9px;height:9px;border-radius:50%;}
+  .cd1{background:#c96a4f;} .cd2{background:#d4a843;} .cd3{background:#7a9463;}
+  .code-step-label{
+    margin-left:auto;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;
+    color:var(--bg);
+    opacity:0.5;
+  }
+  pre{
+    padding:20px;
+    overflow-x:auto;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    line-height:1.75;
+    color:#eee6d3;
+  }
+  pre .cm{color:#8c9370;}
+
+  /* theoretical foundations */
+  .foundations-list{
+    border-top:1px solid var(--rule);
+  }
+  .foundation-row{
+    display:grid;
+    grid-template-columns:1fr 2fr;
+    gap:24px;
+    padding:22px 0;
+    border-bottom:1px solid var(--rule);
+    align-items:baseline;
+  }
+  .foundation-name{font-weight:600;font-size:16px;}
+  .foundation-theory{
+    font-size:13px;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+  @media (max-width:640px){
+    .foundation-row{grid-template-columns:1fr;gap:4px;}
+  }
+
+  /* project structure tree */
+  .tree-window{
+    background:var(--paper);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:30px;
+  }
+  .tree-window pre{
+    color:var(--ink);
+    padding:0;
+    font-size:12.5px;
+    line-height:1.85;
+  }
+  .tree-window .layer-tag{color:var(--rust);}
+
+  /* final cta */
+  .final-cta{
+    text-align:center;
+    padding:130px 30px 100px;
+    position:relative;
+    background:var(--bg-deep);
+    overflow:hidden;
+  }
+  .final-cta .hero-title{font-size:clamp(44px,9vw,100px);}
+  .final-sub{
+    max-width:520px;
+    margin:20px auto 34px;
+    font-size:14px;
+    color:var(--ink-soft);
+    line-height:1.6;
+  }
+  .btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    padding:14px 28px;
+    border-radius:999px;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .btn-solid{background:var(--ink);color:var(--bg);}
+  .btn-solid:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(28,26,21,0.3);}
+  .btn-outline{border:1.5px solid var(--ink);color:var(--ink);}
+  .btn-outline:hover{transform:translateY(-3px);background:var(--ink);color:var(--bg);}
+  .cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+  footer{
+    padding:36px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:12px;
+    color:var(--ink-soft);
+    flex-wrap:wrap;
+    gap:12px;
+    font-family:'JetBrains Mono',monospace;
+    border-top:1px solid var(--rule);
+  }
+
+  ::-webkit-scrollbar{width:10px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:var(--olive);border-radius:10px;}
+
+  @media (max-width:720px){
+    .hero-columns{grid-template-columns:1fr;}
+    .meta-left{gap:18px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<div class="hero">
+  <svg class="contour-bg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="var(--contour)" stroke-width="1">
+      <ellipse cx="1050" cy="180" rx="560" ry="330"/>
+      <ellipse cx="1050" cy="180" rx="500" ry="290"/>
+      <ellipse cx="1050" cy="180" rx="440" ry="252"/>
+      <ellipse cx="1050" cy="180" rx="380" ry="216"/>
+      <ellipse cx="1050" cy="180" rx="320" ry="182"/>
+      <ellipse cx="1050" cy="180" rx="262" ry="148"/>
+      <ellipse cx="1050" cy="180" rx="206" ry="116"/>
+      <ellipse cx="1050" cy="180" rx="150" ry="84"/>
+      <ellipse cx="220" cy="640" rx="480" ry="300"/>
+      <ellipse cx="220" cy="640" rx="420" ry="262"/>
+      <ellipse cx="220" cy="640" rx="360" ry="224"/>
+      <ellipse cx="220" cy="640" rx="300" ry="188"/>
+      <ellipse cx="220" cy="640" rx="240" ry="150"/>
+      <ellipse cx="220" cy="640" rx="180" ry="112"/>
+      <ellipse cx="700" cy="420" rx="620" ry="360"/>
+      <ellipse cx="700" cy="420" rx="540" ry="314"/>
+      <ellipse cx="700" cy="420" rx="460" ry="268"/>
+      <ellipse cx="700" cy="420" rx="380" ry="222"/>
+    </g>
+  </svg>
+
+  <div class="topbar">
+    <div style="display:flex;align-items:flex-start;">
+      <a class="back-btn" href="https://github.com/Tejaswanth2406/OMEGA" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
+      </a>
+      <div class="meta-left">
+        <div><span class="meta-label">Layers</span>12</div>
+        <div><span class="meta-label">Language</span>Python 100%</div>
+      </div>
+    </div>
+    <div class="meta-right">
+      <div><span class="meta-label">Font used</span>Big Shoulders Display</div>
+      <div class="brain-btn">🧠</div>
+    </div>
+  </div>
+
+  <div class="hero-title-block">
+    <h1 class="hero-title display">OMEGA.</h1>
+    <div class="hero-rule"></div>
+  </div>
+
+  <div class="hero-columns">
+    <p>A 12-layer cognitive architecture that goes beyond conventional AI systems toward a genuine artificial organism — one that models itself, benchmarks itself, and rewrites itself.</p>
+    <p>Every layer is a distinct evolutionary pressure: a cognitive genome, a knowledge fabric, a memory hierarchy, an immune system for mutations — stacked like sediment, each one load-bearing for the next.</p>
+    <p>Nothing here is static. The organism observes its own reasoning, proposes hypotheses about itself, and — inside a sandboxed immune layer — evolves.</p>
+  </div>
+
+  <div class="credit-row">
+    <span>Architecture by: Tejaswanth Surisetty · github.com/Tejaswanth2406</span>
+    <span>Foundations by: Holland, Friston, Baars, Clark, Langton</span>
+  </div>
+
+  <div class="strata">
+    <span class="strata-tag" style="top:14px;left:34px;">layer 01 · cognitive genome</span>
+    <span class="strata-tag" style="top:14px;right:34px;">layer 12 · recursive self-improvement</span>
+    <svg viewBox="0 0 1440 340" preserveAspectRatio="none">
+      <path fill="#3a3527" d="M0,300 C 200,260 340,320 500,270 C 700,205 860,300 1080,240 C 1240,198 1360,270 1440,235 L1440,340 L0,340 Z"/>
+      <path fill="#4b452f" d="M0,270 C 220,225 380,290 560,235 C 760,175 900,265 1120,205 C 1260,168 1360,230 1440,200 L1440,340 L0,340 Z"/>
+      <path fill="#5c5638" d="M0,240 C 240,195 400,255 600,200 C 800,145 940,230 1140,175 C 1270,140 1370,195 1440,168 L1440,340 L0,340 Z"/>
+      <path fill="#6f6841" d="M0,212 C 260,168 420,222 640,168 C 840,118 980,198 1160,148 C 1280,115 1380,162 1440,140 L1440,340 L0,340 Z"/>
+      <path fill="#847a49" d="M0,186 C 280,144 440,192 680,140 C 860,96 1000,168 1180,122 C 1290,94 1385,132 1440,114 L1440,340 L0,340 Z"/>
+      <path fill="#998d51" d="M0,162 C 300,122 460,164 700,116 C 880,78 1020,140 1200,100 C 1300,78 1390,108 1440,92 L1440,340 L0,340 Z"/>
+      <path fill="#ae9f5a" d="M0,140 C 320,102 480,140 720,96 C 900,62 1030,116 1210,82 C 1305,64 1395,88 1440,74 L1440,340 L0,340 Z"/>
+      <path fill="#c3b263" d="M0,120 C 330,86 490,118 730,80 C 910,50 1040,96 1215,66 C 1310,52 1395,70 1440,58 L1440,340 L0,340 Z"/>
+      <path fill="#d3c26e" d="M0,102 C 340,72 495,100 735,66 C 915,40 1045,80 1218,52 C 1312,40 1398,54 1440,44 L1440,340 L0,340 Z"/>
+      <path fill="#a9622f" d="M0,86 C 345,60 500,84 740,54 C 918,30 1048,64 1220,40 C 1314,28 1398,40 1440,32 L1440,340 L0,340 Z"/>
+      <g stroke="rgba(247,243,232,0.4)" stroke-width="1" fill="none">
+        <path d="M0,150 C 320,112 480,150 720,106 C 900,72 1030,124 1210,90 C 1300,72 1390,96 1440,80"/>
+        <path d="M0,110 C 340,80 495,108 735,74 C 915,48 1045,88 1218,60 C 1312,48 1398,62 1440,52"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="corner-fab-group">
+    <a class="fab" href="#architecture">↓</a>
+    <a class="fab" href="https://github.com/Tejaswanth2406/OMEGA" target="_blank" rel="noopener">⌘</a>
+  </div>
+</div>
+
+<!-- ================= ARCHITECTURE OVERVIEW ================= -->
+<section id="architecture">
+  <div class="section-head">
+    <span class="section-tag">01 · elevation profile</span>
+    <h2 class="section-title display">Twelve layers,<br>one ascent.</h2>
+  </div>
+
+  <div>
+    <div class="layer-row">
+      <div class="layer-num">01</div><div class="layer-divider"></div>
+      <div class="layer-body">
+        <div class="layer-name">Cognitive Genome</div>
+        <div class="layer-desc">Evolvable component DNA — the base encoding every other layer mutates from.</div>
+        <div class="layer-mod">/genome</div>
+      </div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-num">02</div><div class="layer-divider"></div>
+      <div class="layer-body">
+        <div class="layer-name">Artificial Cell System</div>
+        <div class="layer-desc">Modular cognitive cells that compose into larger reasoning units.</div>
+        <div class="layer-mod">/cells</div>
+      </div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-num">03</div><div class="layer-divider"></div>
+      <div class="layer-body">
+        <div class="layer-name">Neural Knowledge Fabric</div>
+        <div class="layer-desc">A dynamic knowledge graph that reshapes itself as understanding grows.</div>
+        <div class="layer-mod">/graph</div>
+      </div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-num">04</div><div class="layer-divider"></div>
+      <div class="layer-body">
+        <div class="layer-name">Multi-Scale Memory</div>
+        <div class="layer-desc">A 7-tier memory hierarchy spanning working to long-horizon recall.</div>
+        <div class="layer-mod">/memory</div>
+      </div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-num">05</div><div class="layer-divider"></div>
+      <div class="layer-body">
+        <div class="layer-name">Meta-Cognition</div>
+        <div class="layer-desc">A machine self-model — the organism's account of its own state.</div>
+        <div class="layer-mod">/metacognition</div>
+      </div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-num">06</div><div class="layer-divider"></div>
+      <div class="layer-body">
+        <div class="layer-name">Continuous Scientific Method</div>
+        <div class="layer-desc">Hypothesis-driven outputs — every claim is tested before it's trusted.</div>
+        <div class="layer-mod">/scientific_method</div>
+      </div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-num">07</div><div class="layer-divider"></div>
+      <div class="layer-body">
+        <div class="layer-name">Evolution Engine</div>
+        <div class="layer-desc">Multi-level evolution across the genome, cells, and higher structures.</div>
+        <div class="layer-mod">/evolution</div>
+      </div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-num">08</div><div class="layer-divider"></div>
+      <div class="layer-body">
+        <div class="layer-name">Cognitive Immune System</div>
+        <div class="layer-desc">Mutation safety gating — nothing evolves without passing quarantine.</div>
+        <div class="layer-mod">/immune</div>
+      </div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-num">09</div><div class="layer-divider"></div>
+      <div class="layer-body">
+        <div class="layer-name">Fast Ontological Recognition</div>
+        <div class="layer-desc">Pre-retrieval classification that routes a query before it's expensive.</div>
+        <div class="layer-mod">/ontology</div>
+      </div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-num">10</div><div class="layer-divider"></div>
+      <div class="layer-body">
+        <div class="layer-name">Energy-Based Cognition</div>
+        <div class="layer-desc">Budget-constrained reasoning — thought has a metabolic cost here.</div>
+        <div class="layer-mod">/cognition</div>
+      </div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-num">11</div><div class="layer-divider"></div>
+      <div class="layer-body">
+        <div class="layer-name">Cognitive Ecosystem</div>
+        <div class="layer-desc">Competing agent populations, selected the way traits are selected.</div>
+        <div class="layer-mod">/ecosystem</div>
+      </div>
+    </div>
+    <div class="layer-row">
+      <div class="layer-num">12</div><div class="layer-divider"></div>
+      <div class="layer-body">
+        <div class="layer-name">Recursive Self-Improvement</div>
+        <div class="layer-desc">The full self-redesign loop — the summit layer, closing back on Layer 1.</div>
+        <div class="layer-mod">/self_design</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FORMULA ================= -->
+<section id="formula">
+  <div class="section-head">
+    <span class="section-tag">02 · definition</span>
+    <h2 class="section-title display">What counts<br>as intelligence, here.</h2>
+  </div>
+  <div class="formula-block">
+    <div class="formula-eyebrow">the organism's working definition</div>
+    <div class="formula-text">
+      <span>Intelligence</span><span class="op">=</span>
+      <span>Knowledge</span><span class="op">×</span>
+      <span>Adaptability</span><span class="op">×</span>
+      <span>Efficiency</span><span class="op">×</span>
+      <span>Self-Improvement</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUICKSTART ================= -->
+<section id="quickstart">
+  <div class="section-head">
+    <span class="section-tag">03 · run it</span>
+    <h2 class="section-title display">Three modes,<br>one organism.</h2>
+  </div>
+
+  <div class="code-window">
+    <div class="code-head"><div class="code-dot cd1"></div><div class="code-dot cd2"></div><div class="code-dot cd3"></div><span class="code-step-label">install</span></div>
+    <pre><span class="cm"># dependencies</span>
+pip install -r requirements.txt</pre>
+  </div>
+  <div class="code-window">
+    <div class="code-head"><div class="code-dot cd1"></div><div class="code-dot cd2"></div><div class="code-dot cd3"></div><span class="code-step-label">talk to it</span></div>
+    <pre>python -m organism.main --mode interactive</pre>
+  </div>
+  <div class="code-window">
+    <div class="code-head"><div class="code-dot cd1"></div><div class="code-dot cd2"></div><div class="code-dot cd3"></div><span class="code-step-label">let it evolve</span></div>
+    <pre>python -m organism.main --mode evolve --generations 100</pre>
+  </div>
+  <div class="code-window">
+    <div class="code-head"><div class="code-dot cd1"></div><div class="code-dot cd2"></div><div class="code-dot cd3"></div><span class="code-step-label">benchmark it</span></div>
+    <pre>python -m organism.main --mode benchmark</pre>
+  </div>
+</section>
+
+<!-- ================= THEORETICAL FOUNDATIONS ================= -->
+<section id="foundations">
+  <div class="section-head">
+    <span class="section-tag">04 · field notes</span>
+    <h2 class="section-title display">Standing on a few<br>tall shoulders.</h2>
+  </div>
+  <div class="foundations-list">
+    <div class="foundation-row">
+      <div class="foundation-name">John Holland</div>
+      <div class="foundation-theory">Evolutionary Computation</div>
+    </div>
+    <div class="foundation-row">
+      <div class="foundation-name">Karl Friston</div>
+      <div class="foundation-theory">Active Inference &amp; the Free Energy Principle</div>
+    </div>
+    <div class="foundation-row">
+      <div class="foundation-name">Bernard Baars</div>
+      <div class="foundation-theory">Global Workspace Theory</div>
+    </div>
+    <div class="foundation-row">
+      <div class="foundation-name">Andy Clark</div>
+      <div class="foundation-theory">Predictive Processing</div>
+    </div>
+    <div class="foundation-row">
+      <div class="foundation-name">Christopher Langton</div>
+      <div class="foundation-theory">Artificial Life</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECT STRUCTURE ================= -->
+<section id="structure">
+  <div class="section-head">
+    <span class="section-tag">05 · repository</span>
+    <h2 class="section-title display">Where each layer<br>actually lives.</h2>
+  </div>
+  <div class="tree-window">
+<pre>artificial-organism/
+├── <span class="layer-tag">genome/</span>          # Layer 1: Cognitive DNA
+├── <span class="layer-tag">cells/</span>           # Layer 2: Artificial Cells
+├── <span class="layer-tag">graph/</span>           # Layer 3: Neural Knowledge Fabric
+├── <span class="layer-tag">memory/</span>          # Layer 4: Multi-Scale Memory
+├── <span class="layer-tag">metacognition/</span>   # Layer 5: Self-Model
+├── <span class="layer-tag">scientific_method/</span> # Layer 6: Hypothesis Engine
+├── <span class="layer-tag">evolution/</span>       # Layer 7: Evolution Engine
+├── <span class="layer-tag">immune/</span>          # Layer 8: Immune System
+├── <span class="layer-tag">ontology/</span>        # Layer 9: Ontological Recognizer
+├── <span class="layer-tag">cognition/</span>       # Layer 10: Energy-Based Cognition
+├── <span class="layer-tag">ecosystem/</span>       # Layer 11: Agent Ecosystem
+├── <span class="layer-tag">self_design/</span>     # Layer 12: Recursive Self-Improvement
+├── rag/               # Enhanced RAG system
+├── benchmarking/       # Fitness benchmarking
+├── simulation/         # Sandboxed mutation testing
+├── self_repair/        # Self-repair mechanisms
+├── observability/       # Logging, tracing, dashboards
+└── deployment/          # Production deployment</pre>
+  </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<div class="final-cta" id="try-it">
+  <h2 class="hero-title display">Ascend it.</h2>
+  <p class="final-sub">Clone the repo, run it in interactive mode, and watch a system reason about its own reasoning.</p>
+  <div class="cta-row">
+    <a class="btn btn-solid" href="https://github.com/Tejaswanth2406/OMEGA.git" target="_blank" rel="noopener">Clone the repository →</a>
+    <a class="btn btn-outline" href="https://github.com/Tejaswanth2406/OMEGA" target="_blank" rel="noopener">Read the source</a>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 OMEGA · Artificial Organism Project</span>
+  <span>maintained by Tejaswanth Surisetty · github.com/Tejaswanth2406</span>
+</footer>
+
+</body>
+</html>
