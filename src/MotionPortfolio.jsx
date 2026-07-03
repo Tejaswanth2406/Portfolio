@@ -33,7 +33,7 @@ const projects = [
     stack: ["Python", "FastAPI", "GCP IAM", "Docker", "Temporal Graphs"],
     link: "hollowpurple.html",
     github: "https://github.com/Tejaswanth2406/hollow-purple",
-    image: "Screenshot 2026-06-08 125511.png",
+    image: "HOLLOWPURPLE.PNG",
   },
   {
     id: "hakari",
@@ -46,7 +46,7 @@ const projects = [
     stack: ["JavaScript", "Node.js", "Bayesian Inference"],
     link: "hakari.html",
     github: "https://github.com/Tejaswanth2406/hakari",
-    image: "Screenshot 2026-06-07 230310.png",
+    image: "HAKARI.PNG",
   },
   {
     id: "piria",
@@ -59,7 +59,7 @@ const projects = [
     stack: ["Rust", "Graph Runtime", "WAL"],
     link: "piria.html",
     github: "https://github.com/Tejaswanth2406/PIRIA",
-    image: "Screenshot 2026-06-03 104955.png",
+    image: "PIRIA.PNG",
   },
   {
     id: "iot-sentinel",
@@ -72,7 +72,7 @@ const projects = [
     stack: ["Python", "Lua", "FastAPI", "Docker", "Nmap"],
     link: "iot_sentinal.html",
     github: "https://github.com/Tejaswanth2406/iot-sentinal",
-    image: "Screenshot 2026-06-03 104507.png",
+    image: "IOT_SENTINAL.PNG",
   },
   {
     id: "clu",
@@ -85,7 +85,7 @@ const projects = [
     stack: ["TypeScript", "React 18", "Anthropic API"],
     link: "clu.html",
     github: "https://github.com/Tejaswanth2406/CLU",
-    image: "Screenshot 2026-06-03 104248.png",
+    image: "CLU.PNG",
   },
   {
     id: "mumcare",
@@ -98,7 +98,7 @@ const projects = [
     stack: ["FastAPI", "Claude 3", "RAG", "Langchain"],
     link: "mumcare.html",
     github: "https://github.com/Tejaswanth2406/Mumcare-AI-",
-    image: "Screenshot 2026-06-03 104542.png",
+    image: "MUMCARE_AI.PNG",
   },
 ]
 
@@ -171,12 +171,12 @@ const achievements = [
 ]
 
 const certifications = [
-  { name: "Fortinet Certified", date: "Apr 2026", image: "Screenshot 2026-06-03 104120.png" },
-  { name: "Anthropic MCP", date: "Apr 2026", image: "Screenshot 2026-06-03 104020.png" },
-  { name: "Oracle OCI Architect", date: "Dec 2025", image: "Screenshot 2026-06-03 104220.png" },
-  { name: "Cloud Hunting Games", date: "Jun 2026", image: "Screenshot 2026-06-02 232923.png", link: "https://www.cloudhuntinggames.com/certificate/exfilcola/db46a967-79f2-4c08-bc6b-1c2224fbc512" },
-  { name: "BigIAM Challenge", date: "Jun 2026", image: "Screenshot 2026-06-03 103916.png", link: "https://bigiamchallenge.com/finisher/TBBXmPES" },
-  { name: "Cloud Security Championship", date: "Jun 2026", image: "Screenshot 2026-06-03 103743.png", link: "https://www.cloudsecuritychampionship.com/leaderboard?page=9" },
+  { name: "Fortinet Certified", date: "Apr 2026", image: "Fortinet Certified Associate.png" },
+  { name: "Anthropic MCP", date: "Apr 2026", image: "ANTHROPIC MCP CERTIFICATION.jpg" },
+  { name: "Oracle OCI Architect", date: "Dec 2025", image: "OCI Certified assocaite.png" },
+  { name: "Cloud Hunting Games", date: "Jun 2026", image: "THE CLOUD HUNTING GAMES.png", link: "https://www.cloudhuntinggames.com/certificate/exfilcola/db46a967-79f2-4c08-bc6b-1c2224fbc512" },
+  { name: "BigIAM Challenge", date: "Jun 2026", image: "THE BIG IAM.png", link: "https://bigiamchallenge.com/finisher/TBBXmPES" },
+  { name: "Cloud Security Championship", date: "Jun 2026", image: "Ultimate cloud security Challenge.png", link: "https://www.cloudsecuritychampionship.com/leaderboard?page=9" },
 ]
 
 const affiliations = [

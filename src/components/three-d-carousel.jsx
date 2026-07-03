@@ -53,12 +53,12 @@ export function useMediaQuery(
 
 // Use portfolio-relevant images
 const keywords = [
-  "Screenshot 2026-06-03 104120.png",
-  "Screenshot 2026-06-03 104020.png",
-  "Screenshot 2026-06-03 104220.png",
-  "Screenshot 2026-06-02 232923.png",
-  "Screenshot 2026-06-03 103916.png",
-  "Screenshot 2026-06-03 103743.png",
+  "Fortinet Certified Associate.png",
+  "ANTHROPIC MCP CERTIFICATION.jpg",
+  "OCI Certified assocaite.png",
+  "THE CLOUD HUNTING GAMES.png",
+  "THE BIG IAM.png",
+  "Ultimate cloud security Challenge.png",
   "12a93e3bf81c6e61b9cb43e9e5930e5e.jpg",
   "331a16767c2a2689e917ff8d689e781f.jpg",
   "51cb94dfdcdf145d8c5cabab317c4eea.jpg",
