@@ -1396,12 +1396,31 @@ function PublicationsSection() {
           Research & Writing
         </GradientHeading>
         <div className="flex items-center gap-8 py-16 border-y border-white/5">
-          <div className="space-y-3">
+          <div className="space-y-4">
             <span className="px-4 py-2 border border-white/15 rounded-full space-mono text-[10px] tracking-widest text-white/40">
-              COMING SOON
+              LATEST PUBLICATIONS
             </span>
             <p className="text-white/30 text-lg leading-relaxed max-w-xl">
-              Technical papers, security research findings, and academic contributions across cloud security, AI architectures, and vulnerability research will be published here.
+              New paper:
+              <a
+                href="https://zenodo.org/records/21310377"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-1 text-white hover:text-pink-300 transition-colors underline underline-offset-4"
+              >
+                Transcendence: A Computational and Philosophical Framework for Recursive Epistemic Self-Improvement
+              </a>
+            </p>
+            <p className="text-white/30 text-lg leading-relaxed max-w-xl">
+              ORCID:
+              <a
+                href="https://orcid.org/my-orcid?orcid=0009-0009-1962-0377"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-1 text-white hover:text-cyan-300 transition-colors underline underline-offset-4"
+              >
+                0009-0009-1962-0377
+              </a>
             </p>
             <a
               href="publications.html"
