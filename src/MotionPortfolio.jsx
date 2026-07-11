@@ -1422,6 +1422,28 @@ function PublicationsSection() {
                 0009-0009-1962-0377
               </a>
             </p>
+            <p className="text-white/30 text-lg leading-relaxed max-w-xl">
+              OpenAIRE:
+              <a
+                href="https://explore.openaire.eu/my-orcid-links"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-1 text-white hover:text-cyan-300 transition-colors underline underline-offset-4"
+              >
+                My ORCID links
+              </a>
+            </p>
+            <p className="text-white/30 text-lg leading-relaxed max-w-xl">
+              Academia.edu:
+              <a
+                href="https://independent.academia.edu/TejaswanthSurisetty"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-1 text-white hover:text-cyan-300 transition-colors underline underline-offset-4"
+              >
+                Tejaswanth Surisetty
+              </a>
+            </p>
             <a
               href="publications.html"
               className="inline-flex items-center gap-2 space-mono text-[10px] text-white/30 hover:text-white transition-colors tracking-widest"
