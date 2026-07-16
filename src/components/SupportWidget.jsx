@@ -221,7 +221,7 @@ export default function SupportWidget() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         transition={{ delay: 1 }}
-        className="fixed bottom-6 right-6 z-[9999] flex items-center gap-2 px-5 py-3 rounded-full bg-white text-black space-mono text-[11px] tracking-widest uppercase font-bold shadow-[0_8px_30px_rgba(255,255,255,0.15)]"
+        className="relative z-40 flex items-center gap-2 px-6 py-4 rounded-full bg-white text-black space-mono text-[13px] tracking-widest uppercase font-bold shadow-[0_8px_30px_rgba(255,255,255,0.15)] mx-auto mt-8 mb-12 hover:shadow-[0_12px_40px_rgba(255,255,255,0.25)] transition-shadow duration-300 border border-white/20"
       >
         <Coffee size={16} strokeWidth={2.5} />
         Buy me a coffee
