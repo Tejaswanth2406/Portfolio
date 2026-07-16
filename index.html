@@ -7413,7 +7413,278 @@
             </div>
           </article>
         </div>
-        <div id="support-widget-container" style="margin-top: 60px; display: flex; justify-content: center; position: relative; z-index: 50;"></div>
+        <div id="support-widget-container" style="margin-top: 64px;">
+
+          <!-- BUY ME A COFFEE STYLES -->
+          <style>
+            #bmc-section {
+              text-align: center;
+              padding: 48px 32px;
+              border-top: 1px solid rgba(255,255,255,0.08);
+              border-bottom: 1px solid rgba(255,255,255,0.08);
+              max-width: 560px;
+              margin: 0 auto;
+            }
+            #bmc-eyebrow {
+              font-family: 'JetBrains Mono', monospace;
+              font-size: 10px;
+              letter-spacing: 0.35em;
+              text-transform: uppercase;
+              color: rgba(255,255,255,0.3);
+              margin-bottom: 12px;
+            }
+            #bmc-heading {
+              font-family: 'Playfair Display', serif;
+              font-size: clamp(22px, 4vw, 32px);
+              font-weight: 900;
+              color: #f0f0f5;
+              margin-bottom: 10px;
+            }
+            #bmc-sub {
+              font-family: 'Crimson Pro', serif;
+              font-size: 16px;
+              color: rgba(240,240,245,0.5);
+              margin-bottom: 28px;
+              line-height: 1.6;
+            }
+            #bmc-btn {
+              display: inline-flex;
+              align-items: center;
+              gap: 10px;
+              padding: 14px 32px;
+              background: #ffffff;
+              color: #0f0f1a;
+              font-family: 'Syne', sans-serif;
+              font-size: 11px;
+              font-weight: 700;
+              letter-spacing: 0.15em;
+              text-transform: uppercase;
+              border: none;
+              border-radius: 100px;
+              cursor: pointer;
+              box-shadow: 0 8px 30px rgba(255,255,255,0.12);
+              transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+            #bmc-btn:hover { transform: scale(1.04); box-shadow: 0 12px 40px rgba(255,255,255,0.22); }
+            #bmc-overlay {
+              display: none;
+              position: fixed;
+              inset: 0;
+              z-index: 99995;
+              background: rgba(0,0,0,0.82);
+              backdrop-filter: blur(6px);
+              align-items: center;
+              justify-content: center;
+              padding: 16px;
+            }
+            #bmc-overlay.open { display: flex; }
+            #bmc-modal {
+              position: relative;
+              width: 100%;
+              max-width: 460px;
+              background: #111117;
+              border: 1px solid rgba(255,255,255,0.1);
+              border-radius: 24px;
+              padding: 36px 32px;
+              max-height: 88vh;
+              overflow-y: auto;
+              animation: bmcSlideIn 0.25s cubic-bezier(0.22,0.68,0,1.2);
+            }
+            @keyframes bmcSlideIn {
+              from { opacity:0; transform: scale(0.96) translateY(12px); }
+              to   { opacity:1; transform: scale(1) translateY(0); }
+            }
+            #bmc-close {
+              position: absolute; top:18px; right:18px;
+              background:none; border:none; color:rgba(255,255,255,0.35);
+              cursor:pointer; font-size:20px; line-height:1; transition:color 0.2s;
+            }
+            #bmc-close:hover { color:#fff; }
+            .bmc-label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.38em; text-transform:uppercase; color:rgba(255,255,255,0.28); margin-bottom:6px; }
+            .bmc-title { font-family:'Playfair Display',serif; font-size:22px; font-weight:900; color:#f0f0f5; margin-bottom:20px; }
+            .bmc-tabs { display:flex; gap:4px; background:rgba(255,255,255,0.05); border-radius:100px; padding:4px; margin-bottom:24px; }
+            .bmc-tab { flex:1; padding:8px; border:none; border-radius:100px; background:transparent; color:rgba(255,255,255,0.4); font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; transition:all 0.2s; }
+            .bmc-tab.active { background:#fff; color:#0f0f1a; }
+            .bmc-chains { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+            .bmc-chain-btn { padding:6px 14px; border-radius:100px; border:1px solid rgba(255,255,255,0.14); background:transparent; color:rgba(255,255,255,0.5); font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; cursor:pointer; transition:all 0.2s; }
+            .bmc-chain-btn.active { border-color:#fff; background:#fff; color:#0f0f1a; }
+            .bmc-connect-btn { width:100%; padding:12px; border-radius:100px; border:none; background:#fff; color:#0f0f1a; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:4px; }
+            .bmc-connected-info { font-family:'JetBrains Mono',monospace; font-size:9px; color:rgba(255,255,255,0.38); letter-spacing:0.14em; margin-bottom:16px; }
+            .bmc-connected-info span { color:rgba(255,255,255,0.65); }
+            .bmc-presets { display:flex; gap:8px; margin-bottom:12px; }
+            .bmc-preset-btn { flex:1; padding:10px 4px; border-radius:12px; border:1px solid rgba(255,255,255,0.14); background:transparent; color:rgba(255,255,255,0.6); font-family:'JetBrains Mono',monospace; font-size:10px; cursor:pointer; transition:all 0.2s; }
+            .bmc-preset-btn.active { border-color:#fff; background:#fff; color:#0f0f1a; }
+            .bmc-custom-input { width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:10px 16px; color:#fff; font-family:'JetBrains Mono',monospace; font-size:12px; outline:none; margin-bottom:12px; box-sizing:border-box; transition:border-color 0.2s; }
+            .bmc-custom-input:focus { border-color:rgba(255,255,255,0.4); }
+            .bmc-custom-input::placeholder { color:rgba(255,255,255,0.22); }
+            .bmc-send-btn { width:100%; padding:13px; border-radius:100px; border:none; background:#fff; color:#0f0f1a; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; font-weight:700; cursor:pointer; margin-bottom:4px; transition:opacity 0.2s; }
+            .bmc-send-btn:disabled { opacity:0.3; cursor:not-allowed; }
+            .bmc-switch-btn { width:100%; padding:10px; border-radius:100px; border:1px solid rgba(234,179,8,0.4); background:transparent; color:#facc15; font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; cursor:pointer; margin-bottom:12px; transition:background 0.2s; }
+            .bmc-switch-btn:hover { background:rgba(234,179,8,0.08); }
+            .bmc-status { font-family:'JetBrains Mono',monospace; font-size:10px; padding:10px 14px; border-radius:10px; line-height:1.6; margin-bottom:8px; }
+            .bmc-status.pending { border:1px solid rgba(255,255,255,0.14); color:rgba(255,255,255,0.5); }
+            .bmc-status.success { border:1px solid rgba(34,197,94,0.3); color:#4ade80; }
+            .bmc-status.error   { border:1px solid rgba(239,68,68,0.3);  color:#f87171; }
+            .bmc-status a { color:inherit; text-underline-offset:2px; }
+            .bmc-note { font-family:'JetBrains Mono',monospace; font-size:9px; color:rgba(255,255,255,0.2); line-height:1.6; margin-top:12px; }
+            .bmc-other-note { font-family:'Crimson Pro',serif; font-size:13px; color:rgba(255,255,255,0.3); margin-bottom:20px; line-height:1.6; }
+            .bmc-addr-card { border:1px solid rgba(255,255,255,0.09); border-radius:18px; padding:22px 18px; text-align:center; margin-bottom:14px; }
+            .bmc-addr-label { font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:0.3em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:12px; }
+            .bmc-addr-card img { display:block; margin:0 auto 12px; border-radius:10px; background:#fff; padding:6px; }
+            .bmc-copy-btn { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:100px; border:1px solid rgba(255,255,255,0.14); background:transparent; color:rgba(255,255,255,0.55); font-family:'JetBrains Mono',monospace; font-size:9px; cursor:pointer; transition:border-color 0.2s,color 0.2s; word-break:break-all; }
+            .bmc-copy-btn:hover { border-color:rgba(255,255,255,0.35); color:#fff; }
+          </style>
+
+          <section id="bmc-section">
+            <p id="bmc-eyebrow">Support my work</p>
+            <h2 id="bmc-heading">Buy me a coffee &#9749;</h2>
+            <p id="bmc-sub">If my work has helped you, a small tip means a lot.<br>Every chain welcome.</p>
+            <button id="bmc-btn" onclick="document.getElementById('bmc-overlay').classList.add('open')">
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg>
+              Buy me a coffee
+            </button>
+          </section>
+
+          <div id="bmc-overlay" onclick="if(event.target===this)this.classList.remove('open')">
+            <div id="bmc-modal">
+              <button id="bmc-close" onclick="document.getElementById('bmc-overlay').classList.remove('open')" aria-label="Close">&#x2715;</button>
+              <p class="bmc-label">Support</p>
+              <h3 class="bmc-title">Buy me a coffee &#9749;</h3>
+              <div class="bmc-tabs">
+                <button class="bmc-tab active" id="bmc-tab-evm" onclick="bmcSwitchTab('evm')">MetaMask (EVM)</button>
+                <button class="bmc-tab" id="bmc-tab-other" onclick="bmcSwitchTab('other')">Other Networks</button>
+              </div>
+              <div id="bmc-panel-evm">
+                <div class="bmc-chains" id="bmc-chains"></div>
+                <div id="bmc-evm-body"></div>
+                <p class="bmc-note">One MetaMask address works across Ethereum, Base, Linea, Polygon and BNB Chain. Gas fees go to the network.</p>
+              </div>
+              <div id="bmc-panel-other" style="display:none;">
+                <p class="bmc-other-note">Scan or copy the address with any BTC / SOL / TRX wallet (Phantom, TronLink, Electrum, etc.).</p>
+                <div id="bmc-other-cards"></div>
+              </div>
+            </div>
+          </div>
+
+          <script>
+            (function () {
+              var EVM_ADDRESS  = '0x3eF81555F0D01381293ad9eDa9e9c048a4638df5';
+              var BTC_ADDRESS  = 'bc1qv7kfrzeewwd7xpzf8hk8wc9t2mwy0sqajvn0pp';
+              var SOL_ADDRESS  = 'BgYBDSE67fWYJtDenrs948cxnbH3fQGPZbQQxDTZPfhP';
+              var TRON_ADDRESS = 'TEgoTmQXXXsj5XtYHGKcd79AcDf518bvfM';
+              var EVM_CHAINS = [
+                {key:'ethereum',label:'Ethereum', symbol:'ETH',chainIdHex:'0x1',   explorer:'https://etherscan.io/tx/',   presets:[0.001,0.003,0.01],addParams:null},
+                {key:'base',    label:'Base',      symbol:'ETH',chainIdHex:'0x2105',explorer:'https://basescan.org/tx/',    presets:[0.001,0.003,0.01],addParams:{chainId:'0x2105',chainName:'Base',nativeCurrency:{name:'Ether',symbol:'ETH',decimals:18},rpcUrls:['https://mainnet.base.org'],blockExplorerUrls:['https://basescan.org']}},
+                {key:'linea',   label:'Linea',     symbol:'ETH',chainIdHex:'0xe708',explorer:'https://lineascan.build/tx/',presets:[0.001,0.003,0.01],addParams:{chainId:'0xe708',chainName:'Linea',nativeCurrency:{name:'Ether',symbol:'ETH',decimals:18},rpcUrls:['https://rpc.linea.build'],blockExplorerUrls:['https://lineascan.build']}},
+                {key:'polygon', label:'Polygon',   symbol:'POL',chainIdHex:'0x89',  explorer:'https://polygonscan.com/tx/',presets:[1,3,10],           addParams:{chainId:'0x89',chainName:'Polygon',nativeCurrency:{name:'POL',symbol:'POL',decimals:18},rpcUrls:['https://polygon-rpc.com'],blockExplorerUrls:['https://polygonscan.com']}},
+                {key:'bnb',     label:'BNB Chain', symbol:'BNB',chainIdHex:'0x38',  explorer:'https://bscscan.com/tx/',   presets:[0.003,0.01,0.03],  addParams:{chainId:'0x38',chainName:'BNB Smart Chain',nativeCurrency:{name:'BNB',symbol:'BNB',decimals:18},rpcUrls:['https://bsc-dataseed.binance.org'],blockExplorerUrls:['https://bscscan.com']}},
+              ];
+              var NON_EVM = [
+                {key:'bitcoin',label:'Bitcoin',address:BTC_ADDRESS},
+                {key:'solana', label:'Solana', address:SOL_ADDRESS},
+                {key:'tron',   label:'Tron',   address:TRON_ADDRESS},
+              ];
+              var state = {account:null,chainId:null,selectedChainKey:'ethereum',amount:null,status:null};
+              function toHexWei(a){var p=String(a).split('.');var w=p[0]||'0';var f=(p[1]||'').padEnd(18,'0').slice(0,18);return '0x'+(BigInt(w)*10n**18n+BigInt(f)).toString(16);}
+              function short(a){return a?a.slice(0,6)+'\u2026'+a.slice(-4):''}
+              function sel(id){return document.getElementById(id);}
+              window.bmcSwitchTab=function(tab){
+                sel('bmc-tab-evm').classList.toggle('active',tab==='evm');
+                sel('bmc-tab-other').classList.toggle('active',tab==='other');
+                sel('bmc-panel-evm').style.display=tab==='evm'?'block':'none';
+                sel('bmc-panel-other').style.display=tab==='other'?'block':'none';
+              };
+              function buildChains(){
+                var el=sel('bmc-chains');el.innerHTML='';
+                EVM_CHAINS.forEach(function(c){
+                  var b=document.createElement('button');b.className='bmc-chain-btn'+(c.key===state.selectedChainKey?' active':'');
+                  b.textContent=c.label;b.onclick=function(){state.selectedChainKey=c.key;state.amount=null;state.status=null;buildChains();renderBody();};
+                  el.appendChild(b);
+                });
+              }
+              function renderBody(){
+                var chain=EVM_CHAINS.find(function(c){return c.key===state.selectedChainKey;});
+                var wrongNet=state.account&&state.chainId&&chain&&state.chainId.toLowerCase()!==chain.chainIdHex;
+                var body=sel('bmc-evm-body');body.innerHTML='';
+                if(!state.account){
+                  var btn=document.createElement('button');btn.className='bmc-connect-btn';
+                  btn.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg> Connect MetaMask';
+                  btn.onclick=bmcConnect;body.appendChild(btn);
+                } else {
+                  var info=document.createElement('p');info.className='bmc-connected-info';
+                  info.innerHTML='Connected: <span>'+short(state.account)+'</span>';body.appendChild(info);
+                  if(wrongNet){
+                    var sw=document.createElement('button');sw.className='bmc-switch-btn';
+                    sw.textContent='Switch MetaMask to '+chain.label;
+                    sw.onclick=function(){bmcSwitch(chain);};body.appendChild(sw);
+                  }
+                  var presets=document.createElement('div');presets.className='bmc-presets';
+                  chain.presets.forEach(function(p){
+                    var pb=document.createElement('button');pb.className='bmc-preset-btn'+(state.amount===p?' active':'');
+                    pb.textContent=p+' '+chain.symbol;
+                    pb.onclick=function(){state.amount=p;state.status=null;buildChains();renderBody();};
+                    presets.appendChild(pb);
+                  });body.appendChild(presets);
+                  var inp=document.createElement('input');inp.type='number';inp.step='any';inp.min='0';
+                  inp.placeholder='Custom amount in '+chain.symbol;inp.className='bmc-custom-input';inp.value=state.amount||'';
+                  inp.oninput=function(){state.amount=this.value?this.value:null;renderBody();};body.appendChild(inp);
+                  var send=document.createElement('button');send.className='bmc-send-btn';
+                  send.disabled=!state.amount||wrongNet;
+                  send.textContent=state.amount?'Send '+state.amount+' '+chain.symbol:'Send';
+                  send.onclick=bmcSend;body.appendChild(send);
+                }
+                if(state.status){
+                  var st=document.createElement('div');st.className='bmc-status '+state.status.type;st.textContent=state.status.message;
+                  if(state.status.txHash){var a=document.createElement('a');a.href=chain.explorer+state.status.txHash;a.target='_blank';a.rel='noopener noreferrer';a.textContent=' View transaction';st.appendChild(a);}
+                  body.appendChild(st);
+                }
+              }
+              function buildOther(){
+                var el=sel('bmc-other-cards');el.innerHTML='';
+                NON_EVM.forEach(function(c){
+                  var card=document.createElement('div');card.className='bmc-addr-card';
+                  var lbl=document.createElement('p');lbl.className='bmc-addr-label';lbl.textContent=c.label;card.appendChild(lbl);
+                  var img=document.createElement('img');img.src='https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=8&data='+encodeURIComponent(c.address);
+                  img.width=120;img.height=120;img.alt=c.label+' QR';img.loading='lazy';card.appendChild(img);
+                  var cpbtn=document.createElement('button');cpbtn.className='bmc-copy-btn';cpbtn.textContent='Copy '+short(c.address);
+                  cpbtn.onclick=function(){navigator.clipboard.writeText(c.address);cpbtn.textContent='Copied!';setTimeout(function(){cpbtn.textContent='Copy '+short(c.address);},1500);};
+                  card.appendChild(cpbtn);el.appendChild(card);
+                });
+              }
+              async function bmcConnect(){
+                if(!window.ethereum){window.open('https://metamask.io/download/','_blank','noopener,noreferrer');return;}
+                try{var accs=await window.ethereum.request({method:'eth_requestAccounts'});state.account=accs[0];state.chainId=await window.ethereum.request({method:'eth_chainId'});}
+                catch(e){state.status={type:'error',message:'Connection rejected.'};}
+                renderBody();
+              }
+              async function bmcSwitch(chain){
+                if(!window.ethereum)return;
+                try{await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:chain.chainIdHex}]});}
+                catch(err){
+                  if(err&&err.code===4902&&chain.addParams){try{await window.ethereum.request({method:'wallet_addEthereumChain',params:[chain.addParams]});}catch(e2){state.status={type:'error',message:"Couldn't add "+chain.label};renderBody();return;}}
+                  else{state.status={type:'error',message:"Couldn't switch to "+chain.label};renderBody();return;}
+                }
+                state.chainId=await window.ethereum.request({method:'eth_chainId'});renderBody();
+              }
+              async function bmcSend(){
+                if(!state.account||!state.amount)return;
+                state.status={type:'pending',message:'Confirm in MetaMask…'};renderBody();
+                try{var hash=await window.ethereum.request({method:'eth_sendTransaction',params:[{from:state.account,to:EVM_ADDRESS,value:toHexWei(state.amount)}]});state.status={type:'success',message:'Thank you for the coffee!',txHash:hash};}
+                catch(e){state.status={type:'error',message:(e&&e.message?e.message:'Transaction failed.').slice(0,90)};}
+                renderBody();
+              }
+              buildChains();renderBody();buildOther();
+              if(window.ethereum){
+                window.ethereum.request({method:'eth_chainId'}).then(function(id){state.chainId=id;renderBody();}).catch(function(){});
+                window.ethereum.request({method:'eth_accounts'}).then(function(accs){if(accs&&accs[0]){state.account=accs[0];renderBody();}}).catch(function(){});
+                if(window.ethereum.on){
+                  window.ethereum.on('accountsChanged',function(accs){state.account=accs[0]||null;renderBody();});
+                  window.ethereum.on('chainChanged',function(id){state.chainId=id;renderBody();});
+                }
+              }
+            })();
+          <\/script>
+        </div>
       </div>
     </section>
 
