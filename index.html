@@ -8146,6 +8146,196 @@
       </div>
     </section>
 
+    <!-- FLOWING MENU -->
+    <section id="flowing-menu-section">
+      <style>
+        #flowing-menu-section { width:100%; position:relative; }
+        #flowing-menu-section .fm-eyebrow {
+          text-align:center;
+          font-family:'JetBrains Mono',monospace;
+          font-size:10px;
+          letter-spacing:0.38em;
+          text-transform:uppercase;
+          color:rgba(240,240,245,0.3);
+          padding:56px 0 0;
+          margin-bottom:0;
+        }
+        .fm-wrap { width:100%; height:480px; overflow:hidden; background:#0c0c12; }
+        .fm-nav { display:flex; flex-direction:column; height:100%; margin:0; padding:0; }
+        .fm-item {
+          flex:1;
+          position:relative;
+          overflow:hidden;
+          text-align:center;
+          border-top:1px solid rgba(255,255,255,0.08);
+        }
+        .fm-item:first-child { border-top:none; }
+        .fm-link {
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          height:100%;
+          position:relative;
+          cursor:pointer;
+          text-transform:uppercase;
+          text-decoration:none;
+          white-space:nowrap;
+          font-weight:600;
+          font-size:4vh;
+          color:#ffffff;
+          font-family:'Syne',sans-serif;
+          letter-spacing:-0.02em;
+          transition:color 0.3s;
+        }
+        .fm-marquee {
+          position:absolute;
+          top:0; left:0;
+          overflow:hidden;
+          width:100%; height:100%;
+          pointer-events:none;
+          transform:translate3d(0,101%,0);
+          background:#ffffff;
+        }
+        .fm-marquee__inner-wrap { height:100%; width:100%; overflow:hidden; }
+        .fm-marquee__inner {
+          display:flex;
+          align-items:center;
+          position:relative;
+          height:100%;
+          width:fit-content;
+          will-change:transform;
+        }
+        .fm-marquee__part {
+          display:flex;
+          align-items:center;
+          flex-shrink:0;
+          color:#0c0c12;
+        }
+        .fm-marquee__part span {
+          white-space:nowrap;
+          text-transform:uppercase;
+          font-weight:400;
+          font-size:4vh;
+          line-height:1;
+          padding:0 1vw;
+          font-family:'Syne',sans-serif;
+        }
+        .fm-marquee__img {
+          width:200px;
+          height:7vh;
+          margin:2em 2vw;
+          padding:1em 0;
+          border-radius:50px;
+          background-size:cover;
+          background-position:50% 50%;
+        }
+      </style>
+
+      <p class="fm-eyebrow">Core Domains</p>
+
+      <div class="fm-wrap">
+        <nav class="fm-nav" id="fm-nav"></nav>
+      </div>
+
+      <script>
+        (function(){
+          if(!document.querySelector('script[src*="gsap"]')){
+            var s=document.createElement('script');
+            s.src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
+            s.onload=initFM;
+            document.head.appendChild(s);
+          } else { initFM(); }
+
+          var FM_ITEMS = [
+            { text:'Threat Research',  image:'./assets/MARK1-BlS16BK9.PNG',    href:'#case-studies' },
+            { text:'Cloud Security',   image:'./assets/MARK2-BAytw8EP.PNG',    href:'#certifications' },
+            { text:'AI Engineering',   image:'./assets/MARK3-DOj-hn8M.png',    href:'#toolkit' },
+            { text:'Bug Hunting',      image:'./assets/cipher_core.jpg',        href:'#collaboration' }
+          ];
+
+          function distMetric(x,y,x2,y2){var dx=x-x2,dy=y-y2;return dx*dx+dy*dy;}
+          function closestEdge(mx,my,w,h){
+            return distMetric(mx,my,w/2,0)<distMetric(mx,my,w/2,h)?'top':'bottom';
+          }
+
+          function initFM(){
+            var nav=document.getElementById('fm-nav');
+            if(!nav||!window.gsap)return;
+            var defaults={duration:0.6,ease:'expo'};
+
+            FM_ITEMS.forEach(function(item){
+              var itemEl=document.createElement('div');
+              itemEl.className='fm-item';
+
+              var link=document.createElement('a');
+              link.className='fm-link';
+              link.href=item.href;
+              link.textContent=item.text;
+
+              var marquee=document.createElement('div');
+              marquee.className='fm-marquee';
+              var innerWrap=document.createElement('div');
+              innerWrap.className='fm-marquee__inner-wrap';
+              var inner=document.createElement('div');
+              inner.className='fm-marquee__inner';
+
+              var reps=6;
+              for(var r=0;r<reps;r++){
+                var part=document.createElement('div');
+                part.className='fm-marquee__part';
+                var sp=document.createElement('span');
+                sp.textContent=item.text;
+                var img=document.createElement('div');
+                img.className='fm-marquee__img';
+                img.style.backgroundImage='url('+item.image+')';
+                part.appendChild(sp);
+                part.appendChild(img);
+                inner.appendChild(part);
+              }
+
+              innerWrap.appendChild(inner);
+              marquee.appendChild(innerWrap);
+              itemEl.appendChild(link);
+              itemEl.appendChild(marquee);
+              nav.appendChild(itemEl);
+
+              // Kick off marquee scroll
+              setTimeout(function(innerEl){
+                return function(){
+                  var firstPart=innerEl.querySelector('.fm-marquee__part');
+                  if(!firstPart)return;
+                  var cw=firstPart.offsetWidth;
+                  if(!cw)return;
+                  gsap.to(innerEl,{x:-cw,duration:15,ease:'none',repeat:-1});
+                };
+              }(inner),100);
+
+              link.addEventListener('mouseenter',function(innerEl,marqueeEl){
+                return function(ev){
+                  var rect=this.closest('.fm-item').getBoundingClientRect();
+                  var edge=closestEdge(ev.clientX-rect.left,ev.clientY-rect.top,rect.width,rect.height);
+                  gsap.timeline({defaults:defaults})
+                    .set(marqueeEl,{y:edge==='top'?'-101%':'101%'},0)
+                    .set(innerEl,{y:edge==='top'?'101%':'-101%'},0)
+                    .to([marqueeEl,innerEl],{y:'0%'},0);
+                };
+              }(inner,marquee));
+
+              link.addEventListener('mouseleave',function(innerEl,marqueeEl){
+                return function(ev){
+                  var rect=this.closest('.fm-item').getBoundingClientRect();
+                  var edge=closestEdge(ev.clientX-rect.left,ev.clientY-rect.top,rect.width,rect.height);
+                  gsap.timeline({defaults:defaults})
+                    .to(marqueeEl,{y:edge==='top'?'-101%':'101%'},0)
+                    .to(innerEl,{y:edge==='top'?'101%':'-101%'},0);
+                };
+              }(inner,marquee));
+            });
+          }
+        })();
+      </script>
+    </section>
+
     <!-- CERTIFICATIONS -->
     <section id="certifications">
       <div class="sec-wrap">
@@ -8499,6 +8689,229 @@
       document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLb();});
     })();
     </script>
+
+    <!-- PROJECT MASONRY -->
+    <section id="masonry-section">
+      <style>
+        #masonry-section { padding:72px 0 40px; }
+        #masonry-section .ms-head {
+          max-width:1200px;
+          margin:0 auto 48px;
+          padding:0 32px;
+          display:flex;
+          align-items:flex-end;
+          justify-content:space-between;
+          gap:24px;
+          flex-wrap:wrap;
+        }
+        #masonry-section .ms-eyebrow {
+          font-family:'JetBrains Mono',monospace;
+          font-size:10px;
+          letter-spacing:0.38em;
+          text-transform:uppercase;
+          color:var(--rust,#c0714f);
+          margin-bottom:12px;
+        }
+        #masonry-section .ms-title {
+          font-family:'Playfair Display',serif;
+          font-size:clamp(28px,4vw,48px);
+          font-weight:900;
+          color:#f0f0f5;
+          line-height:1.08;
+          margin:0;
+        }
+        #masonry-section .ms-title em { font-style:italic; color:var(--rust,#c0714f); }
+        #masonry-section .ms-desc {
+          font-family:'Crimson Pro',serif;
+          font-size:16px;
+          color:rgba(240,240,245,0.4);
+          max-width:340px;
+          line-height:1.7;
+          margin:0;
+        }
+        #ms-list {
+          position:relative;
+          width:100%;
+          max-width:1200px;
+          margin:0 auto;
+          padding:0 24px;
+          box-sizing:border-box;
+        }
+        .ms-item {
+          position:absolute;
+          will-change:transform,width,height,opacity;
+          padding:6px;
+          cursor:pointer;
+          top:0; left:0;
+          box-sizing:border-box;
+        }
+        .ms-item-img {
+          position:relative;
+          background-size:cover;
+          background-position:center center;
+          width:100%;
+          height:100%;
+          border-radius:12px;
+          box-shadow:0 10px 50px -10px rgba(0,0,0,0.5);
+          overflow:hidden;
+          transition:box-shadow 0.3s;
+        }
+        .ms-item:hover .ms-item-img { box-shadow:0 20px 60px -10px rgba(0,0,0,0.7); }
+        .ms-item-overlay {
+          position:absolute;
+          inset:0;
+          border-radius:12px;
+          background:linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%);
+          opacity:0;
+          transition:opacity 0.3s;
+          display:flex;
+          align-items:flex-end;
+          padding:18px 16px;
+        }
+        .ms-item:hover .ms-item-overlay { opacity:1; }
+        .ms-item-label {
+          font-family:'JetBrains Mono',monospace;
+          font-size:10px;
+          letter-spacing:0.18em;
+          text-transform:uppercase;
+          color:rgba(255,255,255,0.85);
+        }
+      </style>
+
+      <div class="ms-head">
+        <div>
+          <p class="ms-eyebrow">Project Gallery</p>
+          <h2 class="ms-title">Work in<br><em>Motion</em></h2>
+        </div>
+        <p class="ms-desc">A visual overview of projects, certifications, and research artefacts — hover to explore.</p>
+      </div>
+
+      <div id="ms-list"></div>
+
+      <script>
+        (function(){
+          var MS_ITEMS=[
+            {id:'ms1', img:'./assets/HOLLOWPURPLE-Y4_HShcM.PNG',   url:'https://github.com/Tejaswanth2406',          label:'Hollow Purple',        height:520},
+            {id:'ms2', img:'./assets/MARK1-BlS16BK9.PNG',           url:'#case-studies',                             label:'Detection Eng.',       height:360},
+            {id:'ms3', img:'./assets/MARK2-BAytw8EP.PNG',           url:'#case-studies',                             label:'LLM Security',         height:460},
+            {id:'ms4', img:'./assets/cipher_core.jpg',              url:'https://github.com/Tejaswanth2406',          label:'Cipher Core',          height:300},
+            {id:'ms5', img:'./assets/MARK3-DOj-hn8M.png',           url:'#case-studies',                             label:'AI Interface',         height:500},
+            {id:'ms6', img:'./assets/THE%20CLOUD%20HUNTING%20GAMES-C12ZYl_N.png', url:'#certifications', label:'Cloud Hunting',  height:340},
+            {id:'ms7', img:'./assets/geofusion-DiZFQeS1.png',       url:'https://github.com/Tejaswanth2406',          label:'GeoFusion',            height:420},
+            {id:'ms8', img:'./assets/omega-BIufJ0NB.png',           url:'https://github.com/Tejaswanth2406',          label:'Omega',                height:370},
+            {id:'ms9', img:'./assets/lablabaihackthon-Dcw8ixyV.png',url:'https://github.com/Tejaswanth2406',          label:'AI Hackathon Milan',   height:280},
+            {id:'ms10',img:'./assets/ANTHROPIC%20MCP%20CERTIFICATION-B6psH0kh.jpg',url:'#certifications', label:'MCP Certified', height:440},
+            {id:'ms11',img:'./assets/shell_core.png',               url:'https://github.com/Tejaswanth2406',          label:'Shell Core',           height:310},
+            {id:'ms12',img:'./assets/EKS%20CLUSTER%20GAMES-BgCLHl9H.png',url:'#certifications',           label:'EKS Cluster',          height:390}
+          ];
+
+          var listEl=document.getElementById('ms-list');
+          var colCount=4;
+          var animDone=false;
+
+          function getColumns(){
+            var w=window.innerWidth;
+            if(w>=1200)return 4;
+            if(w>=900)return 3;
+            if(w>=600)return 2;
+            return 1;
+          }
+
+          // Build DOM
+          var els={};
+          MS_ITEMS.forEach(function(item){
+            var wrap=document.createElement('div');
+            wrap.className='ms-item';
+            wrap.dataset.key=item.id;
+            var imgDiv=document.createElement('div');
+            imgDiv.className='ms-item-img';
+            imgDiv.style.backgroundImage='url('+item.img+')';
+            var ov=document.createElement('div');
+            ov.className='ms-item-overlay';
+            var lbl=document.createElement('span');
+            lbl.className='ms-item-label';
+            lbl.textContent=item.label;
+            ov.appendChild(lbl);
+            imgDiv.appendChild(ov);
+            wrap.appendChild(imgDiv);
+            wrap.addEventListener('click',function(u){return function(){window.open(u,'_blank','noopener');};}(item.url));
+            listEl.appendChild(wrap);
+            els[item.id]=wrap;
+          });
+
+          function layout(animate){
+            var cols=getColumns();
+            var totalW=listEl.offsetWidth;
+            var colW=totalW/cols;
+            var colH=new Array(cols).fill(0);
+
+            var grid=MS_ITEMS.map(function(item){
+              var col=colH.indexOf(Math.min.apply(null,colH));
+              var x=colW*col;
+              var h=item.height/2;
+              var y=colH[col];
+              colH[col]+=h;
+              return {id:item.id,x:x,y:y,w:colW,h:h};
+            });
+
+            var totalH=Math.max.apply(null,colH);
+            listEl.style.height=totalH+'px';
+
+            if(window.gsap){
+              grid.forEach(function(g,i){
+                var el=els[g.id];
+                if(!el)return;
+                if(animate&&!animDone){
+                  gsap.fromTo(el,
+                    {opacity:0,y:g.y+80,x:g.x,width:g.w,height:g.h,filter:'blur(8px)'},
+                    {opacity:1,y:g.y,x:g.x,width:g.w,height:g.h,filter:'blur(0px)',
+                     duration:0.8,ease:'power3.out',delay:i*0.05}
+                  );
+                  el.onmouseenter=function(id){return function(){
+                    gsap.to('[data-key="'+id+'"]',{scale:0.96,duration:0.3,ease:'power2.out'});
+                  };}(g.id);
+                  el.onmouseleave=function(id){return function(){
+                    gsap.to('[data-key="'+id+'"]',{scale:1,duration:0.3,ease:'power2.out'});
+                  };}(g.id);
+                } else {
+                  gsap.to(el,{y:g.y,x:g.x,width:g.w,height:g.h,duration:0.5,ease:'power2.out',overwrite:'auto'});
+                }
+              });
+              if(animate)animDone=true;
+            } else {
+              grid.forEach(function(g){
+                var el=els[g.id];
+                if(!el)return;
+                el.style.transform='translate('+g.x+'px,'+g.y+'px)';
+                el.style.width=g.w+'px';
+                el.style.height=g.h+'px';
+                el.style.opacity='1';
+              });
+            }
+          }
+
+          function waitForGsapAndLayout(){
+            if(window.gsap){ layout(true); }
+            else {
+              var s=document.createElement('script');
+              s.src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
+              s.onload=function(){ layout(true); };
+              document.head.appendChild(s);
+            }
+          }
+
+          // Layout on load
+          if(document.readyState==='complete'){ waitForGsapAndLayout(); }
+          else { window.addEventListener('load',waitForGsapAndLayout); }
+
+          var resizeTimer;
+          window.addEventListener('resize',function(){
+            clearTimeout(resizeTimer);
+            resizeTimer=setTimeout(function(){ layout(false); },150);
+          });
+        })();
+      </script>
+    </section>
 
     <!-- CONTACT -->
     <section id="contact" class="contact-system">
