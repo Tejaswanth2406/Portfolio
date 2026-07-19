@@ -8168,21 +8168,45 @@
 
     <!-- FLOWING MENU -->
     <section id="flowing-menu-section">
-      <div class="sec-wrap">
-        <div class="section-eyebrow rv">Core Domains</div>
-        <h2 class="section-title rv">Area of<br><em>Expertise</em></h2>
-        <style>
-          #flowing-menu-section { width:100%; position:relative; }
-          .fm-wrap { 
-            width:100%; 
-            height:480px; 
-            overflow:hidden; 
-            background:var(--bg-card); 
-            border: 1px solid var(--ink-08);
-            border-radius: 2px;
-            box-shadow: var(--shadow-sm);
-            margin-top: 48px;
-          }
+      <style>
+        #flowing-menu-section {
+          width: 100%;
+          position: relative;
+          background: var(--bg-base);
+          padding: 80px 0;
+          isolation: isolate;
+          z-index: 2;
+        }
+        #flowing-menu-section .fm-heading {
+          max-width: 1200px;
+          margin: 0 auto 48px;
+          padding: 0 5%;
+        }
+        #flowing-menu-section .fm-eyebrow {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 9px;
+          letter-spacing: .32em;
+          text-transform: uppercase;
+          color: var(--rust);
+          margin-bottom: 12px;
+        }
+        #flowing-menu-section .fm-title {
+          font-family: 'Playfair Display', serif;
+          font-size: clamp(28px, 4vw, 52px);
+          font-weight: 900;
+          color: var(--ink);
+          line-height: 1.08;
+          margin: 0;
+        }
+        #flowing-menu-section .fm-title em { font-style: italic; color: var(--gold); }
+        .fm-wrap { 
+          width: 100%; 
+          height: 480px; 
+          overflow: hidden; 
+          background: var(--bg-card); 
+          border-top: 1px solid var(--ink-08);
+          border-bottom: 1px solid var(--ink-08);
+        }
         .fm-nav { display:flex; flex-direction:column; height:100%; margin:0; padding:0; }
         .fm-item {
           flex:1;
@@ -8253,9 +8277,13 @@
         }
       </style>
 
+      <div class="fm-heading">
+        <p class="fm-eyebrow">Core Domains</p>
+        <h2 class="fm-title">Area of <em>Expertise</em></h2>
+      </div>
+
       <div class="fm-wrap">
         <nav class="fm-nav" id="fm-nav"></nav>
-      </div>
       </div>
 
       <script>
