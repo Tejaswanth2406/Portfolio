@@ -7732,6 +7732,301 @@
       </div>
     </section>
 
+    <!-- DISCIPLINE WHEEL -->
+    <section id="discipline-wheel-section">
+      <style>
+        #discipline-wheel-section {
+          padding: 80px 0;
+          overflow: hidden;
+          position: relative;
+        }
+        #discipline-wheel-section .dw-inner {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 32px;
+          display: flex;
+          align-items: center;
+          gap: 64px;
+        }
+        #discipline-wheel-section .dw-copy {
+          flex: 0 0 320px;
+        }
+        #discipline-wheel-section .dw-eyebrow {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 10px;
+          letter-spacing: 0.38em;
+          text-transform: uppercase;
+          color: var(--rust, #c0714f);
+          margin-bottom: 14px;
+        }
+        #discipline-wheel-section .dw-title {
+          font-family: 'Playfair Display', serif;
+          font-size: clamp(30px, 5vw, 52px);
+          font-weight: 900;
+          color: #f0f0f5;
+          line-height: 1.08;
+          margin-bottom: 20px;
+        }
+        #discipline-wheel-section .dw-title em {
+          font-style: italic;
+          color: var(--rust, #c0714f);
+        }
+        #discipline-wheel-section .dw-desc {
+          font-family: 'Crimson Pro', serif;
+          font-size: 17px;
+          color: rgba(240,240,245,0.48);
+          line-height: 1.7;
+          max-width: 280px;
+        }
+        #discipline-wheel-section .dw-selected-label {
+          margin-top: 28px;
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 10px;
+          letter-spacing: 0.22em;
+          text-transform: uppercase;
+          color: rgba(240,240,245,0.3);
+        }
+        #discipline-wheel-section .dw-selected-label span {
+          color: #f0f0f5;
+        }
+        /* Wheel container */
+        .option-wheel {
+          --ow-text-color: #555566;
+          --ow-active-color: #f0f0f5;
+          --ow-font-size: 3rem;
+          --ow-inset: 0px;
+          position: relative;
+          flex: 1;
+          height: 480px;
+          overflow: hidden;
+          cursor: grab;
+          user-select: none;
+          touch-action: none;
+          outline: none;
+        }
+        .option-wheel:focus-visible { outline: 2px solid rgba(192,113,79,0.5); border-radius: 4px; }
+        .option-wheel--dragging { cursor: grabbing; }
+        .option-wheel__item {
+          position: absolute;
+          top: 50%;
+          left: var(--ow-inset);
+          white-space: nowrap;
+          font-size: var(--ow-font-size);
+          line-height: 1;
+          font-weight: 200;
+          transform-origin: left center;
+          cursor: pointer;
+          will-change: transform, opacity, filter;
+          color: color-mix(in srgb, var(--ow-active-color) calc(var(--ow-p, 0) * 100%), var(--ow-text-color));
+          transition: color 0.1s;
+          letter-spacing: -0.02em;
+        }
+        .option-wheel__item--selected { font-weight: 500; }
+        @media (max-width: 768px) {
+          #discipline-wheel-section .dw-inner { flex-direction: column; gap: 32px; }
+          #discipline-wheel-section .dw-copy { flex: none; }
+          .option-wheel { width: 100%; height: 320px; --ow-font-size: 2rem; }
+        }
+      </style>
+
+      <div class="dw-inner">
+        <div class="dw-copy">
+          <p class="dw-eyebrow">Disciplines</p>
+          <h2 class="dw-title">What I<br><em>Build</em></h2>
+          <p class="dw-desc">Scroll, drag, or use arrow keys to explore the domains I research, build, and break.</p>
+          <p class="dw-selected-label">Currently viewing: <span id="dw-active-label">Threat Research</span></p>
+        </div>
+
+        <div
+          id="discipline-wheel"
+          class="option-wheel"
+          role="listbox"
+          tabindex="0"
+          aria-label="Discipline wheel"
+        ></div>
+      </div>
+
+      <script>
+        (function () {
+          var DISCIPLINES = [
+            'Threat Research',
+            'Cloud Security',
+            'Detection Eng.',
+            'LLM Systems',
+            'Reverse Eng.',
+            'Malware Analysis',
+            'Penetration Testing',
+            'AI Red-Teaming',
+            'Web Security',
+            'Cloud IAM',
+            'Agent Tooling',
+            'Prompt Systems'
+          ];
+
+          var DEFAULT = 0;
+          var cfg = {
+            items: DISCIPLINES,
+            rowH: 0,
+            fontSize: 3,
+            spacing: 1.4,
+            curve: 1,
+            tilt: 6,
+            blur: 2,
+            fade: 0.25,
+            minOpacity: 0.05,
+            smoothing: 200
+          };
+
+          var root       = document.getElementById('discipline-wheel');
+          var activeLabel= document.getElementById('dw-active-label');
+          var itemEls    = [];
+          var posRef     = DEFAULT;
+          var targetRef  = DEFAULT;
+          var rafId      = null;
+          var lastTime   = 0;
+          var selectedIdx= DEFAULT;
+          var isDragging = false;
+          var drag       = null;
+          var dragMoved  = false;
+          var wheelTimer = null;
+
+          function remPx() {
+            return parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+          }
+          function rowH() {
+            return Math.max(cfg.fontSize * cfg.spacing * remPx(), 1);
+          }
+
+          // Build DOM items
+          DISCIPLINES.forEach(function(label, i) {
+            var el = document.createElement('div');
+            el.className = 'option-wheel__item' + (i === DEFAULT ? ' option-wheel__item--selected' : '');
+            el.setAttribute('role', 'option');
+            el.setAttribute('aria-selected', String(i === DEFAULT));
+            el.textContent = label;
+            el.addEventListener('click', function() { handleItemClick(i); });
+            root.appendChild(el);
+            itemEls.push(el);
+          });
+
+          function runFrame(now) {
+            var dt = Math.min((now - lastTime) / 1000, 0.05);
+            lastTime = now;
+            var tau = Math.max(cfg.smoothing, 1) / 1000;
+            var k   = 1 - Math.exp(-dt / tau);
+            var next= posRef + (targetRef - posRef) * k;
+            var settled = Math.abs(targetRef - next) < 0.001;
+            if (settled) next = targetRef;
+            posRef = next;
+
+            var n       = DISCIPLINES.length;
+            var rh      = rowH();
+            var tiltRad = (cfg.tilt * Math.PI) / 180;
+            var R       = tiltRad > 0.0005 ? rh / tiltRad : 0;
+
+            for (var i = 0; i < n; i++) {
+              var el = itemEls[i];
+              if (!el) continue;
+              var d    = i - next;
+              var dist = Math.abs(d);
+              var x = 0, y = d * rh, rot = 0;
+              if (R > 0) {
+                var ang = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, d * tiltRad));
+                y   = R * Math.sin(ang);
+                x   = -R * (1 - Math.cos(ang)) * cfg.curve;
+                rot = (ang * 180) / Math.PI;
+              }
+              el.style.transform = 'translate(' + x.toFixed(2) + 'px, calc(' + y.toFixed(2) + 'px - 50%)) rotate(' + rot.toFixed(3) + 'deg)';
+              el.style.opacity   = String(Math.max(cfg.minOpacity, 1 - dist * cfg.fade));
+              el.style.filter    = cfg.blur > 0 ? 'blur(' + (dist * cfg.blur).toFixed(2) + 'px)' : 'none';
+              el.style.setProperty('--ow-p', Math.max(0, 1 - Math.min(dist, 1)).toFixed(4));
+            }
+
+            rafId = settled ? null : requestAnimationFrame(runFrame);
+          }
+
+          function startLoop() {
+            if (rafId != null) return;
+            lastTime = performance.now();
+            rafId = requestAnimationFrame(runFrame);
+          }
+
+          function applyTarget(value, snap) {
+            var n = DISCIPLINES.length;
+            var v = snap ? Math.round(value) : value;
+            v = Math.min(Math.max(v, 0), n - 1);
+            targetRef = v;
+            var idx = Math.round(v);
+            if (idx !== selectedIdx) {
+              selectedIdx = idx;
+              itemEls.forEach(function(el, i) {
+                el.classList.toggle('option-wheel__item--selected', i === idx);
+                el.setAttribute('aria-selected', String(i === idx));
+              });
+              if (activeLabel) activeLabel.textContent = DISCIPLINES[idx];
+            }
+            startLoop();
+          }
+
+          // Wheel / touchpad
+          root.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            var rh    = rowH();
+            var delta = e.deltaMode === 1 ? e.deltaY * 24 : e.deltaY;
+            var step  = Math.max(-1, Math.min(1, delta / rh));
+            applyTarget(targetRef + step, false);
+            if (wheelTimer) clearTimeout(wheelTimer);
+            wheelTimer = setTimeout(function() { applyTarget(targetRef, true); }, 140);
+          }, { passive: false });
+
+          // Drag
+          root.addEventListener('pointerdown', function(e) {
+            drag      = { y: e.clientY, start: targetRef, id: e.pointerId };
+            dragMoved = false;
+            isDragging= true;
+            root.classList.add('option-wheel--dragging');
+          });
+          root.addEventListener('pointermove', function(e) {
+            if (!drag) return;
+            var dy = e.clientY - drag.y;
+            if (!dragMoved && Math.abs(dy) > 4) {
+              dragMoved = true;
+              root.setPointerCapture(drag.id);
+            }
+            if (dragMoved) applyTarget(drag.start - dy / rowH(), false);
+          });
+          function endDrag() {
+            if (!drag) return;
+            drag = null;
+            isDragging = false;
+            root.classList.remove('option-wheel--dragging');
+            if (dragMoved) applyTarget(targetRef, true);
+          }
+          root.addEventListener('pointerup',     endDrag);
+          root.addEventListener('pointercancel', endDrag);
+
+          // Keyboard
+          root.addEventListener('keydown', function(e) {
+            var delta = null;
+            if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  delta = -1;
+            if (e.key === 'ArrowDown' || e.key === 'ArrowRight') delta =  1;
+            if (delta == null) return;
+            e.preventDefault();
+            applyTarget(Math.round(targetRef) + delta, true);
+          });
+
+          function handleItemClick(index) {
+            if (dragMoved) return;
+            var d = index - Math.round(targetRef);
+            applyTarget(targetRef + d, true);
+          }
+
+          // Init
+          applyTarget(DEFAULT, false);
+        })();
+      </script>
+    </section>
+
     <!-- TECHNICAL TOOLKIT -->
     <section id="toolkit">
       <div class="sec-wrap" style="position: relative; z-index: 2;">
