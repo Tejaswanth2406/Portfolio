@@ -47,7 +47,10 @@
     :root {
       --bg-base: #0f0f1a;
       --bg-card: #1a1a2e;
+      --bg-mid: #13131f;
       --bg-hover: #16213e;
+      --bg-dark: #0a0a14;
+      --bg-deep: #0d0d18;
       --accent-primary: #00d9ff;
       --accent-secondary: #ff006e;
       --accent-tertiary: #8338ec;
@@ -61,6 +64,18 @@
       --rust: #ff006e;
       --cream: #f0f0f5;
       --sky: #00d9ff;
+      /* Ink = the main text/foreground in this dark theme */
+      --ink: #e8e8f0;
+      --ink-70: rgba(232, 232, 240, 0.70);
+      --ink-45: rgba(232, 232, 240, 0.45);
+      --ink-20: rgba(232, 232, 240, 0.20);
+      --ink-08: rgba(232, 232, 240, 0.08);
+      /* Accent color used for headings in manifesto cards */
+      --lino-blue: #00d9ff;
+      /* Mesh gradient color stops for hero background */
+      --m-pink: rgba(131, 56, 236, 0.18);
+      --m-cream: rgba(0, 217, 255, 0.12);
+      --m-cyan: rgba(255, 0, 110, 0.10);
       --shadow-xl: 0 40px 100px rgba(0, 217, 255, .15), 0 8px 24px rgba(0, 217, 255, .08);
       --shadow-lg: 0 20px 60px rgba(0, 217, 255, .1), 0 4px 12px rgba(0, 217, 255, .05);
       --shadow-md: 0 8px 30px rgba(0, 217, 255, .08);
@@ -406,7 +421,7 @@
     }
 
     nav.scrolled {
-      background: rgba(250, 247, 242, .92);
+      background: rgba(15, 15, 26, .92);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--ink-08);
       box-shadow: var(--shadow-sm);
@@ -491,13 +506,18 @@
       font-weight: 600;
       letter-spacing: .14em;
       text-transform: uppercase;
-      color: var(--cream);
-      background: var(--ink);
+      color: #0f0f1a;
+      background: var(--gold);
       padding: 10px 22px;
       text-decoration: none;
       position: relative;
       overflow: hidden;
-      transition: color .3s;
+      transition: color .3s, background .3s;
+    }
+
+    .nav-hire:hover {
+      background: var(--sky);
+      color: #0f0f1a;
     }
 
     .manifesto-card::before {
@@ -680,8 +700,8 @@
       align-items: center;
       gap: 8px;
       padding: 14px 28px;
-      background: var(--ink);
-      color: var(--cream);
+      background: var(--gold);
+      color: #0f0f1a;
       font-family: 'Syne', sans-serif;
       font-size: 11px;
       font-weight: 700;
@@ -691,14 +711,14 @@
       position: relative;
       overflow: hidden;
       transition: color .3s;
-      box-shadow: 0 4px 20px rgba(26, 21, 16, .20);
+      box-shadow: 0 4px 20px rgba(255, 214, 10, .25);
     }
 
     .btn-gold::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: var(--gold);
+      background: var(--sky);
       transform: translateX(-100%);
       transition: transform .3s cubic-bezier(.25, .46, .45, .94);
     }
@@ -727,13 +747,13 @@
       text-transform: uppercase;
       text-decoration: none;
       transition: border-color .25s, color .25s, background .25s;
-      background: rgba(250, 247, 242, .5);
+      background: rgba(232, 232, 240, .06);
     }
 
     .btn-ghost:hover {
       border-color: var(--gold);
-      color: var(--ink);
-      background: rgba(138, 108, 46, .06)
+      color: var(--gold);
+      background: rgba(255, 214, 10, .06)
     }
 
     
@@ -963,7 +983,7 @@
       margin: 36px 0;
       padding: 32px 40px;
       border-left: 3px solid var(--gold);
-      background: linear-gradient(135deg, rgba(250, 250, 247, .96), rgba(165, 200, 221, .08));
+      background: linear-gradient(135deg, rgba(26, 26, 46, .96), rgba(0, 217, 255, .05));
       position: relative;
       overflow: hidden;
       box-shadow: var(--shadow-sm);
@@ -1028,8 +1048,8 @@
       margin-bottom: 18px;
       padding: 18px 18px 16px;
       border: 1px solid var(--ink-08);
-      background: rgba(255, 255, 255, .72);
-      box-shadow: 0 10px 30px rgba(12, 45, 84, .04);
+      background: rgba(26, 26, 46, .85);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
     }
 
     .sg-label {
@@ -1111,7 +1131,7 @@
     .extra-strip {
       margin-top: 36px;
       padding: 26px 30px;
-      background: var(--cream);
+      background: var(--bg-card);
       border: 1px solid var(--ink-08);
       box-shadow: var(--shadow-sm);
     }
@@ -1159,7 +1179,7 @@
     .feat-proj {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      background: var(--cream);
+      background: var(--bg-card);
       border: 1px solid var(--ink-08);
       margin-bottom: 3px;
       position: relative;
@@ -1172,7 +1192,7 @@
     .feat-proj:hover {
       transform: translateY(-8px) perspective(1200px) rotateX(1deg);
       box-shadow: var(--shadow-xl);
-      border-color: rgba(138, 108, 46, .3);
+      border-color: rgba(255, 214, 10, .3);
     }
 
     .fp-accent {
@@ -1719,7 +1739,7 @@
     }
 
     .pcard {
-      background: var(--cream);
+      background: var(--bg-card);
       border: 1px solid var(--ink-08);
       padding: 38px 32px;
       position: relative;
@@ -1730,9 +1750,9 @@
     }
 
     .pcard:hover {
-      background: var(--bg-base);
+      background: var(--bg-hover);
       box-shadow: var(--shadow-xl);
-      border-color: rgba(138, 108, 46, .25);
+      border-color: rgba(255, 214, 10, .25);
       transform: translateY(-6px) perspective(900px) rotateX(1.5deg);
     }
 
@@ -1852,7 +1872,7 @@
 
     .philo-img-wrap {
       position: relative;
-      background: var(--cream);
+      background: var(--bg-card);
       border: 1px solid var(--ink-08);
       padding: 40px;
       box-shadow: var(--shadow-md);
@@ -1867,7 +1887,7 @@
     .philo-img {
       width: 100%;
       height: auto;
-      mix-blend-mode: multiply;
+      mix-blend-mode: normal;
       display: block;
     }
 
@@ -1913,7 +1933,7 @@
     }
 
     .manifesto-card {
-      background: rgba(250, 250, 247, 0.74);
+      background: rgba(26, 26, 46, 0.85);
       padding: 28px 22px;
       border: 1px solid var(--ink-08);
       box-shadow: var(--shadow-sm);
@@ -2044,8 +2064,8 @@
 
     /* EDITORIAL / MAGAZINE STYLE */
     #editorial {
-      background: #fff;
-      color: #050505;
+      background: var(--bg-card);
+      color: var(--text-primary);
       position: relative;
       padding: 96px 4%;
       overflow: hidden;
@@ -2692,8 +2712,8 @@
     .identity-art {
       position: relative;
       min-height: 620px;
-      border: 1px solid rgba(11, 23, 36, .08);
-      background: linear-gradient(180deg, #f9fafb 0%, #ffffff 42%, #f7f6f4 100%);
+      border: 1px solid var(--ink-08);
+      background: linear-gradient(180deg, #0d1117 0%, #0f1724 42%, #0a0e18 100%);
       overflow: hidden;
       display: grid;
       place-items: center;
@@ -2722,7 +2742,7 @@
       font-family: 'Playfair Display', serif;
       font-size: clamp(180px, 18vw, 300px);
       line-height: .85;
-      color: #0b1724;
+      color: var(--ink);
       letter-spacing: -0.04em;
       font-weight: 900;
     }
@@ -2738,11 +2758,11 @@
       right: 40px;
       bottom: 40px;
       padding: 24px 28px;
-      background: rgba(255, 255, 255, .82);
-      border: 1px solid rgba(11, 23, 36, .07);
+      background: rgba(15, 23, 42, .82);
+      border: 1px solid rgba(232, 232, 240, .10);
       border-radius: 24px;
       backdrop-filter: blur(12px);
-      color: #102039;
+      color: var(--text-primary);
       font-family: 'Crimson Pro', serif;
       font-size: 18px;
       line-height: 1.75;
@@ -3041,7 +3061,7 @@
 
     /* --- PROFESSIONAL SECTIONS --- */
     #experience {
-      background: #f8fbfc;
+      background: var(--bg-base);
       overflow: hidden;
     }
 

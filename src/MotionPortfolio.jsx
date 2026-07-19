@@ -16,6 +16,7 @@ import ThreeDPhotoCarousel from "./components/three-d-carousel"
 import { GradientHeading } from "./components/ui/gradient-heading"
 import { TextAnimate } from "./components/ui/text-animate"
 import LogoCarousel from "./components/ui/logo-carousel"
+import ImageTrail from "./components/ImageTrail"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -567,6 +568,54 @@ function FeaturedWork() {
               {i < featured.length - 1 && <Divider />}
             </React.Fragment>
           ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Interactive Image Trail ───────────────────────────────────────────────
+
+function ImageTrailSection() {
+  const trailImages = [
+    "assets/HOLLOWPURPLE-Y4_HShcM.PNG",
+    "assets/HAKARI-BeU4T_Kl.PNG",
+    "assets/PIRIA-CSBDPmFK.PNG",
+    "assets/IOT_SENTINAL-CiN3sRaL.PNG",
+    "assets/MUMCARE_AI-CyxddZlZ.PNG",
+    "assets/CLU-CQ7EG0lV.PNG",
+  ]
+
+  return (
+    <section id="image-trail" className="relative py-24 md:py-32 px-6 md:px-16 bg-white/[0.01] border-y border-white/5">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-16 items-center">
+        <div className="space-y-6">
+          <SectionLabel>IMMERSIVE VISUALS</SectionLabel>
+          <GradientHeading size="xl" weight="bold" as="h2" className="max-w-2xl">
+            A living motion layer for the systems behind the work.
+          </GradientHeading>
+          <p className="max-w-xl text-base md:text-lg leading-relaxed text-white/55">
+            This new section introduces an interactive image trail that reacts to motion, pairing the portfolio with a more tactile visual language before the core problem-solving narrative.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <span className="px-3 py-2 border border-white/10 rounded-full text-[10px] uppercase tracking-[0.3em] text-white/35">
+              GSAP motion
+            </span>
+            <span className="px-3 py-2 border border-white/10 rounded-full text-[10px] uppercase tracking-[0.3em] text-white/35">
+              Existing assets
+            </span>
+            <span className="px-3 py-2 border border-white/10 rounded-full text-[10px] uppercase tracking-[0.3em] text-white/35">
+              Expandable later
+            </span>
+          </div>
+        </div>
+
+        <div className="rounded-[32px] border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.01] p-4 md:p-6 shadow-[0_20px_80px_rgba(0,0,0,0.35)]">
+          <div className="rounded-[24px] border border-white/10 bg-black/30 p-3 md:p-4">
+            <div className="h-[420px] md:h-[520px] rounded-[20px] border border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(0,217,255,0.1),_transparent_50%),linear-gradient(135deg,_rgba(255,255,255,0.03),_rgba(255,255,255,0.01))] p-4">
+              <ImageTrail items={trailImages} variant={1} />
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1582,6 +1631,8 @@ export default function MotionPortfolio() {
           <PhilosophySection />
           <Divider />
           <FeaturedWork />
+          <Divider />
+          <ImageTrailSection />
           <Divider />
           <AboutSection />
           <Divider />
