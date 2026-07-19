@@ -8311,221 +8311,169 @@
     </section>
 
     <!-- FLOWING MENU -->
-    <section id="flowing-menu-section">
+    <!-- AREA OF EXPERTISE -->
+    <section id="expertise-section">
       <style>
-        #flowing-menu-section {
+        #expertise-section {
           width: 100%;
           position: relative;
           background: var(--bg-base);
-          padding: 80px 0;
-          overflow: hidden;
+          padding: 100px 0;
+          z-index: 1;
         }
-        #flowing-menu-section .fm-heading {
+        #expertise-section .exp-heading {
           max-width: 1200px;
           margin: 0 auto 48px;
           padding: 0 5%;
         }
-        #flowing-menu-section .fm-eyebrow {
+        #expertise-section .exp-eyebrow {
           font-family: 'JetBrains Mono', monospace;
-          font-size: 9px;
+          font-size: 11px;
           letter-spacing: .32em;
           text-transform: uppercase;
           color: var(--rust);
           margin-bottom: 12px;
         }
-        #flowing-menu-section .fm-title {
+        #expertise-section .exp-title {
           font-family: 'Playfair Display', serif;
-          font-size: clamp(28px, 4vw, 52px);
+          font-size: clamp(32px, 5vw, 64px);
           font-weight: 900;
           color: var(--ink);
           line-height: 1.08;
           margin: 0;
         }
-        #flowing-menu-section .fm-title em { font-style: italic; color: var(--gold); }
-        .fm-wrap { 
-          width: 100%; 
-          height: 480px; 
-          overflow: hidden; 
-          background: var(--bg-card); 
-          border-top: 1px solid var(--ink-08);
-          border-bottom: 1px solid var(--ink-08);
+        #expertise-section .exp-title em { font-style: italic; color: var(--gold); }
+        
+        .exp-grid {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 5%;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 24px;
         }
-        .fm-nav { display:flex; flex-direction:column; height:100%; margin:0; padding:0; }
-        .fm-item {
-          flex:1;
-          position:relative;
-          overflow:hidden;
-          text-align:center;
-          border-top:1px solid rgba(255,255,255,0.08);
+        
+        .exp-card {
+          background: var(--bg-card);
+          border: 1px solid var(--ink-08);
+          border-radius: 12px;
+          padding: 40px 32px;
+          position: relative;
+          overflow: hidden;
+          transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          min-height: 240px;
+          text-decoration: none;
         }
-        .fm-item:first-child { border-top:none; }
-        .fm-link {
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          height:100%;
-          position:relative;
-          cursor:pointer;
-          text-transform:uppercase;
-          text-decoration:none;
-          white-space:nowrap;
-          font-weight:600;
-          font-size:4vh;
-          color:#ffffff;
-          font-family:'Syne',sans-serif;
-          letter-spacing:-0.02em;
-          transition:color 0.3s;
+        
+        .exp-card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-size: cover;
+          background-position: center;
+          opacity: 0.1;
+          transition: opacity 0.4s, transform 0.8s;
+          z-index: 0;
         }
-        .fm-marquee {
-          position:absolute;
-          top:0; left:0;
-          overflow:hidden;
-          width:100%; height:100%;
-          pointer-events:none;
-          transform:translate3d(0,101%,0);
-          background:var(--bg-card);
+        
+        .exp-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+          border-color: rgba(255,255,255,0.2);
         }
-        .fm-marquee__inner-wrap { height:100%; width:100%; overflow:hidden; }
-        .fm-marquee__inner {
-          display:flex;
-          align-items:center;
-          position:relative;
-          height:100%;
-          width:-moz-fit-content;
-          width:fit-content;
-          will-change:transform;
+        
+        .exp-card:hover::before {
+          opacity: 0.4;
+          transform: scale(1.05);
         }
-        .fm-marquee__part {
-          display:flex;
-          align-items:center;
-          flex-shrink:0;
-          color:#f0f0f5;
+        
+        .exp-card-content {
+          position: relative;
+          z-index: 1;
         }
-        .fm-marquee__part span {
-          white-space:nowrap;
-          text-transform:uppercase;
-          font-weight:400;
-          font-size:4vh;
-          line-height:1;
-          padding:0 1vw;
-          font-family:'Syne',sans-serif;
+        
+        .exp-card h3 {
+          font-family: 'Syne', sans-serif;
+          font-size: 24px;
+          font-weight: 700;
+          color: #ffffff;
+          margin: 0 0 12px 0;
+          text-transform: uppercase;
+          letter-spacing: -0.02em;
         }
-        .fm-marquee__img {
-          width:200px;
-          height:7vh;
-          margin:2em 2vw;
-          padding:1em 0;
-          border-radius:50px;
-          background-size:cover;
-          background-position:50% 50%;
+        
+        .exp-card p {
+          font-family: 'Crimson Pro', serif;
+          font-size: 16px;
+          color: rgba(255,255,255,0.7);
+          margin: 0;
+          line-height: 1.5;
+        }
+        
+        /* Individual Backgrounds */
+        .exp-card.c-threat::before { background-image: url('./assets/MARK1-BlS16BK9-BlS16BK9.PNG'); }
+        .exp-card.c-cloud::before { background-image: url('./assets/MARK2-BAytw8EP-BAytw8EP.PNG'); }
+        .exp-card.c-ai::before { background-image: url('./assets/MARK3-DOj-hn8M-DOj-hn8M.png'); }
+        .exp-card.c-dev::before { background-image: url('./assets/cipher_core-1-JN7jct.jpg'); }
+        
+        .exp-arrow {
+          position: absolute;
+          top: 32px;
+          right: 32px;
+          width: 24px;
+          height: 24px;
+          opacity: 0.3;
+          transition: opacity 0.3s, transform 0.3s;
+          color: #fff;
+        }
+        
+        .exp-card:hover .exp-arrow {
+          opacity: 1;
+          transform: translate(4px, -4px);
         }
       </style>
 
-      <div class="fm-heading">
-        <p class="fm-eyebrow">Core Domains</p>
-        <h2 class="fm-title">Area of <em>Expertise</em></h2>
+      <div class="exp-heading">
+        <p class="exp-eyebrow">Core Domains</p>
+        <h2 class="exp-title">Area of <em>Expertise</em></h2>
       </div>
 
-      <div class="fm-wrap">
-        <nav class="fm-nav" id="fm-nav"></nav>
+      <div class="exp-grid">
+        <a href="#case-studies" class="exp-card c-threat rv">
+          <svg class="exp-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          <div class="exp-card-content">
+            <h3>Threat Research</h3>
+            <p>Analyzing and mitigating advanced attack vectors.</p>
+          </div>
+        </a>
+        
+        <a href="#certifications" class="exp-card c-cloud rv d1">
+          <svg class="exp-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          <div class="exp-card-content">
+            <h3>Cloud Security</h3>
+            <p>Securing scalable infrastructure and IAM structures.</p>
+          </div>
+        </a>
+        
+        <a href="#toolkit" class="exp-card c-ai rv d2">
+          <svg class="exp-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          <div class="exp-card-content">
+            <h3>AI Engineering</h3>
+            <p>Building secure, intelligent LLM-driven applications.</p>
+          </div>
+        </a>
+        
+        <a href="#collaboration" class="exp-card c-dev rv d3">
+          <svg class="exp-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+          <div class="exp-card-content">
+            <h3>Software Developer</h3>
+            <p>Creating robust, production-ready web platforms.</p>
+          </div>
+        </a>
       </div>
-
-      <script>
-        (function(){
-          if(!document.querySelector('script[src*="gsap"]')){
-            var s=document.createElement('script');
-            s.src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
-            s.onload=initFM;
-            document.head.appendChild(s);
-          } else { initFM(); }
-
-          var FM_ITEMS = [
-            { text:'Threat Research',  image:'./assets/MARK1-BlS16BK9.PNG',    href:'#case-studies' },
-            { text:'Cloud Security',   image:'./assets/MARK2-BAytw8EP.PNG',    href:'#certifications' },
-            { text:'AI Engineering',   image:'./assets/MARK3-DOj-hn8M.png',    href:'#toolkit' },
-            { text:'Software Developer', image:'./assets/cipher_core.jpg',        href:'#collaboration' }
-          ];
-
-          function distMetric(x,y,x2,y2){var dx=x-x2,dy=y-y2;return dx*dx+dy*dy;}
-          function closestEdge(mx,my,w,h){
-            return distMetric(mx,my,w/2,0)<distMetric(mx,my,w/2,h)?'top':'bottom';
-          }
-
-          function initFM(){
-            var nav=document.getElementById('fm-nav');
-            if(!nav||!window.gsap)return;
-            var defaults={duration:0.6,ease:'expo'};
-
-            FM_ITEMS.forEach(function(item){
-              var itemEl=document.createElement('div');
-              itemEl.className='fm-item';
-
-              var link=document.createElement('a');
-              link.className='fm-link';
-              link.href=item.href;
-              link.textContent=item.text;
-
-              var marquee=document.createElement('div');
-              marquee.className='fm-marquee';
-              var innerWrap=document.createElement('div');
-              innerWrap.className='fm-marquee__inner-wrap';
-              var inner=document.createElement('div');
-              inner.className='fm-marquee__inner';
-
-              var reps=6;
-              for(var r=0;r<reps;r++){
-                var part=document.createElement('div');
-                part.className='fm-marquee__part';
-                var sp=document.createElement('span');
-                sp.textContent=item.text;
-                var img=document.createElement('div');
-                img.className='fm-marquee__img';
-                img.style.backgroundImage='url('+item.image+')';
-                part.appendChild(sp);
-                part.appendChild(img);
-                inner.appendChild(part);
-              }
-
-              innerWrap.appendChild(inner);
-              marquee.appendChild(innerWrap);
-              itemEl.appendChild(link);
-              itemEl.appendChild(marquee);
-              nav.appendChild(itemEl);
-
-              setTimeout(function(innerEl){
-                return function(){
-                  var firstPart=innerEl.querySelector('.fm-marquee__part');
-                  if(!firstPart)return;
-                  var cw=firstPart.offsetWidth;
-                  if(!cw)return;
-                  gsap.to(innerEl,{x:-cw,duration:15,ease:'none',repeat:-1});
-                };
-              }(inner),100);
-
-              link.addEventListener('mouseenter',function(innerEl,marqueeEl){
-                return function(ev){
-                  var rect=this.closest('.fm-item').getBoundingClientRect();
-                  var edge=closestEdge(ev.clientX-rect.left,ev.clientY-rect.top,rect.width,rect.height);
-                  gsap.timeline({defaults:defaults})
-                    .set(marqueeEl,{y:edge==='top'?'-101%':'101%'},0)
-                    .set(innerEl,{y:edge==='top'?'101%':'-101%'},0)
-                    .to([marqueeEl,innerEl],{y:'0%'},0);
-                };
-              }(inner,marquee));
-
-              link.addEventListener('mouseleave',function(innerEl,marqueeEl){
-                return function(ev){
-                  var rect=this.closest('.fm-item').getBoundingClientRect();
-                  var edge=closestEdge(ev.clientX-rect.left,ev.clientY-rect.top,rect.width,rect.height);
-                  gsap.timeline({defaults:defaults})
-                    .to(marqueeEl,{y:edge==='top'?'-101%':'101%'},0)
-                    .to(innerEl,{y:edge==='top'?'101%':'-101%'},0);
-                };
-              }(inner,marquee));
-            });
-          }
-        })();
-      </script>
     </section>
 
     <!-- CAREER TIMELINE -->
