@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Purple Team | Tejaswanth Surisetty</title>
+  <meta name="description" content="Purple Team operations — combining offensive red team attack simulation with defensive blue team detection engineering. Security research by Tejaswanth Surisetty." />
+  <meta name="theme-color" content="#0a0010" />
+  <link rel="icon" type="image/png" href="./assets/82dfeb2a-2186-4085-bfbc-2cebc7f5afca-C0-TE7Vk.png">
+  <meta property="og:title" content="Purple Team | Tejaswanth Surisetty" />
+  <meta property="og:description" content="Bridging attack simulation and detection engineering. Red meets Blue." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple-deep:   #0a0010;
+      --purple-mid:    #1a0030;
+      --purple-bright: #7c3aed;
+      --purple-light:  #a78bfa;
+      --purple-glow:   #c4b5fd;
+      --red-team:      #ef4444;
+      --blue-team:     #3b82f6;
+      --text-primary:  #f5f0ff;
+      --text-muted:    rgba(245,240,255,0.45);
+      --border:        rgba(167,139,250,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--purple-deep);
+      color: var(--text-primary);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(10,0,16,0.6);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--purple-light); }
+    .nav-back {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--purple-light); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+    }
+    #glitch-canvas-wrap {
+      position: absolute;
+      inset: 0;
+      background: #000;
+    }
+    #glitch-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    /* Center vignette over canvas */
+    .vignette-center {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(10,0,16,0.85) 0%, rgba(10,0,16,0) 62%);
+    }
+    /* Outer fade to page bg */
+    .vignette-bottom {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 200px;
+      pointer-events: none;
+      background: linear-gradient(to bottom, transparent, var(--purple-deep));
+    }
+
+    .hero-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 24px;
+      z-index: 2;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 28px;
+      backdrop-filter: blur(8px);
+      background: rgba(124,58,237,0.08);
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--purple-light);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100%  { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(1.5); }
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(56px, 10vw, 120px);
+      font-weight: 900;
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .hero-title .red  { color: var(--red-team);   font-style: italic; }
+    .hero-title .blue { color: var(--blue-team);  font-style: italic; }
+    .hero-title .purple-word { color: var(--purple-light); }
+    .hero-sub {
+      font-family: 'Crimson Pro', serif;
+      font-size: clamp(16px, 2.5vw, 22px);
+      color: var(--text-muted);
+      max-width: 540px;
+      line-height: 1.65;
+      margin-bottom: 40px;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 36px;
+      border: 1px solid var(--purple-bright);
+      border-radius: 100px;
+      color: var(--purple-glow);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      background: rgba(124,58,237,0.1);
+      backdrop-filter: blur(8px);
+      transition: background 0.25s, box-shadow 0.25s, transform 0.2s;
+    }
+    .hero-cta:hover {
+      background: rgba(124,58,237,0.25);
+      box-shadow: 0 0 32px rgba(124,58,237,0.35);
+      transform: translateY(-2px);
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      animation: scrollBob 2.5s ease-in-out infinite;
+      z-index: 2;
+    }
+    .hero-scroll svg { opacity: 0.4; }
+    @keyframes scrollBob {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── SHARED SECTION ── */
+    section { padding: 96px 0; }
+    .sec-wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    .eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .eyebrow::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      max-width: 80px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 5vw, 60px);
+      font-weight: 900;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+    .section-title em {
+      font-style: italic;
+      color: var(--purple-light);
+    }
+    .section-body {
+      font-family: 'Crimson Pro', serif;
+      font-size: 18px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 620px;
+    }
+
+    /* ── RED/BLUE SPLIT ── */
+    #split { padding-top: 0; }
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+    }
+    .split-card {
+      padding: 56px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .split-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+    }
+    .split-card.red { background: rgba(239,68,68,0.06); border-right: 1px solid var(--border); }
+    .split-card.blue { background: rgba(59,130,246,0.06); }
+    .split-card.red::before  { background: radial-gradient(ellipse at top left, #ef4444, transparent 60%); }
+    .split-card.blue::before { background: radial-gradient(ellipse at top right, #3b82f6, transparent 60%); }
+    .split-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+    }
+    .split-card.red  .split-icon { background: rgba(239,68,68,0.15); }
+    .split-card.blue .split-icon { background: rgba(59,130,246,0.15); }
+    .split-kicker {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .split-card.red  .split-kicker { color: var(--red-team); }
+    .split-card.blue .split-kicker { color: var(--blue-team); }
+    .split-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .split-card p {
+      font-family: 'Crimson Pro', serif;
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+    .split-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .split-list li {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .split-list li::before {
+      content: '';
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .split-card.red  .split-list li::before { background: var(--red-team); }
+    .split-card.blue .split-list li::before { background: var(--blue-team); }
+
+    /* ── PURPLE BRIDGE ── */
+    #bridge {
+      background: linear-gradient(135deg, rgba(124,58,237,0.08) 0%, rgba(167,139,250,0.04) 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .bridge-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .bridge-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 340px;
+    }
+    /* Animated Venn diagram */
+    .venn-wrap {
+      position: relative;
+      width: 300px;
+      height: 200px;
+    }
+    .venn-circle {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .venn-red {
+      left: 0;
+      background: rgba(239,68,68,0.18);
+      border: 1px solid rgba(239,68,68,0.35);
+      color: #f87171;
+      padding-right: 40px;
+      animation: vennPulse 3s ease-in-out infinite;
+    }
+    .venn-blue {
+      right: 0;
+      background: rgba(59,130,246,0.18);
+      border: 1px solid rgba(59,130,246,0.35);
+      color: #60a5fa;
+      padding-left: 40px;
+      animation: vennPulse 3s ease-in-out 1.5s infinite;
+    }
+    .venn-center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(167,139,250,0.6), rgba(124,58,237,0.3));
+      border: 1px solid rgba(167,139,250,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--purple-glow);
+      text-align: center;
+      line-height: 1.4;
+      z-index: 2;
+      box-shadow: 0 0 40px rgba(124,58,237,0.4);
+      animation: centerGlow 2s ease-in-out infinite alternate;
+    }
+    @keyframes vennPulse {
+      0%,100% { opacity: 0.85; }
+      50%      { opacity: 1; }
+    }
+    @keyframes centerGlow {
+      from { box-shadow: 0 0 30px rgba(124,58,237,0.3); }
+      to   { box-shadow: 0 0 60px rgba(124,58,237,0.6); }
+    }
+
+    .bridge-copy .eyebrow { margin-bottom: 20px; }
+    .bridge-steps {
+      margin-top: 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .bridge-step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(124,58,237,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--purple-light);
+    }
+    .step-text h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+    .step-text p {
+      font-family: 'Crimson Pro', serif;
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── CAPABILITIES ── */
+    .cap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 56px;
+    }
+    .cap-card {
+      padding: 32px 28px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(124,58,237,0.04);
+      transition: border-color 0.25s, transform 0.25s, background 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .cap-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,58,237,0.12), transparent 70%);
+      pointer-events: none;
+    }
+    .cap-card:hover {
+      border-color: rgba(167,139,250,0.4);
+      background: rgba(124,58,237,0.08);
+      transform: translateY(-4px);
+    }
+    .cap-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 100px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+    .cap-tag.red-tag  { color: #f87171; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); }
+    .cap-tag.blue-tag { color: #60a5fa; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); }
+    .cap-tag.purple-tag { color: var(--purple-light); background: rgba(124,58,237,0.1); border: 1px solid rgba(167,139,250,0.2); }
+    .cap-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .cap-card p {
+      font-family: 'Crimson Pro', serif;
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ── TOOLS MARQUEE ── */
+    #tools { overflow: hidden; padding: 40px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .tools-track {
+      display: flex;
+      gap: 0;
+      animation: toolsScroll 30s linear infinite;
+      width: max-content;
+    }
+    @keyframes toolsScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .tool-chip {
+      flex-shrink: 0;
+      padding: 8px 22px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-right: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .tool-chip.accent { color: var(--purple-light); }
+
+    /* ── TERMINAL SECTION ── */
+    #terminal-sec { background: var(--purple-mid); border-top: 1px solid var(--border); }
+    .terminal-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      border: 1px solid rgba(167,139,250,0.2);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 0 80px rgba(124,58,237,0.15);
+    }
+    .terminal-bar {
+      background: rgba(167,139,250,0.06);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(167,139,250,0.12);
+    }
+    .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .t-dot.red   { background: #ef4444; }
+    .t-dot.yel   { background: #f59e0b; }
+    .t-dot.grn   { background: #22c55e; }
+    .t-title {
+      margin-left: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+    }
+    .terminal-body {
+      background: #050008;
+      padding: 28px 28px 36px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 2;
+      color: rgba(245,240,255,0.7);
+    }
+    .t-prompt { color: var(--purple-light); }
+    .t-cmd    { color: #f0f0f5; }
+    .t-out    { color: rgba(245,240,255,0.4); }
+    .t-green  { color: #4ade80; }
+    .t-red    { color: #f87171; }
+    .t-blue   { color: #60a5fa; }
+    .t-purple { color: var(--purple-glow); }
+    .t-cursor {
+      display: inline-block;
+      width: 8px; height: 14px;
+      background: var(--purple-light);
+      vertical-align: middle;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{ opacity:1; } 50%{ opacity:0; } }
+
+    /* ── CTA ── */
+    #cta-section {
+      text-align: center;
+      padding: 120px 40px;
+    }
+    .cta-glow {
+      display: inline-block;
+      padding: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,58,237,0.25) 0%, transparent 70%);
+      margin-bottom: 0;
+      position: relative;
+    }
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+    }
+    .cta-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      margin-bottom: 20px;
+    }
+    .cta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 900;
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+    .cta-title em { font-style: italic; color: var(--purple-light); }
+    .cta-sub {
+      font-family: 'Crimson Pro', serif;
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 36px;
+      background: var(--purple-bright);
+      color: #fff;
+      border-radius: 100px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover {
+      background: #6d28d9;
+      box-shadow: 0 8px 32px rgba(124,58,237,0.4);
+      transform: translateY(-2px);
+    }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 36px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 100px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .btn-ghost:hover {
+      border-color: var(--purple-light);
+      color: var(--purple-light);
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+    }
+    .footer-copy span { color: var(--purple-light); }
+    footer a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    footer a:hover { color: var(--purple-light); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .split-grid { grid-template-columns: 1fr; }
+      .split-card.red { border-right: none; border-bottom: 1px solid var(--border); }
+      .bridge-layout { grid-template-columns: 1fr; gap: 48px; }
+      .bridge-visual { height: 240px; }
+      .cap-grid { grid-template-columns: 1fr 1fr; }
+      .sec-wrap { padding: 0 24px; }
+      footer { padding: 24px; }
+    }
+    @media (max-width: 600px) {
+      .cap-grid { grid-template-columns: 1fr; }
+      .venn-wrap { transform: scale(0.8); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">↩ Tejaswanth.sec</a>
+    <ul class="nav-links">
+      <li><a href="#split">Roles</a></li>
+      <li><a href="#bridge">Methodology</a></li>
+      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#cta-section">Engage</a></li>
+    </ul>
+    <a href="hire_me.html" class="nav-back">Hire Me ↗</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div id="glitch-canvas-wrap">
+      <canvas id="glitch-canvas"></canvas>
+      <div class="vignette-center"></div>
+      <div class="vignette-bottom"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-badge">Purple Team Operations</div>
+      <h1 class="hero-title">
+        <span class="red">Red</span>&nbsp;meets<br>
+        <span class="blue">Blue</span>&nbsp;becomes<br>
+        <span class="purple-word">Purple.</span>
+      </h1>
+      <p class="hero-sub">
+        Bridging offensive attack simulation with defensive detection engineering.
+        One mindset. Both sides of the kill chain.
+      </p>
+      <a href="#split" class="hero-cta">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Explore Capabilities
+      </a>
+    </div>
+
+    <div class="hero-scroll" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      Scroll
+    </div>
+  </section>
+
+  <!-- RED / BLUE SPLIT -->
+  <section id="split">
+    <div class="sec-wrap">
+      <div class="eyebrow">The Two Sides</div>
+      <h2 class="section-title">Offense &amp; <em>Defense</em></h2>
+      <p class="section-body">Purple Team is not a compromise — it's the deliberate fusion of adversarial thinking with detection precision.</p>
+
+      <div class="split-grid" style="margin-top: 56px;">
+        <div class="split-card red">
+          <div class="split-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+          </div>
+          <div class="split-kicker">Red Team · Offense</div>
+          <h3>Attack Simulation</h3>
+          <p>Thinking like an adversary. Mapping attack surfaces, abuse paths, and exploitable gaps before they become incidents.</p>
+          <ul class="split-list">
+            <li>Reconnaissance &amp; OSINT</li>
+            <li>Cloud IAM privilege escalation</li>
+            <li>Web application exploitation</li>
+            <li>Adversary TTPs mapping (MITRE ATT&amp;CK)</li>
+            <li>Proof-of-concept development</li>
+            <li>Social engineering simulation</li>
+          </ul>
+        </div>
+        <div class="split-card blue">
+          <div class="split-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div class="split-kicker">Blue Team · Defense</div>
+          <h3>Detection Engineering</h3>
+          <p>Translating attacker behaviour into detection logic. Building systems that catch what most tools miss.</p>
+          <ul class="split-list">
+            <li>SIEM rule authoring &amp; tuning</li>
+            <li>Anomaly detection &amp; baselining</li>
+            <li>Log analysis &amp; threat hunting</li>
+            <li>Incident response playbooks</li>
+            <li>Cloud security monitoring (AWS/GCP)</li>
+            <li>LLM-assisted alert triage</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PURPLE BRIDGE / METHODOLOGY -->
+  <section id="bridge">
+    <div class="sec-wrap">
+      <div class="bridge-layout">
+        <div class="bridge-copy">
+          <div class="eyebrow">Methodology</div>
+          <h2 class="section-title">How Purple<br><em>Works</em></h2>
+          <p class="section-body">The loop between attack and detect — run continuously, not once.</p>
+
+          <div class="bridge-steps">
+            <div class="bridge-step">
+              <div class="step-num">01</div>
+              <div class="step-text">
+                <h4>Simulate the Attack</h4>
+                <p>Execute an adversary technique against a real environment — cloud, endpoint, or application layer.</p>
+              </div>
+            </div>
+            <div class="bridge-step">
+              <div class="step-num">02</div>
+              <div class="step-text">
+                <h4>Observe the Gap</h4>
+                <p>Check whether the attack generated a log, triggered an alert, or passed through silently. Document the visibility gap.</p>
+              </div>
+            </div>
+            <div class="bridge-step">
+              <div class="step-num">03</div>
+              <div class="step-text">
+                <h4>Engineer Detection</h4>
+                <p>Write detection logic — SIEM rules, queries, or ML models — that reliably catches the technique without excess noise.</p>
+              </div>
+            </div>
+            <div class="bridge-step">
+              <div class="step-num">04</div>
+              <div class="step-text">
+                <h4>Validate &amp; Loop</h4>
+                <p>Re-run the attack to confirm detection fires. Iterate on evasion variants until the rule is robust.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bridge-visual">
+          <div class="venn-wrap">
+            <div class="venn-circle venn-red">Red</div>
+            <div class="venn-circle venn-blue">Blue</div>
+            <div class="venn-center">Purple<br>Team</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS MARQUEE -->
+  <div id="tools" aria-hidden="true">
+    <div class="tools-track" id="tools-track"></div>
+  </div>
+
+  <!-- CAPABILITIES -->
+  <section id="capabilities">
+    <div class="sec-wrap">
+      <div class="eyebrow">Active Work</div>
+      <h2 class="section-title">Current<br><em>Capabilities</em></h2>
+      <p class="section-body">Research, builds, and ongoing efforts across the full purple team spectrum.</p>
+
+      <div class="cap-grid">
+        <div class="cap-card">
+          <span class="cap-tag red-tag">Red</span>
+          <h3>Vulnerability Research</h3>
+          <p>Actively identifying and responsibly disclosing vulnerabilities on HackerOne and Intigriti across web and cloud targets.</p>
+        </div>
+        <div class="cap-card">
+          <span class="cap-tag blue-tag">Blue</span>
+          <h3>Detection Prototyping</h3>
+          <p>Building proof-of-concept detection pipelines that convert MITRE ATT&amp;CK techniques into inspectable, testable SIEM rules.</p>
+        </div>
+        <div class="cap-card">
+          <span class="cap-tag purple-tag">Purple</span>
+          <h3>LLM-Assisted Triage</h3>
+          <p>Using large language models to summarize alerts, cluster anomalies, and surface high-confidence findings from noisy logs.</p>
+        </div>
+        <div class="cap-card">
+          <span class="cap-tag red-tag">Red</span>
+          <h3>Cloud IAM Exploitation</h3>
+          <p>Enumerating misconfigured IAM policies, privilege escalation paths, and cross-account trust relationships in AWS &amp; GCP environments.</p>
+        </div>
+        <div class="cap-card">
+          <span class="cap-tag blue-tag">Blue</span>
+          <h3>Threat Hunting</h3>
+          <p>Hypothesis-driven log hunting across CloudTrail, VPC Flow Logs, and endpoint telemetry for indicators of living-off-the-land attacks.</p>
+        </div>
+        <div class="cap-card">
+          <span class="cap-tag purple-tag">Purple</span>
+          <h3>AI Red-Teaming</h3>
+          <p>Probing LLM-based systems for prompt injection, data exfiltration, and jailbreaking — then designing guardrails that hold.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TERMINAL -->
+  <section id="terminal-sec">
+    <div class="sec-wrap" style="max-width: 860px;">
+      <div class="eyebrow" style="justify-content: center; text-align: center;">Simulated Output</div>
+      <h2 class="section-title" style="text-align: center; margin-bottom: 48px;">The Loop in <em>Action</em></h2>
+      <div class="terminal-wrap">
+        <div class="terminal-bar">
+          <div class="t-dot red"></div>
+          <div class="t-dot yel"></div>
+          <div class="t-dot grn"></div>
+          <span class="t-title">purple-team-ops — bash</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="t-prompt">┌──[purple@ops]─[~]</span></div>
+          <div><span class="t-prompt">└─$ </span><span class="t-cmd">python3 simulate.py --technique T1078 --env aws-staging</span></div>
+          <div><span class="t-out">[*] Simulating: Valid Accounts — Cloud Accounts (T1078.004)</span></div>
+          <div><span class="t-out">[*] Using stolen IAM key: AKIA••••••••REDACTED</span></div>
+          <div><span class="t-out">[*] Calling sts:GetCallerIdentity ... </span><span class="t-green">✓ success</span></div>
+          <div><span class="t-out">[*] Enumerating S3 buckets .............. </span><span class="t-green">✓ 14 found</span></div>
+          <div><span class="t-out">[!] Exfil attempt on s3://internal-logs ... </span><span class="t-red">✗ blocked</span></div>
+          <br>
+          <div><span class="t-prompt">└─$ </span><span class="t-cmd">python3 hunt.py --source cloudtrail --lookback 1h</span></div>
+          <div><span class="t-out">[*] Searching CloudTrail for anomalous GetCallerIdentity calls ...</span></div>
+          <div><span class="t-out">[*] Cross-referencing with baseline user agents ...</span></div>
+          <div><span class="t-green">[+] ALERT FIRED — </span><span class="t-purple">Rule: Unusual IAM Source IP + User-Agent mismatch</span></div>
+          <div><span class="t-green">[+] Confidence: HIGH | Technique: T1078.004 | MITRE Stage: Initial Access</span></div>
+          <br>
+          <div><span class="t-prompt">└─$ </span><span class="t-cmd">python3 validate.py --rule iam-anomaly-001 --rerun</span></div>
+          <div><span class="t-out">[*] Re-executing technique ...</span></div>
+          <div><span class="t-blue">[✓] Detection triggered in 00:00:03. Alert written to SIEM.</span></div>
+          <div><span class="t-blue">[✓] Rule validated. Coverage confirmed for T1078.004.</span></div>
+          <br>
+          <div><span class="t-prompt">└─$ </span><span class="t-cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="cta-section">
+    <div class="cta-glow">
+      <div class="cta-inner">
+        <p class="cta-eyebrow">Ready to work together?</p>
+        <h2 class="cta-title">Let's Build<br>Better <em>Defenses.</em></h2>
+        <p class="cta-sub">If you're running a security team and need someone who can attack, detect, and iterate — let's talk.</p>
+        <div class="cta-buttons">
+          <a href="hire_me.html" class="btn-primary">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            Hire Page
+          </a>
+          <a href="mailto:tejaswanthsurisetty@gmail.com" class="btn-ghost">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+            Email Me
+          </a>
+          <a href="index.html" class="btn-ghost">← Portfolio</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-copy">© 2026 <span>Tejaswanth Surisetty</span> · Purple Team Operations Page</p>
+    <div style="display:flex;gap:24px;">
+      <a href="index.html">Portfolio</a>
+      <a href="hire_me.html">Hire Me</a>
+      <a href="https://github.com/Tejaswanth2406" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </footer>
+
+  <!-- LetterGlitch Canvas Script -->
+  <script>
+    (function () {
+      var canvas   = document.getElementById('glitch-canvas');
+      var ctx      = canvas.getContext('2d');
+      var animId   = null;
+      var letters  = [];
+      var grid     = { columns: 0, rows: 0 };
+      var lastTime = Date.now();
+
+      var GLITCH_COLORS  = ['#2d1b69', '#7c3aed', '#a78bfa', '#1e0040', '#4c1d95'];
+      var GLITCH_SPEED   = 40;
+      var FONT_SIZE      = 16;
+      var CHAR_W         = 10;
+      var CHAR_H         = 20;
+      var SMOOTH         = true;
+      var CHARACTERS     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$&*()-_+=/[]{};:<>.,0123456789';
+      var chars          = CHARACTERS.split('');
+
+      function rndChar()  { return chars[Math.floor(Math.random() * chars.length)]; }
+      function rndColor() { return GLITCH_COLORS[Math.floor(Math.random() * GLITCH_COLORS.length)]; }
+
+      function hexToRgb(hex) {
+        var shorthand = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+        hex = hex.replace(shorthand, function(m,r,g,b){ return r+r+g+g+b+b; });
+        var res = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return res ? { r: parseInt(res[1],16), g: parseInt(res[2],16), b: parseInt(res[3],16) } : null;
+      }
+
+      function lerp(a, b, t) {
+        return { r: Math.round(a.r+(b.r-a.r)*t), g: Math.round(a.g+(b.g-a.g)*t), b: Math.round(a.b+(b.b-a.b)*t) };
+      }
+
+      function resize() {
+        var wrap = canvas.parentElement;
+        if (!wrap) return;
+        var dpr  = window.devicePixelRatio || 1;
+        var rect = wrap.getBoundingClientRect();
+        canvas.width  = rect.width  * dpr;
+        canvas.height = rect.height * dpr;
+        canvas.style.width  = rect.width  + 'px';
+        canvas.style.height = rect.height + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        grid.columns = Math.ceil(rect.width  / CHAR_W);
+        grid.rows    = Math.ceil(rect.height / CHAR_H);
+        var total = grid.columns * grid.rows;
+        letters = [];
+        for (var i = 0; i < total; i++) {
+          var c = rndColor();
+          letters.push({ char: rndChar(), color: c, targetColor: c, progress: 1 });
+        }
+        draw();
+      }
+
+      function draw() {
+        var rect = canvas.getBoundingClientRect();
+        ctx.clearRect(0, 0, rect.width, rect.height);
+        ctx.font = FONT_SIZE + 'px monospace';
+        ctx.textBaseline = 'top';
+        for (var i = 0; i < letters.length; i++) {
+          var x = (i % grid.columns) * CHAR_W;
+          var y = Math.floor(i / grid.columns) * CHAR_H;
+          ctx.fillStyle = letters[i].color;
+          ctx.fillText(letters[i].char, x, y);
+        }
+      }
+
+      function update() {
+        var count = Math.max(1, Math.floor(letters.length * 0.05));
+        for (var i = 0; i < count; i++) {
+          var idx = Math.floor(Math.random() * letters.length);
+          if (!letters[idx]) continue;
+          letters[idx].char = rndChar();
+          letters[idx].targetColor = rndColor();
+          if (!SMOOTH) {
+            letters[idx].color = letters[idx].targetColor;
+            letters[idx].progress = 1;
+          } else {
+            letters[idx].progress = 0;
+          }
+        }
+      }
+
+      function smoothStep() {
+        var redraw = false;
+        for (var i = 0; i < letters.length; i++) {
+          var l = letters[i];
+          if (l.progress < 1) {
+            l.progress = Math.min(1, l.progress + 0.05);
+            var s = hexToRgb(l.color);
+            var e = hexToRgb(l.targetColor);
+            if (s && e) {
+              var mixed = lerp(s, e, l.progress);
+              l.color = 'rgb('+mixed.r+','+mixed.g+','+mixed.b+')';
+              redraw = true;
+            }
+          }
+        }
+        if (redraw) draw();
+      }
+
+      function animate() {
+        var now = Date.now();
+        if (now - lastTime >= GLITCH_SPEED) {
+          update();
+          draw();
+          lastTime = now;
+        }
+        if (SMOOTH) smoothStep();
+        animId = requestAnimationFrame(animate);
+      }
+
+      resize();
+      animate();
+
+      var resizeTimer;
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+          cancelAnimationFrame(animId);
+          resize();
+          animate();
+        }, 100);
+      });
+    })();
+  </script>
+
+  <!-- Tools Marquee Script -->
+  <script>
+    (function () {
+      var TOOLS = [
+        'Burp Suite','AWS CloudTrail','MITRE ATT&CK','Nmap','Wireshark',
+        'Python','Nuclei','Metasploit','Splunk','Elastic SIEM',
+        'IAM Vulnerable','ScoutSuite','Pacu','AWS GuardDuty','KQL',
+        'Sigma Rules','Yara','OpenCTI','CyberChef','Git',
+        'Docker','Terraform','GCP Security Command Center','LangChain','GPT-4o'
+      ];
+      var track = document.getElementById('tools-track');
+      var doubled = TOOLS.concat(TOOLS);
+      doubled.forEach(function(t, i) {
+        var chip = document.createElement('span');
+        chip.className = 'tool-chip' + (i % 5 === 0 ? ' accent' : '');
+        chip.textContent = t;
+        track.appendChild(chip);
+      });
+    })();
+  </script>
+
+</body>
+</html>
